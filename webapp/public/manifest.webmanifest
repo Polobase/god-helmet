@@ -1,0 +1,13 @@
+{
+  "name": "God Helmet",
+  "short_name": "God Helmet",
+  "description": "Control app for the 8-coil weak-field helmet",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d0f12",
+  "theme_color": "#0d0f12",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "remote-viewing",
+  "name": "Remote viewing (Octopus, CCW chirp)",
+  "layout": "ring",
+  "category": "psi",
+  "uT": 1.0,
+  "summary": "Circumcerebral counter-clockwise rotation with the chirp signal (Murphy: the best of three signals for psi). Coil-to-coil dwell 10, 12, 14, 16, 18, 20 ms: each 5-min phase slower than the last, 30 min total as in the single 30-min Ingo Swann exposure. Follow with a blinded trial in the Experiment tab.",
+  "source": "Murphy, Psychic Skills lecture https://youtu.be/tmC1174POpA?t=1187 , ?t=2732 , ?t=2749 ; Persinger et al. 2002, Percept Mot Skills 94:927",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Rotation 10 ms", "minutes": 5, "pattern": {"type": "chirp"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 10}},
+    {"name": "Rotation 12 ms", "minutes": 5, "pattern": {"type": "chirp"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 12}},
+    {"name": "Rotation 14 ms", "minutes": 5, "pattern": {"type": "chirp"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 14}},
+    {"name": "Rotation 16 ms", "minutes": 5, "pattern": {"type": "chirp"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 16}},
+    {"name": "Rotation 18 ms", "minutes": 5, "pattern": {"type": "chirp"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 18}},
+    {"name": "Rotation 20 ms", "minutes": 5, "pattern": {"type": "chirp"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 20}}
+  ]
+}

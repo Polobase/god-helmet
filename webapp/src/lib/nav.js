@@ -1,0 +1,25 @@
+// Tab navigation synced with location.hash (#programs, #programs/obe, #placement, ...).
+import { reactive } from 'vue'
+
+export const TABS = [
+  { key: 'programs', label: 'Programs' },
+  { key: 'placement', label: 'Placement' },
+  { key: 'experiment', label: 'Experiment' },
+  { key: 'targets', label: 'Targets' },
+  { key: 'log', label: 'Log' },
+  { key: 'setup', label: 'Setup' },
+  { key: 'safety', label: 'Safety' },
+]
+
+function parse() {
+  const [tab, arg] = location.hash.replace(/^#/, '').split('/')
+  return { tab: TABS.some((t) => t.key === tab) ? tab : 'programs', arg: arg ? decodeURIComponent(arg) : '' }
+}
+
+export const nav = reactive(parse())
+
+window.addEventListener('hashchange', () => Object.assign(nav, parse()))
+
+export function go(tab, arg = '') {
+  location.hash = arg ? `${tab}/${encodeURIComponent(arg)}` : tab
+}

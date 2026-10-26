@@ -1,0 +1,25 @@
+{
+  "id": "god-helmet-classic",
+  "name": "God Helmet classic (Persinger 2-phase)",
+  "layout": "temporal",
+  "category": "spiritual",
+  "uT": 1.0,
+  "summary": "Persinger's procedure as described by Todd Murphy: ~25 min of a chirp over the RIGHT hemisphere only, then an abrupt switch to the amygdala burst-firing signal over both temporal lobes. Phase 1 can cause fear; press Skip to go to phase 2 at once. Dark, quiet room, blindfold, eyes closed.",
+  "source": "Murphy, Enlightenment lecture https://youtu.be/zqrpKUTMXgY?t=1481 ; Deja vu lecture https://youtu.be/KJIAHHB8Btk?t=3737 ; Murphy-Balbin interview https://youtu.be/1uVjHmi51HM?t=1290 ; https://www.god-helmet.com/wp/god-helmet/index.htm",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Right hemisphere chirp",
+      "minutes": 25,
+      "pattern": {"type": "chirp"},
+      "spatial": {"mode": "cycle", "side": "right", "dir": "ccw", "dwellMs": 3}
+    },
+    {
+      "name": "Bilateral amygdala burst-firing",
+      "minutes": 25,
+      "pattern": {"type": "burst"},
+      "spatial": {"mode": "bilateral"}
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "thomas-pulse",
+  "name": "Thomas pulse (decelerating FM, bilateral)",
+  "layout": "temporal",
+  "category": "research",
+  "uT": 1.0,
+  "summary": "Decelerating frequency-modulated pattern (~25 -> 6 Hz, 3 ms points, ~2.5 s) from the Thomas/Persinger patents, studied mainly for analgesia and relaxation. Synthesised from the description; the original point file is not public.",
+  "source": "Thomas & Persinger patents (e.g. US6234953) ; Buckner et al. 2015 (Thomas-EMF 25-6 Hz)",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Bilateral Thomas pulse", "minutes": 20, "pattern": {"type": "thomas"}, "spatial": {"mode": "bilateral"}}
+  ]
+}

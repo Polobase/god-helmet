@@ -1,0 +1,14 @@
+{
+  "id": "circumcerebral-theta",
+  "name": "Circumcerebral 20 ms CCW (theta study)",
+  "layout": "ring",
+  "category": "research",
+  "uT": 2.0,
+  "summary": "Counter-clockwise rotation, 20 ms per coil (one revolution = 160 ms, about 6 Hz). Richards, Koren & Persinger 2002 reported ~30 % more theta power with 20 ms rates of change; Booth 2008: CCW raised right-hemisphere power.",
+  "source": "Richards, Koren & Persinger 2002, Percept Mot Skills 95:671 (PMID 12434867) ; Booth et al. 2008",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "CCW 20 ms burst-firing", "minutes": 25, "pattern": {"type": "burst"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 20}}
+  ]
+}

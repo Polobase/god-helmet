@@ -1,0 +1,26 @@
+{
+  "id": "obe",
+  "name": "Out-of-body (right angular gyrus / TPJ)",
+  "layout": "temporal",
+  "category": "obe",
+  "uT": 1.0,
+  "summary": "Murphy's 'altered states' order (both sides, then right only) with a 7 Hz 'hippocampal' theta signal stepping around the right-side coils, weighted to CP6/TP8 over the right angular gyrus, where Blanke 2002 evoked OBEs with electrodes. Lie down; Murphy reports most OBEs during sleep about 1 h after a session, best 00:00-04:00.",
+  "source": "Murphy, Deja vu lecture https://youtu.be/KJIAHHB8Btk?t=4271 ; https://www.god-helmet.com/wp/winshakti/rotating/shakti_obe.htm ; Blanke et al. 2002, Nature 419:269",
+  "fadeInS": 10,
+  "fadeOutS": 15,
+  "phases": [
+    {
+      "name": "Bilateral theta",
+      "minutes": 10,
+      "pattern": {"type": "sine", "f0": 7, "pointMs": 1},
+      "spatial": {"mode": "bilateral"}
+    },
+    {
+      "name": "Right TPJ theta, rotating",
+      "minutes": 20,
+      "pattern": {"type": "sine", "f0": 7, "pointMs": 1},
+      "spatial": {"mode": "cycle", "side": "right", "dir": "ccw", "dwellMs": 20, "crossfade": true,
+                  "weights": [0, 0, 0, 0, 0.5, 0.7, 1, 1]}
+    }
+  ]
+}

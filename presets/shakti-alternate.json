@@ -1,0 +1,14 @@
+{
+  "id": "shakti-alternate",
+  "name": "8-coil Shakti style (L/R alternation)",
+  "layout": "temporal",
+  "category": "spiritual",
+  "uT": 1.0,
+  "summary": "Like the consumer 8-coil Shakti: two groups of four coils over the temporal lobes, signal alternating between left and right every 2 s. Note: Murphy's seizure anecdote involved left/right attention shifting in a seizure-prone person; skip this preset if you have any seizure history.",
+  "source": "https://www.god-helmet.com/wp/winshakti/rotating/index.htm ; Murphy, Enlightenment lecture https://youtu.be/zqrpKUTMXgY?t=4417",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Alternating burst-firing", "minutes": 25, "pattern": {"type": "burst"}, "spatial": {"mode": "alternate", "alternateMs": 2000}}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "love-agape",
+  "name": "Love / agape (left temporal)",
+  "layout": "temporal",
+  "category": "mood",
+  "uT": 1.0,
+  "summary": "Amygdala-derived burst-firing signal over the LEFT temporal lobe only. Murphy links the left amygdala with positive feeling and reports bliss when he moved the amygdala signal to the left side; anecdotal.",
+  "source": "Murphy, Enlightenment lecture https://youtu.be/zqrpKUTMXgY?t=714 ; Sacred Body lecture https://youtu.be/R8GIKT8TY1k?t=2112 ; McTaggart interview https://youtu.be/K-0PHkfvEhg",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Left burst-firing", "minutes": 25, "pattern": {"type": "burst"}, "spatial": {"mode": "left"}}
+  ]
+}

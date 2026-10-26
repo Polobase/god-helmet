@@ -1,0 +1,14 @@
+{
+  "id": "sham",
+  "name": "Sham (no field)",
+  "layout": "temporal",
+  "category": "control",
+  "uT": 1.0,
+  "summary": "Zero output with identical timers and relay behaviour. Use in blinded comparisons; prefer the 'blind' option, which picks real vs sham at random for any preset.",
+  "source": "Granqvist et al. 2005, Neurosci Lett 379:1 (suggestibility, not the field, predicted experiences)",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Sham", "minutes": 20, "pattern": {"type": "off"}, "spatial": {"mode": "bilateral"}}
+  ]
+}

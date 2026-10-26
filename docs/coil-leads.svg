@@ -1,0 +1,70 @@
+<svg id="coil" viewBox="0 0 660 300" role="img" aria-label="Coil lead convention: the inner lead that leaves the top face next to the core is the signal lead; the outer lead that leaves the outermost winding at the side is the return lead; the clean bottom face goes toward the head." xmlns="http://www.w3.org/2000/svg">
+<style>
+  .bg { fill: #f3f4f1 }
+  .s-box { fill: #fbfbf9; stroke: #1c232b; stroke-width: 1.5 }
+  .s-term { fill: #e4e6e1; stroke: #1c232b; stroke-width: 1 }
+  .s-title { fill: #1c232b; font: 600 15px 'Barlow Condensed', 'Arial Narrow', sans-serif; letter-spacing: .04em }
+  .s-txt { fill: #1c232b; font: 12px 'IBM Plex Mono', Menlo, monospace }
+  .s-sub { fill: #5d6670; font: 11px 'IBM Plex Sans', Helvetica, sans-serif }
+  .s-region { fill: #5d6670; font: 600 11px 'IBM Plex Sans', Helvetica, sans-serif; letter-spacing: .12em }
+  .s-bracket { stroke: #c9cdc6; stroke-width: 1.5; fill: none }
+  .s-sheath { fill: none; stroke: #8f979f; stroke-width: 1.2; stroke-dasharray: 4 3 }
+  .w { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round }
+  .w-pwr { stroke: #c23b2a } .w-gnd { stroke: #1c232b } .w-logic { stroke: #23806e }
+  .w-sig { stroke: #b05a22 } .w-ret { stroke: #2f63a3 }
+  .t-sig { fill: #b05a22 } .t-ret { fill: #2f63a3 } .t-pwr { fill: #c23b2a } .t-logic { fill: #23806e }
+  .dot-ret { fill: #2f63a3 } .dot-logic { fill: #23806e }
+  .res { fill: #fbfbf9; stroke-width: 1.6 }
+  .coil-body { fill: #d9a77e; stroke: #8a4517; stroke-width: 1.2 }
+  .coil-top { fill: #e8c09d; stroke: #8a4517; stroke-width: 1.2 }
+  .coil-wind { fill: none; stroke: #8a4517; stroke-width: .8; opacity: .55 }
+  .core { fill: #b9bdc2; stroke: #6d737a; stroke-width: 1 }
+  .core-hole { fill: #4b5158 }
+  .arrow { fill: #1c232b }
+</style>
+<rect class="bg" x="0" y="0" width="660" height="300"/>
+<path class="coil-body" d="M125 92 V212 A95 24 0 0 0 315 212 V92 Z"/>
+<path class="coil-wind" d="M125 100 A95 24 0 0 0 315 100"/>
+<path class="coil-wind" d="M125 107 A95 24 0 0 0 315 107"/>
+<path class="coil-wind" d="M125 114 A95 24 0 0 0 315 114"/>
+<path class="coil-wind" d="M125 121 A95 24 0 0 0 315 121"/>
+<path class="coil-wind" d="M125 128 A95 24 0 0 0 315 128"/>
+<path class="coil-wind" d="M125 135 A95 24 0 0 0 315 135"/>
+<path class="coil-wind" d="M125 142 A95 24 0 0 0 315 142"/>
+<path class="coil-wind" d="M125 149 A95 24 0 0 0 315 149"/>
+<path class="coil-wind" d="M125 156 A95 24 0 0 0 315 156"/>
+<path class="coil-wind" d="M125 163 A95 24 0 0 0 315 163"/>
+<path class="coil-wind" d="M125 170 A95 24 0 0 0 315 170"/>
+<path class="coil-wind" d="M125 177 A95 24 0 0 0 315 177"/>
+<path class="coil-wind" d="M125 184 A95 24 0 0 0 315 184"/>
+<path class="coil-wind" d="M125 191 A95 24 0 0 0 315 191"/>
+<path class="coil-wind" d="M125 198 A95 24 0 0 0 315 198"/>
+<path class="coil-wind" d="M125 205 A95 24 0 0 0 315 205"/>
+<ellipse class="coil-top" cx="220" cy="92" rx="95" ry="24"/>
+<ellipse class="coil-wind" cx="220" cy="92" rx="34" ry="8.6"/>
+<ellipse class="coil-wind" cx="220" cy="92" rx="42" ry="10.6"/>
+<ellipse class="coil-wind" cx="220" cy="92" rx="50" ry="12.6"/>
+<ellipse class="coil-wind" cx="220" cy="92" rx="58" ry="14.7"/>
+<ellipse class="coil-wind" cx="220" cy="92" rx="66" ry="16.7"/>
+<ellipse class="coil-wind" cx="220" cy="92" rx="74" ry="18.7"/>
+<ellipse class="coil-wind" cx="220" cy="92" rx="82" ry="20.7"/>
+<ellipse class="coil-wind" cx="220" cy="92" rx="90" ry="22.7"/>
+<ellipse class="core" cx="220" cy="92" rx="26" ry="7.5"/>
+<ellipse class="core-hole" cx="220" cy="92" rx="8" ry="2.6"/>
+<path class="w w-sig" d="M232 90 C234 52 260 40 310 40 H380"/>
+<circle class="dot-sig t-sig" cx="380" cy="40" r="3.5"/>
+<text x="392" y="36" class="s-title" text-anchor="start">Inner lead · centre, beside the core</text>
+<text x="392" y="54" class="s-sub t-sig" text-anchor="start">= SIGNAL: from the 2.2 kΩ resistor</text>
+<text x="392" y="70" class="s-sub" text-anchor="start">Cat5 solid colour (orange, green, blue, brown)</text>
+<path class="w w-ret" d="M311 114 C335 114 340 136 380 136"/>
+<circle class="dot-ret" cx="380" cy="136" r="3.5"/>
+<text x="392" y="132" class="s-title" text-anchor="start">Outer lead · outermost winding, side</text>
+<text x="392" y="150" class="s-sub t-ret" text-anchor="start">= RETURN: joined at the box → PhotoMOS → GND</text>
+<text x="392" y="166" class="s-sub" text-anchor="start">Cat5 white-striped wire of the same pair</text>
+<path class="w w-gnd" d="M220 246 V268"/>
+<polygon class="arrow" points="214,264 226,264 220,274"/>
+<text x="236" y="262" class="s-sub" text-anchor="start">Clean bottom face → toward the head</text>
+<text x="392" y="196" class="s-sub" text-anchor="start">Both leads: ≈ 4.2 Ω between them.</text>
+<text x="392" y="212" class="s-sub" text-anchor="start">Same convention on all 8 coils = same pole</text>
+<text x="392" y="228" class="s-sub" text-anchor="start">toward the head. Confirm with a compass.</text>
+</svg>

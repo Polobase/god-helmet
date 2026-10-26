@@ -1,0 +1,25 @@
+{
+  "id": "presence-right",
+  "name": "Sensed presence (right temporoparietal)",
+  "layout": "temporal",
+  "category": "presence",
+  "uT": 1.0,
+  "summary": "Burst-firing field weighted to the right temporoparietal junction (CP6) and posterior temporal lobe (TP8), then both sides. Persinger & Healey 2002 reported more 'presences' with right or bilateral than left or sham stimulation; Murphy says it needs real silence.",
+  "source": "Persinger & Healey 2002, J Nerv Ment Dis 190:533 ; Murphy-Balbin interview https://youtu.be/1uVjHmi51HM?t=1222",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Right TPJ burst-firing",
+      "minutes": 20,
+      "pattern": {"type": "burst"},
+      "spatial": {"mode": "right", "weights": [0, 0, 0, 0, 0.4, 0.6, 1, 1]}
+    },
+    {
+      "name": "Bilateral TPJ burst-firing",
+      "minutes": 10,
+      "pattern": {"type": "burst"},
+      "spatial": {"mode": "bilateral", "weights": [0.4, 0.6, 1, 1, 0.4, 0.6, 1, 1]}
+    }
+  ]
+}

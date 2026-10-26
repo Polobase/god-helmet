@@ -1,0 +1,14 @@
+{
+  "id": "circumcerebral-gamma",
+  "name": "Circumcerebral 25->11 ms CCW (gamma study)",
+  "layout": "ring",
+  "category": "research",
+  "uT": 2.0,
+  "summary": "Counter-clockwise rotation whose dwell shortens from 25 ms by 2 ms per coil down to 11 ms, then repeats. Reported to raise gamma power (Tsang et al. 2004).",
+  "source": "Tsang, Koren & Persinger 2004 (circumcerebral gamma study)",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "CCW 25->11 ms", "minutes": 25, "pattern": {"type": "burst"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwell": [25, -2, 11]}}
+  ]
+}

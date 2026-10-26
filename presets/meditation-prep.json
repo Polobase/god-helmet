@@ -1,0 +1,14 @@
+{
+  "id": "meditation-prep",
+  "name": "Meditation prep (bilateral temporal)",
+  "layout": "temporal",
+  "category": "meditation",
+  "uT": 1.0,
+  "summary": "Same signal on both temporal lobes for 25 min. Murphy: do not meditate during stimulation; meditate about 90 minutes afterwards. Also step 1 of the Mood-lift and Lucid-dream courses (see docs/RESEARCH.md).",
+  "source": "Murphy, Deja vu lecture https://youtu.be/KJIAHHB8Btk?t=3861 , ?t=3916",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Bilateral burst-firing", "minutes": 25, "pattern": {"type": "burst"}, "spatial": {"mode": "bilateral"}}
+  ]
+}

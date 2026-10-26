@@ -1,0 +1,19 @@
+{
+  "id": "telepathy-sender",
+  "name": "Telepathy - sender (Persinger 2003 style)",
+  "layout": "ring",
+  "category": "psi",
+  "uT": 1.0,
+  "summary": "Six 5-min circumcerebral configurations for the SENDER, who looks at the target while the receiver (unstimulated, another room) writes impressions. Timings follow the descriptions of Persinger, Koren & Tsang 2003 (20 ms and 100 ms steps, 20 ms step lengthened by 2 ms); the exact fields are unpublished, so this is an approximation.",
+  "source": "Persinger, Koren & Tsang 2003, Percept Mot Skills 97:877 (PMID 14738355) ; https://www.god-helmet.com/wp/shiva/shiva_evidence.htm",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "CCW 20 ms", "minutes": 5, "pattern": {"type": "chirp"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 20}},
+    {"name": "CCW 20->40 ms (+2)", "minutes": 5, "pattern": {"type": "chirp"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwell": [20, 2, 40]}},
+    {"name": "CCW 100 ms pulses", "minutes": 5, "pattern": {"type": "pulse", "pulseMs": 100, "gapMs": 0}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 100}},
+    {"name": "CCW 20 ms burst", "minutes": 5, "pattern": {"type": "burst"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 20}},
+    {"name": "CCW 20->40 ms burst", "minutes": 5, "pattern": {"type": "burst"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwell": [20, 2, 40]}},
+    {"name": "CCW 100 ms chirp", "minutes": 5, "pattern": {"type": "chirp"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 100}}
+  ]
+}

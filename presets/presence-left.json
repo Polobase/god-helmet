@@ -1,0 +1,25 @@
+{
+  "id": "presence-left",
+  "name": "Sensed presence (left TPJ, Arzy variant)",
+  "layout": "temporal",
+  "category": "presence",
+  "uT": 1.0,
+  "summary": "Mirror of the right-sided preset. Arzy et al. 2006 evoked a 'shadow person' by electrical stimulation of the LEFT temporoparietal junction (implanted electrodes, far stronger than this device). Use to compare hemispheres in blinded trials.",
+  "source": "Arzy et al. 2006, Nature 443:287 https://pubmed.ncbi.nlm.nih.gov/16988702/",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Left TPJ burst-firing",
+      "minutes": 20,
+      "pattern": {"type": "burst"},
+      "spatial": {"mode": "left", "weights": [0.4, 0.6, 1, 1, 0, 0, 0, 0]}
+    },
+    {
+      "name": "Bilateral TPJ burst-firing",
+      "minutes": 10,
+      "pattern": {"type": "burst"},
+      "spatial": {"mode": "bilateral", "weights": [0.4, 0.6, 1, 1, 0.4, 0.6, 1, 1]}
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "frontal",
+  "name": "Frontal session (mood-lift / lucid-dream step 2)",
+  "layout": "ring",
+  "category": "courses",
+  "uT": 1.0,
+  "summary": "Only the front coils of the ring (Fpz, F7, F8) are driven. Murphy: mood lift = temporal session then frontal (course of ~6); lucid dreaming = 4-6 temporal sessions, then one frontal session on the target night. Move the coils to the ring layout first.",
+  "source": "Murphy, Deja vu lecture https://youtu.be/KJIAHHB8Btk?t=3984 , ?t=4171 , ?t=4190",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Frontal burst-firing", "minutes": 20, "pattern": {"type": "burst"},
+     "spatial": {"mode": "bilateral", "weights": [1, 1, 0, 0, 0, 0, 0, 1]}}
+  ]
+}
