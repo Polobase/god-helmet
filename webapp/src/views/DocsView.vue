@@ -3,7 +3,7 @@
 // and a program reference generated from presets/*.json.
 import { computed, ref, watch, nextTick } from 'vue'
 import { marked } from 'marked'
-import { nav, go } from '../lib/nav.js'
+import { nav, go, TABS } from '../lib/nav.js'
 import { presets, CATEGORY_LABELS, sourceEntries } from '../lib/presets.js'
 import { LAYOUTS } from '../lib/layouts.js'
 import { describePattern, describeSpatial, fmtMinutes } from '../lib/format.js'
@@ -78,13 +78,20 @@ function repoPath(href) {
   return parts.join('/')
 }
 
+// GitHub-style heading slug, so links written for GitHub (#some-heading) work here too.
+const slugify = (text) => text.toLowerCase().replace(/<[^>]+>/g, '').replace(/&[a-z]+;|&#\d+;/g, '').replace(/[^\p{L}\p{N}\s_-]/gu, '').trim().replace(/\s/g, '-')
+
 function resolveHref(href) {
+  // in-page anchor: stay in this document (the app uses the hash for its tabs)
+  if (href && href.startsWith('#') && !TABS.some((t) => href === `#${t.key}` || href.startsWith(`#${t.key}/`))) {
+    return { href: `#docs/${current.value.slug}`, anchor: decodeURIComponent(href.slice(1)) }
+  }
   if (!href || /^(https?:|mailto:|#)/.test(href)) return { href, external: /^https?:/.test(href ?? '') }
-  const [target] = href.split('#')
+  const [target, frag] = href.split('#')
   const path = repoPath(target)
   if (/\.md$/i.test(path)) {
     const slug = slugOf(path)
-    if (docs.value.some((d) => d.slug === slug)) return { href: `#docs/${slug}` }
+    if (docs.value.some((d) => d.slug === slug)) return { href: `#docs/${slug}`, anchor: frag ? decodeURIComponent(frag) : undefined }
   }
   const kind = /\.[a-z0-9]+$/i.test(path) ? 'blob' : 'tree'
   return { href: `${REPO}/${kind}/main/${path}`, external: true }
@@ -95,7 +102,8 @@ renderer.link = ({ href, title, tokens }) => {
   const text = marked.Parser.parseInline(tokens)
   const r = resolveHref(href)
   const t = title ? ` title="${title}"` : ''
-  return r.external ? `<a href="${r.href}"${t} target="_blank" rel="noopener">${text}</a>` : `<a href="${r.href}"${t}>${text}</a>`
+  if (r.external) return `<a href="${r.href}"${t} target="_blank" rel="noopener">${text}</a>`
+  return `<a href="${r.href}"${t}${r.anchor ? ` data-anchor="${r.anchor}"` : ''}>${text}</a>`
 }
 renderer.image = ({ href, title, text }) => {
   const key = `../../../docs/${href.replace(/^\.\//, '').replace(/^docs\//, '')}`
@@ -104,8 +112,7 @@ renderer.image = ({ href, title, text }) => {
 }
 renderer.heading = ({ tokens, depth }) => {
   const text = marked.Parser.parseInline(tokens)
-  const id = text.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '')
-  return `<h${depth} id="${id}">${text}</h${depth}>`
+  return `<h${depth} id="${slugify(text)}">${text}</h${depth}>`
 }
 renderer.table = (token) => `<div class="table-wrap">${marked.Renderer.prototype.table.call(renderer, token)}</div>`
 
@@ -114,7 +121,7 @@ const html = computed(() => marked.parse(current.value.md, { renderer, gfm: true
 const toc = computed(() => [...current.value.md.matchAll(/^(##|###)\s+(.+)$/gm)].map((m) => ({
   depth: m[1].length,
   text: m[2].replace(/[*_`]/g, ''),
-  id: m[2].replace(/[*_`]/g, '').toLowerCase().replace(/[^\w]+/g, '-').replace(/^-|-$/g, ''),
+  id: slugify(marked.parseInline(m[2])),
 })))
 
 // ---- search across all docs
@@ -146,6 +153,19 @@ watch(() => nav.arg, async () => {
 function jump(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
+// Links to a heading (same or another doc): open the doc, then scroll to the heading.
+async function onArticleClick(e) {
+  const a = e.target.closest?.('a[data-anchor]')
+  if (!a) return
+  e.preventDefault()
+  const slug = a.getAttribute('href').replace(/^#docs\//, '')
+  if (slug !== current.value.slug) {
+    go('docs', slug)
+    await nextTick()
+    await nextTick()
+  }
+  jump(a.dataset.anchor)
+}
 </script>
 
 <template>
@@ -168,7 +188,7 @@ function jump(id) {
         <span class="eyebrow">On this page</span>
         <a v-for="t in toc" :key="t.id" :class="'d' + t.depth" href="#" @click.prevent="jump(t.id)">{{ t.text }}</a>
       </nav>
-      <div v-html="html"></div>
+      <div v-html="html" @click="onArticleClick"></div>
     </article>
   </div>
 </template>

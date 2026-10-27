@@ -99,7 +99,7 @@ const knownSites = Object.keys(SITES).length
           <li>Ear to ear through Cz, in 10 % steps: T7, C5, C3, C1, Cz, C2, C4, C6, T8.</li>
           <li>Around the head through Fpz, T7, Oz (the 10 % line): fifths of Fpz–T7 give Fp1, AF7, F7, FT7; fifths of T7–Oz give TP7, P7, PO7, O1. Same on the right.</li>
           <li>Rows between: F7–Fz–F8, FT7–FCz–FT8, TP7–CPz–TP8, P7–Pz–P8, each half divided in quarters (F5, F3, F1 ...).</li>
-          <li>The low ring (nasion – ear point – inion) gives F9, FT9, T9, TP9, P9: about 2–3 cm below the 10 % line, over the inferior temporal lobe.</li>
+          <li>The low ring (nasion – ear point – inion) gives F9, FT9, T9, TP9, P9: about 4 cm below the band line (T9 sits about 39 mm below T7), over the inferior temporal lobe.</li>
         </ol>
       </div>
       <p class="muted small">Repeat measurements by hand vary by about 5–10 mm (Xiao 2017; Atcherson 2007), roughly the radius of the field spot a coil makes on the cortex, so re-measure each session and mark the band. After Jurcak, Tsuzuki &amp; Dan 2007 (UI 10/10). Map positions: MNE-Python fsaverage 10-05 set ({{ knownSites }} positions; 10-10 shown).</p>

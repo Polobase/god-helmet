@@ -351,7 +351,7 @@ The Experiment tab (and `tools/trial_stats.py`) report, for all revealed trials 
 | Mean rank | Average target rank | (N+1)/2 |
 | Rank z | Σ((N+1)/2 − rank) / √Σ((N²−1)/12), normal p-value, one-sided | 0; positive = better than chance |
 
-`tools/trial_stats.py` also prints the active − sham difference in standardised rank score, with a two-sided z. Its Kp and sidereal-time splits are labelled exploratory. The script cannot tell ARV trials apart (they are marked only on the phone), so remove them from the export before you run it.
+`tools/trial_stats.py` also prints the active − sham difference in standardised rank score, with a two-sided z. Its Kp and sidereal-time splits are labelled exploratory. The phone that ran the ARV guide marks its ARV trials in the export (`"arv": true`), and the script leaves them out; trials exported from another phone are not marked, so remove those by hand.
 
 Examples (exact binomial, computed):
 - 30 trials with 5 pictures: chance gives 6 hits. You need 11 for p < .05 (p = .026); 10 hits gives p = .061.

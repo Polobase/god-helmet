@@ -5,15 +5,15 @@
 // magnetised cylinder (r 4 mm, 12 mm, flush with the face) represented by its
 // surface current: about 1630 ampere-turns per ampere of winding current
 // (apparent susceptibility ~5.2, limited by demagnetisation, so the exact core
-// material hardly matters). This gives about 1.76 µT/mA at 20 mm on the axis,
-// 2.4x the air-core value; tools/coil_field.py is the air-core estimate.
+// material hardly matters). This gives about 1.86 µT/mA at 20 mm on the axis
+// (research estimate 1.76, range 1.4-2.2), 2.5x the air-core value; tools/coil_field.py is the air-core estimate.
 // Loops use the exact off-axis field (complete elliptic integrals via the AGM);
 // beyond 40 mm a point dipole is used (they agree within 1 %).
 //
 // Fields are normalised the way the firmware calibrates intensity: the value a
 // preset asks for (µT) is the peak on the coil axis 20 mm in front of the face
 // (docs/CALIBRATION.md). The core changes the shape only near the coil
-// (+46 % at 3 mm), and by 3-4 % at 30-50 mm, so normalised maps are robust.
+// (+46 % at 3 mm), and by 3-5 % at 30-50 mm, so normalised maps are robust.
 import { patternValue } from './patterns.js'
 import { spatialGains } from './spatial.js'
 

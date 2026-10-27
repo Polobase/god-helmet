@@ -172,7 +172,9 @@ async function abort() {
 const targetPos = computed(() => (current.value?.state === 'revealed' ? current.value.order.indexOf(current.value.target) : -1))
 
 function exportTrials() {
-  downloadBlob(new Blob([JSON.stringify(trials.value, null, 2)], { type: 'application/json' }), 'godhelmet-trials.json')
+  // ARV trials are marked so tools/trial_stats.py can leave them out of the hit statistics.
+  const list = trials.value.map((t) => (isArvTrial(arv.value, t) ? { ...t, arv: true } : t))
+  downloadBlob(new Blob([JSON.stringify(list, null, 2)], { type: 'application/json' }), 'godhelmet-trials.json')
 }
 
 // ---------------------------------------------------------------- telepathy sender

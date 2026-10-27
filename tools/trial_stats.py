@@ -61,6 +61,11 @@ def main():
     with open(args.trials_json) as f:
         trials = json.load(f)
 
+    # ARV trials (Guides) rank "predicted outcome A", not a hit: scored in their run summary instead.
+    arv = [t for t in trials if t.get("arv")]
+    trials = [t for t in trials if not t.get("arv")]
+    if arv:
+        print(f"{len(arv)} associative remote-viewing trial(s) left out (marked arv in the export)")
     revealed = [t for t in trials if t.get("state") == "revealed"]
     other = [t for t in trials if t.get("state") != "revealed"]
     print(f"{len(trials)} trials: {len(revealed)} revealed, {len(other)} not revealed "
