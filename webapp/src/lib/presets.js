@@ -50,14 +50,42 @@ export function groupedPresets() {
   return groups
 }
 
-// Splits "a ; b ; c" source strings into readable entries with links.
+// Splits "a ; b ; c" source strings into readable entries with links. Entries
+// are separated by ";" outside parentheses (a ";" inside "( )" belongs to the
+// entry). The first URL is the entry's link, further URLs go to `extra`.
+function splitEntries(source) {
+  const out = []
+  let depth = 0
+  let cur = ''
+  for (const tok of source.split(/(https?:\/\/[^\s)]+)/)) {
+    if (/^https?:\/\//.test(tok)) {
+      cur += tok // a ";" inside a URL does not split
+      continue
+    }
+    for (const ch of tok) {
+      if (ch === '(') depth++
+      else if (ch === ')') depth = Math.max(0, depth - 1)
+      if (ch === ';' && depth === 0) {
+        out.push(cur)
+        cur = ''
+      } else cur += ch
+    }
+  }
+  out.push(cur)
+  return out
+}
 export function sourceEntries(source = '') {
-  return source
-    .split(';')
+  return splitEntries(source)
     .map((s) => s.trim())
     .filter(Boolean)
     .map((text) => {
-      const m = text.match(/https?:\/\/\S+/)
-      return { text: m ? text.replace(m[0], '').trim() || m[0] : text, url: m ? m[0] : null }
+      const urls = text.match(/https?:\/\/[^\s)]+/g) || []
+      const label = urls
+        .reduce((t, u) => t.replace(u, ''), text)
+        .replace(/\s+([,)])/g, '$1')
+        .replace(/[\s,]+$/, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim()
+      return { text: label || urls[0] || text, url: urls[0] || null, extra: urls.slice(1) }
     })
 }

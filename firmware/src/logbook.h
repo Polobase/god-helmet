@@ -24,6 +24,8 @@ uint32_t open(const Entry& entry);
 void close(const seq::Finished& finished);
 // Stores a 0..10 rating + notes; returns the updated entry (condition revealed).
 bool rate(uint32_t id, int rating, const String& notes, String& json, String& error);
+// The experiment trial an entry belongs to (0 = none or unknown entry).
+uint32_t trialOf(uint32_t id);
 // Writes "total" and "items" (newest first) into an open JSON object.
 void writeList(mj::Writer& w, size_t offset, size_t limit);
 

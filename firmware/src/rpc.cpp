@@ -231,8 +231,17 @@ Reply logList(const mj::Value& v) {
 }
 
 Reply logRate(const mj::Value& v) {
+  // Rating reveals real or sham: not while that session is still running.
+  // (A record cut off by a power loss stays unfinished but can still be rated.)
+  const uint32_t id = static_cast<uint32_t>(v["id"].num(0));
+  if (seq::busy() && seq::status().logId == id) return Reply::fail("rate after the session ends");
+  // A trial's session stays blind until the trial itself is revealed (or aborted).
+  if (const uint32_t trial = logbook::trialOf(id)) {
+    const String state = experiment::stateOf(trial);
+    if (state.length() && state != "revealed" && state != "aborted") return Reply::fail("rate after the trial is revealed");
+  }
   String json, error;
-  if (!logbook::rate(static_cast<uint32_t>(v["id"].num(0)), static_cast<int>(v["rating"].num(-1)),
+  if (!logbook::rate(id, static_cast<int>(v["rating"].num(-1)),
                      v["notes"].str(""), json, error))
     return Reply::fail(error);
   return Reply::json(json);

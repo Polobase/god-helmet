@@ -4,12 +4,14 @@ import { computed, ref, watch } from 'vue'
 import { device, call } from '../ble/device.js'
 import { presetById } from '../lib/presets.js'
 import { fmtDuration } from '../lib/format.js'
-import HeadDiagram from './HeadDiagram.vue'
+import { LAYOUTS } from '../lib/layouts.js'
+import { sessionSites } from '../lib/brain.js'
+import SiteMap from './SiteMap.vue'
 
 const st = computed(() => device.status)
 const running = computed(() => st.value && st.value.state !== 'idle')
 const preset = computed(() => (st.value ? presetById(st.value.sessionId) : null))
-const layout = computed(() => preset.value?.session.layout ?? (st.value?.sessionId === 'test-rotate' ? device.testLayout : 'temporal'))
+const sites = computed(() => (preset.value?.session ? sessionSites(preset.value.session) : LAYOUTS[st.value?.sessionId === 'test-rotate' ? device.testLayout : 'temporal'].channels.map((c) => c.site)))
 const maxField = computed(() => Math.min(device.info?.maxFieldUT ?? 5, device.info?.maxReachableUT ?? 5))
 const field = ref(1)
 const editingField = ref(false)
@@ -58,7 +60,7 @@ async function rate() {
         <div class="remain num">{{ fmtDuration(st.totalMs - st.programMs) }}</div>
       </div>
       <div class="diagram">
-        <HeadDiagram :layout="layout" :levels="st.blind ? new Array(8).fill(0) : st.levels" :labels="false" />
+        <SiteMap :sites="sites" :levels="st.blind ? new Array(8).fill(0) : st.levels" :labels="false" :caption="false" />
       </div>
     </div>
     <div class="stack">
@@ -73,10 +75,10 @@ async function rate() {
     </label>
     <p v-if="st.blind" class="muted small">Blind session: coil activity is hidden. The log reveals real or sham after you rate it.</p>
     <div class="row">
-      <button class="btn" :disabled="st.state === 'stopping'" @click="call('session.skip')">
-        {{ st.phase + 1 >= st.phaseCount ? 'End session' : 'Skip phase' }}
-      </button>
-      <button class="btn danger" @click="call('session.stop')">Stop</button>
+      <!-- On the last phase, skipping is the same as Stop, so only offer it while a next phase exists. -->
+      <button v-if="st.phase + 1 < st.phaseCount" class="btn" :disabled="st.state === 'stopping'" @click="call('session.skip')">Skip to next phase</button>
+      <button class="btn danger" @click="call('session.stop')">Stop session</button>
+      <span class="muted small">Stop fades the field out over 2 s{{ st.test ? '' : ' and keeps the session in the Log' }}.</span>
     </div>
   </section>
 

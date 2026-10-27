@@ -29,6 +29,7 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
 
 - **The app** (tabs: Programs, Placement, Brain, Guides, Experiment, Targets, Log, Setup, Safety, Docs) holds:
   - the program library, searchable, with placement maps, waveforms, an in-browser preview of the coil activity, evidence levels and sources;
+  - a placement guide: each program's coils on a head map from above and from both sides, a coil-by-coil checklist with tape-measure directions in centimetres for your head, all 54 placements in use, and a site explorer for every 10-10 site;
   - the Brain view: estimated field per brain region (cored-coil model on the Brainnetome and CerebrA atlases), what electrode or TMS stimulation of each region produced, and the claims made for it;
   - guided sessions (Gateway-style, remote viewing, ESP training, sleep) with binaural, monaural or isochronic audio, a blinded helmet arm and questionnaires;
   - the remote-viewing target pool, calibration and settings;

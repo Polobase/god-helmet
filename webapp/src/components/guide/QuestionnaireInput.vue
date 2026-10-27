@@ -37,6 +37,11 @@ const legend = computed(() => {
   const sc = inst?.scale
   return sc && points(sc).every((p) => p.label) && !worded(sc) ? points(sc).map((p) => `${p.v} = ${p.label}`).join(' · ') : ''
 })
+// Under an item on the shared scale the legend above already names every point: repeat only the two ends.
+const itemAnchors = (item) => {
+  const a = anchors(scaleOf(item))
+  return legend.value && scaleOf(item) === inst.scale ? [a[0], a.at(-1)] : a
+}
 
 // Session time for a time estimate: the steps that played audio or ran the helmet.
 const actualMinutes = () => {
@@ -108,14 +113,14 @@ const fmt = (v) => (v === null || v === undefined ? '–' : Number.isInteger(v) 
       </div>
 
       <template v-else>
-        <div class="scale">
+        <div class="scale" :style="{ '--n': points(scaleOf(item)).length }">
           <label v-for="p in points(scaleOf(item))" :key="p.v" class="opt">
             <input v-model.number="answers[item.id]" type="radio" :name="`${uid}-${item.id}`" :value="p.v" :aria-label="p.label ? `${p.v}: ${p.label}` : String(p.v)" />
             <span class="num">{{ p.v }}</span>
           </label>
         </div>
-        <div v-if="anchors(scaleOf(item)).length" class="anchors small muted">
-          <span v-for="a in anchors(scaleOf(item))" :key="a.v">{{ a.v }} = {{ a.label }}</span>
+        <div v-if="itemAnchors(item).length" class="anchors small muted" :style="{ '--n': points(scaleOf(item)).length }">
+          <span v-for="a in itemAnchors(item)" :key="a.v">{{ a.v }} = {{ a.label }}</span>
         </div>
       </template>
     </fieldset>
@@ -125,8 +130,8 @@ const fmt = (v) => (v === null || v === undefined ? '–' : Number.isInteger(v) 
     </div>
 
     <div class="row">
-      <button type="button" class="btn primary" @click="submit">{{ submitted ? 'Score again' : 'Submit answers' }}</button>
-      <span v-if="missing" class="small muted">{{ missing }} unanswered</span>
+      <button type="button" class="btn sm" @click="submit">{{ submitted ? 'Update scores' : 'Show scores' }}</button>
+      <span class="small muted">{{ missing ? `${missing} unanswered` : 'All answered. Your answers are saved when you move on.' }}</span>
     </div>
     <p v-if="scoring.error" class="small bad">{{ scoring.error }}</p>
 
@@ -147,7 +152,8 @@ const fmt = (v) => (v === null || v === undefined ? '–' : Number.isInteger(v) 
 .pre { white-space: pre-line; }
 .item { border: 0; border-top: 1px solid var(--line); padding: 10px 0 0; margin: 0; display: grid; gap: 8px; min-width: 0; }
 .item.open legend { color: var(--warn); }
-legend { padding: 0; font-size: 15px; }
+/* Floated, the legend is laid out as content below the divider instead of on top of it. */
+legend { float: left; width: 100%; padding: 0; font-size: 15px; }
 .scale, .words { display: flex; flex-wrap: wrap; gap: 4px; }
 .opt { position: relative; }
 .scale .opt { flex: 1 1 0; min-width: 0; max-width: 64px; }
@@ -160,4 +166,5 @@ legend { padding: 0; font-size: 15px; }
 .alerts { display: grid; gap: 4px; border-left: 3px solid var(--warn); padding-left: 10px; }
 .alerts p { margin: 0; }
 .anchors { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; }
+.scale, .anchors { max-width: calc(var(--n) * 64px + (var(--n) - 1) * 4px); }
 </style>

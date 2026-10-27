@@ -1,6 +1,6 @@
 # Coil placement
 
-This page explains where the eight coils go, how to find each site on a real head, what lies underneath, and how much field reaches each target. The **Placement** tab shows the same layouts as diagrams and lists the programs that use each one. The **Brain** tab shows the estimated field of any program on a standard brain ([BRAIN_VIEW.md](BRAIN_VIEW.md)).
+This page explains where the eight coils go, how to find each site on a real head, what lies underneath, and how much field reaches each target. The **Placement** tab turns this into a set-up checklist: choose a program, see its coils on a head map from above and from each side, and follow tape-measure directions in centimetres for your own head. The **Brain** tab shows the estimated field of any program on a standard brain ([BRAIN_VIEW.md](BRAIN_VIEW.md)).
 
 Placement decides where the field goes. It does not show that the field does anything there.
 - A double-blind, sham-controlled test of God Helmet-type fields (N = 89) found no field effect; suggestibility predicted the reports ([Granqvist 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/)).
@@ -22,7 +22,7 @@ Evidence words used below: **established** (independent replication), **single-l
 | Koren-box pairs | T7, TP7, –, –, T8, TP8, –, – | about 20 | "4 solenoids" through the temporal lobes (single-lab); sites are an inference |
 | Other program-specific sets | see "Program-specific placements" below | about 85 | Papers, vendor pages, clinical devices |
 
-Most programs (184 of 194) list their own sites with `"layout": "custom"` ([PRESET_FORMAT.md](PRESET_FORMAT.md)). The Placement tab groups them under "Layout C" and the program page shows the same map. The app takes each coil's side from its site name: odd number = left, even number = right, `z` = midline. Midline coils take part in the `bilateral`, `rotate` and `single` modes, not in `left`, `right`, `cycle` or `alternate`.
+Most programs (186 of 198) list their own sites with `"layout": "custom"` ([PRESET_FORMAT.md](PRESET_FORMAT.md)). The Placement tab groups all programs by their eight sites (54 placements), and the program page shows the same map. The app takes each coil's side from its site name: odd number = left, even number = right, `z` = midline. Midline coils take part in the `bilateral`, `rotate` and `single` modes, not in `left`, `right`, `cycle` or `alternate`.
 
 ## Preparing and mounting the coils
 
@@ -64,7 +64,7 @@ Templates are also not real caps. In 20 people wearing MR-visible caps, the late
 - The app's 10-5 positions are MNE's fsaverage set, translated by [0, −1, −5.5] mm onto the MNI152 brain. The shift was fitted so that scalp-to-brain distances match published values (34 sites, 1.6 mm RMS error; [BRAIN_VIEW.md](BRAIN_VIEW.md)).
 - Against Colin27, frontal and lateral sites agree within 1–6 mm: FT7 (−81, 10, −7) vs (−81, 14, −11); T7 (−84, −20, −8) vs (−84, −16, −9). C5 and CP5 differ by 8–9 mm, O1/O2 by 17–18 mm. Oz is 20 mm lower in the app (3, −123, −6 vs 0, −115, 15), Iz 22 mm lower, Pz 15 mm lower and 11 mm further back, Cz 14 mm further back. (Comparison by the project research, fact-checked.)
 - So the frame hardly matters for the temporal programs. It decides the result for occipital, cerebellar and septal programs.
-- The site table in the Placement tab ("What lies under each site") takes its anatomy and depths from Colin27-based projections and cap studies. The Brain tab draws the coils at the aligned positions. Keep this in mind at Oz, Iz, Pz and Cz.
+- The site explorer and site table in the Placement tab take their anatomy and depths from Colin27-based projections and cap studies. The Brain tab draws the coils at the aligned positions. Keep this in mind at Oz, Iz, Pz and Cz.
 
 All coordinates on this page are in the app's aligned frame (MNI mm, x = right, y = front, z = up) unless stated.
 
@@ -88,10 +88,31 @@ This follows the "UI 10/10" rules of [Jurcak 2007](http://web.archive.org/web/20
 4. Ear to ear through Cz, in 10 % steps of LPA–RPA: T7, C5, C3, C1, Cz, C2, C4, C6, T8.
 5. Around each side on the **10 % line** through Fpz, T7 and Oz: fifths of Fpz–T7 give Fp1, AF7, F7, FT7; fifths of T7–Oz give TP7, P7, PO7, O1. Same on the right.
 6. Rows between: along F7–Fz–F8, FT7–FCz–FT8, TP7–CPz–TP8 and P7–Pz–P8, divide each half in quarters (F5, F3, F1 …). The AF and PO rows are only halved (AF3, PO3).
-7. The **0 % line** runs Nz – LPA (= T9) – Iz. Fifths of it give F9, FT9, TP9 and P9. These sites lie about 4 cm below the band line (T9 sits 39 mm below T7 in the app's frame).
+7. The **0 % line** runs Nz – LPA (= T9) – Iz. Fifths of Nz–T9 give AF9, F9 and FT9; fifths of T9–Iz give TP9, P9, PO9 and I1. Same on the right. These sites lie about 4 cm below the band line (T9 sits 39 mm below T7 in the app's frame).
 8. 10-5 sites lie halfway between neighbouring 10-10 sites. On the 10 % line each 10-5 step is 2.5 % of the circumference, about 15 mm.
 
 The band follows the 10 % line. At the front and back it crosses Fpz and Oz, 10 % of the nasion–inion distance above the nasion and the inion. At the sides it crosses T7 and T8, just above the ear tops.
+
+### Distances in the app
+
+The Placement tab asks for three tape measurements and turns the rules above into centimetres for each coil:
+1. **Nasion to inion** over the top of the head.
+2. **Ear to ear**, from one pre-auricular point to the other over Cz.
+3. **The band line**, all the way round through Fpz, just above the ear tops and through Oz (the 10 % line).
+
+Empty or implausible fields fall back to a typical adult head: 36 cm, 35 cm and 56 cm. The values stay on the device.
+
+- **Exact from the rules:**
+  - sites on the band: fifths of Fpz–T7 and of T7–Oz, shown as 5 % steps of the band counted from Fpz, T7/T8 or Oz (exact when T7 lies a quarter of the way round; for accuracy measure Fpz → T7 and take the fifths);
+  - midline sites, including OIz and Iz below the band: 5 % and 10 % steps of nasion–inion;
+  - the ear-to-ear row (T7, C5, C3 …): 10 % steps of ear-to-ear;
+  - T9/T10 (the ear points, 10 % of ear-to-ear below T7/T8) and T9h/T10h halfway to them.
+- **Estimated (marked ≈):**
+  - other sites between the band and the midline (F3, CP5, FC5h …);
+  - other sites below the band (off the ear-to-ear line and off the midline).
+
+  The length of each row comes from the template head: chains of neighbouring 10-5 sites in MNE's fsaverage set. It is scaled by the mean ratio of the three measurements to the template's. For accuracy, measure between the two sites the app names and take the stated fraction.
+- **Band position.** Each coil is marked as on the band, above it or below it, with the distance. Coils off the band need a second strap or a snug cap.
 
 ### Shortcuts for single targets
 
@@ -200,7 +221,10 @@ Each program in this section lists its own sites. Move the coils to those sites 
 - **Geometry.** The cross is centred on T7/T8. In the app's frame the front and back arms reach 31 mm from T7 and the top and bottom arms 39 mm. The vendor photos show arms of roughly 3–4 cm (interpretation of photos; no distance is stated).
 - **Stepping.** The field steps from coil to coil, clockwise on the left and counter-clockwise on the right, as the vendor's text says. The programs step both crosses top, back, bottom, front, viewed from each side (the order is an inference). One image caption on the same page says the opposite ([God Helmet session list](https://www.god-helmet.com/wp/god-helmet/koren_session_list.htm)). Each program stores its order.
 - **The bottom arm is weak.** T9/T10 sit over the temporalis muscle and the skull base. In the app's brain meshes the cortex lies about 24 mm below T9, against 13–14 mm below T7 (derived). The cortex under T9 gets about a third of the field the cortex under T7 gets.
-- **Programs.** About 33, including `god-helmet-classic`, the `murphy-gh-*` sessions, the `murphy-shakti-60min-*` sessions, `shakti-alternate` and the `murphy-shakti-back-and-forth-*` sessions. Partial sets: `love-agape` uses only the left cross, `murphy-shakti-meditation-hippocampus-right` only the right, and the two-phase 8 Coil Shakti family uses six of the eight coils.
+- **Programs.** About 33, including `god-helmet-classic`, the `murphy-gh-*` sessions, the `murphy-shakti-60min-*` sessions, `shakti-alternate` and the `murphy-shakti-back-and-forth-*` sessions. Partial and extended sets:
+  - `love-agape` uses only the left cross, `murphy-shakti-meditation-hippocampus-right` only the right;
+  - `murphy-shakti-lucid-dream-series-chirp-hipp` uses six cross coils (FT7, TP7 and the right cross);
+  - the two-phase sessions (`murphy-shakti8-twophase-family-*` and `murphy-shakti8-tv-chirpbi-amyl`) use all eight coils: one cross plus two diagonal pairs (FTT7h/TTP9h on the left, FTT8h/TTP10h on the right). One pair sits inside the cross and the other on the opposite side, so there are six coils on one side and two on the other.
 
 ### 8 Coil Shakti stereo cross with +/− pairs
 
@@ -225,7 +249,7 @@ The programs read the vendor's coil chart like this (an inference for the right 
 
 The − coils get a negative weight, which reverses their current as if the coil were turned over. All coils stay mounted N-face inward.
 
-An independent build of a cross helmet used eight 500-turn solenoids with ferrite rods, "four over the temporal lobes on each side of the head". In the authors' words: "The position of the coils was cross-shaped, with their arms, one vertical and the other horizontal". The active coil changed every 250 ms, in a figure-eight of 1000 ms, at about 1 µT for 20 min, against a sham group ([Tinoco & Ortiz 2014](https://jcer.com/index.php/jcj/article/view/361/386)). The paper found no significant difference during the session but reported significant differences after it (single-lab). Its abstract states 0.0001 T, which conflicts with the 10 mG (1 µT) in its methods. `persinger-tinoco-ortiz-2014-replication` uses TP7h, T7h, TP9h, T9h and their mirrors (inference).
+An independent build of a cross helmet used eight 500-turn solenoids with ferrite rods, "four over the temporal lobes on each side of the head". In the authors' words: "The position of the coils was cross-shaped, with their arms, one vertical and the other horizontal". The active coil changed every 250 ms, in a figure-eight of 1000 ms, at about 1 µT for 20 min, against a sham group ([Tinoco & Ortiz 2014](https://jcer.com/index.php/jcj/article/view/361/386)). The paper found no significant difference during the session but reported significant differences after it (single-lab). Its abstract states 0.0001 T, which conflicts with the 10 mG (1 µT) in its methods. Their Figure 2 shows the four coils per side as a 2 × 2 grid. `persinger-tinoco-ortiz-2014-replication` uses TP7h, T7h, TP9h, T9h and their mirrors, a grid of about 2.8 × 3.5 cm per side (inference); the Placement tab calls it a 2 × 2 temporal grid.
 
 ### Other temporal crosses and squares
 
@@ -261,6 +285,7 @@ About 32 programs use this ring, including the `murphy-shiva-*` sessions, `persi
 
 - **T7, TP7 + T8, TP8** (about 20 programs, for example `persinger-koren-boxes-tsang-2004`, `persinger-healey-burst-right`, `persinger-saroka-2015-sensed-presence`). Source: "the set of 4 solenoids (Koren boxes) generating a burst-firing magnetic field through the temporal lobes" ([Tsang 2004](https://pubmed.ncbi.nlm.nih.gov/15527205/)). Two coils per side is an inference.
 - **FT7, T7 + FT8, T8** (`persinger-granqvist-2005-replication`). Contemporary reporting of the Granqvist study described fields of 3–7 µT "aimed just above and in front of the ears" ([Nature news 2004](https://www.nature.com/news/2004/041206/full/news041206-10.html)).
+- **T7, FT7, FT9, T9 + mirrors** (`replication-granqvist-2005`): a square per side from the band down to the ear-point line (inference).
 - **T8, TP8, P8** (`persinger-sculthorpe-2003-*` and `persinger-7hz-point-duration-2003`): the lab's right parietotemporal region ([Sculthorpe & Persinger 2003](https://pubmed.ncbi.nlm.nih.gov/15002842/)); three coils is an inference.
 - **T7 / T8 alone** (Shakti test sessions and `persinger-makarec-1987-4hz-cue`).
 
@@ -297,7 +322,7 @@ About 32 programs use this ring, including the `murphy-shiva-*` sessions, `persi
 ### Cerebellar
 
 - **Vendor wording.** "The occipital lobes are above the ridge on the back of your head, while the cerebellum is below it"; "The cerebellar vermis is the portion of the cerebellum closest to the bony ridge"; the vendor uses a one-coil headset ([Shakti cerebellum page](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/cerebellum.htm)). `murphy-shakti-cerebellum-erp` and its `-mod40` variant use Iz.
-- **Mainstream practice.** Cerebellar TMS trials usually place the coil 1 cm below and 3 cm to the side of the inion ([Wang 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC11830664/)). Electric-field modelling chose a point 1.5 cm below the inion for the vermis ([Tani 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC12320761/)). I1/I2 are the matching 10-5 names. O9/O10 do not exist in the app's 10-5 set.
+- **Mainstream practice.** Cerebellar TMS trials usually place the coil 1 cm below and 3 cm to the side of the inion ([Wang 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC11830664/)). Electric-field modelling chose a point 1.5 cm below the inion for the vermis ([Tani 2025](https://pmc.ncbi.nlm.nih.gov/articles/PMC12320761/)). I1/I2 (on the inion line, about 3 cm to each side) are the nearest 10-5 names; the TMS spot lies about 1 cm below them, off the 10-5 grid. O9/O10 do not exist in the app's 10-5 set.
 - **Depth.** The nearest cerebellar tissue lies about 27–30 mm below Iz, I1 and I2 (Crus II) and 22–23 mm below P9/P10 (Crus I). Vermis VI is about 43 mm from the nearest site, the dentate nuclei about 50 mm. No 10-5 site is closer than about 64 mm to the brainstem. These are derived from the Diedrichsen atlas and the app's sites ([Diedrichsen cerebellar atlases](https://github.com/DiedrichsenLab/cerebellar_atlases)); a fact-checker reproduced them, but they are template values only.
 - **Practical.** In the app's frame Iz lies at z = −45 mm, over the neck muscles. Below the ridge the coil face often cannot lie flat, so the real distance is larger than the template suggests. Hold the coil with a separate strap and check it is comfortable.
 
@@ -422,12 +447,23 @@ Keep two lines of evidence apart:
 ## Seeing it in the app
 
 - **Placement tab.** It holds:
-  - the two layouts with diagrams and the programs that use them;
-  - every program-specific set ("Layout C") with its site map;
-  - the tape-measure steps and Murphy's scalp zones (claims);
-  - the site table with depth, anatomy and function;
-  - the table of what stimulating each area did;
-  - the experience-to-region table.
+  - **Set-up.** Choose a program or a placement. The coils appear on a head map from above, from the left and from the right. The checklist gives each coil:
+    - its site, and where that is in plain words;
+    - tape directions for your head;
+    - whether it sits on, above or below the band;
+    - what lies under it.
+
+    Tick the coils off as they go on. The program page's "How to place the coils" button opens this view for that program.
+  - **Head measurements:** the three tape lines above, stored on the device.
+  - **All placements:** the 54 site sets in use, with the programs that share each one, filterable by region.
+  - **Site explorer.** Tap any 10-10 site to see:
+    - its tape directions and depth;
+    - the anatomy under it;
+    - what direct stimulation of that area did;
+    - Murphy's zones that include it (claims);
+    - the programs with a coil there.
+  - **Reference tables:** the site table and the experience-to-region table.
+  - **Coil preparation.**
 - **Brain tab.** Pick a program to see:
   - its coils at their aligned 10-5 positions, face 3 mm off the scalp;
   - the peak and RMS field on a glass brain, the deep structures and the cerebellum;

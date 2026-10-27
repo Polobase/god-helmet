@@ -30,17 +30,21 @@ const emit = defineEmits(['pick'])
 const host = ref(null)
 let renderer, labels, scene, camera, controls, raf = 0, dirty = true, resizeObs
 const meshes = {}
+const axisLabels = []
 let coilGroup, headMesh, siteCloud, marker
 
 const TARGET = new Vector3(0, -18, 12)
 const VIEWS = {
   left: [-1, 0, 0.05], right: [1, 0, 0.05], front: [0, 1, 0.08], back: [0, -1, 0.08], top: [0, -0.02, 1], iso: [-0.88, 0.42, 0.26],
 }
-// Camera distance that fits the head and its axis labels (radius ~135 mm) in the narrower field of view.
+// Camera distance that fits the head (radius ~135 mm) top to bottom and the Left/Right labels
+// (140 mm out) side to side, with room for the label text, which matters on narrow phones.
+const LABEL_PX = 24
+let stageW = 1000, stageH = 1000
 function fitDistance() {
   const v = (camera.fov * Math.PI) / 360
-  const h = Math.atan(Math.tan(v) * camera.aspect)
-  return 135 / Math.sin(Math.min(v, h))
+  const h = Math.atan(Math.tan(v) * camera.aspect * Math.max(0.5, 1 - LABEL_PX / (stageW / 2)))
+  return Math.max(135 / Math.sin(v), 140 / Math.sin(h))
 }
 
 // ---------------------------------------------------------------- shader
@@ -184,7 +188,11 @@ function label(text, cls) {
   const el = document.createElement('div')
   el.className = `scene-label ${cls ?? ''}`
   el.textContent = text
-  return new CSS2DObject(el)
+  // in the DOM now (the label renderer keeps it there), so its size can be read once for the overlap test
+  labels.domElement.appendChild(el)
+  const o = new CSS2DObject(el)
+  o.userData.size = [el.offsetWidth, el.offsetHeight]
+  return o
 }
 
 const coilMat = () => new MeshStandardMaterial({ color: 0xc27a43, metalness: 0.55, roughness: 0.35, emissive: new Color(0xff8a3a), emissiveIntensity: 0 })
@@ -278,6 +286,10 @@ function buildHead() {
 
 // ---------------------------------------------------------------- scene
 function setView(name) {
+  // drop any spin left over from a drag so the view stays put
+  controls.enableDamping = false
+  controls.update()
+  controls.enableDamping = true
   const d = new Vector3(...(VIEWS[name] ?? VIEWS.iso)).normalize().multiplyScalar(fitDistance())
   camera.position.copy(TARGET).add(d)
   controls.target.copy(TARGET)
@@ -288,10 +300,13 @@ function setView(name) {
 function resize() {
   const w = host.value.clientWidth
   const h = host.value.clientHeight
+  if (!w || !h) return
   renderer.setSize(w, h)
   labels.setSize(w, h)
   const before = fitDistance()
   camera.aspect = w / h
+  stageW = w
+  stageH = h
   camera.updateProjectionMatrix()
   // keep the head framed when the shape of the view changes (rotation, phone)
   if (controls) {
@@ -345,13 +360,33 @@ function placeMarker() {
 // Labels of coils on the far side of the head fade so they do not read as front.
 const toCam = new Vector3()
 const toCoil = new Vector3()
+const onScreen = new Vector3()
+// label box in stage pixels [left, top, right, bottom], as the label renderer places it (centred on the point)
+function screenBox(o) {
+  if (!o.userData.size[0]) o.userData.size = [o.element.offsetWidth, o.element.offsetHeight]
+  const [w, h] = o.userData.size
+  onScreen.copy(o.position).project(camera)
+  const x = ((onScreen.x + 1) / 2) * stageW, y = ((1 - onScreen.y) / 2) * stageH
+  return [x - w / 2 - 2, y - h / 2 - 2, x + w / 2 + 2, y + h / 2 + 2]
+}
 function fadeLabels() {
-  if (!coilGroup) return
+  camera.updateMatrixWorld() // the controls just moved it; project() needs the current view
   toCam.copy(camera.position).sub(TARGET).normalize()
-  for (const o of coilGroup.children) {
+  const coilBoxes = []
+  for (const o of coilGroup?.children ?? []) {
     if (!o.isCSS2DObject) continue
     toCoil.copy(o.position).sub(TARGET).normalize()
-    o.element.classList.toggle('far', toCoil.dot(toCam) < -0.15)
+    const far = toCoil.dot(toCam) < -0.15
+    o.element.classList.toggle('far', far)
+    if (!far) coilBoxes.push(screenBox(o))
+  }
+  // An axis label pointing at or away from the camera sits mid-brain, and one that would cover a
+  // front coil label (small stages, Top and 3D views) gives way to it: hide it in both cases.
+  for (const o of axisLabels) {
+    toCoil.copy(o.position).sub(TARGET).normalize()
+    if (Math.abs(toCoil.dot(toCam)) >= 0.9) { o.visible = false; continue }
+    const [l, t, r, b] = screenBox(o)
+    o.visible = !coilBoxes.some(([l2, t2, r2, b2]) => l < r2 && l2 < r && t < b2 && t2 < b)
   }
 }
 
@@ -392,9 +427,11 @@ onMounted(() => {
     meshes[m.key] = makeMesh(m, deep ? DEEP_BASE : CORTEX_BASE, !deep && props.glass)
     scene.add(meshes[m.key])
   }
-  for (const [text, p] of [['Left', [-118, -18, 12]], ['Right', [118, -18, 12]], ['Front', [0, 112, 12]], ['Back', [0, -145, 12]]]) {
+  // Left/Right sit outside the T7/T8 coil labels so they do not overlap in the Top view
+  for (const [text, p] of [['Left', [-140, -18, 12]], ['Right', [140, -18, 12]], ['Front', [0, 112, 12]], ['Back', [0, -145, 12]]]) {
     const l = label(text, 'axis')
     l.position.set(...p)
+    axisLabels.push(l)
     scene.add(l)
   }
   buildHead()
@@ -450,13 +487,18 @@ defineExpose({ setView })
 </template>
 
 <style scoped>
-.scene { position: relative; width: 100%; height: 100%; min-height: 320px; touch-action: none; overflow: hidden; border-radius: 8px;
-  background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--surface-2) 100%, transparent), var(--bg)); }
-.scene :deep(canvas) { display: block; }
+/* The shader is tuned for a dark backdrop (white contour lines, bright rims), so the stage keeps the
+   dark-theme colours in every theme; night mode keeps its own red-on-black palette. */
+.scene { --s-text: #e6e1d8; --s-muted: #8f969f; --s-surface: #151920; --s-surface-2: #1c222b; --s-bg: #0d0f12; --s-line: #2a313b;
+  position: relative; width: 100%; height: 100%; min-height: 320px; touch-action: none; overflow: hidden; border-radius: 8px; color-scheme: dark;
+  background: radial-gradient(ellipse at 50% 40%, var(--s-surface-2), var(--s-bg)); }
+:root[data-theme="night"] .scene { --s-text: var(--text); --s-muted: var(--muted); --s-surface: var(--surface); --s-surface-2: var(--surface-2); --s-bg: var(--bg); --s-line: var(--line); }
+/* absolute, so the canvas's pixel size never feeds back into the layout on resize */
+.scene :deep(canvas) { display: block; position: absolute; inset: 0; }
 .scene :deep(.scene-labels) { position: absolute; inset: 0; }
-.scene :deep(.scene-label) { font: 600 11px var(--font-body); color: var(--text); background: color-mix(in srgb, var(--surface) 82%, transparent);
-  border: 1px solid var(--line); padding: 1px 6px; border-radius: 99px; white-space: nowrap; pointer-events: none; }
+.scene :deep(.scene-label) { font: 600 11px var(--font-body); color: var(--s-text); background: color-mix(in srgb, var(--s-surface) 82%, transparent);
+  border: 1px solid var(--s-line); padding: 1px 6px; border-radius: 99px; white-space: nowrap; pointer-events: none; }
 .scene :deep(.scene-label.dim) { opacity: .45; }
 .scene :deep(.scene-label.far) { opacity: .28; }
-.scene :deep(.scene-label.axis) { background: none; border: 0; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; font-size: 10px; }
+.scene :deep(.scene-label.axis) { background: none; border: 0; letter-spacing: .12em; text-transform: uppercase; font-size: 10px; color: var(--s-muted); }
 </style>

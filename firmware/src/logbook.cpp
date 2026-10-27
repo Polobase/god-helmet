@@ -190,6 +190,11 @@ bool rate(uint32_t id, int rating, const String& notes, String& json, String& er
   return true;
 }
 
+uint32_t trialOf(uint32_t id) {
+  Record r;
+  return fetch(id, r) ? r.trialId : 0;
+}
+
 void writeList(mj::Writer& w, size_t offset, size_t limit) {
   const std::vector<uint32_t> ids = allIds();
   w.key("total").integer(ids.size());

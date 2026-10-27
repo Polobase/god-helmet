@@ -39,7 +39,7 @@ const level = computed({ get: () => props.modelValue.levelDb, set: (v) => set({ 
       <li>Press Test sound: a 200 Hz tone in both ears over soft noise.</li>
       <li>Move the slider until the tone is clearly audible and comfortable, never loud. This level is T0; the guide plays everything relative to it.</li>
     </ol>
-    <label class="field">Level T0: <b class="num">{{ level }} dB</b> (max {{ maxLevelDb }} dB)
+    <label class="field"><span>Level T0: <b class="num">{{ level }} dB</b> (max {{ maxLevelDb }} dB)</span>
       <input v-model.number="level" type="range" :min="minLevelDb" :max="maxLevelDb" step="1" />
     </label>
     <div class="row">

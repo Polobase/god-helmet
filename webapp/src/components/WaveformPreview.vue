@@ -10,6 +10,8 @@ const props = defineProps({
 
 const canvas = ref(null)
 let observer = null
+let themeObserver = null
+const darkQuery = matchMedia('(prefers-color-scheme: dark)')
 
 function windowMs() {
   if (props.ms) return props.ms
@@ -67,8 +69,16 @@ onMounted(() => {
   draw()
   observer = new ResizeObserver(draw)
   observer.observe(canvas.value)
+  // Redraw when the theme changes (theme button or system setting).
+  themeObserver = new MutationObserver(draw)
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+  darkQuery.addEventListener('change', draw)
 })
-onBeforeUnmount(() => observer?.disconnect())
+onBeforeUnmount(() => {
+  observer?.disconnect()
+  themeObserver?.disconnect()
+  darkQuery.removeEventListener('change', draw)
+})
 watch(() => [props.pattern, props.ms], draw, { deep: true })
 </script>
 

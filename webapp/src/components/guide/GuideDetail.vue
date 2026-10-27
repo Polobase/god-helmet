@@ -6,7 +6,7 @@ import { device, connect } from '../../ble/device.js'
 import { presetById } from '../../lib/presets.js'
 import { listSets, usableSets } from '../../lib/pool.js'
 import { stepDurationMs, plannedMs, armRange } from '../../lib/runs.js'
-import { fmtDuration } from '../../lib/format.js'
+import { fmtMinutes } from '../../lib/format.js'
 import { CATEGORY_LABELS } from '../../lib/guides.js'
 import EvidenceChip, { EVIDENCE } from './EvidenceChip.vue'
 import ReqIcons from './ReqIcons.vue'
@@ -40,6 +40,9 @@ const hoursSinceSession = computed(() => {
   return i?.lastSessionEpoch && i.env?.timeValid ? (Date.now() / 1000 - i.lastSessionEpoch) / 3600 : null
 })
 
+// After accepting, the safety page returns to this guide.
+const safetyLink = computed(() => `#safety/${encodeURIComponent(`guides/${doc.value.id}`)}`)
+
 const checks = computed(() => {
   const out = []
   if (req.value.headphones) out.push({ key: 'headphones', status: headphones.value ? 'ok' : 'warn', text: headphones.value ? 'Headphones on' : 'Binaural audio needs stereo headphones (on speakers, pick isochronic in the next step)' })
@@ -47,13 +50,13 @@ const checks = computed(() => {
   if (helmet !== 'none' || usesTrials.value) {
     const needed = helmet === 'required' || usesTrials.value
     if (!device.kind) out.push({ key: 'helmet', status: needed ? 'bad' : 'warn', text: needed ? (usesTrials.value ? 'Trial steps need the helmet (or the demo)' : 'This guide needs the helmet') : 'Helmet not connected: the guide runs without the field' })
-    else if (device.info && !device.info.safetyAccepted && helmet !== 'none') out.push({ key: 'helmet', status: helmet === 'required' ? 'bad' : 'warn', text: 'Accept the safety page before using the field', link: '#safety' })
+    else if (device.info && !device.info.safetyAccepted && helmet !== 'none') out.push({ key: 'helmet', status: helmet === 'required' ? 'bad' : 'warn', text: 'Accept the safety page before using the field', link: safetyLink.value, linkText: 'Open Safety' })
     else out.push({ key: 'helmet', status: 'ok', text: `${device.kind === 'demo' ? 'Demo helmet' : device.name || 'Helmet'} connected` })
     if (device.kind && helmet !== 'none' && hoursSinceSession.value !== null && hoursSinceSession.value < 72) out.push({ key: 'interval', status: 'warn', text: `Last helmet session ${hoursSinceSession.value.toFixed(0)} h ago; 72 h between sessions is recommended` })
   }
   if (req.value.pool || usesTrials.value) {
     const n = poolCount.value
-    out.push({ key: 'pool', status: n === null ? 'warn' : n > 0 ? 'ok' : 'bad', text: n === null ? 'Checking the target pool…' : n > 0 ? `${n} usable picture set(s)${arvGuide.value ? ' of 2 pictures' : ''}` : arvGuide.value ? 'ARV needs sets of exactly 2 pictures' : 'No usable picture set (2–8 pictures)', link: n ? '' : '#targets' })
+    out.push({ key: 'pool', status: n === null ? 'warn' : n > 0 ? 'ok' : 'bad', text: n === null ? 'Checking the target pool…' : n > 0 ? `${n} usable picture set(s)${arvGuide.value ? ' of 2 pictures' : ''}` : arvGuide.value ? 'ARV needs sets of exactly 2 pictures' : 'No usable picture set (2–8 pictures)', link: n ? '' : '#targets', linkText: 'Open Targets' })
   }
   return out
 })
@@ -82,7 +85,7 @@ const ev = computed(() => EVIDENCE[doc.value.evidence] ?? { text: '' })
       <h2>{{ doc.name }}</h2>
       <div class="row">
         <EvidenceChip :level="doc.evidence" />
-        <ReqIcons :requires="req" />
+        <ReqIcons :requires="req" labelled />
       </div>
       <p>{{ doc.summary }}</p>
       <p v-if="ev.text" class="small muted">{{ ev.text }}</p>
@@ -94,8 +97,8 @@ const ev = computed(() => EVIDENCE[doc.value.evidence] ?? { text: '' })
       <section class="card">
         <h3>Setting</h3>
         <p class="small">{{ doc.setting || '–' }}</p>
-        <h3>Cautions</h3>
-        <p class="small warn">{{ doc.cautions || 'Stop at once if you feel unwell.' }}</p>
+        <h3 class="caution-h">Cautions</h3>
+        <p class="small caution">{{ doc.cautions || 'Stop at once if you feel unwell.' }}</p>
         <template v-if="doc.unlock">
           <h3>When to try it</h3>
           <p class="small">{{ doc.unlock }}</p>
@@ -107,7 +110,7 @@ const ev = computed(() => EVIDENCE[doc.value.evidence] ?? { text: '' })
         <ul class="checks">
           <li v-for="c in checks" :key="c.key" :class="c.status">
             <span aria-hidden="true">{{ c.status === 'ok' ? '✓' : c.status === 'bad' ? '✗' : '!' }}</span>
-            <span>{{ c.text }}<template v-if="c.link"> · <a :href="c.link">open</a></template></span>
+            <span>{{ c.text }}<template v-if="c.link"> · <a :href="c.link">{{ c.linkText || 'Open' }}</a></template></span>
           </li>
           <li v-if="!checks.length" class="ok"><span aria-hidden="true">✓</span><span>Nothing to prepare beyond the setting.</span></li>
         </ul>
@@ -128,6 +131,7 @@ const ev = computed(() => EVIDENCE[doc.value.evidence] ?? { text: '' })
       <h3>Steps</h3>
       <ol class="outline">
         <li v-for="(s, i) in steps" :key="s.id">
+          <span class="muted num">{{ i + 1 }}</span>
           <span class="t">{{ s.title }}</span>
           <span class="m small muted num">{{ minutesOf(s) }}</span>
           <span class="tags small muted">
@@ -138,7 +142,7 @@ const ev = computed(() => EVIDENCE[doc.value.evidence] ?? { text: '' })
           </span>
         </li>
       </ol>
-      <p class="small muted">Planned time {{ fmtDuration(plannedMs(doc)) }}{{ steps.some((s) => stepDurationMs(s) === null) ? ' plus open-ended steps' : '' }}.</p>
+      <p class="small muted">Planned time {{ fmtMinutes(plannedMs(doc)) }}{{ steps.some((s) => stepDurationMs(s) === null) ? ' plus open-ended steps' : '' }}.</p>
     </section>
 
     <section v-if="doc.sources?.length" class="card">
@@ -157,13 +161,16 @@ const ev = computed(() => EVIDENCE[doc.value.evidence] ?? { text: '' })
 </template>
 
 <style scoped>
+.grid2 > .card { align-content: start; }
+.caution-h { color: var(--warn); }
+.caution { border-left: 3px solid var(--warn); padding-left: 10px; color: var(--text); }
 .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
 .checks li { display: grid; grid-template-columns: 18px 1fr; gap: 6px; }
 .checks li.ok > span:first-child { color: var(--ok); }
 .checks li.warn > span:first-child { color: var(--warn); }
 .checks li.bad { color: var(--bad); }
-.outline { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
-.outline li { display: grid; grid-template-columns: 1fr auto; gap: 0 10px; }
-.outline .tags { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+.outline { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-width: 720px; }
+.outline li { display: grid; grid-template-columns: 1.8em 1fr auto; gap: 0 10px; }
+.outline .tags { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
 .sources { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 </style>

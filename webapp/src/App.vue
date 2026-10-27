@@ -1,7 +1,8 @@
 <script setup>
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
 import { device, connect, disconnect, call } from './ble/device.js'
 import { nav, TABS, go } from './lib/nav.js'
+import { guideState } from './lib/guideState.js'
 import ProgramsView from './views/ProgramsView.vue'
 import PlacementView from './views/PlacementView.vue'
 import ExperimentView from './views/ExperimentView.vue'
@@ -28,6 +29,25 @@ watch(theme, (t) => {
   try { localStorage.setItem('theme', t) } catch { /* ignore */ }
 }, { immediate: true })
 const nextTheme = () => (theme.value = THEMES[(THEMES.indexOf(theme.value) + 1) % THEMES.length])
+const THEME_LABEL = { auto: '◐ Auto', dark: '☾ Dark', light: '☀ Light', night: '● Night' }
+
+// Keep the active tab visible in the scrolling tab bar (phones).
+const tabsEl = ref(null)
+const tabsEnd = ref(true)
+function tabsScrolled() {
+  const el = tabsEl.value
+  if (el) tabsEnd.value = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4
+}
+watch(() => nav.tab, async (tab, prev) => {
+  // A new tab starts at the top; a view's onMounted may still scroll to its target.
+  if (prev) window.scrollTo({ top: 0 })
+  await nextTick()
+  const el = tabsEl.value
+  const a = el?.querySelector('.active')
+  if (el && a) el.scrollTo({ left: a.offsetLeft - (el.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' })
+  tabsScrolled()
+}, { immediate: true })
+window.addEventListener('resize', tabsScrolled)
 </script>
 
 <template>
@@ -41,24 +61,26 @@ const nextTheme = () => (theme.value = THEMES[(THEMES.indexOf(theme.value) + 1) 
         <button v-if="running" class="btn danger sm" @click="call('session.stop')">Stop</button>
         <template v-if="device.kind">
           <span class="chip on">{{ device.kind === 'demo' ? 'Demo' : device.name }}</span>
-          <button class="btn ghost sm" @click="disconnect">Disconnect</button>
+          <button v-if="!running" class="btn ghost sm" @click="disconnect">Disconnect</button>
         </template>
         <template v-else>
           <button class="btn primary sm" :disabled="!device.bluetooth || device.connecting" @click="connect('ble')">{{ device.connecting ? 'Connecting…' : 'Connect' }}</button>
           <button class="btn ghost sm" @click="connect('demo')">Demo</button>
         </template>
-        <button class="btn ghost sm" :title="`Theme: ${theme}`" @click="nextTheme">{{ theme }}</button>
+        <button class="btn ghost sm" :title="`Theme: ${theme} (click to change)`" :aria-label="`Theme: ${theme}. Change theme`" @click="nextTheme">{{ THEME_LABEL[theme] }}</button>
       </div>
     </div>
-    <nav class="tabs bar-inner" aria-label="Sections">
-      <button v-for="t in TABS" :key="t.key" :class="{ active: nav.tab === t.key }" @click="go(t.key)">{{ t.label }}</button>
+    <nav ref="tabsEl" class="tabs bar-inner" :class="{ more: !tabsEnd }" aria-label="Sections" @scroll.passive="tabsScrolled">
+      <button v-for="t in TABS" :key="t.key" :class="{ active: nav.tab === t.key }" :aria-current="nav.tab === t.key ? 'page' : null" @click="go(t.key)">
+        {{ t.label }}<span v-if="t.key === 'guides' && guideState.phase === 'running'" class="live-dot" :class="{ paused: guideState.paused }" role="img" :aria-label="guideState.paused ? 'guide paused' : 'guide running'"></span>
+      </button>
     </nav>
   </header>
 
-  <div v-if="device.error || !device.bluetooth || (device.kind && device.info && !device.info.safetyAccepted)" class="notices">
+  <div v-if="device.error || !device.bluetooth || (device.kind && device.info && !device.info.safetyAccepted && nav.tab !== 'safety')" class="notices">
     <p v-if="device.error" class="notice bad">{{ device.error }}</p>
     <p v-if="!device.bluetooth" class="notice">This browser has no Web Bluetooth. Use Chrome or Edge on Android, Mac or Windows, or the free Bluefy browser on iPhone. The demo works everywhere.</p>
-    <p v-if="device.kind && device.info && !device.info.safetyAccepted" class="notice warn">Read and accept the <a href="#safety">safety page</a> before the first session.</p>
+    <p v-if="device.kind && device.info && !device.info.safetyAccepted && nav.tab !== 'safety'" class="notice warn">Read and accept the <a href="#safety">safety page</a> before the first session.</p>
   </div>
 
   <main>
@@ -74,7 +96,10 @@ const nextTheme = () => (theme.value = THEMES[(THEMES.indexOf(theme.value) + 1) 
 .logo { width: 26px; height: 26px; color: var(--muted); }
 .logo .dot { fill: var(--accent); }
 .actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.tabs { position: relative; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.tabs.more { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); }
+.live-dot { display: inline-block; width: 7px; height: 7px; margin-left: 6px; border-radius: 50%; background: var(--ok); vertical-align: middle; box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent); }
+.live-dot.paused { background: var(--warn); box-shadow: none; }
 .tabs button { background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); padding: 8px 10px; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .tabs button.active { color: var(--text); border-bottom-color: var(--accent); }
 .notices { max-width: 1100px; margin: 12px auto 0; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 8px; }

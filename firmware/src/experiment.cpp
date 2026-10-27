@@ -432,6 +432,12 @@ String get(uint32_t id) {
   return fetch(id, t, error) ? publicJson(t) : String();
 }
 
+String stateOf(uint32_t id) {
+  Trial t;
+  String error;
+  return fetch(id, t, error) ? t.state : String();
+}
+
 void writeList(mj::Writer& w, size_t offset, size_t limit) {
   std::vector<uint32_t> ids;
   File dir = LittleFS.open("/trials");

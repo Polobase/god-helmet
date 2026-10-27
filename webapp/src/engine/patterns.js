@@ -7,15 +7,15 @@ export const PATTERN_TYPES = ['off', 'dc', 'sine', 'chirp', 'burst', 'thomas', '
 export const PATTERN_INFO = {
   off: 'No output (sham)',
   dc: 'Constant current (tests)',
-  sine: 'Sine wave, e.g. 7 Hz "theta"',
-  chirp: 'Frequency sweep from a function generator (Persinger phase 1, Murphy\'s psi signal)',
+  sine: 'Smooth sine wave at one frequency',
+  chirp: 'Frequency sweep: the frequency changes steadily during each sweep',
   burst: 'Accelerating "burst-firing" pattern derived from amygdala EEG',
-  thomas: 'Decelerating FM "Thomas pulse" (~25 → 6 Hz)',
+  thomas: 'Decelerating "Thomas pulse": the frequency falls during each pulse',
   pulse: 'Rectangular pulses',
   semirandom: 'Pseudo-random value per point',
   table: 'Point table (exact published waveform or generated pulse train)',
-  pm: 'Phase-modulated sine, e.g. Murphy\'s "modulated 40 Hz"',
-  noise: 'Band-limited random noise, e.g. theta-band noise',
+  pm: 'Phase-modulated sine: the wave is pushed back and forth at a slower rate',
+  noise: 'Random noise limited to a frequency band',
 }
 
 export function patternDefaults(type) {

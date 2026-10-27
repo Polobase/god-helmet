@@ -7,6 +7,7 @@ import { MODES } from '../../audio/schedule.js'
 import { device, call } from '../../ble/device.js'
 import { presetById } from '../../lib/presets.js'
 import { guideHash } from '../../lib/guides.js'
+import { guideState } from '../../lib/guideState.js'
 import { randomBelow } from '../../lib/crypto.js'
 import { fetchKp } from '../../lib/noaa.js'
 import { runId, saveRun, stepDurationMs, armRange, hasAudio, stepHasAudio, sealInput, inputPending, lstHours } from '../../lib/runs.js'
@@ -49,6 +50,9 @@ export const live = reactive({
   error: '',
   saveError: '',
 })
+
+// Mirrored for the tab bar's running dot; module level, so it follows a run off-screen.
+watch(() => [live.phase, live.paused || live.audioInterrupted], ([phase, paused]) => Object.assign(guideState, { phase, paused }), { immediate: true })
 
 let preferredMode = live.audio.mode // last mode the user picked
 let engine = null
@@ -230,7 +234,7 @@ function helmetStart() {
       const r = await call('session.start', { session: p.doc, presetId: p.doc.id, blind: h.blind, ...(h.fieldUT ? { fieldUT: h.fieldUT } : {}) })
       Object.assign(h, { logId: r?.logId ?? 0, startedAt: iso(), running: true })
     } catch (e) {
-      h.error = `Helmet: ${e.message}`
+      h.error = e.message
     }
   })().finally(() => {
     helmetStarting = null
@@ -258,7 +262,7 @@ async function helmetStop() {
     await call('session.stop')
     h.stoppedAt = iso()
   } catch (e) {
-    Object.assign(h, { error: `Helmet stop: ${e.message}`, stopFailedAt: iso() })
+    Object.assign(h, { error: `Stop failed: ${e.message}`, stopFailedAt: iso() })
   }
 }
 
@@ -473,7 +477,10 @@ const armSteps = computed(() => {
   return r ? steps.value.slice(r.first, r.last + 1).map((s) => s.title).join(', ') : ''
 })
 const useHelmet = ref(true)
-const canBegin = computed(() => helmetMode.value !== 'required' || (!!device.kind && (!props.guide.helmetArm || !!armPreset.value)))
+// The helmet refuses a field until the safety page is accepted.
+const armBlocked = computed(() => !!device.info && !device.info.safetyAccepted)
+const safetyLink = computed(() => `#safety/${encodeURIComponent(`guides/${props.guide.id}`)}`)
+const canBegin = computed(() => helmetMode.value !== 'required' || (!!device.kind && (!props.guide.helmetArm || (!!armPreset.value && !armBlocked.value))))
 if (live.phase === 'idle') suggestMode(props.guide, props.headphones)
 // Only what the user changed: an untouched suggested mode is not remembered as their choice.
 const audioModel = computed({
@@ -487,7 +494,7 @@ const fieldUT = computed({
   get: () => Math.min(maxField.value, fieldPick.value ?? armPreset.value?.doc.uT ?? device.info?.defaultFieldUT ?? 1),
   set: (v) => (fieldPick.value = Number(v)),
 })
-const onBegin = () => begin(props.guide, { helmet: armAvailable.value && useHelmet.value && !!device.kind && !!armPreset.value, fieldUT: fieldUT.value })
+const onBegin = () => begin(props.guide, { helmet: armAvailable.value && useHelmet.value && !!device.kind && !!armPreset.value && !armBlocked.value, fieldUT: fieldUT.value })
 
 // ---- running
 const step = computed(() => (live.phase === 'running' ? steps.value[live.index] : null))
@@ -521,8 +528,11 @@ function done() {
       <header class="card">
         <span class="eyebrow">Get ready</span>
         <h2>{{ guide.name }}</h2>
-        <p v-if="guide.setting" class="small">{{ guide.setting }}</p>
-        <p v-if="guide.cautions" class="small warn">{{ guide.cautions }}</p>
+        <details v-if="guide.setting || guide.cautions" class="small recap">
+          <summary>Setting and cautions (as on the previous page)</summary>
+          <p v-if="guide.setting">{{ guide.setting }}</p>
+          <p v-if="guide.cautions" class="caution">{{ guide.cautions }}</p>
+        </details>
       </header>
 
       <section v-if="audible" class="card">
@@ -534,13 +544,15 @@ function done() {
         <template v-if="!armPreset">
           <p class="small warn">The preset “{{ guide.helmetArm.preset }}” is missing from this app; the field arm cannot run.</p>
         </template>
+        <template v-else-if="device.kind && armBlocked">
+          <p class="small warn">{{ helmetMode === 'required' ? 'This guide needs the field, and the helmet will not start it until you accept the safety page.' : 'The field stays off until you accept the safety page. You can run the guide without it.' }} <a :href="safetyLink">Open Safety</a></p>
+        </template>
         <template v-else-if="device.kind">
           <label class="check"><input v-model="useHelmet" type="checkbox" :disabled="helmetMode === 'required'" /> Run “{{ armPreset.doc.name }}” during: {{ armSteps }}</label>
-          <label v-if="useHelmet" class="field">Intensity at 20 mm depth: <b class="num">{{ Number(fieldUT).toFixed(1) }} µT</b>
+          <label v-if="useHelmet" class="field"><span>Intensity at 20 mm depth: <b class="num">{{ Number(fieldUT).toFixed(1) }} µT</b></span>
             <input v-model="fieldUT" type="range" min="0.1" :max="maxField.toFixed(1)" step="0.1" />
           </label>
           <p class="small muted">{{ guide.helmetArm.blind ? 'Blind: the helmet’s hardware RNG picks real or sham. It is revealed after your final rating.' : 'Not blind: the field is real.' }}</p>
-          <p v-if="device.info && !device.info.safetyAccepted" class="small warn">Accept the <a href="#safety">safety page</a> first, or the helmet will refuse to start.</p>
         </template>
         <template v-else>
           <p class="small">{{ helmetMode === 'required' ? 'This guide needs the helmet.' : 'Optional: connect the helmet to add the field.' }}</p>
@@ -591,11 +603,11 @@ function done() {
 
       <section class="status small">
         <p v-if="helmet?.enabled">
-          <span class="muted">Helmet:</span>
+          <span class="muted">Helmet:</span>{{ ' ' }}
           <template v-if="helmet.running">{{ armPreset?.doc.name ?? helmet.presetId }} running{{ helmet.blind ? ' (blind)' : '' }}{{ live.paused ? ' · keeps running while paused' : '' }}</template>
           <template v-else-if="helmet.stoppedAt">finished</template>
           <template v-else-if="!helmet.error">starts at “{{ steps[armRange(guide)?.first]?.title }}”</template>
-          <span v-if="helmet.error" class="warn"> {{ helmet.error }}</span>
+          <template v-if="helmet.error">{{ ' ' }}<span class="warn">{{ helmet.error }}</span></template>
         </p>
         <p v-if="live.record?.audio.error" class="warn">{{ live.record.audio.error }}</p>
         <p v-if="live.error" class="warn">{{ live.error }}</p>
@@ -604,7 +616,7 @@ function done() {
 
       <details v-if="live.record?.audio.enabled" class="card level">
         <summary>Sound level</summary>
-        <label class="field">T0: <b class="num">{{ live.audio.levelDb }} dB</b>
+        <label class="field"><span>Level T0: <b class="num">{{ live.audio.levelDb }} dB</b></span>
           <input type="range" :value="live.audio.levelDb" :min="-50" :max="MAX_LEVEL_DB" step="1" @input="setAudio({ levelDb: Number($event.target.value) })" @change="commitLevel" />
         </label>
       </details>
@@ -616,8 +628,8 @@ function done() {
           <button type="button" class="btn primary" @click="confirmLeave">Leave step</button>
         </template>
         <template v-else-if="!live.confirmStop">
-          <button type="button" class="btn" @click="live.paused ? resume() : pause()">{{ live.paused ? 'Resume' : 'Pause' }}</button>
-          <button type="button" class="btn primary" @click="requestNext">{{ nextLabel }}</button>
+          <button type="button" class="btn" :class="{ primary: live.paused }" @click="live.paused ? resume() : pause()">{{ live.paused ? 'Resume' : 'Pause' }}</button>
+          <button type="button" class="btn" :class="{ primary: !live.paused && (!isTimer || live.timeUp) }" @click="requestNext">{{ nextLabel }}</button>
           <button type="button" class="btn danger" @click="live.confirmStop = true">Stop</button>
         </template>
         <template v-else>
@@ -654,6 +666,9 @@ function done() {
 .instructions :deep(ul), .instructions :deep(ol) { margin: 0; padding-left: 22px; }
 .status { display: grid; gap: 4px; }
 .level summary { cursor: pointer; font-weight: 600; }
+.recap summary { cursor: pointer; padding-block: 6px; color: var(--muted); }
+.recap p { margin-top: 8px; }
+.caution { border-left: 3px solid var(--warn); padding-left: 10px; }
 .controls { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; background: var(--bg); border-top: 1px solid var(--line); padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px)); }
 .controls .btn { flex: 1 1 90px; padding-block: 14px; }
 .controls .small { flex: 1 1 100%; }

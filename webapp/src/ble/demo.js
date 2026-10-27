@@ -217,6 +217,9 @@ export function openDemo({ onStatus }) {
     'log.rate': ({ id, rating, notes = '' }) => {
       const e = state.log.find((x) => x.id === id)
       if (!e) throw new Error('log entry not found')
+      if (active && active.logId === id) throw new Error('rate after the session ends')
+      const trial = e.trialId ? state.trials.find((t) => t.id === e.trialId) : null
+      if (trial && !['revealed', 'aborted'].includes(trial.state)) throw new Error('rate after the trial is revealed')
       if (!(rating >= 0 && rating <= 10)) throw new Error('rating must be 0..10')
       Object.assign(e, { rating, notes: notes.slice(0, 2000) })
       save()

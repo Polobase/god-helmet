@@ -26,3 +26,11 @@ window.addEventListener('hashchange', () => Object.assign(nav, parse()))
 export function go(tab, arg = '') {
   location.hash = arg ? `${tab}/${encodeURIComponent(arg)}` : tab
 }
+
+// Detour to the safety page when the helmet refuses to start. `back` is the
+// route to return to after accepting: 'experiment' or 'programs/<id>'.
+export const goSafety = (back) => go('safety', back)
+export function returnFromSafety() {
+  const [tab, ...rest] = (nav.arg || 'programs').split('/')
+  go(TABS.some((t) => t.key === tab) ? tab : 'programs', rest.join('/'))
+}

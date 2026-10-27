@@ -62,7 +62,7 @@ Implementations:
 | `session.field` | `fieldUT` | live intensity change, clamped to `maxFieldUT` |
 | `test` | `mode` `dc`/`rotate`, `channel`, `mA` (≤ 4.6), `seconds` (≤ 120), `layout`, `dir`, `dwellMs` | `logId: 0` (not logged) |
 | `log.list` | `offset`, `limit` (≤ 10) | `total`, `items` (newest first; unrated blind sessions show `condition: "hidden"`) |
-| `log.rate` | `id`, `rating` 0–10, `notes` | the entry with its condition revealed |
+| `log.rate` | `id`, `rating` 0–10, `notes` | the entry with its condition revealed; refused while that session is still running, and for a trial's session until the trial is revealed or aborted |
 | `trial.new` | `mode` `rv`/`telepathy`, `manifestHash`, `sets` `[{id, size}]`, optional `session` + `presetId` + `blind` + `fieldUT` | public trial |
 | `trial.lock` | `id`, `responseHash` | public trial (records time, Kp/ap, LST) |
 | `trial.judge` | `id` | public trial with `set`, `setSize`, shuffled `order` |

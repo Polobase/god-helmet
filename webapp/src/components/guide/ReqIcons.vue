@@ -1,8 +1,9 @@
 <script setup>
 // Requirement icons for a guide card: headphones, helmet, target pool.
+// `labelled` shows the words next to the icons (no hover on phones).
 import { computed } from 'vue'
 
-const props = defineProps({ requires: { type: Object, default: () => ({}) } })
+const props = defineProps({ requires: { type: Object, default: () => ({}) }, labelled: { type: Boolean, default: false } })
 const items = computed(() => {
   const r = props.requires ?? {}
   const out = []
@@ -15,8 +16,8 @@ const items = computed(() => {
 </script>
 
 <template>
-  <span class="icons">
-    <span v-for="i in items" :key="i.key" class="icon" :class="{ optional: i.optional }" :title="i.label">
+  <span class="icons" :class="{ labelled }">
+    <span v-for="i in items" :key="i.key" class="icon" :class="{ optional: i.optional }" :title="labelled ? null : i.label">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <template v-if="i.key === 'headphones'">
           <path d="M4 15v-3a8 8 0 0 1 16 0v3" />
@@ -32,15 +33,16 @@ const items = computed(() => {
           <path d="M3 16l5-5 4 4 3-3 6 6" />
         </template>
       </svg>
-      <span class="sr">{{ i.label }}</span>
+      <span :class="labelled ? 'small' : 'sr'">{{ i.label }}</span>
     </span>
   </span>
 </template>
 
 <style scoped>
 .icons { display: inline-flex; gap: 6px; align-items: center; }
-.icon { display: inline-flex; width: 20px; height: 20px; color: var(--muted); }
-.icon.optional { opacity: .6; }
-svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.icons.labelled { flex-wrap: wrap; gap: 4px 12px; }
+.icon { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); }
+.icon.optional svg { opacity: .6; }
+svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>

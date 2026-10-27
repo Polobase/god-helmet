@@ -1,7 +1,7 @@
 <script setup>
 // Brain view: where a program's field goes. A physics estimate (coil model +
 // template brain), not a map of activation: see the notes at the bottom.
-import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
 import BrainScene from '../components/BrainScene.vue'
 import { loadBrain, exposure, liveField, underCoil, coilPoses, fmtUT, cssColor, SCALE, sessionSites } from '../lib/brain.js'
 import { groupedPresets, presetById, presets } from '../lib/presets.js'
@@ -31,6 +31,7 @@ const showDeep = ref(true)
 const showHead = ref(false)
 const showSites = ref(false)
 const view = ref('iso')
+const scene = ref(null)
 
 // ---- data
 const brain = shallowRef(null)
@@ -78,6 +79,12 @@ function stopLive() {
   liveInfo.value = null
 }
 watch(preset, stopLive)
+// a new phase restarts Live there, so the animation matches the chosen chip
+watch(phaseSel, () => {
+  if (!live.value) return
+  stopLive()
+  startLive()
+})
 onBeforeUnmount(() => {
   stopLive()
   clearTimeout(timer)
@@ -115,7 +122,11 @@ const ranked = computed(() => {
 const maxRegion = computed(() => Math.max(1e-6, ...ranked.value.map((r) => r[metric.value])))
 const targetIds = computed(() => new Set(preset.value.doc.targets ?? []))
 const targets = computed(() => ranked.value.filter((r) => targetIds.value.has(r.region.id)))
-const selectedRegion = ref(null)
+const TOP = 10
+const showAll = ref(false)
+const rankedShown = computed(() => (showAll.value ? ranked.value : ranked.value.slice(0, TOP)))
+// shallow so `selectedRegion === r.region` compares the raw region, not a proxy
+const selectedRegion = shallowRef(null)
 // research sources plus the stimulation-study sources, without duplicates
 const regionSources = (r) => {
   const seen = new Set()
@@ -127,9 +138,18 @@ const regionSources = (r) => {
   }).slice(0, 8)
 }
 const highlight = computed(() => selectedRegion.value?.mni ?? picked.value?.point ?? null)
-function selectRegion(r) {
+// reveal: scroll to the brain (desktop) or the region card (phone) when the click came from far below,
+// stopping just under the sticky app header (one or two rows tall depending on width)
+function selectRegion(r, reveal = false) {
   selectedRegion.value = selectedRegion.value === r ? null : r
   picked.value = null
+  if (!reveal || !selectedRegion.value) return
+  nextTick(() => {
+    const el = document.querySelector(matchMedia('(max-width: 900px)').matches ? '.brain .pick' : '.brain .main')
+    if (!el) return
+    const head = document.querySelector('header.top')?.getBoundingClientRect().bottom ?? 0
+    window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top - head - 14, behavior: 'smooth' })
+  })
 }
 
 // ---- picking a point on the brain
@@ -150,9 +170,10 @@ const TICKS = [0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10]
 const legendGradient = computed(() => `linear-gradient(90deg, ${Array.from({ length: 11 }, (_, i) => cssColor(SCALE.min * (SCALE.max / SCALE.min) ** (i / 10))).join(', ')})`)
 const tickPos = (v) => `${(Math.log10(v / SCALE.min) / Math.log10(SCALE.max / SCALE.min)) * 100}%`
 const VIEWS = [['iso', '3D'], ['left', 'Left'], ['right', 'Right'], ['front', 'Front'], ['back', 'Back'], ['top', 'Top']]
+// call the scene directly so clicking the active view still resets the camera
 function setView(v) {
-  view.value = ''
-  requestAnimationFrame(() => (view.value = v))
+  view.value = v
+  scene.value?.setView(v)
 }
 </script>
 
@@ -164,7 +185,7 @@ function setView(v) {
         <span class="chip">Template brain MNI152 · coil model</span>
       </div>
       <h2>Where the field goes</h2>
-      <p class="muted">Estimated magnetic field from each program's coils on a standard brain. Colour = field strength in µT (logarithmic). This is physics, not a map of brain activity: no study has shown that fields this weak switch on any region.</p>
+      <p class="muted">Estimated magnetic field from each program's coils on a standard brain. This is physics, not a map of brain activity: no study has shown that fields this weak switch on any region.</p>
       <div class="controls">
         <label class="field">Program
           <select v-model="selectedId">
@@ -183,20 +204,6 @@ function setView(v) {
       </div>
     </header>
 
-    <section v-if="targets.length" class="card intended">
-      <div class="row" style="justify-content: space-between">
-        <h3>What this program aims at</h3>
-        <span class="muted small">Evidence for the original protocol: <b>{{ preset.doc.evidence ?? 'not rated' }}</b>{{ preset.doc.origin ? ` · ${preset.doc.origin}` : '' }}</span>
-      </div>
-      <div class="target-list">
-        <button v-for="r in targets" :key="r.region.id" class="target" :class="{ sel: selectedRegion === r.region }" @click="selectRegion(r.region)">
-          <span class="dot" :style="{ background: cssColor(r[metric]) }"></span>
-          <span><b>{{ r.region.name }}</b><span class="muted small"> · {{ fmtUT(r[metric]) }} µT {{ metric === 'peak' ? 'peak' : 'RMS' }} · {{ Math.round(r.region.depthMm ?? 0) }} mm deep</span></span>
-        </button>
-      </div>
-      <p class="muted small">Estimated field at each target's centre for this program and intensity. For comparison, the cortex right under a coil gets {{ fmtUT(Math.max(0, ...under.filter(Boolean).map((u) => u.uT))) }} µT.</p>
-    </section>
-
     <div class="main">
       <section class="card viewer">
         <div class="toolbar">
@@ -210,8 +217,8 @@ function setView(v) {
           </div>
         </div>
         <div class="stage">
-          <BrainScene v-if="brain" :brain="brain" :values="values" :coils="coils" :levels="liveLevels" :glass="glass"
-            :show-deep="showDeep" :show-head="showHead" :show-sites="showSites" :highlight="highlight" :view="view || 'iso'" @pick="onPick" />
+          <BrainScene v-if="brain" ref="scene" :brain="brain" :values="values" :coils="coils" :levels="liveLevels" :glass="glass"
+            :show-deep="showDeep" :show-head="showHead" :show-sites="showSites" :highlight="highlight" :view="view" @pick="onPick" />
           <div v-else class="loading muted">{{ loadError || 'Loading brain…' }}</div>
           <div v-if="live && liveInfo" class="overlay small">Live, {{ slow }}× slower · phase {{ liveInfo.phase + 1 }} · {{ (liveInfo.phaseMs / 1000).toFixed(1) }} s</div>
         </div>
@@ -227,7 +234,7 @@ function setView(v) {
         <div class="legend">
           <div class="bar-scale" :style="{ background: legendGradient }"></div>
           <div class="ticks"><span v-for="t in TICKS" :key="t" :style="{ left: tickPos(t) }">{{ t }}</span></div>
-          <div class="muted small">µT · {{ live ? 'instantaneous field' : metric === 'peak' ? 'peak over the phase' : 'root-mean-square over the phase' }}; light contour lines at 0.1 and 1 µT. For scale: the Earth's field is about 48 µT (static); the ICNIRP reference level for uniform 25–400 Hz fields is 200 µT.</div>
+          <div class="muted small">µT, log scale · {{ live ? 'instantaneous field' : metric === 'peak' ? 'peak over the phase' : 'root-mean-square over the phase' }}; light contour lines at 0.1 and 1 µT. For scale: the Earth's field is about 48 µT (static); the ICNIRP reference level for uniform 25–400 Hz fields is 200 µT.</div>
         </div>
         <p v-if="unknownSites.length" class="warn small">Not drawn (unknown 10-05 site): {{ unknownSites.join(', ') }}</p>
       </section>
@@ -235,9 +242,9 @@ function setView(v) {
       <aside class="side">
         <section v-if="picked || selectedRegion" class="card pick">
           <template v-if="selectedRegion">
-            <span class="eyebrow">{{ KIND[selectedRegion.kind] }} target</span>
+            <span class="eyebrow">{{ KIND[selectedRegion.kind] }}{{ targetIds.has(selectedRegion.id) ? ' · program target' : ' region' }}</span>
             <h3>{{ selectedRegion.name }}</h3>
-            <p class="small"><span class="muted">MNI</span> <span class="num">{{ selectedRegion.mni.join(', ') }}</span> · <span class="muted">depth</span> <span class="num">{{ selectedRegion.depthMm }} mm</span></p>
+            <p class="small"><span class="muted">MNI</span> <span class="num">{{ selectedRegion.mni.join(', ') }}</span> · <span class="muted">depth</span> <span class="num">{{ selectedRegion.depthMm != null ? `${Math.round(selectedRegion.depthMm)} mm` : '–' }}</span></p>
             <p class="small">{{ selectedRegion.function }}</p>
             <p v-if="selectedRegion.driven" class="small"><span class="chip">electrodes / TMS</span> {{ selectedRegion.driven }}</p>
             <p v-if="selectedRegion.terms" class="small muted">Meta-analysis terms (Neurosynth): {{ selectedRegion.terms }}</p>
@@ -282,27 +289,45 @@ function setView(v) {
       </aside>
     </div>
 
+    <section v-if="targets.length" class="card intended">
+      <div class="row" style="justify-content: space-between">
+        <h3>What this program aims at</h3>
+        <span class="muted small">Evidence for the original protocol: <b>{{ preset.doc.evidence ?? 'not rated' }}</b>{{ preset.doc.origin ? ` · ${preset.doc.origin}` : '' }}</span>
+      </div>
+      <div class="target-list">
+        <button v-for="r in targets" :key="r.region.id" class="target" :class="{ sel: selectedRegion === r.region }" :aria-pressed="selectedRegion === r.region" @click="selectRegion(r.region, true)">
+          <span class="dot" :style="{ background: cssColor(r[metric]) }"></span>
+          <span><b>{{ r.region.name }}</b><span class="muted small"> · {{ fmtUT(r[metric]) }} µT {{ metric === 'peak' ? 'peak' : 'RMS' }} · {{ Math.round(r.region.depthMm ?? 0) }} mm deep</span></span>
+        </button>
+      </div>
+      <p class="muted small">Estimated field at each target's centre for this program and intensity. For comparison, the cortex right under a coil gets {{ fmtUT(Math.max(0, ...under.filter(Boolean).map((u) => u.uT))) }} µT.</p>
+    </section>
+
     <section class="card">
       <div class="row" style="justify-content: space-between">
         <h3>Targets ranked by estimated field</h3>
-        <span class="muted small">{{ metric === 'peak' ? 'Peak' : 'RMS' }} µT at the region's centre · tap a row to show it</span>
+        <span class="muted small">{{ metric === 'peak' ? 'Peak' : 'RMS' }} µT at the region's centre · tap a row to show it on the brain</span>
       </div>
       <div class="table-wrap">
         <table class="regions">
           <thead><tr><th>Region</th><th>Field</th><th>Depth</th><th>Function, and what stimulating it with electrodes or TMS did</th><th>Claims (Persinger lab, Murphy)</th></tr></thead>
           <tbody>
-            <tr v-for="r in ranked" :key="r.region.id" class="clickable" :class="{ sel: selectedRegion === r.region }" @click="selectRegion(r.region)">
-              <td><b>{{ r.region.name }}</b><div class="muted small">{{ KIND[r.region.kind] }}<span v-if="targetIds.has(r.region.id)" class="chip on tgt">target</span></div></td>
+            <tr v-for="r in rankedShown" :key="r.region.id" class="clickable" :class="{ sel: selectedRegion === r.region }" @click="selectRegion(r.region, true)">
+              <td><button class="rname" :aria-pressed="selectedRegion === r.region">{{ r.region.name }}</button><div class="muted small">{{ KIND[r.region.kind] }}<span v-if="targetIds.has(r.region.id)" class="chip on tgt">target</span></div></td>
               <td class="fieldcell">
                 <span class="num">{{ fmtUT(r[metric]) }}</span>
                 <div class="bar"><i :style="{ width: `${(r[metric] / maxRegion) * 100}%`, background: cssColor(r[metric]) }"></i></div>
               </td>
               <td class="num">{{ r.region.depthMm != null ? `${Math.round(r.region.depthMm)} mm` : '–' }}</td>
-              <td class="small">{{ r.region.function }}<div v-if="r.region.driven" class="driven muted">{{ r.region.driven }}</div></td>
+              <td class="small">{{ r.region.function }}<div v-if="r.region.driven" class="driven muted" :title="r.region.driven">{{ r.region.driven }}</div></td>
               <td class="small muted">{{ [r.region.claimed, r.region.murphy].filter(Boolean).join(' · ') || '–' }}</td>
             </tr>
           </tbody>
         </table>
+      </div>
+      <div v-if="ranked.length > TOP" class="row">
+        <span class="muted small">{{ showAll ? `All ${ranked.length} regions.` : `The ${TOP} strongest of ${ranked.length} regions.` }}</span>
+        <button class="btn ghost sm" :aria-expanded="showAll" @click="showAll = !showAll">{{ showAll ? `Show top ${TOP}` : `Show all ${ranked.length}` }}</button>
       </div>
     </section>
 
@@ -323,19 +348,21 @@ function setView(v) {
 
 <style scoped>
 .brain { max-width: 1240px; }
+.head { grid-template-columns: minmax(0, 1fr); }
 .head .controls { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px; }
 .phases { gap: 6px; }
-.phases .chip { cursor: pointer; background: none; font-size: 12.5px; padding: 4px 10px; }
+/* long phase names wrap instead of widening the page */
+.phases .chip { cursor: pointer; background: none; font-size: 12.5px; padding: 6px 12px; min-height: 32px; white-space: normal; text-align: left; max-width: 100%; border-radius: 12px; }
 .phases .chip.on { background: var(--accent); color: var(--accent-ink); }
 .main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 330px); gap: 18px; align-items: start; }
-.viewer { gap: 10px; }
+.viewer { gap: 10px; container-type: inline-size; }
 .toolbar { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .seg button { background: none; border: 0; border-right: 1px solid var(--line); padding: 6px 10px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; }
 .seg button:last-child { border-right: 0; }
 .seg button.on { background: var(--accent-soft); color: var(--text); }
 .seg button:disabled { opacity: .45; cursor: default; }
-.stage { position: relative; height: min(68vh, 620px); min-height: 340px; }
+.stage { position: relative; height: min(68vh, 620px); min-height: 340px; min-width: 0; }
 .loading { display: grid; place-items: center; height: 100%; border: 1px dashed var(--line); border-radius: 8px; }
 .overlay { position: absolute; left: 10px; top: 10px; background: color-mix(in srgb, var(--surface) 85%, transparent); border: 1px solid var(--line); padding: 3px 8px; border-radius: 6px; pointer-events: none; }
 .toggles { gap: 14px; }
@@ -351,18 +378,29 @@ tr.off td { opacity: .45; }
 .phase { border-top: 1px solid var(--line); padding-top: 6px; }
 .regions td.fieldcell { min-width: 120px; }
 .regions .bar { margin-top: 4px; }
+/* ring keeps the colour code but shows the length of very weak (near-black) bars */
+.regions .bar > i { min-width: 4px; border-radius: 99px; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 40%, transparent); }
 .regions tr.sel td { background: var(--accent-soft); }
-.regions .driven { margin-top: 4px; font-size: 12.5px; }
+.regions .rname { background: none; border: 0; padding: 0; font: inherit; font-weight: 700; color: inherit; text-align: left; cursor: pointer; }
+.regions .driven { margin-top: 4px; font-size: 12.5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .notes ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
 .target-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .target { display: inline-flex; align-items: center; gap: 8px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; cursor: pointer; text-align: left; font-size: 14px; }
 .target:hover, .target.sel { border-color: var(--accent); }
-.target .dot { width: 12px; height: 12px; border-radius: 99px; flex: none; }
+.target.sel { background: var(--accent-soft); }
+.target .dot { width: 12px; height: 12px; border-radius: 99px; flex: none; box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--text) 40%, transparent); }
 .chip.tgt { margin-left: 6px; font-size: 10.5px; padding: 0 6px; }
 @media (max-width: 900px) {
   .main { grid-template-columns: 1fr; }
   .side { position: static; }
   .head .controls { grid-template-columns: 1fr; }
-  .stage { height: auto; aspect-ratio: 1 / 1; max-height: 70vh; min-height: 300px; }
+  /* square on phones, wide and short in landscape; 100cqw is the viewer card's inner width */
+  .stage { height: min(100cqw, 70vh); min-height: 320px; }
+}
+/* phones: Region / Field / Depth only; the region card holds the rest */
+@media (max-width: 700px) {
+  .regions th:nth-child(n+4), .regions td:nth-child(n+4) { display: none; }
+  .regions td:first-child { overflow-wrap: anywhere; }
+  .regions td.fieldcell { min-width: 96px; }
 }
 </style>

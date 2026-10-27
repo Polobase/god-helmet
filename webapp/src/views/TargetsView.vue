@@ -7,10 +7,13 @@ const sets = ref([])
 const hash = ref('')
 const setName = ref('')
 const files = ref(null)
+const importInput = ref(null)
 const busy = ref(false)
-const message = ref('')
+const addMsg = ref({ text: '', ok: false, at: '' })  // at: set id when added from that set's row
+const poolMsg = ref({ text: '', ok: false })
 const reveal = ref({})  // set id -> show thumbnails
 const urls = new Map()
+let addTo = ''  // set whose "Add pictures" button opened the file picker
 
 async function load() {
   sets.value = await listSets()
@@ -23,26 +26,47 @@ function thumb(img) {
   return urls.get(img.hash)
 }
 
+// Turns what people type ("Set 01") into a valid set name ("set-01").
+const cleanName = (s) => s.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9_-]/g, '').slice(0, 38)
+
 async function upload() {
-  message.value = ''
-  const name = setName.value.trim().toLowerCase()
-  if (!SET_ID.test(name)) return (message.value = 'Set name: a-z, 0-9, - or _ (max 38).')
-  if (!files.value?.files?.length) return (message.value = 'Choose 2–8 pictures.')
+  const at = addTo
+  addTo = ''
+  const say = (text, ok = false) => (addMsg.value = { text, ok, at })
+  say('')
+  const name = cleanName(setName.value)
+  setName.value = name
+  if (!SET_ID.test(name)) return say('Give the set a name: letters a–z, digits, - or _ (up to 38).')
+  if (!files.value?.files?.length) return say('Choose 2–8 pictures.')
   busy.value = true
   try {
     const set = await addPictures(name, [...files.value.files])
-    message.value = `Set "${set.id}" now has ${set.images.length} picture(s).`
+    say(`Set "${set.id}" now has ${set.images.length} picture(s).`, true)
     files.value.value = ''
     await load()
   } catch (e) {
-    message.value = e.message
+    say(e.message)
   } finally {
     busy.value = false
   }
 }
 
-async function remove(id) {
-  await deleteSet(id)
+// "Add pictures" on a set row: pick files and add them to that set straight away.
+function addToSet(id) {
+  setName.value = id
+  addTo = id
+  files.value.click()
+}
+function picked() {
+  if (addTo && addTo === setName.value && files.value.files.length) upload()
+  else addTo = ''
+}
+const cancelPick = () => (addTo = '')
+
+async function remove(s) {
+  if (!confirm(`Delete set "${s.id}" and its ${s.images.length} picture(s)? This cannot be undone. Trials that used this set can no longer be judged or checked on this phone.`)) return
+  await deleteSet(s.id)
+  if (addMsg.value.at === s.id) addMsg.value = { text: '', ok: false, at: '' }
   await load()
 }
 
@@ -53,12 +77,13 @@ async function doExport() {
 async function doImport(e) {
   const file = e.target.files[0]
   if (!file) return
+  poolMsg.value = { text: '', ok: false }
   try {
     const n = await importPool(file)
-    message.value = `Imported ${n} set(s).`
+    poolMsg.value = { text: `Imported ${n} set(s).`, ok: true }
     await load()
   } catch (err) {
-    message.value = err.message
+    poolMsg.value = { text: err.message, ok: false }
   }
   e.target.value = ''
 }
@@ -76,6 +101,7 @@ async function doImport(e) {
     <section class="card">
       <h3>Sets</h3>
       <p v-if="!sets.length" class="muted small">No sets yet.</p>
+      <p v-else class="small warn">If you will be the viewer, do not show the pictures: seeing them spoils your trials.</p>
       <div v-for="s in sets" :key="s.id" class="set">
         <div class="row" style="justify-content: space-between">
           <b>{{ s.id }}</b>
@@ -85,9 +111,11 @@ async function doImport(e) {
           <img v-for="img in s.images" :key="img.hash" :src="thumb(img)" alt="" />
         </div>
         <div class="row">
-          <button class="btn ghost sm" @click="reveal[s.id] = !reveal[s.id]">{{ reveal[s.id] ? 'Hide pictures' : 'Show pictures (not if you are the viewer)' }}</button>
-          <button class="btn ghost sm" @click="remove(s.id)">Delete set</button>
+          <button class="btn ghost sm" @click="reveal[s.id] = !reveal[s.id]">{{ reveal[s.id] ? 'Hide pictures' : 'Show pictures' }}</button>
+          <button class="btn ghost sm" :disabled="busy || s.images.length >= 8" @click="addToSet(s.id)">Add pictures</button>
+          <button class="btn ghost sm danger push" @click="remove(s)">Delete set</button>
         </div>
+        <p v-if="addMsg.text && addMsg.at === s.id" class="small" :class="addMsg.ok ? 'ok' : 'bad'" role="status">{{ addMsg.text }}</p>
       </div>
     </section>
 
@@ -95,10 +123,10 @@ async function doImport(e) {
       <h3>Add pictures</h3>
       <div class="grid2">
         <label class="field">Set name<input v-model="setName" type="text" placeholder="set-01" /></label>
-        <label class="field">Pictures<input ref="files" type="file" accept="image/*" multiple /></label>
+        <label class="field">Pictures<input ref="files" type="file" accept="image/*" multiple @change="picked" @cancel="cancelPick" /></label>
       </div>
       <div class="row"><button class="btn primary" :disabled="busy" @click="upload">{{ busy ? 'Adding…' : 'Add to set' }}</button></div>
-      <p v-if="message" class="small">{{ message }}</p>
+      <p v-if="addMsg.text && !addMsg.at" class="small" :class="addMsg.ok ? 'ok' : 'bad'" role="status">{{ addMsg.text }}</p>
     </section>
 
     <section class="card">
@@ -106,14 +134,20 @@ async function doImport(e) {
       <p class="small muted">The receiver and a telepathy sender need the same pool. Export it here and import the file on the other phone.</p>
       <div class="row">
         <button class="btn" :disabled="!sets.length" @click="doExport">Export pool file</button>
-        <label class="btn">Import pool file<input type="file" accept="application/json,.json" hidden @change="doImport" /></label>
+        <button class="btn" type="button" @click="importInput.click()">Import pool file</button>
+        <input ref="importInput" type="file" accept="application/json,.json" hidden @change="doImport" />
       </div>
+      <p v-if="poolMsg.text" class="small" :class="poolMsg.ok ? 'ok' : 'bad'" role="status">{{ poolMsg.text }}</p>
     </section>
   </div>
 </template>
 
 <style scoped>
 .set { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 8px; }
+.set b { overflow-wrap: anywhere; }
 .thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 6px; }
 .thumbs img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; }
+.push { margin-left: auto; }
+input[type=file] { font-size: 13px; color: var(--muted); max-width: 100%; }
+input[type=file]::file-selector-button { font: inherit; font-weight: 600; color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 9px 14px; margin-right: 10px; cursor: pointer; }
 </style>

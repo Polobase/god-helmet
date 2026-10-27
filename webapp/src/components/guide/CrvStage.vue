@@ -130,7 +130,7 @@ function declare(b, text) {
       <template v-for="f in fields" :key="`${repeat ? state.iterations.length : 0}-${f.key}`">
         <div v-if="f.kind === 'sketch'" class="wide stack">
           <span class="lbl">{{ f.label }}</span>
-          <SketchPad :initial="current[f.key]" @change="(d) => (current[f.key] = d)" />
+          <SketchPad label="" :initial="current[f.key]" @change="(d) => (current[f.key] = d)" />
         </div>
         <EntryList v-else-if="f.kind === 'words'" v-model="current[f.key]" :label="f.label" :basic-words="true" />
         <label v-else class="field wide"><span class="lbl">{{ f.label }}</span>

@@ -41,6 +41,7 @@ bool abort(uint32_t id, String& error);
 bool senderTarget(uint32_t id, String& json, String& error);
 
 String get(uint32_t id);  // public view or empty
+String stateOf(uint32_t id);  // "open" ... "aborted", or empty if unknown
 void writeList(mj::Writer& w, size_t offset, size_t limit);
 
 bool validSetId(const String& id);

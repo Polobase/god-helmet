@@ -17,9 +17,10 @@ const marker = computed(() => (props.positionMs >= 0 ? (100 * props.positionMs) 
 <template>
   <div class="timeline">
     <div class="track">
-      <button v-for="(p, i) in phases" :key="i" class="seg" :class="{ sel: i === selected }"
-        :style="{ flexGrow: p.durationMs }" :title="`${p.name} · ${fmtMinutes(p.durationMs)}`" @click="$emit('select', i)">
-        <span>{{ i + 1 }}</span>
+      <button v-for="(p, i) in phases" :key="i" class="part" :class="{ sel: i === selected }"
+        :style="{ flexGrow: p.durationMs }" :title="`${p.name} · ${fmtMinutes(p.durationMs)}`"
+        :aria-label="`Phase ${i + 1}: ${p.name}, ${fmtMinutes(p.durationMs)}`" :aria-pressed="i === selected" @click="$emit('select', i)">
+        <span>{{ i + 1 }}<span class="dur"> · {{ fmtMinutes(p.durationMs) }}</span></span>
       </button>
       <i v-if="marker >= 0" class="marker" :style="{ left: marker + '%' }"></i>
     </div>
@@ -28,7 +29,10 @@ const marker = computed(() => (props.positionMs >= 0 ? (100 * props.positionMs) 
 
 <style scoped>
 .track { position: relative; display: flex; gap: 3px; height: 30px; }
-.seg { flex-basis: 0; min-width: 22px; border: 1px solid var(--line); background: var(--surface-2); border-radius: 6px; color: var(--muted); font: 600 12px var(--font-body); cursor: pointer; padding: 0; }
-.seg.sel { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }
-.marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--text); border-radius: 2px; transition: left .5s linear; }
+/* Not .seg: that name is the global segmented control */
+.part { flex-basis: 0; min-width: 22px; border: 1px solid var(--line); background: var(--surface-2); border-radius: 6px; color: var(--muted); font: 600 12px var(--font-body); cursor: pointer; padding: 0 4px; container-type: inline-size; overflow: hidden; white-space: nowrap; }
+.part.sel { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }
+.dur { display: none; }
+@container (min-width: 72px) { .dur { display: inline; } }
+.marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--text); border-radius: 2px; transition: left .5s linear; pointer-events: none; }
 </style>

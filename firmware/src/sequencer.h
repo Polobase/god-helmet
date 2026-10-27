@@ -28,9 +28,9 @@ struct Status {
   bool blind = false;
   bool test = false;
   uint32_t logId = 0;
-  char sessionId[40] = {0};
-  char sessionName[64] = {0};
-  char phaseName[40] = {0};
+  char sessionId[64] = {0};    // same limits as engine::Session (id, name, phase name)
+  char sessionName[96] = {0};
+  char phaseName[64] = {0};
   int phase = 0;
   int phaseCount = 0;
   uint32_t elapsedMs = 0;

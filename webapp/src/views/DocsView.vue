@@ -60,7 +60,7 @@ function programsMarkdown() {
     out.push('')
     if (d.notes) out.push(d.notes, '')
     if (d.targets?.length) out.push(`**Aims at:** ${d.targets.join(', ')} ([brain view](#brain/${d.id}))`, '')
-    const src = sourceEntries(d.source).map((e) => (e.url ? `[${e.text || e.url}](${e.url})` : e.text))
+    const src = sourceEntries(d.source).map((e) => (e.url ? `[${e.text || e.url}](${e.url})` : e.text) + (e.extra ?? []).map((u, j) => ` [[${j + 2}]](${u})`).join(''))
     if (src.length) out.push(`**Sources:** ${src.join(' · ')}`, '')
   }
   return out.join('\n')
@@ -123,12 +123,20 @@ const toc = computed(() => [...current.value.md.matchAll(/^(##|###)\s+(.+)$/gm)]
   text: m[2].replace(/[*_`]/g, ''),
   id: slugify(marked.parseInline(m[2])),
 })))
+// With a table of contents, the doc's first h1 goes above it.
+const parts = computed(() => {
+  const m = toc.value.length > 3 && html.value.match(/^\s*<h1[^>]*>[\s\S]*?<\/h1>/)
+  return m ? [m[0], html.value.slice(m[0].length)] : ['', html.value]
+})
 
 // ---- search across all docs
 const query = ref('')
+// Snippet text without Markdown syntax (links and URLs, also cut-off ones, emphasis, table pipes, headings).
+const plain = (s) => s.replace(/^[^\s(]*\)/, '').replace(/!?\[|\](\([^)\s]*\)?)?/g, '').replace(/https?:\/\/\S+/g, '')
+  .replace(/\*\*|__|[`|#>]|-{3,}/g, ' ').replace(/\s+/g, ' ')
 const results = computed(() => {
   const q = query.value.trim().toLowerCase()
-  if (q.length < 3) return []
+  if (q.length < 2) return []
   const hits = []
   for (const d of docs.value) {
     const text = d.md
@@ -137,7 +145,7 @@ const results = computed(() => {
     let n = 0
     while (i >= 0 && n < 3) {
       const start = Math.max(0, i - 60)
-      hits.push({ slug: d.slug, title: d.title, snippet: text.slice(start, i + q.length + 80).replace(/\s+/g, ' ') })
+      hits.push({ slug: d.slug, title: d.title, snippet: plain(text.slice(start, i + q.length + 80)) })
       i = lower.indexOf(q, i + q.length)
       n++
     }
@@ -146,25 +154,27 @@ const results = computed(() => {
 })
 
 const article = ref(null)
+let pendingAnchor = ''  // heading to show once another doc has opened
+// On a new doc: go to the top, or on phone (list above the doc) to the doc itself.
 watch(() => nav.arg, async () => {
   await nextTick()
-  window.scrollTo({ top: 0 })
-})
+  if (pendingAnchor) jump(pendingAnchor)
+  else if (nav.arg && matchMedia('(max-width: 760px)').matches) article.value?.scrollIntoView({ block: 'start' })
+  else window.scrollTo({ top: 0 })
+  pendingAnchor = ''
+}, { immediate: true })
 function jump(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 // Links to a heading (same or another doc): open the doc, then scroll to the heading.
-async function onArticleClick(e) {
+function onArticleClick(e) {
   const a = e.target.closest?.('a[data-anchor]')
   if (!a) return
   e.preventDefault()
   const slug = a.getAttribute('href').replace(/^#docs\//, '')
-  if (slug !== current.value.slug) {
-    go('docs', slug)
-    await nextTick()
-    await nextTick()
-  }
-  jump(a.dataset.anchor)
+  if (slug === current.value.slug) return jump(a.dataset.anchor)
+  pendingAnchor = a.dataset.anchor
+  go('docs', slug)
 }
 </script>
 
@@ -177,24 +187,30 @@ async function onArticleClick(e) {
           <a :href="`#docs/${r.slug}`" @click="query = ''"><b>{{ r.title }}</b><span class="muted small">…{{ r.snippet }}…</span></a>
         </li>
       </ul>
-      <nav v-else class="doclist">
-        <a v-for="d in docs" :key="d.slug" :href="`#docs/${d.slug}`" :class="{ active: d.slug === current.slug }">{{ d.title }}</a>
-      </nav>
+      <template v-else>
+        <p v-if="query.trim().length >= 2" class="muted small">No matches for “{{ query.trim() }}”.</p>
+        <nav class="doclist">
+          <a v-for="d in docs" :key="d.slug" :href="`#docs/${d.slug}`" :class="{ active: d.slug === current.slug }" :title="d.title">{{ d.title.split(':')[0] }}</a>
+        </nav>
+      </template>
       <p class="muted small">Source: <a :href="`${REPO}/tree/main/${current.generated ? 'presets' : current.path}`" target="_blank" rel="noopener">{{ current.generated ? 'presets/*.json' : current.path }}</a></p>
     </aside>
 
-    <article ref="article" class="card prose">
-      <nav v-if="toc.length > 3" class="toc" aria-label="On this page">
-        <span class="eyebrow">On this page</span>
-        <a v-for="t in toc" :key="t.id" :class="'d' + t.depth" href="#" @click.prevent="jump(t.id)">{{ t.text }}</a>
-      </nav>
-      <div v-html="html" @click="onArticleClick"></div>
+    <article ref="article" class="card prose" @click="onArticleClick">
+      <div v-if="parts[0]" class="doc-title" v-html="parts[0]"></div>
+      <details v-if="toc.length > 3" :key="current.slug" class="toc" :open="toc.length <= 12">
+        <summary class="eyebrow">On this page ({{ toc.length }})</summary>
+        <nav aria-label="On this page">
+          <a v-for="t in toc" :key="t.id" :class="'d' + t.depth" href="#" @click.prevent="jump(t.id)">{{ t.text }}</a>
+        </nav>
+      </details>
+      <div v-html="parts[1]"></div>
     </article>
   </div>
 </template>
 
 <style scoped>
-.docs { display: grid; grid-template-columns: minmax(200px, 260px) minmax(0, 1fr); gap: 18px; align-items: start; max-width: 1200px; }
+.docs { display: grid; grid-template-columns: minmax(200px, 260px) minmax(0, 1fr); gap: 18px; align-items: start; }
 .side { position: sticky; top: 110px; max-height: calc(100vh - 130px); overflow: auto; gap: 10px; }
 .doclist { display: grid; gap: 2px; }
 .doclist a { color: var(--text); text-decoration: none; padding: 6px 8px; border-radius: 6px; font-size: 14px; }
@@ -202,12 +218,18 @@ async function onArticleClick(e) {
 .doclist a.active { background: var(--accent-soft); color: var(--text); font-weight: 600; }
 .results { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .results a { display: grid; gap: 2px; text-decoration: none; color: var(--text); font-size: 13px; }
-.toc { display: grid; gap: 2px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 13px; }
-.toc a { color: var(--muted); text-decoration: none; }
+.toc { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+.toc summary { cursor: pointer; }
+.toc nav { display: grid; gap: 2px; margin-top: 6px; }
+.toc a { color: var(--muted); text-decoration: none; padding: 4px 0; }
 .toc a:hover { color: var(--accent); }
 .toc a.d3 { padding-left: 14px; }
-.prose { line-height: 1.65; font-size: 15.5px; min-width: 0; }
+/* minmax(0, 1fr): wide code blocks and tables scroll inside the card instead of widening it */
+.prose { line-height: 1.65; font-size: 15.5px; min-width: 0; grid-template-columns: minmax(0, 1fr); overflow-wrap: break-word; scroll-margin-top: 110px; }
 .prose :deep(h1) { font-size: 34px; margin: 4px 0 10px; }
+.doc-title :deep(h1) { margin-bottom: 0; }
+/* Headings stop below the sticky app header when jumped to. */
+.prose :deep(h1), .prose :deep(h2), .prose :deep(h3), .prose :deep(h4) { scroll-margin-top: 110px; }
 .prose :deep(h2) { font-size: 25px; margin: 26px 0 8px; padding-top: 6px; border-top: 1px solid var(--line); }
 .prose :deep(h3) { font-size: 19px; margin: 18px 0 6px; }
 .prose :deep(p), .prose :deep(li) { max-width: 78ch; }

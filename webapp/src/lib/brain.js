@@ -21,10 +21,21 @@ export function sessionSites(session) {
 
 // ---------------------------------------------------------------- assets
 let assets = null
+let regionAssets = null
+// Regions, Murphy zones and site groups only (no meshes): for the Placement tab.
+export function loadRegions() {
+  regionAssets ??= import('../assets/brain/regions.json').then((r) => ({
+    regions: r.default.regions,
+    zones: r.default.zones ?? [],
+    siteGroups: r.default.siteGroups ?? [],
+    source: r.default.source,
+  }))
+  return regionAssets
+}
 export function loadBrain() {
-  assets ??= Promise.all([import('../assets/brain/brain-mesh.json'), import('../assets/brain/regions.json')]).then(([m, r]) => {
+  assets ??= Promise.all([import('../assets/brain/brain-mesh.json'), loadRegions()]).then(([m, r]) => {
     const meshes = Object.entries(m.default.meshes).map(([key, e]) => ({ key, name: e.name, centroid: e.centroid ?? null, ...decodeMesh(e) }))
-    return { meshes, regions: r.default.regions, zones: r.default.zones ?? [], sources: { mesh: m.default.source, regions: r.default.source } }
+    return { meshes, regions: r.regions, zones: r.zones, siteGroups: r.siteGroups, sources: { mesh: m.default.source, regions: r.source } }
   })
   return assets
 }
