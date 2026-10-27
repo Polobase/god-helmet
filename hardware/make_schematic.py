@@ -94,7 +94,7 @@ def schematic():
     a = s.add
 
     # Region labels
-    for x0, x1, label in ((230, 880, "CONTROL BOX"), (893, 975, "2 × CAT5E"), (990, 1110, "HEADBAND")):
+    for x0, x1, label in ((230, 880, "CONTROL BOX"), (893, 975, "2 × CAT5E/6A"), (990, 1110, "HEADBAND")):
         a(f'<path class="s-bracket" d="M{x0} 36 V30 H{x1} V36"/>')
         a(text((x0 + x1) / 2, 22, label, "s-region", "middle"))
 
@@ -172,8 +172,8 @@ def schematic():
     # Cable sheaths
     a(f'<rect class="s-sheath" x="893" y="98" width="82" height="140" rx="10"/>')
     a(f'<rect class="s-sheath" x="893" y="244" width="82" height="140" rx="10"/>')
-    a(text(934, 92, "Cat5e #2", "s-sub", "middle"))
-    a(text(934, 398, "Cat5e #1", "s-sub", "middle"))
+    a(text(934, 92, "Cable #2", "s-sub", "middle"))
+    a(text(934, 398, "Cable #1", "s-sub", "middle"))
 
     # PhotoMOS arming switch
     a('<rect class="s-box" x="845" y="540" width="140" height="70" rx="6"/>')
@@ -228,14 +228,14 @@ def coil_leads():
     a(f'<circle class="dot-sig t-sig" cx="380" cy="40" r="3.5"/>')
     a(text(392, 36, "Inner lead · centre, beside the core", "s-title"))
     a(text(392, 54, "= SIGNAL: from the 2.2 kΩ resistor", "s-sub t-sig"))
-    a(text(392, 70, "Cat5 solid colour (orange, green, blue, brown)", "s-sub"))
+    a(text(392, 70, "Strong colour of a pair (orange, green, blue, brown)", "s-sub"))
 
     # outer lead: from the outermost winding at the side
     a(f'<path class="w w-ret" d="M{cx + rx - 4} {top + 22} C{cx + rx + 20} {top + 22} 340 136 380 136"/>')
     a(f'<circle class="dot-ret" cx="380" cy="136" r="3.5"/>')
     a(text(392, 132, "Outer lead · outermost winding, side", "s-title"))
     a(text(392, 150, "= RETURN: joined at the box → PhotoMOS → GND", "s-sub t-ret"))
-    a(text(392, 166, "Cat5 white-striped wire of the same pair", "s-sub"))
+    a(text(392, 166, "Pale or white-striped wire of the same pair", "s-sub"))
 
     # head-side arrow
     a(f'<path class="w w-gnd" d="M{cx} {bot + 34} V{bot + 56}"/>')

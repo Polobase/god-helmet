@@ -26,7 +26,7 @@
 <path class="s-bracket" d="M230 36 V30 H880 V36"/>
 <text x="555.0" y="22" class="s-region" text-anchor="middle">CONTROL BOX</text>
 <path class="s-bracket" d="M893 36 V30 H975 V36"/>
-<text x="934.0" y="22" class="s-region" text-anchor="middle">2 × CAT5E</text>
+<text x="934.0" y="22" class="s-region" text-anchor="middle">2 × CAT5E/6A</text>
 <path class="s-bracket" d="M990 36 V30 H1110 V36"/>
 <text x="1050.0" y="22" class="s-region" text-anchor="middle">HEADBAND</text>
 <rect class="s-box" x="30" y="66" width="140" height="48" rx="6"/>
@@ -144,8 +144,8 @@
 <path class="w w-ret" d="M870 120 V141 A5 5 0 0 1 870 151 V177 A5 5 0 0 1 870 187 V213 A5 5 0 0 1 870 223 V249 A5 5 0 0 1 870 259 V285 A5 5 0 0 1 870 295 V321 A5 5 0 0 1 870 331 V357 A5 5 0 0 1 870 367 V540"/>
 <rect class="s-sheath" x="893" y="98" width="82" height="140" rx="10"/>
 <rect class="s-sheath" x="893" y="244" width="82" height="140" rx="10"/>
-<text x="934" y="92" class="s-sub" text-anchor="middle">Cat5e #2</text>
-<text x="934" y="398" class="s-sub" text-anchor="middle">Cat5e #1</text>
+<text x="934" y="92" class="s-sub" text-anchor="middle">Cable #2</text>
+<text x="934" y="398" class="s-sub" text-anchor="middle">Cable #1</text>
 <rect class="s-box" x="845" y="540" width="140" height="70" rx="6"/>
 <text x="915" y="568" class="s-title" text-anchor="middle">AQY212EH</text>
 <text x="915" y="584" class="s-sub" text-anchor="middle">PhotoMOS · arming</text>

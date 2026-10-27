@@ -55,12 +55,12 @@
 <circle class="dot-sig t-sig" cx="380" cy="40" r="3.5"/>
 <text x="392" y="36" class="s-title" text-anchor="start">Inner lead · centre, beside the core</text>
 <text x="392" y="54" class="s-sub t-sig" text-anchor="start">= SIGNAL: from the 2.2 kΩ resistor</text>
-<text x="392" y="70" class="s-sub" text-anchor="start">Cat5 solid colour (orange, green, blue, brown)</text>
+<text x="392" y="70" class="s-sub" text-anchor="start">Strong colour of a pair (orange, green, blue, brown)</text>
 <path class="w w-ret" d="M311 114 C335 114 340 136 380 136"/>
 <circle class="dot-ret" cx="380" cy="136" r="3.5"/>
 <text x="392" y="132" class="s-title" text-anchor="start">Outer lead · outermost winding, side</text>
 <text x="392" y="150" class="s-sub t-ret" text-anchor="start">= RETURN: joined at the box → PhotoMOS → GND</text>
-<text x="392" y="166" class="s-sub" text-anchor="start">Cat5 white-striped wire of the same pair</text>
+<text x="392" y="166" class="s-sub" text-anchor="start">Pale or white-striped wire of the same pair</text>
 <path class="w w-gnd" d="M220 246 V268"/>
 <polygon class="arrow" points="214,264 226,264 220,274"/>
 <text x="236" y="262" class="s-sub" text-anchor="start">Clean bottom face → toward the head</text>

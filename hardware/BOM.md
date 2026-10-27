@@ -20,7 +20,7 @@
 | 1 | Momentary push button, normally open | Panel or hand-held | Hardware STOP |
 | 1 | Perfboard + pin headers + Dupont wires | – | Resistor/arming board |
 | 2 | RJ45 PCB jacks (box) + 2 RJ45 breakouts (headband) | – | Detachable headband |
-| 2 | Cat5e patch cable, 1–2 m | Unshielded is fine | 8 twisted pairs for 8 coils |
+| 2 | Network cable 1–2 m: Cat5e, Cat6 or Cat6A | Unshielded is fine | 8 twisted pairs for 8 coils; solid-core Cat6A needs strain relief and 23 AWG-rated plugs or keystone jacks (docs/WIRING.md) |
 | 1 | Neoprene / elastic headband, 6–8 cm wide, with Velcro | Sports or EEG headband | Movable coil mounting |
 | 1 | Velcro (hook) dots | – | Coil clips |
 | 8 | Nylon M3 screws, 8–10 mm | Non-magnetic | Coil mounting into the ferrite core |
