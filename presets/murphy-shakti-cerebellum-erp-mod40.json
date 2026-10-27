@@ -1,0 +1,44 @@
+{
+  "id": "murphy-shakti-cerebellum-erp-mod40",
+  "name": "Shakti cerebellum: modulated 40 Hz below the inion",
+  "category": "body",
+  "evidence": "claim",
+  "origin": "Todd Murphy (Shakti software)",
+  "uT": 1,
+  "summary": "The modulated 40 Hz form of Murphy's one-coil Shakti cerebellum session: 20 min from one coil just below the bony ridge at the back of the head. The vendor names modulated 40 Hz as the alternative to its ERP signal over the cerebellum, which it calls a 'pleasure/orgasm center'.",
+  "setting": "In series that alternate with series over other areas (vendor). Sit, or lie on your side, so the coil at the back of the head is not pressed.",
+  "schedule": "Vendor: alternate cerebellar series with series over other areas. The vendor's general Shakti rules: at most every 72 h or once a week, never on consecutive days; a series of 3 or 6 sessions, then a 21-day break.",
+  "notes": "One coil at Iz, the 10-5 site on the inion: the vendor says to 'use the bony ridge at the back of your head', with the occipital lobes above the ridge and the cerebellum below it, and uses a one-coil headset, so seat the coil on or just below the ridge. Iz is an inference; I1 or I2 (a little to either side) and O9 or O10 (further out) are alternative sites. The other seven channels stay unused. A coil below the inion is hard to hold on a Velcro band, so check that it sits firmly and comfortably. The Shakti's modulated 40 Hz file is proprietary; it is approximated by the built-in phase-modulated sine (a 40 Hz carrier drifting between about 38.5 and 41.5 Hz every 2 s, 1-ms points). The vendor calibrates its modulated 40 Hz signal at 10 mG (1 µT), the default here. The vendor's 'un-do unwanted effects' advice after amygdala-and-hippocampus sessions names the ERP signal; that form is murphy-shakti-cerebellum-erp. The vendor's claim that 'cerebellar activation can attenuate limbic, particularly amygdaloid, activation' is untested. The vendor warns that 'excess cerebellar activation may lead to emotional flattening', so do not overuse it. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy; stop if distressed.",
+  "source": "Murphy, Shakti demo: Cerebellum https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/cerebellum.htm ; Murphy, Shakti demo: ERP signal https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/erp_consent.htm ; Murphy, Shakti demo: Bliss (undo procedures) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/bliss.htm ; Murphy, Shakti demo: Modulated 40 Hz (obe45) signal (10 mG calibration) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/obe45_consent.htm ; Murphy, Shakti demo: Safety - how often https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/how_often_is_safe.htm ; Murphy, Shakti demo: Taking breaks https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/break.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 (8 Coil Shakti amygdala signal, sham-controlled) https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "Iz",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Cerebellar modulated 40 Hz, one coil at Iz",
+      "minutes": 20,
+      "pattern": {
+        "type": "pm",
+        "f0": 40,
+        "f1": 0.5,
+        "depth": 3,
+        "pointMs": 1
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

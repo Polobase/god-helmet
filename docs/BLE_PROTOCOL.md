@@ -71,6 +71,7 @@ Implementations:
 | `trial.abort` | `id` | – (the trial stays listed as `aborted`) |
 | `trial.sender` | `id` | `{set, target, manifestHash}`, only for open telepathy trials |
 | `trial.get` / `trial.list` | `id` / `offset`, `limit` | public trial(s) |
+| `rng.bytes` | `n` (1–256) | `{hex, source}`: hardware random bytes (`esp_fill_random`, true RNG while BLE is on), for micro-PK tasks |
 
 **Settings:**
 

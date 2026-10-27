@@ -1,0 +1,62 @@
+{
+  "id": "lowfield-tpemf-re5-pattern",
+  "name": "T-PEMF pattern (Re5, 55 Hz bipolar pulses)",
+  "category": "lowfield",
+  "evidence": "single-lab",
+  "origin": "Re5 ApS, Denmark; Martiny, Bech and Larsen (Copenhagen, Aalborg)",
+  "uT": 5,
+  "summary": "The pulse timing and coil layout of the Danish Re5 transcranial PEMF device used in depression trials: 3-ms bipolar square pulses every 18 ms (about 55 Hz) for 30 min on seven coils in phase over the temporal, parietal and occipital lobes. A pattern replica at about 50-100 times less field.",
+  "notes": "Larsen 2020 describe the pulse as +3 ms, -3 ms, then a 12-ms pause (18 ms, about 55 Hz); it is reproduced exactly at the 0.5-ms tick. Re5 drives seven coils as one channel: two serial pairs over the temporal lobes, one pair over the parietal lobe and one coil over the occipital lobe (Tang 2026). The sources give lobes, not electrodes, so T7/TP7, T8/TP8, P3/P4 and Oz are an approximation, and channel 8 is unused. All seven coils share one polarity (no negative weights) because the sources used describe a single in-phase channel; Tang 2026's supplementary wiring diagram, which would show how the coils of each series pair are oriented, was not checked, so a reversed coil within a pair would not be reproduced. Tang 2026 instead model about 4.5-ms biphasic pulses at 50 Hz; that reading (about 2.5 + 2.5 ms with a 15-ms pause) is not used here. Tang's model gives Re5 a mean cortical field of about 0.3 mT and 0.01 V/m; this helmet gives at most about 5 µT, 50-100 times less field, so this copies the timing only (Larsen 2020's figure of 'near 0.0004 V/m' conflicts with Tang's model). For Re5 itself there is one positive sham-controlled trial from the originating group (Martiny 2010) and one independent negative one (van Belkum 2021), and twice-daily sessions added nothing (Straasø 2014); the pattern is untested at µT strength. Not a depression treatment: don't stop or change medication or treatment. Not for people with epilepsy; stop on headache, nausea or distress.",
+  "setting": "Awake and seated, at home or in a quiet room.",
+  "schedule": "Original: 30 min once a day for 5-8 weeks (Danish practice: 56 daily sessions); twice daily added nothing (Straasø 2014).",
+  "targets": [
+    "left-superior-temporal-gyrus-posterior",
+    "right-superior-temporal-gyrus-posterior",
+    "precuneus",
+    "primary-visual-cortex"
+  ],
+  "source": "Larsen et al. 2020, Eur Psychiatry (pulse description) https://vbn.aau.dk/ws/files/330286808/transcranial_pulsed_electromagnetic_fields_for_treatmentresistant_depression_a_multicenter_8week_singlearm_cohort_study.pdf ; Tang et al. 2026, Brain Stimul (Re5 coil layout and field model) https://pmc.ncbi.nlm.nih.gov/articles/PMC13103953/ ; Martiny et al. 2010, Biol Psychiatry https://pubmed.ncbi.nlm.nih.gov/20385376/ ; van Belkum et al. 2021, J Affect Disord https://pubmed.ncbi.nlm.nih.gov/34333176/ ; Straasø et al. 2014, Acta Neuropsychiatr https://pubmed.ncbi.nlm.nih.gov/25241755/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "T7",
+      "TP7",
+      "T8",
+      "TP8",
+      "P3",
+      "P4",
+      "Oz",
+      ""
+    ]
+  },
+  "fadeInS": 5,
+  "fadeOutS": 5,
+  "phases": [
+    {
+      "name": "T-PEMF pulses, 7 coils",
+      "minutes": 30,
+      "pattern": {
+        "type": "table",
+        "pointMs": 0.5,
+        "gapMs": 12,
+        "data": [
+          255,
+          255,
+          255,
+          255,
+          255,
+          255,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

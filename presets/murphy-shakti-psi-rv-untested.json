@@ -1,0 +1,66 @@
+{
+  "id": "murphy-shakti-psi-rv-untested",
+  "name": "Shakti psychic design (untested): modulated 40 Hz frontal, then occipital",
+  "category": "psi",
+  "evidence": "unverified",
+  "origin": "Todd Murphy (Shakti software; extrapolation from Persinger-lab papers)",
+  "uT": 1,
+  "summary": "Murphy's proposed Shakti design for telepathy: the modulated 40 Hz signal over both frontal lobes for 20 min, then over both occipital lobes for 20 min. He bases it on reported 15-25 ms front-to-back phase shifts in brain waves and writes that 'none of the procedures described on this page have been tested yet'.",
+  "setting": "Practise telepathy or remote-viewing exercises (Murphy). For a fair test, judge results blind, e.g. with the app's Photo-target trial guide.",
+  "schedule": "The vendor's general Shakti rules: at most every 72 h or once a week, never on consecutive days; a series of 3 or 6 sessions, then a 21-day break.",
+  "notes": "Phase 1 drives four frontal coils (Fp1, F3, Fp2, F4) and phase 2 four occipital coils above the bony ridge at the back of the head (O1, PO3, O2, PO4); all coils of a group carry the same signal, and the switch is abrupt. The exact sites are an inference from 'applied first over the frontal lobes, followed by the occipital lobes'. The Shakti's modulated 40 Hz file is proprietary; it is approximated by the built-in phase-modulated sine (a 40 Hz carrier drifting between about 38.5 and 41.5 Hz every 2 s, 1-ms points). The vendor calibrates its modulated 40 Hz signal at 10 mG (1 µT), the default here. Murphy's design moves the signal from front to back once, between phases; a front-to-back sweep in 15-25 ms steps would be a project construct and is not used. He also names the right occipito-temporo-parietal region and the right frontal, right occipital and right temporal lobes as candidate sites. The occipital-only remote-viewing design is murphy-shakti-psi-rv-untested-occipital. Persinger's lab reported that Ingo Swann's remote-viewing accuracy tracked occipital 7 Hz activity (Persinger et al. 2002, one subject) and telepathy-like EEG changes in paired subjects (Persinger et al. 2003, 2010); none has been independently replicated. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). The vendor notes that occipital stimulation could in principle blur vision: stop if your sight changes. Do not use results for decisions about real people, places or money. Not for people with epilepsy; stop on distress.",
+  "targets": [
+    "left-dlpfc",
+    "right-dlpfc",
+    "vmpfc",
+    "primary-visual-cortex"
+  ],
+  "source": "Murphy, Shakti demo: Psychic skills https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/psychic.htm ; Murphy, Shakti demo: Remote viewing https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/remote_v.htm ; Murphy, Shakti demo: Modulated 40 Hz (obe45) signal (10 mG calibration) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/obe45_consent.htm ; Persinger et al. 2002, Percept Mot Skills 94:927 (remote viewing with Ingo Swann) https://pubmed.ncbi.nlm.nih.gov/12081299/ ; Persinger, Koren & Tsang 2003, Percept Mot Skills 97:877 https://pubmed.ncbi.nlm.nih.gov/14738355/ ; Persinger et al. 2010, Neurosci Lett 486:231 https://pubmed.ncbi.nlm.nih.gov/20887774/ ; Murphy, Shakti demo: Safety - how often https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/how_often_is_safe.htm ; Murphy, Shakti demo: Taking breaks https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/break.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 (8 Coil Shakti amygdala signal, sham-controlled) https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "Fp1",
+      "F3",
+      "PO3",
+      "O1",
+      "O2",
+      "PO4",
+      "F4",
+      "Fp2"
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Modulated 40 Hz, frontal lobes",
+      "minutes": 20,
+      "pattern": {
+        "type": "pm",
+        "f0": 40,
+        "f1": 0.5,
+        "depth": 3,
+        "pointMs": 1
+      },
+      "spatial": {
+        "mode": "bilateral",
+        "weights": [1, 1, 0, 0, 0, 0, 1, 1]
+      }
+    },
+    {
+      "name": "Modulated 40 Hz, occipital lobes",
+      "minutes": 20,
+      "pattern": {
+        "type": "pm",
+        "f0": 40,
+        "f1": 0.5,
+        "depth": 3,
+        "pointMs": 1
+      },
+      "spatial": {
+        "mode": "bilateral",
+        "weights": [0, 0, 1, 1, 1, 1, 0, 0]
+      }
+    }
+  ]
+}

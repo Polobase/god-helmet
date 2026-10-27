@@ -1,0 +1,22 @@
+{
+  "id": "lowfield-bell-elf-epoch-probe",
+  "name": "Bell/Marino ELF epoch probe: 2-s 10 Hz and 1.5 Hz epochs",
+  "category": "research",
+  "evidence": "single-lab",
+  "origin": "Bell, Marino, Chesson (Louisiana State University Medical Center), 1991-1996",
+  "uT": 5,
+  "summary": "Research probe after Bell, Marino and Chesson's EEG studies: 2-s epochs of a 10 Hz, then a 1.5 Hz sine field on all eight ring coils in phase, alternating with 2-s field-off epochs, to look for EEG changes at the stimulus frequency. Bell et al. 1994 reported such changes at 20-40 uT; this helmet gives at most 5 uT at 20 mm from each coil, so only the timing is copied.",
+  "notes": "Bell et al. 1994 (J Neurol Sci) reported EEG changes at the stimulus frequency in 19 subjects during 2-s epochs of 1.5 or 10 Hz fields at 0.2-0.4 G (20-40 uT); Bell 1992 (static and 60 Hz fields) found changes more often at central and parietal electrodes. The exposure geometry is not stated in the abstracts (a field applied to the head). The full ring in phase stands in for it, but this field is not uniform: at 5 uT 20 mm from each coil it is 4-8 times weaker than in Bell 1994 and falls to about 0.5 uT at 40-50 mm, so the program copies the timing only. The protocol calls for many 2-s field and 2-s control epochs in random order (the equal split is this project's choice; the abstracts do not give it). The engine cannot randomise, so each phase strictly alternates 2 s field (10 Hz: 20 cycles; 1.5 Hz: 3 cycles, each starting and ending at a zero crossing) and 2 s off. There is no fade-in or fade-out, so field epochs start exactly 0, 4, 8 ... s into each phase. The results come from one lab, and Marino et al. 1996 reported high false-negative rates for the method (42% for a 0.8 G field). EEG changes at the stimulus frequency are exactly where pickup artefacts from the coils appear: test the recording chain with a phantom and run the program blinded against sham (the app's Blind option). The induced electric field at 10 Hz is about 1 uV/m, far below known neural thresholds, so a positive result would need a non-induction explanation and would be extraordinary. The 10-min after-effect test is the separate program lowfield-bell-elf-epoch-probe-aftereffect. Not for people with epilepsy; stop if you feel unwell.",
+  "setting": "Seated, eyes closed, EEG at C3, C4, P3, P4, O1 and O2. Compare the spectra of field and off epochs within each subject.",
+  "schedule": "One run per sitting; repeat with blinded sham runs of the same program.",
+  "targets": [],
+  "source": "Bell et al. 1994, J Neurol Sci (1.5 and 10 Hz, 2-s epochs) https://pubmed.ncbi.nlm.nih.gov/8064317/ ; Bell et al. 1992, Electroencephalogr Clin Neurophysiol (2-s epochs, central and parietal changes) https://pubmed.ncbi.nlm.nih.gov/1281085/ ; Bell, Marino, Chesson & Struve 1991, Lancet 338:1521 https://pubmed.ncbi.nlm.nih.gov/1683938/ ; Marino et al. 1996, J Neurol Sci (false-negative rates) https://pubmed.ncbi.nlm.nih.gov/8994110/ ; Bell et al. 1994, Neuroreport (10 Hz after-effect) https://pubmed.ncbi.nlm.nih.gov/8003686/",
+  "layout": "custom",
+  "placement": {"sites": ["Fpz", "F7", "T7", "P7", "Oz", "P8", "T8", "F8"]},
+  "fadeInS": 0,
+  "fadeOutS": 0,
+  "phases": [
+    {"name": "10 Hz epochs (2 s field / 2 s off)", "minutes": 10, "pattern": {"type": "chirp", "f0": 10, "f1": 10, "sweepMs": 2000, "gapMs": 2000, "pointMs": 0}, "spatial": {"mode": "bilateral"}},
+    {"name": "1.5 Hz epochs (2 s field / 2 s off)", "minutes": 10, "pattern": {"type": "chirp", "f0": 1.5, "f1": 1.5, "sweepMs": 2000, "gapMs": 2000, "pointMs": 0}, "spatial": {"mode": "bilateral"}}
+  ]
+}

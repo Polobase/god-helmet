@@ -1,0 +1,47 @@
+{
+  "id": "persinger-meli-2009-red-light",
+  "name": "Meli 2009: right-hemisphere burst-firing in dim red light",
+  "category": "presence",
+  "evidence": "single-lab",
+  "origin": "Meli & Persinger 2009 (Behavioral Neuroscience Laboratory, Laurentian University)",
+  "uT": 1,
+  "summary": "Thirty minutes of the lab's burst-firing pattern over the right temporal lobe while you sit with your eyes open in dim red light. Persinger's lab reported that the field combined with red light, rather than green or white light, markedly increased dizziness, a sensed presence, \"ego-alien\" thoughts and feelings of detachment from the body (Meli & Persinger 2009).",
+  "notes": "The abstract says the right hemisphere was stimulated (the title says \"over the temporal lobes\") but gives no coil positions or intensity: T8 and TP8 (the other six channels stay silent) and 1 uT, the lab's usual human intensity, are inferences. The burst-firing point values were never published; the built-in accelerating burst with the published timing (230 points of 3 ms = 0.69 s, once every 4 s) stands in for them (the lab's theses give 230, 248 or 289 points and 3 or 4 s between bursts). Light colour and open eyes are part of this protocol, not comfort settings: field subjects reported more visual sensations on the left in red light and on the right in green light. The lab also logged geomagnetic activity: Booth, Koren & Persinger 2005 linked presences to rising activity, while other studies linked it to lower pleasantness, so if you track it, fix the analysis in advance. Karbowski et al. 2015 reported similar sensations from blue LEDs on the right back of the head flashed in one of the lab's field patterns, which if anything points away from the magnetic field as the cause; this helmet has no light channel. presence-right runs the same burst for 20 + 10 min on four right coils (FT8, T8, CP6, TP8). Single-lab finding, never independently replicated. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on fear, headache or distress.",
+  "setting": "Seated with the eyes open in a quiet room lit only by dim red light (the study's comparison conditions were dim green and dim white light).",
+  "schedule": "One 30-min session per condition. For a self-test, compare red with green or white light and field with sham (the app's Blind option) in blinded, counterbalanced sessions on different days, with the rating scale chosen in advance.",
+  "targets": [
+    "right-superior-temporal-gyrus-posterior",
+    "right-tpj"
+  ],
+  "source": "Meli & Persinger 2009, Red light facilitates the sensed presence elicited by application of weak, burst-firing magnetic fields over the temporal lobes, Int J Neurosci 119:68-75 https://pubmed.ncbi.nlm.nih.gov/19116832/ ; Booth, Koren & Persinger 2005, Int J Neurosci 115:1053-1079 (sensed presence and geomagnetic activity) https://pubmed.ncbi.nlm.nih.gov/16051550/ ; Karbowski, Saroka, Murugan & Persinger 2015, Epilepsy Behav 51:127-132 (blue-light version) https://pubmed.ncbi.nlm.nih.gov/26276250/ ; Persinger, Hoang & Baker-Price 2009, Electromagn Biol Med 28:374-382 (burst-firing once every 3 s for about 0.7 s) https://pubmed.ncbi.nlm.nih.gov/20017628/ ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms points) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Collins 2014, MA thesis, Laurentian University (3 ms points, 4 s between bursts) https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc ; Granqvist et al. 2005, Neurosci Lett 379:1-6 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "",
+      "",
+      "",
+      "",
+      "T8",
+      "TP8",
+      "",
+      ""
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Right temporal burst-firing, eyes open, red light",
+      "minutes": 30,
+      "pattern": {
+        "type": "burst",
+        "sweepMs": 690,
+        "gapMs": 3310,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "right"
+      }
+    }
+  ]
+}

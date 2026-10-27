@@ -1,0 +1,21 @@
+{
+  "id": "lowfield-ctbs-pattern",
+  "name": "cTBS pattern (Huang 2005 timing) at F4",
+  "category": "lowfield",
+  "evidence": "established",
+  "origin": "Huang & Rothwell (UCL) 2005",
+  "uT": 5,
+  "summary": "Copies continuous theta-burst timing (Huang et al. 2005): pulse triplets at 50 Hz repeated at 5 Hz without a pause for 40 s, 200 bursts and 600 pulses, on one coil at F4 over the right DLPFC (an example site). At uT strength this is a timing pattern only.",
+  "notes": "Suppa et al. 2008 define cTBS as one 40-s train of 3-pulse 50 Hz bursts repeated at 5 Hz (200 bursts, 600 pulses) at 80% of active motor threshold; at TMS strength Huang et al. 2005 reported an inhibitory after-effect on the motor cortex. TMS induces roughly 10^5 times this helmet's electric field, and in rodent low-intensity rTMS at mT strength Dufor et al. 2019 found cTBS ineffective. There are no data at uT, so do not expect or claim inhibition: the evidence rating applies to cTBS at TMS strength, not to this pattern. At TMS strength, prolonged (doubled) cTBS has been reported to reverse the direction of the effect. The timing is exact; each TMS pulse becomes +A for 0.5 ms then -A for 0.5 ms, since shorter shapes cannot be resolved at 2 kHz. cTBS has been used over motor cortex and other cortex, so the site is a user choice; F4 (right DLPFC) is one example site, and the variant lowfield-ctbs-pattern-m1 uses C3 over the motor cortex. There is no fade-in or fade-out, so all 200 bursts run at full strength. It is not a treatment. Not for people with epilepsy; stop if you feel unwell.",
+  "setting": "Seated, awake; a single 40-s block.",
+  "schedule": "One block per sitting; no schedule has been tested at uT.",
+  "targets": ["right-dlpfc"],
+  "source": "Huang et al. 2005, Neuron https://pubmed.ncbi.nlm.nih.gov/15664172/ ; Suppa et al. 2008, J Physiol (iTBS and cTBS definitions) https://pmc.ncbi.nlm.nih.gov/articles/PMC2614023/ ; Dufor et al. 2019, Sci Adv (rodent low-intensity rTMS) https://pmc.ncbi.nlm.nih.gov/articles/PMC6821463/",
+  "layout": "custom",
+  "placement": {"sites": ["", "", "", "", "F4", "", "", ""]},
+  "fadeInS": 0,
+  "fadeOutS": 0,
+  "phases": [
+    {"name": "cTBS block (200 bursts, 600 pulses)", "seconds": 40, "pattern": {"type": "table", "pointMs": 0.5, "gapMs": 0, "data": [255, 1, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 1, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 1, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128]}, "spatial": {"mode": "single", "channel": 4}}
+  ]
+}

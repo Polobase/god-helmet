@@ -1,0 +1,21 @@
+{
+  "id": "persinger-desano-1987-imagery-4hz",
+  "name": "De Sano & Persinger 1987: 4 Hz across the temporal lobes, 15 min",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "De Sano & Persinger 1987 (Laurentian University)",
+  "uT": 1,
+  "summary": "About 15 min of a 4 Hz field across both mid-superior temporal lobes while you watch a green light pulsing at 4 Hz and imagine encountering an alien situation, with suggestibility measured before and after. De Sano & Persinger reported results \"commensurate with the hypothesis\" that weak brain-frequency fields influence imaginings and suggestibility, without an effect size.",
+  "notes": "Twenty-four volunteers (12 women, 12 men) received sham, 1 Hz or 4 Hz fields; this is the 4 Hz arm (the 1 Hz arm differs only in frequency; for sham use the app's Blind option). \"Applied across their mid-superior temporal lobes\" is mapped to T7 and C5 on the left and T8 and C6 on the right, all driven together with one polarity (an inference; the lab's coils and wiring are not described). Waveform and intensity are not given: a smooth 4 Hz sine on 1-ms points and 1 uT, the lab's later standard, are assumptions. The green light is not part of the helmet: use a separate green lamp or screen flashing at 4 Hz; it will not be phase-locked to the field, and the paper only says it pulsed \"at the same frequency\". Flashing light can trigger seizures in photosensitive people. The abstract does not name the suggestibility test. The light, the instruction and the setting are strong suggestions in themselves, and the lab later argued that simple sine fields are not equivalent to its complex patterns (Richards, Persinger & Koren 1993). No independent group has tested this protocol. Independent double-blind tests of the lab's later God Helmet patterns found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy; stop on fear or distress.",
+  "setting": "Seated in a dim, quiet room (the abstract does not describe the room), watching a green light that pulses at 4 Hz and imagining that you are encountering an alien situation; a suggestibility test before and after.",
+  "schedule": "One exposure per person in the original (between groups). For a self-test, compare active and sham sessions in Blind mode on separate days, with the outcome decided in advance.",
+  "targets": ["left-superior-temporal-gyrus-posterior", "right-superior-temporal-gyrus-posterior"],
+  "source": "De Sano & Persinger 1987, Geophysical variables and behavior: XXXIX. Alterations in imaginings and suggestibility during brief magnetic field exposures, Percept Mot Skills 64:968-970 https://pubmed.ncbi.nlm.nih.gov/3601616/ ; Richards, Persinger & Koren 1993, Modification of activation and evaluation properties of narratives by weak complex magnetic field patterns that simulate limbic burst firing, Int J Neurosci 71:71-85 https://pubmed.ncbi.nlm.nih.gov/8407157/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["T7", "C5", "", "", "T8", "C6", "", ""]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "4 Hz across both temporal lobes, green light at 4 Hz", "minutes": 15, "pattern": {"type": "sine", "f0": 4, "pointMs": 1}, "spatial": {"mode": "bilateral"}}
+  ]
+}

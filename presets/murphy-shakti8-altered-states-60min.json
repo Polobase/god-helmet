@@ -1,0 +1,85 @@
+{
+  "id": "murphy-shakti8-altered-states-60min",
+  "name": "8 Coil Shakti: Altered States (frontal, then temporal), 60 min",
+  "category": "spiritual",
+  "evidence": "claim",
+  "origin": "Todd Murphy (8 Coil Shakti software); signal templates licensed from Persinger & Koren",
+  "uT": 1,
+  "summary": "Todd Murphy's 'Altered States' session for the 8 Coil Shakti, the Feelgood session in reverse: the amygdala and hippocampus signals in sequence over both frontal lobes, then over both temporal lobes, to 'build activity in the frontal lobes' and then shunt it to the temporal lobes. Murphy reports effects and after-effects 'consistent with temporal lobe phenomena, including altered states', and also suggests it before meditation.",
+  "notes": "Phase 1 (30 min) plays the signal on the four frontal coils (Fp1, AF3, Fp2, AF4), phase 2 (30 min, abrupt switch) on the four temporal coils (FT7, TP7, FT8, TP8); in each phase the four coils run together without rotation, like one Shakti stereo channel. The output page is inconsistent about channels: its header lists phase 1 on the right channel and phase 2 on the left, its text 'the Left Channel only' on the frontal lobes, 'followed by the same signals (Right Channel only) to the temporal lobes'. Both put the frontal lobes first (with the Feelgood wiring the right channel drives the frontal coils), which this file follows. The frontal sites are an inference (the vendor shows photos only). Coil polarity follows the vendor's Feelgood photos, which use the same eight coils: the Shakti's coils come as + and - ('North and South'), one of each per stereo channel on each side. On the forehead AF3 (upper left) and Fp2 (lower right) are reversed (weight -1) and Fp1 and AF4 run as is; on the temples FT7 and TP8 are reversed and TP7 and FT8 run as is, as on the front and back coils of the vendor's coil chart (the vendor's side views disagree: the two on the Feelgood consent page show the front coil + and the back coil -, a 2021 view on the Mood enhancement page the reverse). The signal is 'amygdala and hippocampus in sequence': one amygdala burst, about 4 s of silence, one hippocampal burst train, 4 s of silence, repeated, which gives about 9.3 s of field per minute (vendor: about 9.6 s). Both waveforms are proprietary. The amygdala 'burstx' signal is approximated by the built-in accelerating burst (6 to 30 Hz) of 230 points at Shakti's standard 3-ms points (0.69 s, after the published 230-point burst-firing pattern); the hippocampal 'LTP' signal by 5 theta bursts of 4 biphasic pulses 9 ms apart, repeated at 5.4 Hz (the spectral peak the vendor gives for its LTP signal) on the same 3-ms grid (0.78 s; the burst count is a choice). The output page offers 40- and 60-min runs but gives no phase lengths, so the 30 + 30 min here (20 + 20 in murphy-shakti8-altered-states-40min) is inferred. The vendor reports headache or pressure in about 2% of users with the hippocampal signal (a figure it attributes to an earlier version of the technology); if so, lower the intensity by one third. The effects are vendor claims backed only by user reports. Independent double-blind tests found no field effect (Granqvist 2005; Gendle & McGrath 2012, the latter with the 8 Coil Shakti amygdala signal). Not for anyone with epilepsy or a seizure history, a psychiatric condition or medication, migraine or brain injury, or on drugs; this is not a treatment. Stop at once on fear or distress. Revised after a re-check of the vendor's pages (2026): the output page's channel inconsistency, the inferred phase lengths and the per-length schedule noted, and the polarity remark corrected; sites, polarity and signals are unchanged and remain approximations as described.",
+  "setting": "For effects during the session: darkness and silence, eyes closed, relaxed without meditating or falling asleep. For meditation: end the session 1-2 h before you practise; never meditate or use other mind machines during it (vendor).",
+  "schedule": "Vendor (Feelgood and Altered States page): no more often than once a week when effects appear for the 60-min session (every three days for the 40-min one), never on consecutive days; up to 6 sessions, then a 3-week break. The general Shakti rule is stricter for 60-min sessions such as this one: at most once every 3 weeks (weekly only if sessions have no effect). If no effects appear, the Feelgood page suggests alternating Altered States and Feelgood (murphy-shakti8-feelgood-2phase-60min).",
+  "targets": ["vmpfc", "left-dlpfc", "right-dlpfc", "left-temporal-pole", "right-temporal-pole", "left-superior-temporal-gyrus-posterior", "right-superior-temporal-gyrus-posterior", "left-amygdala", "right-amygdala", "left-hippocampus-head", "left-hippocampus-body", "right-hippocampus-head", "right-hippocampus-body"],
+  "source": "Murphy, Shakti demo: Altered states output page https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/output_altered_states.htm ; Murphy, Shakti demo: Two-phase sessions list https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/two-phase_consent.htm ; Murphy, Shakti demo: Feelgood and Altered States consent (schedule by session length) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/feelgood_consent.htm ; Murphy, Meditation and the 8 Coil Shakti https://www.god-helmet.com/wp/winshakti/rotating/shakti_meditation.htm ; Murphy, The Feelgood Session for the 8 Coil Shakti (coil photos with + and - coils) https://www.god-helmet.com/wp/winshakti/rotating/feelgood_session.htm ; Murphy, Mood enhancement & the 8 Coil Shakti (Feelgood side photo; coils 'North and South') https://www.god-helmet.com/wp/winshakti/rotating/shakti_happiness.htm ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? (3-ms points, 4-s latency) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Murphy, Shakti demo: Formal Discussion (about 9.6 s of field per minute, 10-20 mG) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/mono_proposal.htm ; Murphy, Shakti demo: Random Theta Band output (LTP spectral peak 5.4 Hz) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/5jut4ranconsent.htm ; Murphy, Shakti demo: Getting Started (8-coil chart, +/- coil pairs) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/getting_started_basic.htm ; Murphy, Shakti demo: Safety - how often https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/how_often_is_safe.htm ; Murphy, Shakti demo: How long should sessions be https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/safe_durations.htm ; Ryczko & Persinger 2002, Percept Mot Skills 95:592 (230-point burst-firing pattern once every 3 s) https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Murphy, Shiva demo: Consumer information (headache with hippocampal signals) https://www.god-helmet.com/wp/shiva/shiva_demo/shiva_infomed_consent.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 (8 Coil Shakti amygdala signal, sham-controlled) https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": ["Fp1", "AF3", "FT7", "TP7", "Fp2", "AF4", "FT8", "TP8"]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "tableData": [128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128],
+  "phases": [
+    {
+      "name": "Frontal lobes: amygdala + hippocampus in sequence",
+      "minutes": 30,
+      "tracks": [
+        {
+          "pattern": {
+            "type": "burst",
+            "f0": 6,
+            "f1": 30,
+            "sweepMs": 690,
+            "gapMs": 8779,
+            "pointMs": 3
+          },
+          "spatial": {
+            "mode": "bilateral",
+            "weights": [1, -1, 0, 0, -1, 1, 0, 0]
+          }
+        },
+        {
+          "pattern": {
+            "type": "table",
+            "pointMs": 3,
+            "gapMs": 4000
+          },
+          "spatial": {
+            "mode": "bilateral",
+            "weights": [1, -1, 0, 0, -1, 1, 0, 0]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Temporal lobes: amygdala + hippocampus in sequence",
+      "minutes": 30,
+      "tracks": [
+        {
+          "pattern": {
+            "type": "burst",
+            "f0": 6,
+            "f1": 30,
+            "sweepMs": 690,
+            "gapMs": 8779,
+            "pointMs": 3
+          },
+          "spatial": {
+            "mode": "bilateral",
+            "weights": [0, 0, -1, 1, 0, 0, 1, -1]
+          }
+        },
+        {
+          "pattern": {
+            "type": "table",
+            "pointMs": 3,
+            "gapMs": 4000
+          },
+          "spatial": {
+            "mode": "bilateral",
+            "weights": [0, 0, -1, 1, 0, 0, 1, -1]
+          }
+        }
+      ]
+    }
+  ]
+}

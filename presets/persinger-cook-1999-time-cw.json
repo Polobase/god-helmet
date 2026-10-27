@@ -1,0 +1,210 @@
+{
+  "id": "persinger-cook-1999-time-cw",
+  "name": "Cook 1999: six patterns, clockwise (comparison arm)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Cook, Koren & Persinger 1999 (Laurentian University), circumcerebral \"Octopus\" ring",
+  "uT": 5,
+  "summary": "The clockwise comparison arm of Cook, Koren & Persinger 1999: the same six 2.5-min patterns and 10-s estimates as persinger-cook-1999-time-ccw, rotated clockwise. Persinger's lab reported that this group's 10-s estimates were about 3 s shorter than the counter-clockwise group's.",
+  "notes": "Identical to persinger-cook-1999-time-ccw except for the direction: coil 1 (Fp1), then Fp2, FT8, TP8, O2, O1, TP7, FT7; the paper does not say where the clockwise sequence started. Booth, Koren & Persinger 2008 later reported more left-hemisphere EEG power with clockwise and more right-hemisphere power with counter-clockwise rotation. About 10 uT in the original; the default is this helmet's 5 uT limit. Cook 1999 does not list its six patterns; they are filled from the lab's six-configuration table in the Swann paper (Persinger et al. 2002, read from a scanned copy), which cites Cook 1999 for its patterns: burst-firing and the frequency-modulated Thomas pulse, each at 20 ms + 2 ms per coil (20 to 34 ms, a 216-ms turn), 100 ms + 20 ms (100 to 240 ms, a 1360-ms turn, the \"additions of 20 ms\") and 200 ms - 2 ms (200 to 186 ms, 1544 ms), with that table's point durations and gaps between pattern repeats (its sixth point duration is missing and taken as 1 ms), in the table's order, since Cook gives none. The signs are read literally, + longer and - shorter at each next coil, as in Cook's \"additions of 20 ms\". Persinger & Lavallee 2010 use \"+\" to mean shorter, which would give 20 to 6 ms and 200 to 214 ms; the literal reading was chosen because the +20 rows cannot shorten seven times from 100 ms, it fits the abstract's turns of about 200 to 2000 ms better (216 to 1544 ms; 20 to 6 ms would make a 104-ms turn), and the Koren software patent (US 6,312,376) uses the plain sign. The schedule the lab actually ran was never published. Saroka (2016) says Cook rotated the Thomas pulse and names no burst-firing pattern, so B1-B3 are the least certain part; the Thomas pulse plays here from the exact 849-point table. The burst-firing values were never published, so the built-in accelerating burst stands in (230 points; at 1 ms per point it plays three times faster). Coil 1 sits over the left frontal and coil 8 over the right prefrontal region (Persinger & Lavallee 2010); Fp1, FT7, TP7, O1, O2, TP8, FT8, Fp2 each lie within 5 degrees of that 45-degree ring. The 30-s silent pauses for the estimate are an addition; the abstract says only that estimates followed each 2.5-min exposure. Single-lab result, never independently replicated. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "setting": "Seated or reclined, eyes closed, in a quiet, dim room. In each pause, mark the start and end of what feels like 10 s for a helper with a stopwatch (or on a stopwatch you cannot see) and write down the result.",
+  "schedule": "One session in the original. For a self-test, run this and the counter-clockwise version on different days in blinded, random order and compare the 10-s estimates.",
+  "targets": [
+    "left-superior-temporal-gyrus-posterior",
+    "left-tpj"
+  ],
+  "source": "Cook, Koren & Persinger 1999, Subjective time estimation by humans is increased by counterclockwise but not clockwise circumcerebral rotations of phase-shifting magnetic pulses in the horizontal plane, Neurosci Lett 268:61-64 https://pubmed.ncbi.nlm.nih.gov/10400078/ ; Persinger, Roll, Tiller, Koren & Cook 2002, Percept Mot Skills 94:927-949 (Table 1, six configurations) https://pubmed.ncbi.nlm.nih.gov/12081299/ ; Persinger & Lavallee 2010, J Conscious Explor Res 1(7):785-807 (20+2 notation; coil 1 left frontal, coil 8 right prefrontal) https://jcer.com/index.php/jcj/article/view/99 ; Saroka 2016, PhD dissertation, Laurentian University (Cook 1999 rotated the Thomas pulse with \"the Octopus\") https://laurentian.scholaris.ca/server/api/core/bitstreams/be015982-0b0f-4c27-a031-797637c364e1/content ; Thomas, Prato, Kavaliers & Persinger, US 6,234,953 B1, Table 1 (Thomas pulse point values) https://patents.google.com/patent/US6234953B1/en ; Buckner et al. 2015, PLoS ONE 10(4) (Thomas file: 849 points at 3 ms, 2.55 s per cycle) https://europepmc.org/article/MED/25875081 ; Booth, Koren & Persinger 2008, Electromagn Biol Med 27:426-436 (clockwise vs counter-clockwise) https://pubmed.ncbi.nlm.nih.gov/19037792/ ; Koren & Persinger, US 6,312,376 B1 (sequence interval and sequence acceleration) https://patents.google.com/patent/US6312376B1/en ; Granqvist et al. 2005, Neurosci Lett 379:1-6 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "Fp1",
+      "FT7",
+      "TP7",
+      "O1",
+      "O2",
+      "TP8",
+      "FT8",
+      "Fp2"
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "B1 burst 1 ms pts, 1 ms gap, 20->34 ms/coil",
+      "minutes": 2.5,
+      "pattern": {
+        "type": "burst",
+        "f0": 18,
+        "f1": 90,
+        "sweepMs": 230,
+        "gapMs": 1,
+        "pointMs": 1
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "cw",
+        "dwell": [
+          20,
+          2,
+          34
+        ]
+      }
+    },
+    {
+      "name": "Pause 1: estimate a 10-s interval (field off)",
+      "seconds": 30,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "B2 burst 3 ms pts, 1 ms gap, 100->240 ms/coil (+20)",
+      "minutes": 2.5,
+      "pattern": {
+        "type": "burst",
+        "sweepMs": 690,
+        "gapMs": 1,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "cw",
+        "dwell": [
+          100,
+          20,
+          240
+        ]
+      }
+    },
+    {
+      "name": "Pause 2: estimate a 10-s interval (field off)",
+      "seconds": 30,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "B3 burst 1 ms pts, 3 s gap, 200->186 ms/coil",
+      "minutes": 2.5,
+      "pattern": {
+        "type": "burst",
+        "f0": 18,
+        "f1": 90,
+        "sweepMs": 230,
+        "gapMs": 3000,
+        "pointMs": 1
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "cw",
+        "dwell": [
+          200,
+          -2,
+          186
+        ]
+      }
+    },
+    {
+      "name": "Pause 3: estimate a 10-s interval (field off)",
+      "seconds": 30,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "T1 Thomas 1 ms pts, 1 ms gap, 20->34 ms/coil",
+      "minutes": 2.5,
+      "pattern": {
+        "type": "table",
+        "pointMs": 1,
+        "gapMs": 1
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "cw",
+        "dwell": [
+          20,
+          2,
+          34
+        ]
+      }
+    },
+    {
+      "name": "Pause 4: estimate a 10-s interval (field off)",
+      "seconds": 30,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "T2 Thomas 3 ms pts, 1 ms gap, 100->240 ms/coil (+20)",
+      "minutes": 2.5,
+      "pattern": {
+        "type": "table",
+        "pointMs": 3,
+        "gapMs": 1
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "cw",
+        "dwell": [
+          100,
+          20,
+          240
+        ]
+      }
+    },
+    {
+      "name": "Pause 5: estimate a 10-s interval (field off)",
+      "seconds": 30,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "T3 Thomas 1 ms pts, 3 s gap, 200->186 ms/coil",
+      "minutes": 2.5,
+      "pattern": {
+        "type": "table",
+        "pointMs": 1,
+        "gapMs": 3000
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "cw",
+        "dwell": [
+          200,
+          -2,
+          186
+        ]
+      }
+    },
+    {
+      "name": "Pause 6: estimate a 10-s interval (field off)",
+      "seconds": 30,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ],
+  "tableData": [128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128]
+}

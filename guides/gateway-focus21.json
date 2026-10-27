@@ -1,0 +1,330 @@
+{
+  "id": "gateway-focus21",
+  "name": "Gateway 5 · Focus-21-style: the edge, with a blinded trial",
+  "category": "gateway",
+  "summary": "The deepest session: delta-dominant sound with quiet beta 'anchors' that help you keep a thread of awareness. Monroe described Focus 21 as the equivalent of deep sleep with the mind awake, 'the edge'; the 1983 Army assessment aimed it at the future. This guide tests whether impressions gathered at the edge match a hidden, pre-committed target: the helmet commits to a target picture before you start, then you write, sketch, lock, judge and see the reveal. Because the target is fixed before the session, a hit cannot tell precognition from clairvoyance; the trial does not isolate the future. Layer values are our design, built from the Lane et al. 1998 set. Optional blinded helmet arm: 4, 7, then 1 Hz in-phase sine, untested, off during the trial. One trial means little: with a realistic effect size (about 0.16) even 50 trials have only about 30 % power. Decide the number of trials in advance and keep every result.",
+  "evidence": "claim",
+  "minutes": 64,
+  "requires": { "headphones": true, "helmet": "optional", "pool": true },
+  "setting": "Quiet room, dim (not dark) light, reclined or lying down, closed-back stereo headphones (needed for binaural mode; on speakers switch to isochronic mode). Not right after a heavy meal; empty your bladder and silence your phone. Best when you are rested. Never while driving. Not late at night, so that you are less likely to fall asleep.",
+  "cautions": "Stop at once (count back and open your eyes, or move a finger) on dizziness, panic, headache or ringing ears. Do not use these sessions if you have epilepsy or photosensitivity, are in a psychiatric crisis or have a hearing problem, unless a doctor agrees. Keep the volume low: WHO advises an average of 80 dB(A) or less and device volume of 60 % or less. No driving, machinery or exams for at least 30 minutes afterwards: theta and delta beats did worse than beta beats on vigilance (Lane et al. 1998) and lowered recall against a noise control (Garcia-Argibay et al. 2019). Sound only; the app never uses flicker. This is an untested composite and not The Monroe Institute's program: no recordings, scripts or affirmation of theirs are used. This is the session most likely to end in sleep or grogginess; the return is longer for that reason. Exclude trials in which you fell asleep before the target step only if you decided so before the series. The helmet arm is experimental and runs only blinded (real or sham, revealed after your ratings): the god-helmet.com Shakti safety page advises against combining the helmet with binaural-beat devices in real time.",
+  "unlock": "Only after repeated Focus-10, 12 and 15-style sessions.",
+  "sources": [
+    { "title": "Monroe RA (1994) Ultimate Journey. Doubleday" },
+    {
+      "title": "McDonnell, LTC, US Army INSCOM (1983) Analysis and Assessment of Gateway Process, CREST CIA-RDP96-00788R001700210016-5 (a full copy is on archive.org)",
+      "url": "https://archive.org/details/cia-gateway"
+    },
+    {
+      "title": "Lane JD, Kasian SJ, Owens JE, Marsh GR (1998) Binaural auditory beats affect vigilance performance and mood. Physiol Behav 63:249-252",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9423966/"
+    },
+    {
+      "title": "Lane et al. 1998, full text with the stimulus description (carriers 100/200/250/300 Hz, tones 15 dB above pink noise)",
+      "url": "https://hemi-sync.com/research-papers/binaural-auditory-beats-affect-vigilance-performance-mood/"
+    },
+    {
+      "title": "Wahbeh H et al. (2007) Binaural beat technology in humans: a pilot study to assess neuropsychologic, physiologic, and electroencephalographic effects (133/140 Hz carriers, 7 Hz). J Altern Complement Med 13:199-206",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17388762/"
+    },
+    {
+      "title": "god-helmet.com: Shakti safety page (do not combine with binaural-beat devices in real time)",
+      "url": "https://www.god-helmet.com/wp/winshakti/safety.htm"
+    },
+    {
+      "title": "WHO: Deafness and hearing loss, safe listening",
+      "url": "https://www.who.int/news-room/questions-and-answers/item/deafness-and-hearing-loss-safe-listening"
+    }
+  ],
+  "helmetArm": { "preset": "guide-gateway-f21", "blind": true, "steps": ["focus10", "focus12", "focus15", "edge", "reception"] },
+  "steps": [
+    {
+      "id": "check-in",
+      "title": "Check-in and volume",
+      "minutes": 1,
+      "instructions": "Put on the headphones the right way round and lie back.\n\nYou hear soft pink noise, like distant surf, drifting slowly from side to side. Keep the volume you set at calibration, or turn it down until the sound is quiet and comfortable: the tones that follow are about 15 dB louder than this noise. Stay at or below 60 % device volume.\n\nTry not to watch the step timer during the session. Rate how you feel right now.",
+      "audio": { "layers": [], "noise": { "levelDb": -15, "swellS": 6 } },
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "calm-before", "label": "Calm", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "alert-before", "label": "Alert", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "drowsy-before", "label": "Drowsy", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "trial",
+      "title": "Hidden target",
+      "minutes": 1,
+      "instructions": "The helmet now picks a target picture from your pool with its random generator and commits to it. You see only the trial number. You will describe the picture you are shown at the end of this session.",
+      "audio": { "layers": [], "noise": { "levelDb": -15, "swellS": 6 } },
+      "input": { "type": "trial", "action": "create", "mode": "rv" },
+      "advance": "manual"
+    },
+    {
+      "id": "prep",
+      "title": "Short preparation",
+      "minutes": 5,
+      "instructions": "Close your eyes and go through the preparation at your own pace:\n\n1. **Set-aside box:** turn each worry or task into a simple symbol, put it in a strong container and close the lid.\n2. **Breathing:** slow breaths, filling the body region by region from the chest down to the feet; hold only if it is comfortable.\n3. **Humming:** one long, steady tone on each out-breath; feel it in your head and chest.\n\nThe sound changes when it is time to move on.",
+      "audio": { "layers": [{ "carrier": 200, "beat": 10 }], "noise": { "levelDb": -15, "swellS": 6 } },
+      "advance": "timer"
+    },
+    {
+      "id": "focus10",
+      "title": "Focus-10-style: count 1 to 10",
+      "minutes": 5,
+      "instructions": "Count from 1 to 10 and settle into the body-asleep, mind-awake balance.",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1.5 },
+          { "carrier": 200, "beat": 4 },
+          { "carrier": 250, "beat": 4 },
+          { "carrier": 300, "beat": 16, "gainDb": -10, "rampS": 60 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "focus12",
+      "title": "Focus-12-style: count 11 and 12",
+      "minutes": 4,
+      "instructions": "Count eleven, twelve, and let your awareness widen.",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1.5 },
+          { "carrier": 200, "beat": 4 },
+          { "carrier": 250, "beat": 4 },
+          { "carrier": 300, "beat": 16, "gainDb": -10 },
+          { "carrier": 400, "beat": 24, "gainDb": -12, "rampS": 30 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 }
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "focus15",
+      "title": "Focus-15-style: count 13 to 15",
+      "minutes": 4,
+      "instructions": "Count thirteen, fourteen, fifteen, and let time thin out.",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1.5 },
+          { "carrier": 200, "beat": 4 },
+          { "carrier": 250, "beat": 4 },
+          { "carrier": 300, "beat": 16, "gainDb": -14 },
+          { "carrier": 400, "beat": 24, "gainDb": -18 },
+          { "carrier": 133, "beat": 7, "rampS": 30 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "edge",
+      "title": "Count 16 to 21: the edge",
+      "minutes": 5,
+      "instructions": "Count on to twenty-one. Let everything become very quiet and spacious while a thread of awareness stays awake.\n\n*Sound (our design): the lowest beat glides from 1.5 to 1 Hz, the 250 Hz layer goes, and the 16 and 24 Hz layers stay on quietly as \"awake\" anchors.*",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": { "from": 1.5, "to": 1 } },
+          { "carrier": 200, "beat": 4, "gainDb": -3 },
+          { "carrier": 133, "beat": 7, "gainDb": -6 },
+          { "carrier": 300, "beat": 16, "gainDb": -12 },
+          { "carrier": 400, "beat": 24, "gainDb": -18 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "reception",
+      "title": "Open reception",
+      "minutes": 8,
+      "instructions": "No task. Notice anything that arrives: shapes, colours, textures, sounds, feelings, a sense of place.",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1 },
+          { "carrier": 200, "beat": 4, "gainDb": -3 },
+          { "carrier": 133, "beat": 7, "gainDb": -6 },
+          { "carrier": 300, "beat": 16, "gainDb": -12 },
+          { "carrier": 400, "beat": 24, "gainDb": -18 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 }
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "target",
+      "title": "The target",
+      "minutes": 10,
+      "instructions": "Turn your attention to the picture you will be shown at the end of this session. Let raw impressions come: shapes, colours, textures, sounds, the feel of a place. Don't name or guess; just collect. You will write them down after the return.",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1 },
+          { "carrier": 200, "beat": 4, "gainDb": -3 },
+          { "carrier": 133, "beat": 7, "gainDb": -6 },
+          { "carrier": 300, "beat": 16, "gainDb": -12 },
+          { "carrier": 400, "beat": 24, "gainDb": -18 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 }
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "return-15",
+      "title": "Count back 21 to 15",
+      "seconds": 60,
+      "instructions": "Count down from twenty-one to fifteen and pause.",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1.5 },
+          { "carrier": 200, "beat": 4 },
+          { "carrier": 250, "beat": 4 },
+          { "carrier": 300, "beat": 16, "gainDb": -14 },
+          { "carrier": 400, "beat": 24, "gainDb": -18 },
+          { "carrier": 133, "beat": 7 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "return-12",
+      "title": "Count back 15 to 12",
+      "seconds": 60,
+      "instructions": "Count down from fifteen to twelve and pause.",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1.5 },
+          { "carrier": 200, "beat": 4 },
+          { "carrier": 250, "beat": 4 },
+          { "carrier": 300, "beat": 16, "gainDb": -10 },
+          { "carrier": 400, "beat": 24, "gainDb": -12 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "return-10",
+      "title": "Count back 12 to 10",
+      "seconds": 60,
+      "instructions": "Count down from twelve to ten and pause.",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1.5 },
+          { "carrier": 200, "beat": 4 },
+          { "carrier": 250, "beat": 4 },
+          { "carrier": 300, "beat": 16, "gainDb": -10 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "return-1",
+      "title": "Count back from 10 to 1",
+      "seconds": 240,
+      "instructions": "Count slowly from 10 to 1. Move and stretch, and sit up slowly. Take your time: this was the deepest session.",
+      "audio": {
+        "layers": [
+          { "carrier": 200, "beat": 16, "gainDb": -3 },
+          { "carrier": 300, "beat": 24, "gainDb": -3 },
+          { "carrier": 100, "beat": 0, "gainDb": -3 },
+          { "carrier": 250, "beat": 0, "gainDb": -3 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30,
+        "fadeOutS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "impressions",
+      "title": "Write your impressions",
+      "minutes": 3,
+      "instructions": "Before any feedback, write your raw impressions: shapes, colours, textures, sounds, feelings, a sense of place. Short words are better than names.",
+      "audio": null,
+      "input": { "type": "text", "key": "impressions", "prompt": "Your impressions of the target" },
+      "advance": "manual"
+    },
+    {
+      "id": "sketch",
+      "title": "Sketch",
+      "minutes": 2,
+      "instructions": "Sketch the main shapes and how they are arranged.",
+      "audio": null,
+      "input": { "type": "sketch", "key": "sketch", "prompt": "Sketch the main shapes and their layout" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock",
+      "title": "Lock",
+      "minutes": 1,
+      "instructions": "Lock your response. Its fingerprint is stored, so it cannot be changed after you see the target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge",
+      "title": "Rank the pictures",
+      "minutes": 3,
+      "instructions": "Rank all pictures of the drawn set, best match with your impressions first. If someone who doesn't know the target can judge, hand them the phone.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 1,
+      "instructions": "The helmet reveals the target and the app checks the commitment. Count this trial whatever the result.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    },
+    {
+      "id": "report",
+      "title": "Session report",
+      "minutes": 3,
+      "instructions": "Fill in the session report while the session is fresh.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "gateway-report" },
+      "advance": "manual"
+    },
+    {
+      "id": "check-out",
+      "title": "How you feel now",
+      "minutes": 1,
+      "instructions": "Sit up slowly. Rate how you feel now, the same way as at the start.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "calm-after", "label": "Calm", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "alert-after", "label": "Alert", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "drowsy-after", "label": "Drowsy", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very" },
+          {
+            "key": "asleep",
+            "label": "Did you fall asleep before the target step? (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

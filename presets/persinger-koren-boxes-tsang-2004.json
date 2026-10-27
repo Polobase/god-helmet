@@ -1,0 +1,37 @@
+{
+  "id": "persinger-koren-boxes-tsang-2004",
+  "name": "Koren boxes: 4-solenoid temporal burst-firing, 30 min (Tsang 2004 Shakti comparison)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Persinger & Koren lab, Laurentian University ('Koren boxes'); compared with Shakti by Tsang, Koren & Persinger 2004",
+  "uT": 1,
+  "summary": "The lab's own arm of Tsang, Koren & Persinger 2004: four solenoids ('Koren boxes') with a burst-firing field through the temporal lobes, 30 min once a week for 4 weeks, compared with Murphy's sound-card Shakti and sham. The lab reported no QEEG difference between treatments except a high-alpha interaction due mainly to Shakti.",
+  "notes": "Tsang, Koren & Persinger 2004 recorded QEEG over the left and right frontal, temporal, parietal and occipital lobes on 4 successive weeks in 12 subjects before each 30-min exposure to Shakti (Todd Murphy's device, driven from compact disc through a computer sound card), to \"the set of 4 solenoids (Koren boxes) generating a burst-firing magnetic field through the temporal lobes\", or to a sham field. Compared with baseline there were no treatment differences in delta, theta, low alpha, beta or gamma; a session-by-treatment interaction in high alpha (10.5-13 Hz) was \"due primarily to the Shakti treatment\", which the authors called \"congruent with the subjective experiences reported by some users of the technology\". Run the other arms as persinger-shakti-arm-tsang-2004 (or murphy-shakti-helmet-stereo) and sham. Approximations: the abstract gives no sites or field strength; two solenoids per side at T7, TP7 and T8, TP8, driven together, and 1 uT (the lab's usual human level) are inferences. The burst-firing point values were never published, so the built-in accelerating burst (6 to 30 Hz) stands in: 230 points of 3 ms (0.69 s, the best-supported of the lab's 230, 248 and 289-point lengths) once every 4 s. The same year the lab reported that rat analgesia appeared with a .wav file played through a telephone pick-up coil but not with a compact-disc source (Martin, Koren & Persinger 2004), its argument that playback timing, not the nominal waveform, matters; this helmet plays the points from its own 2-kHz sequencer. The exposure is the same as the bilateral-temporal arm of the lab's depression studies (persinger-tbi-depression-temporal). Source cautions: n = 12, one interaction among many comparisons, a single lab testing a commercial device associated with its own work; Gendle & McGrath 2012 later found no effect of the 8 Coil Shakti on emotional responses under sham control, and Granqvist 2005 found no field effect double-blind. Not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "setting": "Seated or reclined, eyes closed, in a quiet, dark room (the lab's standard was a blindfold in an acoustic chamber). Record EEG before each session to compare with the paper.",
+  "schedule": "30 min once a week on 4 successive weeks.",
+  "targets": ["left-amygdala", "right-amygdala", "left-hippocampus-head", "right-hippocampus-head"],
+  "source": "Tsang, Koren & Persinger 2004, Int J Neurosci 114:1013 (Shakti vs Koren boxes) https://pubmed.ncbi.nlm.nih.gov/15527205/ ; Martin, Koren & Persinger 2004, Int J Neurosci 114:1259 (.wav through a coil worked, compact disc did not) https://pubmed.ncbi.nlm.nih.gov/15370185/ ; Murphy, Shakti Spiritual Technology & Koren Helmet - A Comparison https://www.god-helmet.com/wp/winshakti/koren_shakti.htm ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Martin & Persinger 2004, Neurosci Lett 366:226 (burst-firing once every 4 s) https://pubmed.ncbi.nlm.nih.gov/15276252/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": ["T7", "TP7", "", "", "T8", "TP8", "", ""]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Koren boxes: burst-firing, both temporal lobes",
+      "minutes": 30,
+      "pattern": {
+        "type": "burst",
+        "f0": 6,
+        "f1": 30,
+        "sweepMs": 690,
+        "gapMs": 3310,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

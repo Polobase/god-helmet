@@ -1,0 +1,22 @@
+{
+  "id": "lowfield-bell-elf-epoch-probe-aftereffect",
+  "name": "Bell 1994 10 Hz after-effect test: 10 min field, 1 min off",
+  "category": "research",
+  "evidence": "single-lab",
+  "origin": "Bell, Marino, Chesson (Louisiana State University Medical Center), 1991-1996",
+  "uT": 5,
+  "summary": "The optional after-effect test of the Bell/Marino probe: a continuous 10 Hz sine field on all eight ring coils in phase for 10 min, then 1 min with the field off, the window in which Bell et al. 1994 (Neuroreport) measured occipital 10 Hz EEG power. They used 1 G (100 uT); this helmet gives at most 5 uT at 20 mm from each coil, so only the timing is copied.",
+  "notes": "Bell et al. 1994 (Neuroreport) reported reduced occipital 10 Hz power during the minute after a 10-min, 10 Hz, 1 G exposure in 10 subjects; this is a single-lab result. The geometry is not stated in the abstract; the full ring in phase stands in for a field applied to the head. At 5 uT 20 mm from the coils (about 0.5 uT at 40-50 mm) the program is about 20 times weaker than the original near the coils and far weaker at depth, so it copies the timing only. The sine is smooth (no point steps) and there is no fade-in, so the exposure lasts exactly 10 min; the field then switches off at the start of the 1-min window. Record occipital EEG (O1, O2) throughout and compare the last minute with the same minute of a blinded sham run (the app's Blind option). Measuring with the field off avoids direct pickup of the 10 Hz field, but check the recording chain with a phantom anyway. The induced electric field is about 1 uV/m, far below known neural thresholds. Not for people with epilepsy; stop if you feel unwell.",
+  "setting": "Seated, eyes closed, occipital EEG (O1, O2) recorded through the exposure and the minute after it.",
+  "schedule": "One run per sitting; compare with blinded sham runs of the same program.",
+  "targets": ["primary-visual-cortex"],
+  "source": "Bell et al. 1994, Neuroreport (10 Hz after-effect) https://pubmed.ncbi.nlm.nih.gov/8003686/ ; Bell et al. 1994, J Neurol Sci (1.5 and 10 Hz, 2-s epochs) https://pubmed.ncbi.nlm.nih.gov/8064317/ ; Marino et al. 1996, J Neurol Sci (false-negative rates) https://pubmed.ncbi.nlm.nih.gov/8994110/",
+  "layout": "custom",
+  "placement": {"sites": ["Fpz", "F7", "T7", "P7", "Oz", "P8", "T8", "F8"]},
+  "fadeInS": 0,
+  "fadeOutS": 0,
+  "phases": [
+    {"name": "10 Hz continuous", "minutes": 10, "pattern": {"type": "sine", "f0": 10, "pointMs": 0}, "spatial": {"mode": "bilateral"}},
+    {"name": "After-effect window (field off)", "minutes": 1, "pattern": {"type": "off"}, "spatial": {"mode": "bilateral"}}
+  ]
+}

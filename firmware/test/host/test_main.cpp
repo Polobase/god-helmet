@@ -255,6 +255,141 @@ static void testSpatial() {
   CHECK(activeChannel(g) == 5);
 }
 
+static void testCustomPlacement() {
+  std::printf("custom placement\n");
+  int8_t side = 9;
+  CHECK(sideFromSite("T7", side) && side == -1);
+  CHECK(sideFromSite("CP6", side) && side == 1);
+  CHECK(sideFromSite("Cz", side) && side == 0);
+  CHECK(sideFromSite("FTT8h", side) && side == 1);
+  CHECK(sideFromSite("T10", side) && side == 1);
+  CHECK(sideFromSite("AF7", side) && side == -1);
+  CHECK(!sideFromSite("X", side) && !sideFromSite("", side) && !sideFromSite("Tq", side));
+  CHECK(!sideFromSite("99", side) && !sideFromSite("T7x", side) && !sideFromSite("7T", side));
+  CHECK(sideFromSite("Fpz", side) && side == 0);
+
+  // Standard layouts through the Geometry API match the old behaviour.
+  const Geometry ring = geometryFor(Layout::Ring);
+  int order[kChannels];
+  CHECK(sideOrder(ring, Side::Right, true, order) == 3 && order[0] == 5 && order[2] == 7);
+  CHECK(sideOrder(geometryFor(Layout::Temporal), Side::Right, false, order) == 4 && order[0] == 7 && order[1] == 4);
+
+  // Right-hemisphere grid with two unused channels and an explicit order.
+  mj::Value doc;
+  std::string err;
+  Session s;
+  mj::parse(R"({"id":"c","layout":"custom",
+    "placement":{"sites":["T8","TP8","CP6","P8","C6","","FT8",""],"order":[6,0,4,2,1,3]},
+    "phases":[{"seconds":10,"pattern":{"type":"dc"},"spatial":{"mode":"rotate","dwellMs":10}}]})", doc);
+  CHECK(sessionFromJson(doc, s, nullptr, &err));
+  CHECK(s.layout == Layout::Custom && s.geometry.count == 6);
+  CHECK(std::string(s.sites[2]) == "CP6" && s.sites[5][0] == '\0');
+  CHECK(s.geometry.side[0] == 1 && s.geometry.side[5] == 0);
+  float g[kChannels];
+  const int expected[] = {6, 0, 4, 2, 1, 3, 6};
+  for (int k = 0; k < 7; ++k) {
+    spatialGains(s.phases[0].spatial, s.geometry, k * 10.0 + 1.0, g);
+    CHECK(activeChannel(g) == expected[k]);
+  }
+  // "left" on an all-right placement drives nothing; "right" drives the 6 used coils only.
+  SpatialParams right;
+  right.mode = SpatialMode::Right;
+  spatialGains(right, s.geometry, 0, g);
+  CHECK(g[0] == 1 && g[5] == 0 && g[7] == 0);
+  SpatialParams cyc;
+  cyc.mode = SpatialMode::Cycle;
+  cyc.side = Side::Left;
+  spatialGains(cyc, s.geometry, 0, g);
+  CHECK(activeChannel(g) == -1);  // no left coils: silent, no crash
+
+  // Default order = used channels in index order.
+  mj::parse(R"({"id":"c","layout":"custom","placement":{"sites":["F3","F4","","","","","",""]},
+    "phases":[{"seconds":10,"pattern":{"type":"dc"},"spatial":{"mode":"alternate","alternateMs":100}}]})", doc);
+  CHECK(sessionFromJson(doc, s, nullptr, &err));
+  CHECK(s.geometry.count == 2 && s.geometry.order[0] == 0 && s.geometry.order[1] == 1);
+  spatialGains(s.phases[0].spatial, s.geometry, 150, g);
+  CHECK(g[0] == 0 && g[1] == 1);  // right side (F4) second
+
+  // Errors.
+  mj::parse(R"({"id":"c","layout":"custom","phases":[{"seconds":1,"pattern":{"type":"dc"}}]})", doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("placement") != std::string::npos);
+  mj::parse(R"({"id":"c","layout":"custom","placement":{"sites":["Q9x","","","","","","",""]},"phases":[{"seconds":1,"pattern":{"type":"dc"}}]})", doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("Q9x") != std::string::npos);
+  mj::parse(R"({"id":"c","layout":"custom","placement":{"sites":["T8","","","","","","",""],"order":[1]},"phases":[{"seconds":1,"pattern":{"type":"dc"}}]})", doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err));
+  mj::parse(R"({"id":"c","layout":"ring","placement":{"sites":["T8","","","","","","",""]},"phases":[{"seconds":1,"pattern":{"type":"dc"}}]})", doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("custom") != std::string::npos);
+  // Standard layouts carry their site names.
+  mj::parse(R"({"id":"r","layout":"ring","phases":[{"seconds":1,"pattern":{"type":"dc"}}]})", doc);
+  CHECK(sessionFromJson(doc, s, nullptr, &err) && std::string(s.sites[0]) == "Fpz" && std::string(s.sites[6]) == "T8");
+}
+
+static void testEngineV2() {
+  std::printf("engine v2: tracks, inline tables, pm, noise, both-sides cycle\n");
+  mj::Value doc;
+  std::string err;
+  Session s;
+
+  // Phase-modulated sine: depth 0 = plain sine; values stay in [-1, 1].
+  PatternParams pm = patternDefaults(PatternType::PhaseMod);
+  pm.pointMs = 0;
+  pm.depth = 0;
+  CHECK_NEAR(patternValue(pm, 1000.0 / 160.0), 1.0, 1e-4);  // quarter period of 40 Hz
+  pm.depth = 3;
+  float lo = 1, hi = -1;
+  for (int i = 0; i < 4000; ++i) {
+    const float v = patternValue(pm, i * 0.5);
+    lo = std::min(lo, v);
+    hi = std::max(hi, v);
+  }
+  CHECK(lo >= -1 && hi <= 1 && lo < -0.99f && hi > 0.99f);
+
+  // Band-limited noise: deterministic per seed, bounded, roughly zero-mean.
+  PatternParams nz = patternDefaults(PatternType::Noise);
+  nz.pointMs = 0;
+  double mean = 0;
+  for (int i = 0; i < 20000; ++i) mean += patternValue(nz, i * 0.5);
+  CHECK(std::fabs(mean / 20000) < 0.1);
+  CHECK(patternValue(nz, 123.0) == patternValue(nz, 123.0));
+  PatternParams nz2 = nz;
+  nz2.seed = 2;
+  CHECK(patternValue(nz, 123.0) != patternValue(nz2, 123.0));
+
+  // Two tracks (left burst / right sine) and per-pattern inline tables.
+  mj::parse(R"({"id":"t","layout":"temporal","phases":[
+    {"seconds":10,"tracks":[
+      {"pattern":{"type":"table","pointMs":1,"data":[255,0]},"spatial":{"mode":"left"}},
+      {"pattern":{"type":"table","pointMs":1,"data":[128,192,64]},"spatial":{"mode":"right"},"level":0.5}]},
+    {"seconds":10,"pattern":{"type":"dc"},"spatial":{"mode":"cycle","side":"both","dirLeft":"cw","dirRight":"ccw","dwellMs":10}}]})", doc);
+  CHECK(sessionFromJson(doc, s, nullptr, &err));
+  CHECK(s.phases[0].hasTrack2 && s.table.size() == 5);
+  CHECK(s.phases[0].pattern.tableOffset == 0 && s.phases[0].pattern2.tableOffset == 2);
+  SessionRunner r;
+  r.start(&s);
+  auto f = r.advance(9999.5);  // inside phase 0, envelope 1 (fade-in done? 10 s fade -> 1)
+  float v[kChannels];
+  SessionRunner::Frame fr = f;
+  fr.envelope = 1;
+  fr.phaseMs = 1.5;  // point 1: left table 0 -> -1 ; right table 192 -> 0.504 * 0.5
+  render(s, fr, v);
+  CHECK_NEAR(v[0], -1.0, 1e-6);
+  CHECK_NEAR(v[4], 64.0 / 127.0 * 0.5, 1e-4);
+  // Both sides cycle simultaneously: one coil per side, left clockwise, right counter-clockwise.
+  float g[kChannels];
+  spatialGains(s.phases[1].spatial, s.geometry, 1.0, g);
+  CHECK(g[0] == 1 && g[7] == 1);
+  spatialGains(s.phases[1].spatial, s.geometry, 11.0, g);
+  CHECK(g[3] == 1 && g[6] == 1);  // left CW: 0 -> 3 ; right CCW: 7 -> 6
+
+  // Errors.
+  mj::parse(R"({"id":"t","phases":[{"seconds":1,"tracks":[]}]})", doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err));
+  mj::parse(R"({"id":"t","phases":[{"seconds":1,"pattern":{"type":"noise","f0":8,"f1":4}}]})", doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("noise") != std::string::npos);
+  mj::parse(R"({"id":"t","phases":[{"seconds":1,"pattern":{"type":"dc"},"spatial":{"side":"top"}}]})", doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err));
+}
+
 static Session twoPhaseSession() {
   Session s;
   s.layout = Layout::Temporal;
@@ -328,10 +463,15 @@ static void testSession() {
   CHECK_NEAR(f.envelope, 0.25, 1e-3);  // 500 ms into a 2000 ms ramp
 
   // Table binding survives.
-  s.table = {10, 20, 30};
+  s.table = {10, 20, 30, 40};
   s.phases[0].pattern = patternDefaults(PatternType::Table);
+  s.phases[0].pattern.tableOffset = 1;
+  s.phases[0].pattern.tableLen = 3;
   s.bindTable();
-  CHECK(s.phases[0].pattern.tableLen == 3 && s.phases[0].pattern.table == s.table.data());
+  CHECK(s.phases[0].pattern.table == s.table.data() + 1);
+  s.phases[0].pattern.tableLen = 9;  // out of range -> unbound, silent
+  s.bindTable();
+  CHECK(s.phases[0].pattern.table == nullptr);
 
   SessionRunner empty;
   Session none;
@@ -421,7 +561,11 @@ static void testPresets(const char* dir) {
       for (float x : v) peak = std::max(peak, std::fabs(x));
     }
     CHECK(peak <= 1.0f);
-    if (std::string(s.id) == "sham") CHECK(peak == 0.0f);
+    // Sham designs (pattern "off" throughout) must stay silent; everything else must drive the coils.
+    bool allOff = true;
+    for (int i = 0; i < s.phaseCount; ++i)
+      allOff = allOff && s.phases[i].pattern.type == PatternType::Off && (!s.phases[i].hasTrack2 || s.phases[i].pattern2.type == PatternType::Off);
+    if (allOff) CHECK(peak == 0.0f);
     else CHECK(peak > 0.5f);
   }
   closedir(d);
@@ -438,6 +582,19 @@ static void testPresets(const char* dir) {
   CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("warp") != std::string::npos);
   mj::parse(R"({"id":"x","phases":[{"minutes":1,"pattern":{"type":"sine"},"spatial":{"weights":[1,1]}}]})", doc);
   CHECK(!sessionFromJson(doc, s, nullptr, &err));
+  // Negative weights reverse a coil's polarity; beyond -1..1 is an error.
+  mj::parse(R"({"id":"x","phases":[{"minutes":1,"pattern":{"type":"dc"},"spatial":{"weights":[1,-1,0.5,-0.5,0,0,0,0]}}]})", doc);
+  CHECK(sessionFromJson(doc, s, nullptr, &err));
+  {
+    SessionRunner r;
+    r.start(&s);
+    r.advance(20000);  // past the fade-in
+    float v[kChannels];
+    render(s, r.frame(), v);
+    CHECK(std::fabs(v[0] - 1.0f) < 1e-6f && std::fabs(v[1] + 1.0f) < 1e-6f && std::fabs(v[3] + 0.5f) < 1e-6f);
+  }
+  mj::parse(R"({"id":"x","phases":[{"minutes":1,"pattern":{"type":"dc"},"spatial":{"weights":[1,-1.5,0,0,0,0,0,0]}}]})", doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("-1..1") != std::string::npos);
   mj::parse(R"({"id":"x","phases":[{"minutes":1,"pattern":{"type":"sine"},"spatial":{"dwell":[25,-2,11]}}]})", doc);
   CHECK(sessionFromJson(doc, s, nullptr, &err));
   CHECK(s.phases[0].spatial.dwellStepMs == -2);
@@ -551,6 +708,8 @@ int main(int argc, char** argv) {
   testJson();
   testBleFrame();
   testTableData();
+  testCustomPlacement();
+  testEngineV2();
   testPresets(argc > 1 ? argv[1] : "../presets");
   std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
   return g_failures == 0 ? 0 : 1;

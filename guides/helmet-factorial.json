@@ -1,0 +1,92 @@
+{
+  "id": "helmet-factorial",
+  "name": "Helmet real vs sham with a psi task",
+  "category": "self-test",
+  "summary": "Does the helmet's field change psi scores, or only how unusual the session feels? The helmet's random generator picks a real or a sham field (blind). You settle for 10 minutes and then do a 25-trial hidden-symbol task while the Remote viewing program runs, then guess the condition and rate your experience before the reveal. Our design, prompted by claims that helmets 'amplify' psionic ability and by the sham-controlled study in which suggestibility, not the field, predicted experiences (Granqvist et al. 2005). No program is known to affect psi.",
+  "evidence": "unverified",
+  "minutes": 37,
+  "requires": { "headphones": false, "helmet": "required", "pool": false },
+  "setting": "Quiet, dim room, seated or reclined. Helmet fitted in the ring layout (see Placement) and connected; safety screening done in the Safety tab.",
+  "cautions": "Use only the project's field limits and safety screening. If your real/sham guesses beat chance across sessions, blinding has failed and the comparison can't be trusted. Don't expect or advertise any psi benefit. Decide the number of trials or sessions before you start, keep every result, and report them all.",
+  "sources": [
+    {
+      "title": "Granqvist P et al. (2005) Sensed presence and mystical experiences are predicted by suggestibility, not by the application of transcranial weak complex magnetic fields. Neurosci Lett 379:1-6",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15849873/"
+    },
+    { "title": "Cosimano CW, Elementary Psionics and Psionic Magick (self-published practice books; device and pendulum claims)" },
+    {
+      "title": "Bang H, Ni L, Davis CE (2004) Assessment of blinding in clinical trials. Control Clin Trials 25:143-156",
+      "url": "https://europepmc.org/abstract/MED/15020033"
+    }
+  ],
+  "helmetArm": { "preset": "remote-viewing", "blind": true, "steps": ["settle", "task"] },
+  "steps": [
+    {
+      "id": "expectancy",
+      "title": "Expectations",
+      "minutes": 3,
+      "instructions": "Answer the questions about your beliefs and expectations before the session starts.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "expectancy" },
+      "advance": "manual"
+    },
+    {
+      "id": "fit",
+      "title": "Fit the helmet",
+      "minutes": 2,
+      "instructions": "Put on the helmet in the ring layout (see the Placement tab). The field will be real or sham, and you won't know which until the end. Use the same program for every session in a series.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "settle",
+      "title": "Settle",
+      "minutes": 10,
+      "instructions": "Close your eyes and relax while the program runs.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "task",
+      "title": "Hidden symbols",
+      "minutes": 15,
+      "instructions": "For each trial the app draws a hidden symbol with WebCrypto and commits to it (SHA-256) before you choose. Pick the one that comes to mind. You don't see the answers, but the trainer shows a running hit count and your score when the task ends: glance past them, and base the guess and ratings that follow only on what you felt, not on the score. Chance is 1 in 5: with 25 scored trials (passes don't count), 9 or more hits happen by chance about 5 % of the time.",
+      "audio": null,
+      "input": {
+        "type": "choice",
+        "key": "symbols",
+        "prompt": "Which symbol is the hidden target?",
+        "options": ["Circle", "Cross", "Waves", "Square", "Star"],
+        "trials": 25,
+        "feedback": false
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "blinding",
+      "title": "Real or sham?",
+      "minutes": 2,
+      "instructions": "Guess whether the field was real or sham, from what you felt during the session, not from your score.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "blinding" },
+      "advance": "manual"
+    },
+    {
+      "id": "experience",
+      "title": "Your experience",
+      "minutes": 4,
+      "instructions": "Rate what you experienced during the session.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "state-post" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 1,
+      "instructions": "The app now reveals whether the field was real or sham, and your hits. What counts is the comparison of real and sham hit rates over many sessions, so record every one.",
+      "audio": null,
+      "advance": "manual"
+    }
+  ]
+}

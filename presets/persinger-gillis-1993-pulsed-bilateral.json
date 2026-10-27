@@ -1,0 +1,21 @@
+{
+  "id": "persinger-gillis-1993-pulsed-bilateral",
+  "name": "Gillis & Persinger 1993: pulsed field, 1 s every 4 s, both sides (20 min)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Gillis & Persinger 1993 (Laurentian University), comparison arm",
+  "uT": 1,
+  "summary": "The comparison arm of Gillis & Persinger 1993: a field 'pulsed (1 sec. every 4 sec.)' along both temporal planes for 20 min, once a week for three weeks. The lab reported that people given bilateral burst-firing instead showed more aggression and less trust on the Plutchik emotion profile than this group or controls.",
+  "notes": "Gillis & Persinger gave three weekly 20-min treatments of bilateral burst-firing 'along the temporal plane', of 'pulsed (1 sec. every 4 sec.)' fields, or a control condition, and reported increased aggression and decreased trust (eta about 0.70) only after burst-firing; this file is the pulsed arm, and persinger-burst-temporal-bilateral stands in for the burst-firing arm. The abstract does not say what the 1-s pulse contained: the title contrasts 'pulsed vs continuous' fields and Persinger 1999 presented burst-firing 'for 1 s every 4 s', so the built-in accelerating burst (6 to 30 Hz, 3-ms points, the lab default) plays for 1 s and pauses for 3 s; a plain pulse is the other reading. The burst-firing point values were never published. The abstract gives no intensity; 1 uT is the lab's usual human level. Two coils per side, T7/TP7 and T8/TP8, are an inference from 'along the temporal plane'. On this helmet the two arms differ mainly in burst length (persinger-burst-temporal-bilateral plays 0.69 s every 4 s), so Gillis's contrast cannot be reproduced unless their burst-firing arm ran without pauses, which is not published. Single lab, no independent replication, and the lab later reported better mood after weekly burst-firing (Tsang 2009), so the sign of the effect is not consistent. Independent double-blind tests found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop at once on irritability, fear, headache or distress.",
+  "setting": "Blindfolded or with opaque goggles, reclining in a quiet, dark room (the lab's usual setting; the abstract gives none).",
+  "schedule": "Three 20-min sessions one week apart, as in the original; compare blind with persinger-burst-temporal-bilateral and sham.",
+  "targets": ["left-amygdala","right-amygdala","left-superior-temporal-gyrus-posterior","right-superior-temporal-gyrus-posterior"],
+  "source": "Gillis & Persinger 1993, Percept Mot Skills 76:168 https://pubmed.ncbi.nlm.nih.gov/8451123/ ; Persinger 1999, Int J Psychophysiol 34:163 (burst-firing 1 s every 4 s, 5 uT) https://pubmed.ncbi.nlm.nih.gov/10576400/ ; Carniello 2020, PhD thesis, Laurentian University, p. 89 (230-point burst-firing file, 3-ms points) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Tsang, Koren & Persinger 2009, Electromagn Biol Med 28:365 https://pubmed.ncbi.nlm.nih.gov/20017627/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites":["T7","TP7","","","T8","TP8","",""]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name":"Pulsed burst-firing, 1 s every 4 s, both sides","minutes":20,"pattern":{"type":"burst","sweepMs":1000,"gapMs":3000,"pointMs":3},"spatial":{"mode":"bilateral"}}
+  ]
+}

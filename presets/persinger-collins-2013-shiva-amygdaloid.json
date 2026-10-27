@@ -1,0 +1,53 @@
+{
+  "id": "persinger-collins-2013-shiva-amygdaloid",
+  "name": "Collins 2013 Shiva amygdaloid: CCW 100->240 ms, 4-s gaps (20 min)",
+  "category": "obe",
+  "evidence": "single-lab",
+  "origin": "Persinger lab, Laurentian University (Collins & Persinger 2013; Collins 2013 MA thesis), on Todd Murphy's 64-coil Shiva hat",
+  "uT": 1,
+  "summary": "The 20-min field condition of Collins & Persinger 2013: Shiva's \"amygdaloid signal, normal speed\" (289 points of 3 ms, then 4 s of silence) stepped counter-clockwise around the head, 100 ms on the left frontal position and 20 ms longer on each next one. Persinger's lab reported more out-of-body, \"somewhere else\" and presence experiences than in a sham group (5 vs 4 people) and no rise in temporal delta power.",
+  "notes": "Thesis method: a construction-worker hat from Todd Murphy with 8 columns of 8 solenoids at equal angles over the EEG cap, driven by Shiva Neural Stimulation Software 5E through four USB audio devices, each feeding two successive columns; 289 points of -5 to +5 V at 3 ms with 4000 ms between cycles; 100 ms on the left frontal column and \"an additional 20 ms\" on each next column counter-clockwise from the top (100 ... 240 ms, a 1.36-s turn); about 1 uT (10 mG) in the head. Here one coil stands for each column, on Murphy's Shiva ring starting at Fp1 (an inference; the column positions are not given). The amygdaloid file was never published; the built-in accelerating burst (6-30 Hz) on 289 points of 3 ms stands in, and the rotation runs continuously (how Shiva aligned burst and columns is not described). murphy-shiva-amygdala-simple-normal is Murphy's own version (230 points, 10-20 ms per coil); murphy-shiva64-obe-lab is the 5-min single case of Saroka et al. 2010. Results: 9 university volunteers aged 20-25 (5 field, 4 sham), told they might or might not get a field; field subjects endorsed 35 % vs 9 % of 20 exit-questionnaire items (t(7) = 3.11), with effect-size r of .58-.76 for presence, dizziness, terror or fear, leaving the body and being somewhere else; the sham group's temporal delta power rose over the 20 min while the field group's did not. Tiny sample, subjective endpoints, experimenter blinding not reported, never replicated; subjects sat in a dark chamber knowing a field might come, the setting in which Granqvist et al. tied such reports to suggestibility. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on fear, headache, nausea or distress.",
+  "setting": "Seated in a comfortable chair in a quiet, dark room (originally a shielded acoustic chamber), eyes closed for the whole 20 min. The lab took 30-s EEG samples before the field and at 5, 10, 15 and 20 min, and gave a 20-item exit questionnaire afterwards.",
+  "schedule": "One 20-min session in the original. For a self-test, use the app's Blind option so the helmet picks field or sham, and fill in the questionnaire before the result is revealed.",
+  "targets": [
+    "left-superior-temporal-gyrus-posterior",
+    "right-superior-temporal-gyrus-posterior",
+    "left-temporal-pole",
+    "right-temporal-pole"
+  ],
+  "source": "Collins & Persinger 2013, Changing velocity circumcerebral magnetic fields produce altered state experiences and lowered delta-theta power over the temporal lobes, Review of Psychology Frontier 2(2):26-29 ; Collins 2013, Quantitative differences in participants exposed to patterned, weak-intensity electromagnetic fields: investigating the Shiva, MA thesis (Psychology), Laurentian University, ch. 2 https://laurentian.scholaris.ca/server/api/core/bitstreams/c03e0259-4b31-410f-9552-d90c9c2b81a4/content ; Saroka, Mulligan, Murphy & Persinger 2010, NeuroQuantology 8(4):466-477 https://www.researchgate.net/publication/275606923_Experimental_Elicitation_of_an_Out_of_Body_Experience_and_Concomitant_Cross-Hemispheric_Electroencephalographic_Coherence ; Murphy, Shiva coil locations https://www.god-helmet.com/wp/shiva/shiva_demo/locations.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "Fp1",
+      "FT7",
+      "TP7",
+      "O1",
+      "O2",
+      "TP8",
+      "FT8",
+      "Fp2"
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Amygdaloid burst 289 x 3 ms, 4 s gap, CCW 100->240 ms",
+      "minutes": 20,
+      "pattern": {
+        "type": "burst",
+        "f0": 6,
+        "f1": 30,
+        "sweepMs": 867,
+        "gapMs": 4000,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "ccw",
+        "dwell": [100, 20, 240]
+      }
+    }
+  ]
+}

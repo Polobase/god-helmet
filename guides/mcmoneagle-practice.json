@@ -1,0 +1,82 @@
+{
+  "id": "mcmoneagle-practice",
+  "name": "Daily ESP practice (McMoneagle exercises)",
+  "category": "remote-viewing",
+  "summary": "Low-effort daily exercises from Joseph McMoneagle's Mind Trek (1993), in our own words: a sealed object, a sealed drawing, a word list before a visitor arrives, small predictions, and a log of spontaneous impressions. The run record timestamps your entries before you know the answers. Practice only: there is no blinding and the targets are self-chosen, so these results never count as evidence.",
+  "evidence": "anecdote",
+  "minutes": 23,
+  "requires": { "headphones": false, "helmet": "none", "pool": false },
+  "setting": "Everyday life. A friend helps with the sealed object and the sealed drawing.",
+  "cautions": "Not evidential: selective memory and loose matching make almost anything look like a hit. Keep these results apart from blinded trials and never pool them.",
+  "sources": [{ "title": "McMoneagle J (1993) Mind Trek. Hampton Roads" }],
+  "steps": [
+    {
+      "id": "rules",
+      "title": "The rules",
+      "minutes": 1,
+      "instructions": "McMoneagle's rules, in short: don't cheat; note exact times; discard nothing; write everything down; take it seriously; keep practising. Skip any exercise you can't do today.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "sealed-object",
+      "title": "Sealed object",
+      "minutes": 5,
+      "instructions": "A friend seals an object in a box without telling you what it is. Today, write one-word descriptors and the feeling each one evokes, aiming at the moment you will open the box. Repeat on 3 or 4 days, then open the box and underline what fits.",
+      "audio": null,
+      "input": { "type": "text", "key": "object-notes", "prompt": "Descriptors and the feeling each evokes" },
+      "advance": "manual"
+    },
+    {
+      "id": "sealed-drawing",
+      "title": "Sealed drawing",
+      "minutes": 10,
+      "instructions": "A friend seals a simple drawing in an opaque envelope. Reproduce it here. Afterwards note the parts that are right even if they are not connected.",
+      "audio": null,
+      "input": { "type": "sketch", "key": "drawing", "prompt": "Your reproduction of the sealed drawing" },
+      "advance": "manual"
+    },
+    {
+      "id": "word-list",
+      "title": "Word list",
+      "minutes": 2,
+      "instructions": "Before a visitor arrives, write 10 or more unconnected words. Later, tick the ones that come up in the conversation.",
+      "audio": null,
+      "input": { "type": "text", "key": "words", "prompt": "10 or more unconnected words" },
+      "advance": "manual"
+    },
+    {
+      "id": "predictions",
+      "title": "Small predictions",
+      "minutes": 2,
+      "instructions": "Predict something small and checkable: a free parking space, an arrival time to the minute, a grocery total, the next rain. Write it now and score it later.",
+      "audio": null,
+      "input": { "type": "text", "key": "predictions", "prompt": "Your predictions, with times" },
+      "advance": "manual"
+    },
+    {
+      "id": "impressions",
+      "title": "Spontaneous impressions",
+      "minutes": 1,
+      "instructions": "Log any out-of-the-blue impression with the exact time and date, so you can match it later.",
+      "audio": null,
+      "input": { "type": "text", "key": "impressions", "prompt": "Impressions with exact time and date" },
+      "advance": "manual"
+    },
+    {
+      "id": "score",
+      "title": "Score earlier entries",
+      "minutes": 2,
+      "instructions": "Score the entries from earlier days whose answers you now know. Count misses as honestly as hits.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "hits", "label": "Hits among earlier entries checked today", "min": 0, "max": 20 },
+          { "key": "misses", "label": "Misses among earlier entries checked today", "min": 0, "max": 20 }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

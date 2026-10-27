@@ -1,0 +1,183 @@
+{
+  "id": "psi-trial-flow",
+  "name": "Psi trial with covariates (ganzfeld-style)",
+  "category": "questionnaire",
+  "summary": "A blinded remote-viewing trial wrapped in the covariates most often reported in the psi literature, under conditions close to the ganzfeld noise-reduction method: belief and state first, a progressive relaxation, 30 minutes of eyes-covered mentation in steady pink noise, then a blind ranking of the pictures in the drawn set (chance 1 in the set size; 25 % with the 4-picture sets this series assumes). An optional blinded helmet arm during the mentation (the Remote viewing program, ring layout) turns it into a helmet x psi design. With 4-picture sets, about 315 trials (two-tailed; 250 one-tailed) are needed to tell a 32 % hit rate from 25 % with 80 % power, so this is a long-series protocol.",
+  "evidence": "claim",
+  "minutes": 62,
+  "requires": { "headphones": true, "helmet": "optional", "pool": true },
+  "setting": "At home, reclined. Eyes covered with halved ping-pong balls under a red light, or a red-tinted eye mask. Headphones. Keep only sets of 4 pictures in the pool for the whole series: a trial draws from every usable set, and the numbers here assume 1 in 4. If you use the helmet, fit it in the ring layout (see Placement); the program lasts exactly as long as the mentation and keeps running when you pause the guide, so don't pause during the mentation. There is no sender in this version; SAIC reported in 1994 that free-response trials do not need one.",
+  "cautions": "Psi effects and their moderators are disputed (Hyman 2010; Rouder et al. 2013). Plan two-tailed tests, fix the number of trials in advance and keep every trial. Belief is recorded before feedback and kept apart from scoring.",
+  "sources": [
+    {
+      "title": "Storm L, Tressoldi PE, Di Risio L (2010) Meta-analysis of free-response studies, 1992-2008. Psychol Bull 136:471-485",
+      "url": "https://europepmc.org/abstract/MED/20565164"
+    },
+    {
+      "title": "Tressoldi PE, Storm L (2021) Anomalous perception in a Ganzfeld condition: a meta-analysis (Stage 2 registered report). F1000Research 10:234",
+      "url": "https://f1000research.com/articles/10-234/v2"
+    },
+    {
+      "title": "Bem DJ, Honorton C (1994) Does psi exist? Replicable evidence for an anomalous process of information transfer. Psychol Bull 115:4-18",
+      "url": "https://www.alice.id.tue.nl/references/bem-honorton-1994.pdf"
+    },
+    { "title": "SPR Psi Encyclopedia: Ganzfeld ESP", "url": "https://psi-encyclopedia.spr.ac.uk/articles/ganzfeld-esp" },
+    { "title": "SPR Psi Encyclopedia: Sheep-Goat Effect", "url": "https://psi-encyclopedia.spr.ac.uk/articles/sheep-goat-effect/" },
+    { "title": "SPR Psi Encyclopedia: Experimenter Effect", "url": "https://psi-encyclopedia.spr.ac.uk/articles/experimenter-effect" },
+    {
+      "title": "Mossbridge J, Radin D (2021) smartphone-based psi tests with TIPI and belief items. J Anomalous Exp Cogn 1:78-113",
+      "url": "https://journals.lub.lu.se/jaex/article/download/23419/20896"
+    },
+    {
+      "title": "Hyman R (2010) Meta-analysis that conceals more than it reveals. Psychol Bull 136:486-490",
+      "url": "https://europepmc.org/abstract/MED/20565165"
+    },
+    {
+      "title": "Rouder JN, Morey RD, Province JM (2013) A Bayes factor meta-analysis of recent ESP experiments. Psychol Bull 139:241-247",
+      "url": "https://europepmc.org/abstract/MED/23294092"
+    }
+  ],
+  "helmetArm": { "preset": "remote-viewing", "blind": true, "steps": ["mentation"] },
+  "steps": [
+    {
+      "id": "expectancy",
+      "title": "Belief and expectation",
+      "minutes": 2,
+      "instructions": "Answer the questions about belief in ESP and your confidence for this trial.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "expectancy" },
+      "advance": "manual"
+    },
+    {
+      "id": "state",
+      "title": "Your state now",
+      "minutes": 2,
+      "instructions": "Rate how you are right now.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "relaxed", "label": "Relaxed", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "tense", "label": "Tense", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very" },
+          {
+            "key": "motivation",
+            "label": "How much this trial matters to you",
+            "min": 0,
+            "max": 10,
+            "minLabel": "Not at all",
+            "maxLabel": "Very much"
+          },
+          {
+            "key": "substances",
+            "label": "Alcohol, cannabis or other drugs in the last 12 hours (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          },
+          { "key": "sleep-hours", "label": "Hours slept last night", "min": 0, "max": 12 }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "task",
+      "title": "Blind target",
+      "minutes": 1,
+      "instructions": "The helmet commits to a hidden target picture. The trial number is your tag.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "rv" },
+      "advance": "manual"
+    },
+    {
+      "id": "fit",
+      "title": "Helmet (optional)",
+      "minutes": 1,
+      "instructions": "If you use the helmet, put it on now in the **ring layout** (see the Placement tab), not the temporal fit. It runs blinded during the mentation only, real or sham. Without the helmet, press Next.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "relaxation",
+      "title": "Progressive relaxation",
+      "minutes": 10,
+      "instructions": "Lie back with your eyes closed. Starting with your feet, tense each muscle group for a few seconds, then let it go completely: feet, calves, thighs, belly, hands, arms, shoulders, neck, face. Then let your breathing settle by itself.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "mentation",
+      "title": "Mentation",
+      "minutes": 30,
+      "instructions": "Cover your eyes. Let images, thoughts and feelings come and say them aloud as they come (record yourself with another app if you like). Don't judge or connect them; just report.\n\n*Sound: steady pink noise at a comfortable level, as in ganzfeld studies (the level is logged).*",
+      "audio": { "layers": [], "noise": { "levelDb": -6 }, "crossfadeS": 10, "fadeOutS": 20 },
+      "advance": "timer"
+    },
+    {
+      "id": "report",
+      "title": "Write it down",
+      "minutes": 5,
+      "instructions": "Write down everything you noticed, as completely as you can.",
+      "audio": null,
+      "input": { "type": "text", "key": "mentation-report", "prompt": "Everything you noticed during the mentation" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response before you see any picture.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge",
+      "title": "Rank the pictures",
+      "minutes": 5,
+      "instructions": "Rank the pictures of the drawn set, best match with your mentation first.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "confidence",
+      "title": "Confidence",
+      "minutes": 1,
+      "instructions": "How confident are you in your first choice?",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          {
+            "key": "confidence",
+            "label": "Confidence in your rank-1 picture",
+            "min": 0,
+            "max": 10,
+            "minLabel": "Pure guess",
+            "maxLabel": "Certain"
+          }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "blinding",
+      "title": "Real or sham?",
+      "minutes": 2,
+      "instructions": "If the helmet ran, guess whether its field was real or sham. If no helmet was used, skip this step.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "blinding" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 2,
+      "instructions": "The helmet reveals the target and the app checks the commitment. A rank-1 hit has a chance of 1 in the number of pictures in the set (1 in 4 with the sets this series assumes).",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    }
+  ]
+}

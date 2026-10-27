@@ -1,0 +1,111 @@
+{
+  "id": "outbound-beacon",
+  "name": "Outbound beacon (live target, two people)",
+  "category": "remote-viewing",
+  "summary": "The classic SRI real-time protocol, adapted: a beacon person goes to a randomly chosen local site while you, the viewer, describe where they are. The helmet draws and commits to the site as a telepathy trial; the beacon sees it on a second phone in the Experiment tab's sender view and leaves before you start. Afterwards you lock, rank the site pictures, see the reveal and visit the site together for feedback.",
+  "evidence": "single-lab",
+  "minutes": 89,
+  "requires": { "headphones": false, "helmet": "required", "pool": true },
+  "setting": "Two people (three with an interviewer, who must also stay blind). A pool set of 2-8 photos of local sites within about 30 minutes' travel, each with a short task for the beacon (for example, stand under the entrance arch and touch the bricks), prepared by someone other than the viewer. Both phones have the same pool imported, and the beacon's phone is connected to the helmet as a second app.",
+  "cautions": "Avoid cues: the beacon must not say or show anything about the target and leaves before the viewer starts. Visiting the site afterwards can bias later judging, so in a series let an independent judge rank all transcripts against all sites at the end (SRI used 6-9 trials). Matching a neighbouring site happens: in a 1980 SRI real-time trial the viewer described the community garden next to the library target. The beacon must not use the phone while driving. One trial means little: with a realistic effect size (about 0.16) even 50 trials have only about 30 % power. Decide the number of trials in advance and keep every result.",
+  "sources": [
+    {
+      "title": "Puthoff HE, Targ R (1976) A perceptual channel for information transfer over kilometer distances. Proc IEEE 64:329-354",
+      "url": "https://doi.org/10.1109/PROC.1976.10113"
+    },
+    { "title": "Targ R, Puthoff HE, Humphrey BS, May EC (1980) Special Orientation Techniques (SRI R-003-80), SRI International" },
+    { "title": "McMoneagle J (1993) Mind Trek. Hampton Roads" },
+    {
+      "title": "Mumford MD, Rose AM, Goslin DA (1995) An Evaluation of Remote Viewing: Research and Applications. American Institutes for Research",
+      "url": "https://documents3.theblackvault.com/documents/stargate/pdfs/CIA-RDP96-00791R000200180006-4.pdf"
+    }
+  ],
+  "steps": [
+    {
+      "id": "plan",
+      "title": "Agree the start time",
+      "minutes": 3,
+      "instructions": "Agree a start time about 30 minutes from now. The viewer stays here; the beacon gets ready to leave. From now on, nobody talks about the sites.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "task",
+      "title": "Draw the site",
+      "minutes": 1,
+      "instructions": "The helmet draws a site from the pool and commits to it. Tell the beacon the trial number. Don't look at the beacon's screen.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "telepathy" },
+      "advance": "manual"
+    },
+    {
+      "id": "beacon-leaves",
+      "title": "The beacon leaves",
+      "minutes": 2,
+      "instructions": "**Beacon:** in another room, open Experiment → telepathy sender on your phone, enter the trial number and look at the site. Leave at once. Arrive at the start time, stay 15 minutes and do the task on the card, attentively.\n\n**Viewer:** stay here and don't watch the beacon leave.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "prepare",
+      "title": "Viewer preparation",
+      "minutes": 25,
+      "instructions": "Settle in. Memory and imagination are noise; you only report raw perception. For the last 5-10 minutes, sit quietly with your eyes closed.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "view",
+      "title": "Describe where the beacon is",
+      "minutes": 15,
+      "instructions": "At the start time, describe the impressions that come to mind about where the beacon is: shapes, materials, colours, sounds, activity. Don't analyse. An interviewer may only turn analysis back into description and suggest a change of viewpoint, such as looking down from above.",
+      "audio": null,
+      "input": { "type": "text", "key": "response", "prompt": "Your impressions of where the beacon is" },
+      "advance": "manual"
+    },
+    {
+      "id": "sketch",
+      "title": "Sketch",
+      "minutes": 5,
+      "instructions": "Sketch the site.",
+      "audio": null,
+      "input": { "type": "sketch", "key": "sketch", "prompt": "Sketch the site" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response. The app stores its fingerprint (SHA-256), so nothing can be changed after you see the target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge",
+      "title": "Rank the pictures",
+      "minutes": 5,
+      "instructions": "Rank the site pictures by how well they match your description, before any feedback.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 2,
+      "instructions": "The helmet reveals the target and its nonce, and the app checks the commitment, the pool and your locked response. A rank-1 hit has a chance of 1 in the number of pictures in the set.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    },
+    {
+      "id": "site-visit",
+      "title": "Feedback at the site",
+      "minutes": 30,
+      "instructions": "Go to the site together: viewer, beacon and interviewer. Compare your description with what is there. The beacon notes what they actually did.",
+      "audio": null,
+      "advance": "manual"
+    }
+  ]
+}

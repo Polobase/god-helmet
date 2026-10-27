@@ -1,0 +1,21 @@
+{
+  "id": "lowfield-schumann-783",
+  "name": "Schumann 7.83 Hz sine",
+  "category": "lowfield",
+  "evidence": "claim",
+  "origin": "Popular Schumann-resonance device concept (hypothesis: Cherry 2002); tested in an RCT by Huang et al. 2022 (Chang Gung, Taiwan)",
+  "uT": 1,
+  "summary": "A 7.83 Hz sine for 30 min on all eight ring coils in phase, the popular 'Schumann resonance' relaxation and sleep program. Its health claims are hypotheses or vendor statements; the one RCT of a Schumann sleep device found no between-group difference on polysomnography.",
+  "notes": "The natural Schumann resonance is a field of about 1 pT near 7.8 Hz (the fundamental drifts between about 7.2 and 8.2 Hz over the day); even at 1 uT the helmet is about a million times stronger, so this is not a 'natural' field. Cherry 2002 proposed health effects via melatonin as a hypothesis. Huang 2022 put a device by the bed facing the head, switched on about 1 h before bed until rising, for 4 weeks, with a composite 7.83 Hz plus theta and delta signal (this program plays only the 7.83 Hz part) and no reported field strength; polysomnography showed no between-group difference, and a co-author held the patent licence. Danho 2025 used 1 uT at 7.83 Hz (outcome: jump performance) with a no-exposure control but no sham. At about 1e-6 V/m induced field there is no credible mechanism. Treat it as claim-level and test it against sham with the app's Blind option. No sleep or health benefit is promised; stop on discomfort. The lowfield-schumann-783-harmonics program adds the higher resonance modes.",
+  "setting": "Evening, lying down in a quiet, dim room; 30-60 min (Huang 2022 ran the device from about 1 h before bed until rising). All eight ring coils in phase, as there is no evidence-based placement.",
+  "schedule": "Huang 2022: every night for 4 weeks.",
+  "targets": [],
+  "source": "Huang et al. 2022, Nat Sci Sleep https://pubmed.ncbi.nlm.nih.gov/35707548/ ; Einstein Telescope Schumann-resonance study, arXiv 2110.14730 (SR amplitude about 1 pT) https://arxiv.org/pdf/2110.14730 ; Ouyang et al. 2013, Chinese J Geophys 56(3):265-272 (SR modes 7.8, 14.1, 20.3, 26.4, 32.5 Hz) https://html.rhhz.net/Geophy_en/html/20130304.htm ; Cherry 2002, Natural Hazards 26:279 https://ideas.repec.org/a/spr/nathaz/v26y2002i3p279-331.html ; Danho et al. 2025, Cureus https://pubmed.ncbi.nlm.nih.gov/41080364/",
+  "layout": "custom",
+  "placement": {"sites": ["Fpz", "F7", "T7", "P7", "Oz", "P8", "T8", "F8"]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "SR fundamental 7.83 Hz", "minutes": 30, "pattern": {"type": "sine", "f0": 7.83, "pointMs": 0.5}, "spatial": {"mode": "bilateral"}}
+  ]
+}

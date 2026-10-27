@@ -23,7 +23,7 @@ Verify this before connecting coils:
 
 ## 3. Field calibration (µT per mA at 20 mm)
 
-The firmware converts the µT you choose into current using a per-channel factor: µT at 20 mm, on axis, per mA. The default 0.73 is the air-core estimate; the ferrite core raises it.
+The firmware converts the µT you choose into current using a per-channel factor: µT at 20 mm, on axis, per mA. The default 1.8 is the model of this coil with its core; the same winding without a core gives 0.73 (`tools/coil_field.py`). Measure every coil: the core material of these commodity coils is not documented (sellers list ferrite or iron), and the field falls about 12 % per mm at 20 mm, so the spacer must be accurate to ±0.3 mm for ±4 %.
 
 **You need:**
 - a phone with a magnetometer and **phyphox** (free; "Magnetometer" experiment, absolute values), or the optional I2C magnetometer;
@@ -51,7 +51,9 @@ python3 tools/calibrate.py measurements.csv
 
 Type the printed values into Setup → Calibration and save.
 
-Expected values: 0.73 µT/mA without ferrite, typically 1–2 µT/mA with the ferrite core. With a factor of 1.5, the 4.54 mA cap gives about 6.8 µT at 20 mm.
+Expected values: about 1.8 µT/mA with the core (model range 1.4–2.2), 0.73 without. With 1.8, the 4.54 mA cap gives about 8 µT at 20 mm, about 1 µT at 45 mm and about 0.47 mT at the core face. An uncalibrated helmet with the old default (0.73) delivered about 2.4× the requested field; with the current default the error is small if the coil has a core and the field comes out lower (about 0.4×) if it has none.
+
+To check the model itself, also measure on axis at 0, 2, 5, 10 and 40 mm and at 90° in the coil's mid-plane (reverse the current to cancel Earth's field). Model values per mA: 105 µT at the face, 60 at 2 mm, 25 at 5 mm, 8.1 at 10 mm, 0.33 at 40 mm; −0.6 µT at 90°, 20 mm from the coil's side. A fluxgate (FLC100) or MMC5983MA works from about 5 mm outwards; use a Hall sensor (DRV5055) only at 0–5 mm.
 
 ## 4. What the numbers mean
 

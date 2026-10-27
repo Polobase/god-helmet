@@ -1,0 +1,25 @@
+{
+  "id": "murphy-shiva-erp-septum-chirp-septum",
+  "name": "Shiva septum ('pleasure center') signal",
+  "category": "body",
+  "evidence": "claim",
+  "origin": "Shiva software by Todd Murphy (signal templates licensed from Persinger and Koren)",
+  "uT": 1,
+  "summary": "Murphy's simple Shiva septum session: his 'pleasure center' signal stepped counter-clockwise around the head. Murphy describes pleasant and sexual sensations.",
+  "setting": "Dark, quiet room, eyes closed, relaxed without meditating or falling asleep.",
+  "schedule": "At most once a week, never on consecutive days; up to 6 sessions, then a 21-day break.",
+  "notes": "Coils sit on Murphy's Shiva ring (Fp1, FT7, TP7, O1, O2, TP8, FT8, Fp2; one coil per site instead of Shiva's coil pairs) and fire one at a time counter-clockwise seen from above (back-to-front over the right side), 10, 12 … 20 ms per coil (Murphy's lecture example; Shiva's own step table is unpublished). The septal file is proprietary; Murphy says only (on his Shakti septal page) that it has 'very low frequencies' and so needs a higher volume. This file uses the built-in accelerating burst in the vendor's standard format (230 points × 3 ms, then about 4 s of silence) with its sweep lowered to 1 → 6 Hz as a stand-in; it is an approximation, not the Shiva file. Murphy suggests men and women may respond differently (he counts four orgasm centres for women and one for men), and his Shakti volume table sets the septal signal lower for women. His Shakti septal pages say the signal was 'tested with only a few human and no animal subjects' and is 'not a treatment' for sexual problems. The septal nuclei are not in the brain view's region list, so no target is highlighted. Shiva's simple sessions usually come in 20, 30 and 60-min versions; this file runs 20. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Stop if it is unpleasant; not for people with epilepsy.",
+  "source": "Murphy, Shiva demo: Septum signal https://www.god-helmet.com/wp/shiva/shiva_demo/septum_page.htm ; Murphy, Shakti demo: Septum signal https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/septum_consent.htm ; Murphy, Shakti and the brain's pleasure center – the septum https://www.god-helmet.com/wp/pleasure_center.htm ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Murphy, Shiva demo: Magnetic coil locations https://www.god-helmet.com/wp/shiva/shiva_demo/locations.htm ; Murphy, Psychic Skills & Miracles lecture (coil steps of 10, 12 ... 20 ms) https://www.youtube.com/watch?v=tmC1174POpA ; Murphy, Shiva demo: Session lengths https://www.god-helmet.com/wp/shiva/shiva_demo/session_length.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["Fp1", "FT7", "TP7", "O1", "O2", "TP8", "FT8", "Fp2"], "order": [0,1,2,3,4,5,6,7]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Septum signal (slow burst stand-in), CCW 10-20 ms",
+      "minutes": 20,
+      "pattern": {"type": "burst", "f0": 1, "f1": 6, "sweepMs": 690, "gapMs": 4000, "pointMs": 3},
+      "spatial": {"mode": "rotate", "dir": "ccw", "dwell": [10,2,20]}
+    }
+  ]
+}

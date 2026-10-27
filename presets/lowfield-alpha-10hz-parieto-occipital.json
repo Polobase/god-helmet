@@ -1,0 +1,21 @@
+{
+  "id": "lowfield-alpha-10hz-parieto-occipital",
+  "name": "Alpha 10 Hz parieto-occipital sine (tACS target)",
+  "category": "lowfield",
+  "evidence": "unverified",
+  "origin": "Project construct after alpha tACS studies by the Herrmann group (Oldenburg: Zaehle 2010, Kasten 2016) and Helfrich 2014 (Hamburg, with Herrmann)",
+  "uT": 5,
+  "summary": "A 10 Hz magnetic sine for 20 min over P7, Oz and P8, the parieto-occipital cortex where transcranial alternating current stimulation (tACS) studies report alpha entrainment. Those effects come from electric currents; this magnetic version is a project construct that nobody has tested.",
+  "notes": "The tACS studies drove current through scalp electrodes: Zaehle 2010 stimulated at each person's individual alpha frequency (IAF) via PO9/PO10 and reported higher alpha afterwards (10 active vs 10 sham); Helfrich 2014 used 10 Hz over parieto-occipital cortex and reported phase-dependent detection; Kasten 2016 ran 20 min below the sensation threshold, and the active-sham difference vanished after about 70 min. Transcranial current at 2 mA reaches about 0.8 V/m in cortex (Huang 2017), while these coils induce about 1e-6 V/m, roughly five orders of magnitude less, so no entrainment by induction is expected. The three coils run in phase with equal weight; the channels follow the ring layout (CH4-CH6 at P7, Oz, P8) and the other channels stay silent. O1, O2 or Pz are possible custom alternatives. If you know your IAF (8-13 Hz), set f0 to it. If alpha entrainment is the real goal, the evidence is for electrical tACS, a different device with its own safety requirements and outside this helmet. Not for people with epilepsy; stop on discomfort.",
+  "setting": "Seated, eyes open or closed as in the study you follow (Kasten 2016: 20 min).",
+  "schedule": "A single 20-min session; for a self-test, compare it with sham using the app's Blind option on separate days.",
+  "targets": ["primary-visual-cortex"],
+  "source": "Zaehle et al. 2010, PLoS One https://pmc.ncbi.nlm.nih.gov/articles/PMC2967471/ ; Helfrich et al. 2014, Curr Biol https://pubmed.ncbi.nlm.nih.gov/24461998/ ; Kasten et al. 2016, Front Hum Neurosci https://pmc.ncbi.nlm.nih.gov/articles/PMC4879138/ ; Huang et al. 2017, eLife (transcranial electric field in humans) https://pubmed.ncbi.nlm.nih.gov/28169833/",
+  "layout": "custom",
+  "placement": {"sites": ["", "", "", "P7", "Oz", "P8", "", ""]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "10 Hz sine, in phase", "minutes": 20, "pattern": {"type": "sine", "f0": 10, "pointMs": 0.5}, "spatial": {"mode": "bilateral"}}
+  ]
+}

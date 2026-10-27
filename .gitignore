@@ -8,3 +8,6 @@ webapp/dist/
 
 # Third-party datasheets (link to the vendor instead of redistributing)
 docs/*.pdf
+
+# Raw research output (contains local file paths) - curated into docs/ instead
+research/data/

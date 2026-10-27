@@ -1,0 +1,22 @@
+{
+  "id": "persinger-sleep-spindle-burst-2009",
+  "name": "Sleep-spindle entrainment: burst-firing every 3 s in Stage 2 sleep",
+  "category": "persinger",
+  "evidence": "anecdote",
+  "origin": "Persinger, Hoang & Baker-Price 2009 (Laurentian University), one patient",
+  "uT": 1,
+  "summary": "A 1 uT burst-firing field for about 0.7 s once every 3 s, across both temporoparietal regions during light (Stage 2) sleep. In one patient with epileptic-like experiences after a head injury, Persinger's lab reported that sleep-spindle onsets correlated weakly (rho 0.30-0.40) with the field onsets.",
+  "notes": "\"Once every 3 s for about 0.7 s\" is the most exact on-time published for burst-firing in a human study (Persinger 1999 gives a rounder \"1 s every 4 s\"). Its point values are unpublished, so the built-in accelerating burst (6 to 30 Hz) on 230 points of 3 ms (0.69 s, the length in Carniello 2020) stands in, followed by 2.31 s of silence. \"Transcerebrally through the temporoparietal regions\" is mapped to TP7 and TP8, driven together (an inference). The field ran while the patient's EEG showed Stage 2 sleep, and the abstract gives no exposure length; here 15 min without field for falling asleep precede 45 min of field, an approximation of when Stage 2 usually begins. Without an EEG you cannot know your sleep stage, and the spindle correlation can only be checked with one (the paper recorded over prefrontal and temporal sites). One patient with an abnormal EEG, no sham, correlational; lag/lead analyses found only the simultaneous relation, and the authors conclude only that such patients \"may be more sensitive to entrainment\". Independent double-blind tests of the lab's later God Helmet patterns found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not a sleep treatment. Not for people with epilepsy or a seizure history; make sure the helmet is comfortable to lie on.",
+  "setting": "In bed at your usual bedtime, lights out; ideally with an EEG headband that records sleep spindles.",
+  "schedule": "A single recording night in the original; no schedule was published. Compare with Blind (possibly sham) nights.",
+  "targets": ["left-tpj", "right-tpj"],
+  "source": "Persinger, Hoang & Baker-Price 2009, Entrainment of stage 2 sleep spindles by weak, transcerebral magnetic stimulation in an \"epileptic\" woman, Electromagn Biol Med 28:374-382 https://pubmed.ncbi.nlm.nih.gov/20017628/ ; Carniello 2020, PhD thesis, Laurentian University (burst-firing file: 230 points at 3 ms) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Persinger 1999, Int J Psychophysiol 34:163-169 (burst-firing 1 s every 4 s) https://pubmed.ncbi.nlm.nih.gov/10576400/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["TP7", "", "", "", "TP8", "", "", ""]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Falling asleep: no field (15 min)", "minutes": 15, "pattern": {"type": "off"}, "spatial": {"mode": "bilateral"}},
+    {"name": "Burst-firing 0.69 s every 3 s, both temporoparietal", "minutes": 45, "pattern": {"type": "burst", "f0": 6, "f1": 30, "sweepMs": 690, "gapMs": 2310, "pointMs": 3}, "spatial": {"mode": "bilateral"}}
+  ]
+}

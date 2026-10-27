@@ -44,7 +44,7 @@ def fit(rows):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("csv")
-    ap.add_argument("--default", type=float, default=0.73, help="value for channels without data")
+    ap.add_argument("--default", type=float, default=1.8, help="value for channels without data (cored-coil model)")
     args = ap.parse_args()
 
     with open(args.csv, newline="") as f:

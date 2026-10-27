@@ -1,0 +1,68 @@
+{
+  "id": "murphy-shakti-helmet-stereo",
+  "name": "Shakti Helmet emulation (stereo: amygdala left, hippocampus right, 30 min)",
+  "category": "research",
+  "evidence": "single-lab",
+  "origin": "Todd Murphy (original stereo Shakti Helmet); tested by Tsang, Koren & Persinger 2004",
+  "uT": 1,
+  "summary": "Emulates Murphy's first, discontinued stereo Shakti Helmet: three static coils per side, the amygdala burst-firing signal on the left and the hippocampal theta-burst signal on the right, at the same time, for 30 min. Persinger's lab compared this Shakti treatment with the Koren solenoids and reported a QEEG difference only in high alpha (Tsang et al. 2004).",
+  "setting": "Darkness and quiet (the vendor says effects during a session need darkness and silence); eyes closed, relaxed, without meditating or falling asleep; no meditation, mind machines or drugs at the same time.",
+  "schedule": "Tsang et al. ran 30 min once a week on 4 successive weeks. Vendor's Shakti rules: at most every 72 h or once a week, never on consecutive days; a series of 3 or 6 sessions, then a 21-day break; try a session 2-3 times before changing it.",
+  "notes": "Three coils per side. The vendor's emulation page puts 'one positive and two negative coils' on each side, the positive above the ear and the negatives over the frontal and temporal lobes; its comparison page puts the positive over the temporal lobe and the negatives over the frontal and parietal lobes. F7, T7, CP5 and F8, T8, CP6 follow the second description (an inference); CH4 and CH8 stay unused. The negative coils (F7, CP5, F8, CP6) get the reversed signal (weight -1) and the positive ones (T7, T8) the signal as is, so on each side the two outer coils oppose the middle one. Murphy quotes the paper: the right-hemisphere solenoids 'generated a theta-burst pattern' while 'simultaneously, over the left hemisphere, the burst-firing pattern' ran, and the vendor describes 'stereo signals ... but not alternating signals'; so both sides run at once, with no rotation or alternation. Both signal files are proprietary: the amygdala 'burstx' file is approximated by the built-in accelerating burst (6 to 30 Hz), 230 points of 3 ms (0.69 s, the published 230-point burst-firing length at Shakti's standard 3-ms points); the hippocampal 'LTP' file by 4 theta bursts, each of 4 biphasic pulses 9 ms apart (after the 4-pulse 100 Hz bursts of Larson & Lynch), repeated every 186 ms (5.4 Hz, the spectral peak the vendor reports for its LTP signal), on 3-ms points (0.74 s). The two start together every 4.69 s, each followed by about 4 s of silence (Shakti's standard latency). 1 µT lies in the vendor's stated 10-20 mG (1-2 µT). Tsang, Koren & Persinger 2004 (12 people) found no difference from the Koren solenoids in delta, theta, low alpha, beta or gamma; the hippocampus-right, amygdala-left rule rests on small Persinger-lab studies (Persinger, Richards & Koren 1994). Murphy reports headache or pressure in about 2% of users of an earlier version of the technology, mostly with hippocampal signals; if so, lower the intensity by one third. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012, the latter with the 8 Coil Shakti amygdala signal). Not for people with epilepsy; stop at once if distressed.",
+  "targets": [
+    "left-amygdala",
+    "right-hippocampus-head",
+    "right-hippocampus-body",
+    "right-hippocampus-tail"
+  ],
+  "source": "Murphy, Shakti demo: Emulating the Shakti Helmet https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/shakti_helmet.htm ; Murphy, Shakti & Koren Helmet - a comparison https://www.god-helmet.com/wp/winshakti/koren_shakti.htm ; Tsang, Koren & Persinger 2004, Int J Neurosci 114:1013 (the Shakti treatment) https://pubmed.ncbi.nlm.nih.gov/15527205/ ; Murphy, A reply to Gendle & McGrath (quotes the Tsang 2004 methods) http://www.innerworlds.50megs.com/Gendle_Shakti/8-Coil-Shakti-Gendle-&-McGrath.htm ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? (3-ms points, 4-s latency) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Murphy, Shakti demo: Formal Discussion (about 9.6 s of field per minute, 10-20 mG) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/mono_proposal.htm ; Murphy, Shakti demo: Random Theta Band output (5jut4ran; 5.4 Hz FFT peak, also the LTP signal's peak) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/5jut4ranconsent.htm ; Murphy, Shiva demo: Consumer information (headaches with hippocampal signals) https://www.god-helmet.com/wp/shiva/shiva_demo/shiva_infomed_consent.htm ; Murphy, Shakti demo: Safety - how often https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/how_often_is_safe.htm ; Ryczko & Persinger 2002, Percept Mot Skills 95:592 (230-point burst-firing pattern) https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Larson & Lynch 1986, Science (theta-burst timing) ; Persinger, Richards & Koren 1994, Int J Neurosci 79:191 https://pubmed.ncbi.nlm.nih.gov/7744561/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 (8 Coil Shakti amygdala signal, sham-controlled) https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "F7",
+      "T7",
+      "CP5",
+      "",
+      "F8",
+      "T8",
+      "CP6",
+      ""
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Stereo: amygdala left + hippocampus right (static)",
+      "minutes": 30,
+      "tracks": [
+        {
+          "pattern": {
+            "type": "burst",
+            "f0": 6,
+            "f1": 30,
+            "sweepMs": 690,
+            "gapMs": 4000,
+            "pointMs": 3
+          },
+          "spatial": {
+            "mode": "left",
+            "weights": [-1, 1, -1, 0, 0, 0, 0, 0]
+          }
+        },
+        {
+          "pattern": {
+            "type": "table",
+            "pointMs": 3,
+            "gapMs": 3946,
+            "data": [255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128]
+          },
+          "spatial": {
+            "mode": "right",
+            "weights": [0, 0, 0, 0, -1, 1, -1, 0]
+          }
+        }
+      ]
+    }
+  ]
+}

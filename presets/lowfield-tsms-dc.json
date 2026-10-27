@@ -1,0 +1,21 @@
+{
+  "id": "lowfield-tsms-dc",
+  "name": "Static DC field over left M1 (tSMS comparison)",
+  "layout": "custom",
+  "placement": { "sites": ["C3", "", "", "", "", "", "", ""] },
+  "category": "control",
+  "evidence": "single-lab",
+  "origin": "Project construct after transcranial static magnetic stimulation (tSMS; Oliviero, Foffani and colleagues, Toledo); replication failures by the Kammer group (Ulm)",
+  "uT": 5,
+  "summary": "A constant current through one coil over the left motor cortex hand area (C3) for 20 min, to show that a DC coil offset is not tSMS: its field is some 20,000-70,000 times weaker than a tSMS magnet and smaller than the Earth's field. Use it for education or as a control condition that looks active.",
+  "notes": "In tSMS a strong NdFeB magnet (e.g. N45, 45 mm across and 30 mm thick) is held over the motor cortex hand area; Oliviero 2011 reported up to 25% smaller motor evoked potentials after at least 10 min, and Kirimoto 2016 measured about 110-190 mT at 2-3 cm, roughly the depth of the cortex. This program puts a constant +A (at most 4.54 mA) through one coil at C3 for 20 min, about 3-6 uT at 20 mm: some 20,000-70,000 times weaker than tSMS and smaller than the Earth's static field (about 35-50 uT; about 35 uT in Wang 2019's lab). Turning your head in the Earth's field changes the local field more than this coil does, so no effect is expected; the program exists to make that point and to serve as an active-looking control. tSMS itself is contested: the Kammer group (Ulm) found no effect in three studies, most recently a neuronavigated one with 38 people (Lorenz 2026). The evidence rating describes tSMS with a real magnet (positive reports from several labs, rigorous replication failures), not this coil. For the right hand area put the coil at C4. Dissipation is trivial (calculated: about 0.09 mW in the coil and 45 mW in the 2.2 kOhm series resistor).",
+  "setting": "Seated, 10-20 min (Oliviero 2011: at least 10 min of tSMS was needed for an effect).",
+  "schedule": "As the program it is compared with; no schedule applies to this field.",
+  "targets": [],
+  "source": "Oliviero et al. 2011, J Physiol https://pubmed.ncbi.nlm.nih.gov/21807616/ ; Kirimoto et al. 2016, Sci Rep (110-190 mT at 2-3 cm) https://pmc.ncbi.nlm.nih.gov/articles/PMC5048290/ ; Lorenz et al. 2026 (neuronavigated tSMS replication, no effect) https://pmc.ncbi.nlm.nih.gov/articles/PMC12992518/ ; Wang et al. 2019, eNeuro (ambient lab field about 35 uT) https://pmc.ncbi.nlm.nih.gov/articles/PMC6494972/",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "DC offset, one coil at C3", "minutes": 20, "pattern": {"type": "dc"}, "spatial": {"mode": "single", "channel": 0}}
+  ]
+}

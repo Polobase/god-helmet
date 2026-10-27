@@ -18,7 +18,9 @@ enum class PatternType : uint8_t {
   Thomas,      // decelerating FM ("Thomas pulse"), f0 > f1
   Pulse,       // rectangular pulses pulseMs on, gapMs off, optional polarity flip
   SemiRandom,  // pseudo-random value per point
-  Table,       // user point table (Koren-style CSV / converted WAV)
+  Table,       // point table (inline "data", or the session's tableData)
+  PhaseMod,    // sin(2*pi*f0*t + depth*sin(2*pi*f1*t)): e.g. Murphy's "modulated 40 Hz"
+  Noise,       // band-limited noise f0..f1 Hz (12 seeded random-phase sines)
 };
 
 struct PatternParams {
@@ -30,9 +32,11 @@ struct PatternParams {
   float pointMs = 0.0f;    // sample-and-hold point duration, 0 = continuous
   float pulseMs = 100.0f;  // Pulse on-time
   bool alternate = true;   // Pulse: alternate polarity on successive pulses
-  uint32_t seed = 1;       // SemiRandom
+  uint32_t seed = 1;       // SemiRandom, Noise
+  float depth = 1.0f;      // PhaseMod: modulation depth in radians
   const int8_t* table = nullptr;  // Table values -127..127 (owned by Session)
   uint32_t tableLen = 0;
+  uint32_t tableOffset = 0;       // position in the session's table pool
 };
 
 // Sensible defaults per type (used when a preset omits a field).

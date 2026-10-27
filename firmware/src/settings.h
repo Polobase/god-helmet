@@ -8,7 +8,8 @@ struct Settings {
   // Calibration: peak field per mA at the reference depth (20 mm from the coil
   // face, on axis). Default = air-core estimate for the 19x12 mm 495-turn coils;
   // replace with measured values (docs/CALIBRATION.md).
-  float uTperMA[8] = {0.73f, 0.73f, 0.73f, 0.73f, 0.73f, 0.73f, 0.73f, 0.73f};
+  // µT at 20 mm per mA; 1.8 = cored-coil model (docs/CALIBRATION.md), measure per coil.
+  float uTperMA[8] = {1.8f, 1.8f, 1.8f, 1.8f, 1.8f, 1.8f, 1.8f, 1.8f};
   bool calibrated = false;
   engine::DriveConfig drive;
   bool dacGain2x = true;        // AD5328 GAIN bits (module expects 0..2*Vref; verify on bench)

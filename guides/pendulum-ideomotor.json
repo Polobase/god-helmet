@@ -1,0 +1,106 @@
+{
+  "id": "pendulum-ideomotor",
+  "name": "Pendulum: known, guessed and truly hidden",
+  "category": "self-test",
+  "summary": "See what a pendulum can really do. It expresses what you already know through tiny unconscious movements (the ideomotor effect; Faraday showed in 1853 that table-turning came from the sitters' own unconscious pushes), and it can even beat chance on questions you think you are guessing, through knowledge you didn't know you had (Gauchou et al. 2012). Only questions that nobody can know test psi: here the app's random generator commits to hidden red/black cards and clock hours before you answer. Our design.",
+  "evidence": "unverified",
+  "minutes": 32,
+  "requires": { "headphones": false, "helmet": "optional", "pool": false },
+  "setting": "Seated at a table with your elbow resting; a pendulum (any small weight on a thread) over a sheet with a cross: one line for yes, one for no.",
+  "cautions": "Don't use a pendulum for health, legal, money or relationship decisions; even pendulum authors warn that emotional involvement biases the answers. Above-chance results on the guessed trivia are expected from implicit knowledge and are not psi. Decide the number of trials or sessions before you start, keep every result, and report them all.",
+  "sources": [
+    {
+      "title": "Faraday M (1853) Letter to the editor of The Times, 28 June 1853 (table-turning and the indicator)",
+      "url": "https://epsilon.ac.uk/view/faraday/letters/Faraday2691"
+    },
+    {
+      "title": "Gauchou HL, Rensink RA, Fels S (2012) Expression of nonconscious knowledge via ideomotor actions. Conscious Cogn 21:976-982",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22377138/"
+    },
+    { "title": "Cosimano CW, Elementary Psionics and Psionic Magick (self-published practice books; device and pendulum claims)" }
+  ],
+  "steps": [
+    {
+      "id": "calibrate",
+      "title": "Find yes and no",
+      "minutes": 3,
+      "instructions": "Hold the pendulum still over the cross. Ask it to show \"yes\", then \"no\", and let it settle into its own swings. Don't try to move it.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "known",
+      "title": "Known answers",
+      "minutes": 3,
+      "instructions": "Ask ten questions whose answers you know, five true and five false (for example \"Is 2 + 2 four?\", \"Is it raining now?\"). Count how many the pendulum got right. Expect nearly all.",
+      "audio": null,
+      "input": { "type": "rating", "items": [{ "key": "known-correct", "label": "Correct answers out of 10", "min": 0, "max": 10 }] },
+      "advance": "manual"
+    },
+    {
+      "id": "guessed",
+      "title": "Trivia: know or guess",
+      "minutes": 8,
+      "instructions": "For each question below, first write on paper whether you **know** or **guess** the answer, then let the pendulum answer and write that down too.\n\n1. Is Canberra the capital of Australia?\n2. Does a spider have six legs?\n3. Is the Danube longer than the Rhine?\n4. Was the Eiffel Tower finished before 1900?\n5. Is Mount Kilimanjaro in Kenya?\n6. Does sound travel faster in water than in air?\n7. Is a tomato a fruit in the botanical sense?\n8. Is Venus the planet closest to the Sun?\n9. Did Beethoven write nine symphonies?\n10. Is the Atlantic the largest ocean?\n11. Does copper conduct electricity better than iron?\n12. Is Lake Baikal the deepest lake on Earth?\n13. Do penguins live in the wild at the North Pole?\n14. Is the thigh bone the longest bone in the human body?\n15. Was the telephone patented before the electric light bulb?\n16. Is Iceland larger in area than the island of Ireland?\n17. Does the Moon have a breathable atmosphere?\n18. Is the speed of light about 300,000 km per second?\n19. Is Madrid farther north than Rome?\n20. Is a group of crows called a murder?",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "guessed-score",
+      "title": "Trivia: score",
+      "minutes": 2,
+      "instructions": "Answers: 1 yes, 2 no, 3 yes, 4 yes, 5 no, 6 yes, 7 yes, 8 no, 9 yes, 10 no, 11 yes, 12 yes, 13 no, 14 yes, 15 yes, 16 yes, 17 no, 18 yes, 19 no, 20 yes.\n\nCount the pendulum's correct answers separately for the items you knew and the ones you guessed. Guessed items often come out above 50 %: that is your own hidden knowledge, not psi.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "know-correct", "label": "KNOW items the pendulum got right", "min": 0, "max": 20 },
+          { "key": "know-total", "label": "KNOW items", "min": 0, "max": 20 },
+          { "key": "guess-correct", "label": "GUESS items the pendulum got right", "min": 0, "max": 20 },
+          { "key": "guess-total", "label": "GUESS items", "min": 0, "max": 20 }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "hidden",
+      "title": "Truly hidden cards",
+      "minutes": 8,
+      "instructions": "Nobody, including you, knows these answers: the random generator commits to each card before you answer. Only this block tests psi. Chance is 1 in 2: with 20 scored trials (passes don't count), 15 or more hits happen by chance about 2 % of the time.",
+      "audio": null,
+      "input": {
+        "type": "choice",
+        "key": "hidden-cards",
+        "prompt": "Is the hidden card red or black? Ask the pendulum, then tap its answer.",
+        "options": ["Red", "Black"],
+        "trials": 20,
+        "feedback": false
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "clock",
+      "title": "Hidden clock hour",
+      "minutes": 5,
+      "instructions": "Some pendulum books claim it can tell a hidden time by striking a count. The app commits to a hidden hour from 1 to 12; ask the pendulum to strike it, then tap the count. Chance is 1 in 12 per trial.",
+      "audio": null,
+      "input": {
+        "type": "choice",
+        "key": "hidden-hour",
+        "prompt": "Which hour (1-12) does the pendulum strike?",
+        "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+        "trials": 6,
+        "feedback": false
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "faraday",
+      "title": "Faraday's lesson",
+      "minutes": 3,
+      "instructions": "Film your hand in slow motion while the pendulum answers a few questions, then watch the clip. When Faraday gave table-turners an indicator that showed their own small pushes, the table stopped moving. Seeing your own movements usually weakens the feeling that the pendulum moves by itself.",
+      "audio": null,
+      "advance": "manual"
+    }
+  ]
+}

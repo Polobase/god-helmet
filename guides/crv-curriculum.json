@@ -1,0 +1,119 @@
+{
+  "id": "crv-curriculum",
+  "name": "CRV training plan (curriculum)",
+  "category": "remote-viewing",
+  "summary": "An overview of how SRI and Army INSCOM trained CRV in 1983-86, turned into a self-paced plan: one stage at a time, drills, sessions on suitable targets, gating rules, and rest blocks. Use it alongside the CRV guided session guide. Expected numbers come from a handful of trainees in one programme; Swann himself wrote that the site counts per stage 'mean nothing' individually.",
+  "evidence": "single-lab",
+  "minutes": 40,
+  "requires": { "headphones": false, "helmet": "none", "pool": false },
+  "setting": "Any quiet place. Paper and pen, or the phone, for the drills.",
+  "cautions": "The learning curve (a few good 'first-time' sessions, a decline, then slow learning to a plateau) is an SRI hypothesis, not a validated finding. Don't expect particular results or pay for training that promises them. Overtraining ('system collapse') calls for a full break. Mix in blind benchmark sessions and judge those only blind.",
+  "sources": [
+    {
+      "title": "Smith PH (1986) Coordinate Remote Viewing manual, DIA/INSCOM, after Ingo Swann's SRI training (widely posted; Swann did not write it)"
+    },
+    {
+      "title": "Coordinate Remote Viewing Stages I-VI and Beyond (working paper, February 1985), CREST CIA-RDP96-00788R001000400001-7",
+      "url": "https://www.cia.gov/readingroom/document/cia-rdp96-00788r001000400001-7"
+    },
+    {
+      "title": "Puthoff HE (1984) Special Orientation Techniques S-I to S-III, SRI International, CREST CIA-RDP96-00788R001800290001-2",
+      "url": "https://www.cia.gov/readingroom/document/cia-rdp96-00788r001800290001-2"
+    },
+    {
+      "title": "Puthoff HE (1984) Special Orientation Techniques S-V and S-VI, SRI International, CREST CIA-RDP96-00788R001800280001-3",
+      "url": "https://www.cia.gov/readingroom/document/cia-rdp96-00788r001800280001-3"
+    },
+    {
+      "title": "Swann I (1984) Memorandum to H. Puthoff on CRV training, 15 April 1984, CREST CIA-RDP96-00792R000100140033-6",
+      "url": "https://www.cia.gov/readingroom/document/cia-rdp96-00792r000100140033-6"
+    },
+    { "title": "Puthoff HE (1984) Remote Viewing Reliability, Enhancement and Evaluation (SRI/GF-0257), SRI International" },
+    { "title": "Smith D (2005) Open Source CRV, version 2 (freely distributable home-practice guide)" }
+  ],
+  "steps": [
+    {
+      "id": "overview",
+      "title": "How the plan works",
+      "minutes": 3,
+      "instructions": "- Learn **one stage at a time**, and don't read ahead: the 1985 working paper warns against learning later stages early.\n- For each stage: theory, drills, then sessions on target types that suit that stage.\n- **Advance** after 5 or 6 consecutive sessions with clean structure (every AOL handled as a break) plus a short essay on the stage.\n- Work in **two-week blocks with two- to four-week breaks** (SRI 1984).\n- Every 5-10 training sessions, run one **blind benchmark** session with no feedback during the session and judge it blind.\n- Stop on a high point, or when an insight comes.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "theory",
+      "title": "Theory for your current stage",
+      "minutes": 10,
+      "instructions": "Read about your current stage only (in the CRV guided session guide or the sources). Then write a short essay in your own words: what the stage is for, what goes in it, and the mistakes to avoid.",
+      "audio": null,
+      "input": { "type": "text", "key": "essay", "prompt": "Your notes or essay on the current stage" },
+      "advance": "manual"
+    },
+    {
+      "id": "ideogram-drill",
+      "title": "Stage I drill: ideograms",
+      "minutes": 10,
+      "instructions": "Draw nine rectangles of different sizes and orientations. A partner (or you, from a shuffled list) calls a gestalt for each: land, man-made structure, natural structure, life form, space, object, energy, water, gas. Draw the ideogram inside the rectangle as fast as you can, from different directions.\n\nUse this drill whenever your ideograms become stereotyped (an \"ideogram rut\"); about 10 minutes is enough.",
+      "audio": null,
+      "input": { "type": "sketch", "key": "ideogram-drill", "prompt": "Ideogram drill" },
+      "advance": "manual"
+    },
+    {
+      "id": "stage-1-plan",
+      "title": "Stage I sessions",
+      "minutes": 2,
+      "instructions": "Use targets with one clear gestalt first (an island, a mountain, a desert), then targets with interfaces (a city by a lake). In the CRV session guide, stop after Stage I by pressing Next through the later stages.\n\nIn SRI's 1984 programme, four Army trainees needed 69-99 Stage I sites each (earlier groups about 54 on average); the planned schedule for Stage I was 4 to 7 weeks.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "stage-2-list",
+      "title": "Stage II drill: sensory words",
+      "minutes": 8,
+      "instructions": "Write a list of at least 60 basic sensory words across all categories: sounds, textures, temperatures, colours, brightness, contrast, tastes, smells, energies. Then do sessions on targets rich in sensations: a paper mill, an airport, a botanical garden. SRI's trainees needed about 18-38 sites.",
+      "audio": null,
+      "input": { "type": "text", "key": "sensory-list", "prompt": "Your list of basic sensory words" },
+      "advance": "manual"
+    },
+    {
+      "id": "stage-3-plan",
+      "title": "Stage III",
+      "minutes": 2,
+      "instructions": "Do sketch drills, then sessions on targets with strong shapes: bridges, monuments, airfields. Practise passive movement prompts. This was the longest stage at SRI (27-86 sites, 12-16 weeks), shortened when \"detached analytical sketching\" was introduced.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "stage-4-6-plan",
+      "title": "Stages IV to VI",
+      "minutes": 3,
+      "instructions": "**Stage IV:** targets defined by their function: churches, hospitals, dams, power plants, libraries. The stage is complete when you get the function right in at least 5 consecutive trials.\n\n**Stage V:** query drills on about 8 sites.\n\n**Stage VI:** add clay modelling and finish with trials that have no feedback during the session.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "progress",
+      "title": "Progress log",
+      "minutes": 2,
+      "instructions": "Log where you are. Our operational version of SRI's completion rule: clean structure in 5 consecutive sessions, plus blind-judged quality of 3 or more (0-7 scale) in 5 consecutive benchmark sessions.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "stage", "label": "Current stage", "min": 1, "max": 6 },
+          { "key": "clean-streak", "label": "Consecutive sessions with clean structure", "min": 0, "max": 10 },
+          { "key": "block-sessions", "label": "Sessions in this two-week block", "min": 0, "max": 30 },
+          {
+            "key": "benchmark-quality",
+            "label": "Last blind benchmark, judged 0-7",
+            "min": 0,
+            "max": 7,
+            "minLabel": "No match",
+            "maxLabel": "Excellent"
+          }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

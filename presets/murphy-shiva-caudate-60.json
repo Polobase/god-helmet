@@ -1,0 +1,26 @@
+{
+  "id": "murphy-shiva-caudate-60",
+  "name": "Shiva caudate nucleus signal (60 min)",
+  "category": "body",
+  "evidence": "anecdote",
+  "origin": "Shiva software by Todd Murphy (signal templates licensed from Persinger and Koren)",
+  "uT": 1,
+  "summary": "Murphy's 60-min Shiva caudate nucleus session, stepped counter-clockwise around the head. Murphy describes body-related ('emotive-visceral') effects, and one user reported 'a sort of timeless quality'.",
+  "setting": "Dark, quiet room, eyes closed, relaxed without meditating or falling asleep.",
+  "schedule": "Weekly or less (vendor); Shiva's rule for 60-min sessions is weekly or every two weeks at most, never on consecutive days.",
+  "notes": "Coils sit on Murphy's Shiva ring (Fp1, FT7, TP7, O1, O2, TP8, FT8, Fp2; one coil per site instead of Shiva's coil pairs) and fire one at a time counter-clockwise seen from above (back-to-front over the right side), 10, 12 … 20 ms per coil (Murphy's lecture example; Shiva's own step table is unpublished). Murphy's Shakti caudate pages call the caudate signal 'not well tested', and its waveform is not described anywhere; this file uses the built-in accelerating burst in the vendor's standard format (6 → 30 Hz, 230 points × 3 ms, then about 4 s of silence) as a stand-in, so on this helmet it differs from the Shiva amygdala session only in name and length. Murphy also names caudate sessions, with the Persinger Session, as candidates for his 'healing by laying on hands' practice (a palm exercise four times a day for five minutes, practised three to six days after a session, with sessions on geomagnetically unsettled days); that is a vendor claim, not a treatment, and there is no evidence that it heals anything. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy; stop at once if distressed.",
+  "targets": ["caudate-nucleus"],
+  "source": "Murphy, Shiva main page (caudate testimonial) https://www.god-helmet.com/wp/shiva/index.htm ; Murphy, Shiva: Healing by laying on hands https://www.god-helmet.com/wp/shiva/shiva_healing.htm ; Murphy, Shakti demo: Caudate nucleus signal https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/caudate_consent.htm ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Murphy, Shiva demo: Magnetic coil locations https://www.god-helmet.com/wp/shiva/shiva_demo/locations.htm ; Murphy, Psychic Skills & Miracles lecture (coil steps of 10, 12 ... 20 ms) https://www.youtube.com/watch?v=tmC1174POpA ; Murphy, Shiva demo: Session lengths https://www.god-helmet.com/wp/shiva/shiva_demo/session_length.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["Fp1", "FT7", "TP7", "O1", "O2", "TP8", "FT8", "Fp2"], "order": [0,1,2,3,4,5,6,7]},
+  "fadeInS": 10,
+  "fadeOutS": 15,
+  "phases": [
+    {
+      "name": "Caudate signal (burst stand-in), CCW 10-20 ms",
+      "minutes": 60,
+      "pattern": {"type": "burst", "f0": 6, "f1": 30, "sweepMs": 690, "gapMs": 4000, "pointMs": 3},
+      "spatial": {"mode": "rotate", "dir": "ccw", "dwell": [10,2,20]}
+    }
+  ]
+}

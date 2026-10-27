@@ -22,7 +22,7 @@ constexpr const char* kRpcRequest = "a3c87501-8ed3-4bdf-8a39-a01bebede295";
 constexpr const char* kRpcResponse = "a3c87502-8ed3-4bdf-8a39-a01bebede295";
 constexpr const char* kStatus = "a3c87503-8ed3-4bdf-8a39-a01bebede295";
 
-constexpr size_t kMaxRequestBytes = 48 * 1024;  // sessions with an 8192-point table
+constexpr size_t kMaxRequestBytes = 96 * 1024;  // sessions with up to 16384 table points
 constexpr uint32_t kStatusRunningMs = 500;
 constexpr uint32_t kStatusIdleMs = 2000;
 constexpr int kMaxConnections = 2;  // receiver app + telepathy sender

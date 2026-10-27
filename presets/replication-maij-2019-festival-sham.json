@@ -1,0 +1,28 @@
+{
+  "id": "replication-maij-2019-festival-sham",
+  "name": "Maij, van Elk & Schjoedt 2019: placebo God Helmet at a festival, 15 min (no field)",
+  "category": "replication",
+  "evidence": "single-lab",
+  "origin": "D. L. R. Maij, M. van Elk (University of Amsterdam) & U. Schjoedt; pre-registered field study",
+  "uT": 1,
+  "summary": "A pre-registered field study of placebo brain stimulation: 193 visitors of a Dutch music festival wore a 'God Helmet' connected to nothing for 15 min, blindfolded, with white noise in their ears, pressing a button at each extraordinary experience. Self-identified spirituality, not blood alcohol, predicted how often and how strongly they reported such experiences. This program keeps the coils silent for the 15 min.",
+  "notes": "No field at any time: the original helmet, a metallic-coloured skate helmet wired to a dummy analog-to-digital box with a flickering light, was not attached to any generator, and this program keeps every coil silent for 15 min. Original: Lowlands festival, advertised as 'Tripping with the God Helmet'; 199 visitors started and 193 completed (some took the helmet off after several minutes because they noticed nothing); correlational by design, with no control group; hypotheses, materials and analysis pre-registered (OSF 7u4wd). Procedure: screening (epilepsy, easy fainting, claustrophobia, brain damage); an information sheet and a short review claiming the helmet reliably elicits extraordinary experiences; blood alcohol by breathalyser; religiosity and spirituality questions; a video on how the helmet supposedly works; a Stroop task; then the helmet, sham skin-conductance and heart-rate leads 'to keep track of their health', a vomit bowl on the table, a blindfold, white noise through in-ear earphones and a mouse button to press at each extraordinary experience, for 15 min, in one of six open cubicles (bass from other stages and a moving wooden floor were distractions). Afterwards: what each press meant (coded into eight types of experience), intensity 0-100 ('To what extent did you feel a mystical/spiritual experience as a result of the helmet?'), eight items of Hood's mysticism scale plus an awe and a presence item, and the side effects noticed (a suspicion check, as in Andersen et al. 2014); follow-up questions within five days and the debriefing by mail two weeks later. Result: blood alcohol did not predict the frequency or intensity of the experiences; self-identified spirituality did. The authors also cite a study of theirs, then in preparation, in which people sensory-deprived in both conditions had more experiences with the helmet on than taken off; in Maij & van Elk 2018 an expectancy manipulation changed the experiences within subjects, and absorption predicted them. How to reproduce it honestly: the original worked through deception, which a self-test cannot copy and which should not be used on others. Either run an active 15-min program with the Blind option (its sham arm is this exposure) or let a helper choose secretly between this file and an active program of the same length; ticking Blind on this file changes nothing, since both arms are silent. If you run it for someone else, tell them beforehand that the helmet may or may not produce a field, and reveal it afterwards; leave out fake sensors and health claims. Count presses with a tally counter or note the times; afterwards write what each one was, rate the intensity, guess real or sham, and then save the 0-10 rating (Log tab). Guides -> Enrollment battery gives absorption (IPIP Imagination) and sensed-presence proneness (SenPQ); the app has no spirituality or mysticism scale. The Experiment tab runs psi trials and is not needed. Do not drink for this: the study measured visitors' existing alcohol levels, and alcohol made no difference. Unpleasant experiences can come from the setting alone; stop on distress. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012).",
+  "setting": "Seated, blindfolded, white noise through in-ear earphones, a button or tally counter in hand. The original was an open cubicle at a music festival, with occasional bass from other stages and a floor that moved when people walked by.",
+  "schedule": "One 15-min session per person (the whole visit was limited to 45 min), with follow-up questions within five days.",
+  "targets": [],
+  "source": "Maij, van Elk & Schjoedt 2019, The role of alcohol in expectancy-driven mystical experiences: a pre-registered field study using placebo brain stimulation, Religion Brain Behav 9:108-125 https://doi.org/10.1080/2153599X.2017.1403952 ; Published version (UvA-DARE) https://pure.uva.nl/ws/files/34902680/The_role_of_alcohol_in_expectancy_driven_mystical_experiences.pdf ; Pre-registration https://osf.io/7u4wd/ ; Maij & van Elk 2018, Getting absorbed in experimentally induced extraordinary experiences, Conscious Cogn 66:1-16 https://pubmed.ncbi.nlm.nih.gov/30355534/ ; Andersen, Schjoedt, Nielbo & Sorensen 2014, Mystical experience in the lab, Method Theory Study Relig 26:217 https://pure.au.dk/portal/en/publications/mystical-experience-in-the-lab/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Placebo helmet, blindfold and white noise (no field)",
+      "minutes": 15,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

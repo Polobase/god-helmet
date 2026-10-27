@@ -1,0 +1,128 @@
+{
+  "id": "photo-target-trial",
+  "name": "Photo-target trial (free response)",
+  "category": "remote-viewing",
+  "summary": "The app's standard evidential trial, with no travel: the helmet commits to a hidden picture from your pool, you describe and sketch it for 15 to 30 minutes, lock your response, rank all pictures of the set blind, then see the reveal and check the commitment. It follows McMoneagle's targeting rules and the usual laboratory free-response design (sets of 5 or 6 pictures; here a trial draws from every usable set in your pool, so the chance of a rank-1 hit is 1 in the size of the drawn set). One trial means little: with a realistic effect size (about 0.16) even 50 trials have only about 30 % power. Decide the number of trials in advance and keep every result.",
+  "evidence": "single-lab",
+  "minutes": 42,
+  "requires": { "headphones": false, "helmet": "optional", "pool": true },
+  "setting": "Alone, or with an interviewer who is as blind as you are. A pool whose sets all have the same size, ideally 5 or 6 pictures (a trial draws from every usable set, so mixed sizes mix chance rates), of distinct, stand-alone outdoor scenes with clear gestalts, from different kinds of scene within each set, chosen by someone else if possible.",
+  "cautions": "Self-judging is weaker than independent blind judging; mark which one you used. Never re-judge after the reveal. The 1995 AIR evaluation found a statistically significant laboratory effect that could not be clearly attributed to psi, and no operational value. Never use people as targets without their consent. One trial means little: with a realistic effect size (about 0.16) even 50 trials have only about 30 % power. Decide the number of trials in advance and keep every result.",
+  "sources": [
+    { "title": "McMoneagle J (1993) Mind Trek. Hampton Roads" },
+    {
+      "title": "McMoneagle J, May EC (2004) Intention, attention and expectation in remote viewing. Parapsychological Association convention paper"
+    },
+    {
+      "title": "May EC, Utts JM, Humphrey BS, Luke WLW, Frivold TJ, Trask VV (1990) Advances in remote-viewing analysis. J Parapsychol 54:193-228"
+    },
+    {
+      "title": "Puthoff HE, Targ R (1976) A perceptual channel for information transfer over kilometer distances. Proc IEEE 64:329-354",
+      "url": "https://doi.org/10.1109/PROC.1976.10113"
+    },
+    { "title": "Targ R, Puthoff HE, Humphrey BS, May EC (1980) Special Orientation Techniques (SRI R-003-80), SRI International" },
+    {
+      "title": "Mumford MD, Rose AM, Goslin DA (1995) An Evaluation of Remote Viewing: Research and Applications. American Institutes for Research",
+      "url": "https://documents3.theblackvault.com/documents/stargate/pdfs/CIA-RDP96-00791R000200180006-4.pdf"
+    }
+  ],
+  "steps": [
+    {
+      "id": "plan",
+      "title": "Plan the series",
+      "minutes": 2,
+      "instructions": "Before the first trial of a series, fix the number of trials, who judges, and the scoring rule (a rank-1 hit, or the sum of ranks). Write it here every time, or copy last time's plan. Changing it halfway turns a test into a search.",
+      "audio": null,
+      "input": {
+        "type": "text",
+        "key": "plan",
+        "prompt": "Your plan for this series",
+        "placeholder": "30 trials, self-judged, rank 1 = hit, one trial a day."
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "task",
+      "title": "Blind target",
+      "minutes": 1,
+      "instructions": "The helmet picks a set and a target picture with its random generator and commits to them. Only the trial number is shown.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "rv" },
+      "advance": "manual"
+    },
+    {
+      "id": "cool-down",
+      "title": "Cool-down",
+      "minutes": 5,
+      "instructions": "Close your eyes and relax. Let go of guesses about the target.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "describe",
+      "title": "Describe the target",
+      "minutes": 20,
+      "instructions": "Describe the target picture: shapes, colours, textures, sounds, the feel of the place. Short, raw impressions are better than names. If a name comes (\"a bridge\"), write it as a guess and go back to what you perceive.\n\nYou can also frame it as: describe the picture you will be shown at the reveal. Take 15 to 30 minutes.",
+      "audio": null,
+      "input": { "type": "text", "key": "response", "prompt": "Your impressions" },
+      "advance": "manual"
+    },
+    {
+      "id": "sketch",
+      "title": "Sketch",
+      "minutes": 5,
+      "instructions": "Sketch the main shapes and their layout. In SRI's experience, drawings were often more accurate than words.",
+      "audio": null,
+      "input": { "type": "sketch", "key": "sketch", "prompt": "Sketch the main shapes and layout" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response. The app stores its fingerprint (SHA-256), so nothing can be changed after you see the target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge",
+      "title": "Rank the pictures",
+      "minutes": 5,
+      "instructions": "You now see all pictures of the drawn set in random order. Rank them, best match with your response first. Judge by what you wrote and drew. If someone who doesn't know the target can judge, hand them the phone now; otherwise the trial counts as self-judged. Never re-judge after the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "quality",
+      "title": "Rate the match",
+      "minutes": 1,
+      "instructions": "Rate how well the picture you ranked first matches your response, on the 0-7 scale used at SRI and SAIC: start at 7 and step down until the description fits.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          {
+            "key": "quality",
+            "label": "Match of your rank-1 picture (0-7)",
+            "min": 0,
+            "max": 7,
+            "minLabel": "No match",
+            "maxLabel": "Excellent"
+          }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 2,
+      "instructions": "The helmet reveals the target and its nonce, and the app checks the commitment, the pool and your locked response. A rank-1 hit has a chance of 1 in the number of pictures in the set.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    }
+  ]
+}

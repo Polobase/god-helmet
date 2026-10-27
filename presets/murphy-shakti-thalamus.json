@@ -1,0 +1,48 @@
+{
+  "id": "murphy-shakti-thalamus",
+  "name": "Shakti thalamus burst-firing signal (untested)",
+  "category": "signals",
+  "evidence": "unverified",
+  "origin": "Todd Murphy (2- and 4-coil Shakti software)",
+  "uT": 1,
+  "summary": "Murphy's thalamus burst-firing signal for the 2- and 4-coil Shakti, 20 min. The vendor aims at states resembling 'dreamless sleep' with awareness ('The Source', 'The Formless'), says it 'may do no more for you than make you drowsy', and calls it 'an untested signal'.",
+  "setting": "Stay alert and 'present' during the session rather than drifting into sleep (vendor).",
+  "schedule": "The vendor's general Shakti rules: at most every 72 h or once a week, never on consecutive days; a series of 3 or 6 sessions, then a 21-day break.",
+  "notes": "The vendor gives neither the waveform nor a coil position; its location pages list the signal as untested over the right temporal, parietal and occipital lobes. This file puts one coil above each ear (T7 and T8, the same signal on both), a project choice for a two-coil set; the other six channels stay unused. The thalamus file is unpublished, so the built-in accelerating burst (6 to 30 Hz, 230 points of 3 ms = 0.69 s, then the Shakti's standard 4 s of silence) stands in for it: nothing thalamus-specific is copied, and the waveform is the same as the project's amygdala stand-in. The thalamus lies deep in the centre of the brain, several centimetres from any coil. If the session leaves you drowsy, do not drive afterwards. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy; stop if distressed.",
+  "targets": [
+    "thalamus"
+  ],
+  "source": "Murphy, Shakti demo: Thalamus burst firing signal https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/thalamus_burst_firing_consent.htm ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? (3-ms points, 4-s latency) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Ryczko & Persinger 2002, Percept Mot Skills 95:592 (230-point burst-firing pattern) https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Murphy, Shakti demo: Safety - how often https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/how_often_is_safe.htm ; Murphy, Shakti demo: Taking breaks https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/break.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 (8 Coil Shakti amygdala signal, sham-controlled) https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "T7",
+      "",
+      "",
+      "",
+      "T8",
+      "",
+      "",
+      ""
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Thalamus signal (burst stand-in), both coils",
+      "minutes": 20,
+      "pattern": {
+        "type": "burst",
+        "f0": 6,
+        "f1": 30,
+        "sweepMs": 690,
+        "gapMs": 4000,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

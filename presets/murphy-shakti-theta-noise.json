@@ -1,0 +1,50 @@
+{
+  "id": "murphy-shakti-theta-noise",
+  "name": "Shakti 'Theta Band' random noise (T7 + T8, 10 min)",
+  "category": "signals",
+  "evidence": "anecdote",
+  "origin": "Todd Murphy (Shakti software); copies an accidental noise output of Persinger-lab (Laurentian University) DAC hardware in the early 1990s",
+  "uT": 1,
+  "summary": "Murphy's 'Theta Band' signal: low-frequency noise with a 5.4 Hz spectral peak from one coil above each ear. Murphy reports that the accidental DAC noise it copies produced 'visions, vestibular sensations, and pleasant emotional effects'.",
+  "setting": "Darkness and quiet (the vendor says effects during a session need darkness and silence); eyes closed, relaxed, without meditating or falling asleep; no meditation, mind machines or drugs at the same time.",
+  "schedule": "Vendor's Shakti rules: at most every 72 h or once a week, never on consecutive days; a series of 3 or 6 sessions, then a 21-day break; try a session 2-3 times before changing it.",
+  "notes": "Two coils carry the same signal, one above each ear (T7 and T8, the vendor's 'one signal to two coils, located above the ears, over both temporal lobes'); the other six channels stay unused. Murphy says the noise first came from an accident: the lab software ran 'too fast' after a 286 to 386 upgrade, and his own DAC was not set up; the vendor's FFT of its file shows a peak at 5.4 Hz, the same peak it reports for its hippocampal LTP signal. The file is unpublished, so it is approximated by the built-in band-limited noise from 4 to 6.8 Hz (centred on 5.4 Hz); the original spectrum and its 'low amplitude' are not specified, and 1 µT is the usual Persinger-lab strength. 10 min: the vendor's only duration is '10 minute sessions are usually sufficient', given for trying the signal out; it gives no length for a full session. The vendor calls the signal less well tested and has tried it only on both sides at once, so there is no one-sided version. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012, the latter with the 8 Coil Shakti amygdala signal). Not for people with epilepsy or a seizure history; stop at once if distressed.",
+  "targets": [
+    "left-superior-temporal-gyrus-posterior",
+    "right-superior-temporal-gyrus-posterior",
+    "left-hippocampus-body",
+    "right-hippocampus-body"
+  ],
+  "source": "Murphy, Shakti demo: Random Theta Band output (5jut4ran; 5.4 Hz FFT peak, also the LTP signal's peak) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/5jut4ranconsent.htm ; Murphy, Shakti demo: Safety - how often https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/how_often_is_safe.htm ; Murphy, Shakti demo: How long should sessions be https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/safe_durations.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 (8 Coil Shakti amygdala signal, sham-controlled) https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "T7",
+      "",
+      "",
+      "",
+      "T8",
+      "",
+      "",
+      ""
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Theta-band noise (4-6.8 Hz), both coils",
+      "minutes": 10,
+      "pattern": {
+        "type": "noise",
+        "f0": 4,
+        "f1": 6.8,
+        "seed": 5,
+        "pointMs": 1
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "arv-binary",
+  "name": "ARV binary prediction",
+  "category": "remote-viewing",
+  "summary": "Associative remote viewing for a yes/no question whose answer you will know later. The helmet maps the two pictures of a 2-picture set to outcomes A and B and commits to the mapping before you start. You describe the picture you will be shown after the outcome, lock, and rate both pictures: the better-rated picture is the sealed prediction. The guide ends there. When the answer is known, you enter the outcome in this run's summary (Guides tab, under your runs of this guide), and only then the helmet reveals the mapping and whether the prediction was a hit. For research and practice only, not for betting: 7 hits in a row still happen by chance in 1 of 128 series.",
+  "evidence": "claim",
+  "minutes": 27,
+  "requires": { "headphones": false, "helmet": "optional", "pool": true },
+  "setting": "Solo and blind. A public, unambiguous binary question with a fixed resolution time (for example, whether it rains at a named weather station tomorrow). Your pool needs at least one set of exactly 2 very different pictures, such as a waterfall and a desert ruin, not two beaches. Leave the pool unchanged until the reveal, which checks it, and do the reveal on the same phone with the same helmet (or the demo).",
+  "cautions": "The evidence is small and mixed: 9 of 9 silver-futures forecasts in 1982 and then a failed repeat; 7 of 7 in a classroom stock-market exercise; five horse-racing experiments with 210 trials at chance (Rose & Blackmore 2002). Winning streaks are expected by chance when many people try. Never risk real money on a prediction. Fix the question, the resolution source and the number of trials before you start, and record passes as well as hits and misses.",
+  "sources": [
+    {
+      "title": "Smith CC, Laham D, Moddel G: Stock market prediction using associative remote viewing with untrained viewers (abstract)",
+      "url": "https://www.colorado.edu/faculty/moddel/sites/default/files/attached-files/smith_sse10_abstract.pdf"
+    },
+    { "title": "SPR Psi Encyclopedia: Psi for Financial Gain", "url": "https://psi-encyclopedia.spr.ac.uk/articles/psi-financial-gain/" },
+    { "title": "McMoneagle J (1993) Mind Trek. Hampton Roads" },
+    {
+      "title": "May EC, Utts JM, Humphrey BS, Luke WLW, Frivold TJ, Trask VV (1990) Advances in remote-viewing analysis. J Parapsychol 54:193-228"
+    },
+    {
+      "title": "Mumford MD, Rose AM, Goslin DA (1995) An Evaluation of Remote Viewing: Research and Applications. American Institutes for Research",
+      "url": "https://documents3.theblackvault.com/documents/stargate/pdfs/CIA-RDP96-00791R000200180006-4.pdf"
+    }
+  ],
+  "steps": [
+    {
+      "id": "question",
+      "title": "Question and outcomes",
+      "minutes": 3,
+      "instructions": "Write the yes/no question, what counts as outcome A and outcome B, where you will read the answer, and when it is due. Do this first; don't change it later.",
+      "audio": null,
+      "input": {
+        "type": "text",
+        "key": "question",
+        "prompt": "Question, outcomes and resolution",
+        "placeholder": "Will ... by 18:00 on 3 Nov? A = yes, B = no. Source: ..."
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "task",
+      "title": "Commit the mapping",
+      "minutes": 1,
+      "instructions": "The helmet picks one 2-picture set and draws which picture belongs to outcome A; the other belongs to B. It commits to this before your response exists. Nobody knows the mapping.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "rv", "arv": true },
+      "advance": "manual"
+    },
+    {
+      "id": "cool-down",
+      "title": "Cool-down",
+      "minutes": 5,
+      "instructions": "Close your eyes and relax. Let go of hopes about the outcome.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "describe",
+      "title": "Describe the feedback picture",
+      "minutes": 10,
+      "instructions": "Describe the picture you will be shown after the outcome is known: shapes, colours, textures, the feel of the place. Five minutes of quick free response is enough for a beginner (as in the classroom study); trained viewers can use a full CRV-style session. Describe; don't name.",
+      "audio": null,
+      "input": { "type": "text", "key": "response", "prompt": "The picture you will be shown later" },
+      "advance": "manual"
+    },
+    {
+      "id": "sketch",
+      "title": "Sketch",
+      "minutes": 3,
+      "instructions": "Sketch the main shapes.",
+      "audio": null,
+      "input": { "type": "sketch", "key": "sketch", "prompt": "Sketch the feedback picture" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response. The app stores its fingerprint (SHA-256), so nothing can be changed after you see the target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge",
+      "title": "Rate both pictures",
+      "minutes": 3,
+      "instructions": "Rate both pictures 0-7 for how well each matches your response. The better-rated picture is the sealed prediction: outcome A if it is the target, B otherwise. A margin under 2 points is a **pass** (our rule): it is recorded, but not counted as a hit or a miss.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "wait",
+      "title": "Until the answer is known",
+      "minutes": 1,
+      "instructions": "Your prediction is sealed, and this run ends here. Don't look at the pictures again.\n\nWhen the answer is public and final, open this guide in the Guides tab again, open this run under **Your runs of this guide** and enter the outcome there, exactly as defined in your question. The helmet then reveals the mapping, and you see only the picture of the actual outcome: that is your feedback. Don't study the other picture; it is the decoy and a suspected source of displacement.",
+      "audio": null,
+      "advance": "manual"
+    }
+  ]
+}

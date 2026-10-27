@@ -1,0 +1,37 @@
+{
+  "id": "persinger-tbi-depression-left-frontal",
+  "name": "Weekly burst-firing, left frontal lobe, 30 min (Baker-Price & Persinger 2003)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Baker-Price & Persinger, Persinger/Koren lab, Laurentian University",
+  "uT": 1,
+  "summary": "The left-frontal arm of Baker-Price & Persinger 2003, an open-label study of depression after closed head injury: 30 min of 1 uT burst-firing fields over the left frontal lobe, once a week for 6 weeks. The authors reported that depression scores fell as much as in the bilateral-temporal arm; there was no sham arm.",
+  "notes": "Baker-Price & Persinger 2003 exposed 14 patients with depression after closed head injury to weak (1 microT) burst-firing fields \"either across the temporal lobes or over the left frontal lobe\", 30 min once a week for 6 weeks, with 6 weeks of follow-up. Depression scores fell in both arms (54% of the variance across 5 weeks of treatment and 6 weeks of follow-up) with no significant difference between them; fewer complex-partial-epileptic-like experiences and more 16-18 Hz power at follow-up were seen only in the 7 bilateral-temporal patients (persinger-tbi-depression-temporal), not in this arm. Approximations: two coils over the left frontal lobe at F7 and F3 are an inference from \"over the left frontal lobe\" (the paper gives no sites or coil count); the other channels stay silent. The burst-firing point values were never published, so the built-in accelerating burst (6 to 30 Hz) stands in: 230 points of 3 ms (0.69 s, the best-supported of the lab's 230, 248 and 289-point lengths) once every 4 s (Persinger, Hoang & Baker-Price 2009: \"once every 3 s for about 0.7 s\"; set gapMs to 2310 for that variant). Source cautions: no sham arm, 7 patients in this arm, self-rated outcomes in an open series where improvement over weeks is expected anyway, no independent replication; rats given the same weekly field showed an anxious-looking plus-maze response (Fitzpatrick & Persinger 2004). This was a clinical research protocol on diagnosed patients under ethics review, not a treatment: depression and head injury need a clinician. A head injury raises seizure risk; not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012).",
+  "setting": "Seated or reclined, eyes closed, in a quiet room. The study was an outpatient clinical series with depression questionnaires and QEEG before and after.",
+  "schedule": "30 min once a week for 6 weeks, then 6 weeks without sessions (the study's follow-up).",
+  "targets": ["left-dlpfc"],
+  "source": "Baker-Price & Persinger 2003, Percept Mot Skills 96:965 https://pubmed.ncbi.nlm.nih.gov/12831278/ ; Baker-Price & Persinger 1996, Percept Mot Skills 83:491 https://pubmed.ncbi.nlm.nih.gov/8902023/ ; Fitzpatrick & Persinger 2004, Percept Mot Skills 98:983 (rats, weekly burst-firing) https://pubmed.ncbi.nlm.nih.gov/15209315/ ; Persinger, Hoang & Baker-Price 2009, Electromagn Biol Med 28:374 ('once every 3 s for about 0.7 s') https://pubmed.ncbi.nlm.nih.gov/20017628/ ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Martin & Persinger 2004, Neurosci Lett 366:226 (burst-firing once every 4 s) https://pubmed.ncbi.nlm.nih.gov/15276252/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": ["F7", "F3", "", "", "", "", "", ""]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Burst-firing over the left frontal lobe",
+      "minutes": 30,
+      "pattern": {
+        "type": "burst",
+        "f0": 6,
+        "f1": 30,
+        "sweepMs": 690,
+        "gapMs": 3310,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "left"
+      }
+    }
+  ]
+}

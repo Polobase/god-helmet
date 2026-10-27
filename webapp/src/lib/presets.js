@@ -10,7 +10,13 @@ export const CATEGORY_LABELS = {
   psi: 'Remote viewing & telepathy',
   meditation: 'Meditation',
   mood: 'Mood',
+  dreams: 'Dreams & sleep',
+  body: 'Body & pleasure',
+  signals: 'Single signals (Shiva / Shakti)',
   courses: 'Courses',
+  lowfield: 'Clinical low-field timing',
+  persinger: 'Persinger lab protocols',
+  replication: 'Independent replications',
   research: 'Research protocols',
   control: 'Control',
 }

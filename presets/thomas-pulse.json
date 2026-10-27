@@ -1,14 +1,49 @@
 {
   "id": "thomas-pulse",
-  "name": "Thomas pulse (decelerating FM, bilateral)",
-  "layout": "temporal",
+  "name": "Thomas pulse (Cnp patent table, bilateral, 30 min)",
   "category": "research",
-  "uT": 1.0,
-  "summary": "Decelerating frequency-modulated pattern (~25 -> 6 Hz, 3 ms points, ~2.5 s) from the Thomas/Persinger patents, studied mainly for analgesia and relaxation. Synthesised from the description; the original point file is not public.",
-  "source": "Thomas & Persinger patents (e.g. US6234953) ; Buckner et al. 2015 (Thomas-EMF 25-6 Hz)",
+  "evidence": "single-lab",
+  "origin": "Alex W. Thomas and Michael A. Persinger (Lawson Health Research Institute / Laurentian University); the patent table (US 6,234,953: Thomas, Prato, Kavaliers, Persinger) as replayed in Persinger's lab",
+  "uT": 1,
+  "summary": "The decelerating \"Thomas pulse\" as Persinger's lab replayed it: the exact 849-point table of US patent 6,234,953 at 3 ms per point, one 2.55-s burst of 18 pulses that slow down, repeated almost without a pause, on all eight temporal coils for 30 min. Saroka (2015) gives 30 min of this frequency-modulated pattern over both temporoparietal regions as the first phase of the lab's sensed-presence protocol.",
+  "notes": "Changed after the primary-source check: this preset used to play the same table at 1 ms per point in the Lawson 4-burst analgesia cycle at 5 uT; it now plays the Laurentian replay (generator \"thomas\"). The patent's FIG. 2 is captioned \"Thomas Pulse (Cnp)\", so the Lawson Cnp and the lab's Thomas pattern are one table: the Lawson group played it at 1 ms per point (about 849 ms, around 100 uT in the patent's figure) and Persinger's lab at 3 ms, \"849 points each programmed for 3 msec (each cycle lasts 2.55 s)\" (Buckner 2015; Murugan 2013), with 3 ms between repeats (Murugan 2013; Carniello 2020). Within each cycle 18 pulses slow from about 12 to 5 per second; the lab's \"25 Hz to 6 Hz\" labels do not follow from the table and seem to describe its spectrum. Other lab texts give 839 or 859 points, and one rat study describes its frequency-modulated pattern as 837 values at 1 ms once every 4 s (Dixon & Persinger 2001). Saroka gives only \"bilateral temporo-parietal\", so all eight temporal coils (FT7, T7, CP5, TP7 and FT8, T8, CP6, TP8) play together, an inference; 1 uT is the lab's usual human intensity (cells and mice got 2-10 uT, Buckner 2015). persinger-saroka-2015-sensed-presence runs the whole two-phase protocol and lowfield-cnp-thomas-pulse the Lawson 1-ms version. Persinger's lab reported more left-sided sensed presences with the forward 3-ms pattern than with its reversal (Tiller & Persinger 2002), and in limbic-epileptic rats the 3-ms setting provoked the most seizures (Persinger & Belanger-Chellew 1999). Single-lab work. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on headache, fear or distress.",
+  "setting": "Seated or reclined, eyes closed or opaque goggles, in a dark, quiet room (the lab used a shielded acoustic chamber).",
+  "schedule": "One 30-min session; in Saroka's protocol 30 min of burst-firing follow at once (persinger-saroka-2015-sensed-presence).",
+  "targets": ["left-tpj", "right-tpj", "left-superior-temporal-gyrus-posterior", "right-superior-temporal-gyrus-posterior"],
+  "source": "Thomas, Prato, Kavaliers & Persinger, US 6,234,953 B1, Table 1 and FIG. 2 \"Thomas Pulse (Cnp)\" https://patents.google.com/patent/US6234953B1/en ; Buckner et al. 2015, PLoS ONE 10(4):e0124136 (Thomas file: 849 points at 3 ms, 2.55 s per cycle) https://europepmc.org/article/MED/25875081 ; Murugan 2013, MSc thesis, Laurentian University (849 points for the Thomas pulse at 3 ms, 3 ms between repeats; 248 points for burst-x) https://laurentian.scholaris.ca/items/39c9c1ad-70ba-458d-a819-d24c20da217a ; Carniello 2020, PhD thesis, Laurentian University, p. 89 (230-point burst-firing file, 3-ms points; Thomas file with 3-ms points and intervals) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Saroka 2015, doctoral thesis, Laurentian University, p. 29 (sensed-presence protocol: 30 min bilateral temporo-parietal frequency-modulated Thomas pattern, then 30 min BurstX) https://laurentian.scholaris.ca/items/5260328f-a7c5-4d7b-b8a2-00b943eee977 ; Dixon & Persinger 2001, Int J Neurosci 108:87 (837 values at 1 ms once every 4 s) https://pubmed.ncbi.nlm.nih.gov/11328704/ ; Tiller & Persinger 2002, Percept Mot Skills 94:26 (forward vs reversed 3-ms Thomas pattern) https://pubmed.ncbi.nlm.nih.gov/11883572/ ; Persinger & Belanger-Chellew 1999 (3-ms points and intervals, limbic-epileptic rats) https://pubmed.ncbi.nlm.nih.gov/10597585/ ; Granqvist et al. 2005, Neurosci Lett 379:1-6 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["FT7", "T7", "CP5", "TP7", "FT8", "T8", "CP6", "TP8"]},
   "fadeInS": 10,
   "fadeOutS": 10,
   "phases": [
-    {"name": "Bilateral Thomas pulse", "minutes": 20, "pattern": {"type": "thomas"}, "spatial": {"mode": "bilateral"}}
+    {
+      "name": "Bilateral Thomas pulse (849 points x 3 ms)",
+      "minutes": 30,
+      "pattern": {"type": "table", "pointMs": 3, "gapMs": 3, "data": [
+        128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,
+        255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,
+        12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,
+        75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,
+        212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,
+        212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,
+        200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,
+        200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,
+        200,200,75,75,0,12,36,72,128
+      ]},
+      "spatial": {"mode": "bilateral"}
+    }
   ]
 }

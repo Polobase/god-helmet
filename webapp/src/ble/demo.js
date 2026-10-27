@@ -21,7 +21,7 @@ function load() {
 function freshState() {
   return {
     settings: {
-      uTperMA: new Array(8).fill(0.73), calibrated: false, seriesOhm: 2200, coilOhm: 4.2, vFullScale: 10,
+      uTperMA: new Array(8).fill(1.8), calibrated: false, seriesOhm: 2200, coilOhm: 4.2, vFullScale: 10,
       dacGain2x: true, dacBufferedRef: false, maxFieldUT: 5, defaultFieldUT: 1, longitudeDeg: 0,
       keepaliveS: 0, bleName: '', lastSessionEpoch: 0, safetyAccepted: false,
     },
@@ -298,6 +298,11 @@ export function openDemo({ onStatus }) {
       return { id: t.id, manifestHash: t.manifestHash, set: t.set, target: t.target }
     },
     'trial.get': ({ id }) => publicTrial(trial(id)),
+    'rng.bytes': ({ n = 32 }) => {
+      if (!(n >= 1 && n <= 256)) throw new Error('n must be 1..256')
+      const bytes = crypto.getRandomValues(new Uint8Array(n))
+      return { hex: [...bytes].map((b) => b.toString(16).padStart(2, '0')).join(''), source: 'webcrypto (demo)' }
+    },
     'trial.list': ({ offset = 0, limit = 10 }) => ({ total: state.trials.length, items: state.trials.slice(offset, offset + Math.min(limit, 10)).map(publicTrial) }),
   }
 

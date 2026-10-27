@@ -1,0 +1,82 @@
+{
+  "id": "persinger-lehman-2016-gamer-pairs",
+  "name": "Lehman 2016 gamer pairs: Thomas 20+2, then Burst-X 20-2 (22 min)",
+  "category": "psi",
+  "evidence": "claim",
+  "origin": "Persinger lab, Laurentian University (Lehman 2016, MSc thesis, ch. 4), 8-solenoid circumcerebral ring",
+  "uT": 1.5,
+  "summary": "Lehman's 22-min gamer-pair session: 4 min without field, 6 min of the Thomas pulse rotated counter-clockwise on an accelerating schedule (20, 18 ... 6 ms per coil), 8 min of the Burst-X pattern on a decelerating schedule (20, 22 ... 34 ms), then 4 min without field, in step with 2-min video-game runs. Persinger's lab used it to look for \"excess correlation\" between the scores of two players 10 m apart sharing the same field.",
+  "notes": "Thesis structure: 11 two-minute runs of the game Super Hexagon (2 baseline, 3 \"accelerating\", 4 \"decelerating\", 2 baseline). The methods name only accelerating and decelerating runs; Lehman's run labels (T1 first, B4 last), his discussion (the Thomas \"primer\" inside an accelerating angular velocity, then the \"effector\" inside a decelerating one) and the identical scheme of Juden-Kelly et al. 2015 put the Thomas pulse in the accelerating rotation \"20+2\" (20, 18 ... 6 ms per solenoid) and Burst-X in the decelerating \"20-2\" (20, 22 ... 34 ms; 216 ms, 4.6 turns/s). Coil 1 sits over the left prefrontal region, counter-clockwise seen from above: Fp1, FT7, TP7, O1, O2, TP8, FT8, Fp2 (an inference; the thesis names no electrode sites). Points last 1 ms, the timebase of the lab system and the value in Juden-Kelly 2015 and Dotta & Persinger 2012, whose method Lehman cites; the patterns repeat back to back (no interval is given). Thomas: the exact 849-point patent table (Juden-Kelly gives 839 points). Burst-X: 230 points (Juden-Kelly) whose values were never published, approximated by the built-in accelerating burst, the 6-30 Hz stand-in for the 3-ms version replayed at 1 ms (18-90 Hz). The field was 1-5 uT inside each solenoid, 1-2 uT on average; 1.5 uT here. Lehman (7 men) found no field vs no-field difference in raw or z-scored run times for all players combined; experienced players in the field group scored higher during Burst-X (F(3,32) = 4.58, p = .01) but also lower in the pre-field baseline, before any field was on, and his abstract says the pairs' correlation \"was diminished\" when the fields were on. Thesis data, tiny sample, never replicated. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "setting": "Two players, each wearing a helmet running this program, started together (the original drove both rings from one Intel 286 computer). Each sits with a laptop on the lap, facing north or south, one in a shielded acoustic chamber (Faraday cage) and one in a darkened room 10 m away, playing Super Hexagon on \"hard\". An assistant calls a new run every 2 min (every 30 s for novices); the player calls out the run time after each death and forces a death at 2 min.",
+  "schedule": "One 22-min session per trial (pairs ran 1-4 trials). Lehman's control pairs played the same session with no field; for a self-test use the app's Blind option and fix the comparison in advance.",
+  "source": "Lehman 2016, Interaction between virtual (computer gaming) environments, brain activity, and the Schumann resonance as the next evolutionary step in adaptation: Teilhard de Chardin's noosphere, MSc thesis (Biology), Laurentian University, ch. 4 https://laurentian.scholaris.ca/server/api/core/bitstreams/e7b03302-1b7f-4f4f-acf5-bdf41ee5370f/content ; Juden-Kelly, Dotta, Vares & Persinger 2015, J Conscious Explor Res 6(9):728-737 (Thomas primer at 20+2, Burst-X effector at 20-2, 1-ms points) https://jcer.com/index.php/jcj/article/view/497 ; Dotta & Persinger 2012, J Biophys Chem 3:72-80 https://file.scirp.org/Html/17181.html ; Persinger & Lavallee 2010, J Conscious Explor Res 1(7):785-807 (20+2 notation; coil 1 left frontal) https://jcer.com/index.php/jcj/article/view/99 ; Thomas, Prato, Kavaliers & Persinger, US 6,234,953 B1, Table 1 (Thomas pulse values) https://patents.google.com/patent/US6234953B1/en ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "Fp1",
+      "FT7",
+      "TP7",
+      "O1",
+      "O2",
+      "TP8",
+      "FT8",
+      "Fp2"
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "tableData": [128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 140, 152, 164, 176, 188, 200, 212, 224, 236, 248, 255, 255, 0, 12, 24, 78, 128, 255, 200, 200, 75, 75, 0, 12, 36, 72, 128],
+  "phases": [
+    {
+      "name": "Runs 1-2: baseline, no field",
+      "minutes": 4,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "Runs 3-5: Thomas 1 ms, CCW 20->6 ms/coil (20+2)",
+      "minutes": 6,
+      "pattern": {
+        "type": "table",
+        "pointMs": 1,
+        "gapMs": 0
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "ccw",
+        "dwell": [20, -2, 6]
+      }
+    },
+    {
+      "name": "Runs 6-9: Burst-X 1 ms, CCW 20->34 ms/coil (20-2)",
+      "minutes": 8,
+      "pattern": {
+        "type": "burst",
+        "f0": 18,
+        "f1": 90,
+        "sweepMs": 230,
+        "gapMs": 0,
+        "pointMs": 1
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "ccw",
+        "dwell": [20, 2, 34]
+      }
+    },
+    {
+      "name": "Runs 10-11: baseline, no field",
+      "minutes": 4,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

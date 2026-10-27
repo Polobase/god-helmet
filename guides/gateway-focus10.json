@@ -1,0 +1,179 @@
+{
+  "id": "gateway-focus10",
+  "name": "Gateway 2 · Focus-10-style: body asleep, mind awake",
+  "category": "gateway",
+  "summary": "Practise a 'mind awake, body asleep' state: your body grows heavy or vague while you stay aware, then you practise the way back. The sound starts with delta and theta beats and then adds a quiet low-beta layer, the order described for Focus 10 in an anonymous Army evaluation (probably F. H. Atwater) and in Monroe's 'overlying beta'. The tone sets are those of Lane et al. 1998; timing and levels are our design. Falling asleep is a valid (null) session. Optional blinded helmet arm during the induction, hold and glimpses: 4 Hz in-phase sine, 2 µT, untested (our design).",
+  "evidence": "claim",
+  "minutes": 41,
+  "requires": { "headphones": true, "helmet": "optional", "pool": false },
+  "setting": "Quiet room, dim (not dark) light, reclined or lying down, closed-back stereo headphones (needed for binaural mode; on speakers switch to isochronic mode). Not right after a heavy meal; empty your bladder and silence your phone. Best when you are rested. Never while driving.",
+  "cautions": "Stop at once (count back and open your eyes, or move a finger) on dizziness, panic, headache or ringing ears. Do not use these sessions if you have epilepsy or photosensitivity, are in a psychiatric crisis or have a hearing problem, unless a doctor agrees. Keep the volume low: WHO advises an average of 80 dB(A) or less and device volume of 60 % or less. No driving, machinery or exams for at least 30 minutes afterwards: theta and delta beats did worse than beta beats on vigilance (Lane et al. 1998) and lowered recall against a noise control (Garcia-Argibay et al. 2019). Sound only; the app never uses flicker. This is an untested composite and not The Monroe Institute's program: no recordings, scripts or affirmation of theirs are used. The helmet arm is experimental and runs only blinded (real or sham, revealed after your ratings): the god-helmet.com Shakti safety page advises against combining the helmet with binaural-beat devices in real time.",
+  "unlock": "Do the preparation guide at least once first.",
+  "sources": [
+    {
+      "title": "Anonymous (probably F. H. Atwater), 'The Monroe Institute's Hemisync Process', post-1986 evaluation in the Army MIAS file, CREST CIA-RDP96-00788R001700210004-8",
+      "url": "https://archive.org/details/cia-readingroom-document-cia-rdp96-00788r001700210004-8"
+    },
+    { "title": "Monroe RA (1985) Far Journeys. Doubleday" },
+    {
+      "title": "Lane JD, Kasian SJ, Owens JE, Marsh GR (1998) Binaural auditory beats affect vigilance performance and mood. Physiol Behav 63:249-252",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9423966/"
+    },
+    {
+      "title": "Lane et al. 1998, full text with the stimulus description (carriers 100/200/250/300 Hz, tones 15 dB above pink noise)",
+      "url": "https://hemi-sync.com/research-papers/binaural-auditory-beats-affect-vigilance-performance-mood/"
+    },
+    {
+      "title": "Atwater FH (1997) Accessing anomalous states of consciousness with a binaural beat technology. J Sci Explor 11:263-274",
+      "url": "https://soundhealingresearchfoundation.org/wp-content/uploads/2021/12/I.-Accessing-Anomalous-States-of-Consciousness-with-a-Binaural-Beat-Technology.pdf"
+    },
+    {
+      "title": "Monroe Institute of Applied Sciences (1977) Gateway Intermediate Workbook, CREST CIA-RDP96-00788R001700210023-7",
+      "url": "https://archive.org/details/cia-readingroom-document-cia-rdp96-00788r001700210023-7"
+    },
+    {
+      "title": "Garcia-Argibay M, Santed MA, Reales JM (2019) Binaural auditory beats affect long-term memory. Psychol Res 83:1124-1136",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29222722/"
+    },
+    {
+      "title": "god-helmet.com: Shakti safety page (do not combine with binaural-beat devices in real time)",
+      "url": "https://www.god-helmet.com/wp/winshakti/safety.htm"
+    },
+    {
+      "title": "WHO: Deafness and hearing loss, safe listening",
+      "url": "https://www.who.int/news-room/questions-and-answers/item/deafness-and-hearing-loss-safe-listening"
+    }
+  ],
+  "helmetArm": { "preset": "guide-gateway-4hz", "blind": true, "steps": ["induction", "hold", "glimpses"] },
+  "steps": [
+    {
+      "id": "check-in",
+      "title": "Check-in and volume",
+      "minutes": 1,
+      "instructions": "Put on the headphones the right way round and lie back.\n\nYou hear soft pink noise, like distant surf, drifting slowly from side to side. Keep the volume you set at calibration, or turn it down until the sound is quiet and comfortable: the tones that follow are about 15 dB louder than this noise. Stay at or below 60 % device volume.\n\nTry not to watch the step timer during the session. Rate how you feel right now.",
+      "audio": { "layers": [], "noise": { "levelDb": -15, "swellS": 6 } },
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "calm-before", "label": "Calm", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "alert-before", "label": "Alert", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "drowsy-before", "label": "Drowsy", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "prep",
+      "title": "Short preparation",
+      "minutes": 8,
+      "instructions": "Close your eyes and go through the preparation at your own pace:\n\n1. **Set-aside box:** turn each worry or task into a simple symbol, put it in a strong container and close the lid.\n2. **Breathing:** slow breaths, filling the body region by region from the chest down to the feet; hold only if it is comfortable.\n3. **Humming:** one long, steady tone on each out-breath; feel it in your head and chest.\n\nThe sound changes when it is time to move on.",
+      "audio": { "layers": [{ "carrier": 200, "beat": 10 }], "noise": { "levelDb": -15, "swellS": 6 } },
+      "advance": "timer"
+    },
+    {
+      "id": "intention",
+      "title": "Silent intention",
+      "minutes": 1,
+      "instructions": "Silently repeat your intention, the one you wrote in the preparation guide or a new one.",
+      "audio": { "layers": [{ "carrier": 200, "beat": { "from": 10, "to": 7 } }], "noise": { "levelDb": -15, "swellS": 6 } },
+      "advance": "timer"
+    },
+    {
+      "id": "induction",
+      "title": "Induction: count 1 to 10",
+      "minutes": 6,
+      "instructions": "Count from 1 to 10 on your out-breaths, relaxing a little more with each number. Let your body grow heavy or vague. You don't need to see anything.\n\n*Sound: the delta/theta set of Lane et al. 1998.*",
+      "audio": {
+        "layers": [{ "carrier": 100, "beat": 1.5 }, { "carrier": 200, "beat": 4 }, { "carrier": 250, "beat": 4 }, { "carrier": 300, "beat": 0 }],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "hold",
+      "title": "Hold the state",
+      "minutes": 12,
+      "instructions": "Notice, without effort, any lessening of touch or of your body's edges. Can you still tell where your hands are? Let tingling or floating come and go.\n\nIf you drift towards sleep, take one deeper breath and listen to the sound.\n\nNote anything you perceive (movement or vibration, a sudden knowing, sounds or voices, images) and let it pass.\n\n*Sound: over the first minute the plain 300 Hz tone becomes a quiet 16 Hz low-beta beat, 10 dB below the others.*",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1.5 },
+          { "carrier": 200, "beat": 4 },
+          { "carrier": 250, "beat": 4 },
+          { "carrier": 300, "beat": 16, "gainDb": -10, "rampS": 60 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 60
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "glimpses",
+      "title": "Glimpses",
+      "minutes": 4,
+      "instructions": "Briefly glance at a favourite natural place without building it up. Let it go and wait. Don't hold on to any image.",
+      "audio": {
+        "layers": [
+          { "carrier": 100, "beat": 1.5 },
+          { "carrier": 200, "beat": 4 },
+          { "carrier": 250, "beat": 4 },
+          { "carrier": 300, "beat": 16, "gainDb": -10 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 }
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "return",
+      "title": "Count back from 10 to 1",
+      "seconds": 180,
+      "instructions": "Count back from 10 to 1. Move your fingers and toes, stretch and open your eyes. Take back what you still want from the box and notice whether its charge has changed.",
+      "audio": {
+        "layers": [
+          { "carrier": 200, "beat": 16, "gainDb": -3 },
+          { "carrier": 300, "beat": 24, "gainDb": -3 },
+          { "carrier": 100, "beat": 0, "gainDb": -3 },
+          { "carrier": 250, "beat": 0, "gainDb": -3 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30,
+        "fadeOutS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "journal",
+      "title": "Journal",
+      "minutes": 2,
+      "instructions": "Write down what you experienced straight away, before you talk to anyone or check your phone (a workbook rule). Include small things and the moments you were not sure about.",
+      "audio": null,
+      "input": { "type": "text", "key": "journal", "prompt": "What you experienced" },
+      "advance": "manual"
+    },
+    {
+      "id": "report",
+      "title": "Session report",
+      "minutes": 3,
+      "instructions": "Fill in the session report while the session is fresh.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "gateway-report" },
+      "advance": "manual"
+    },
+    {
+      "id": "check-out",
+      "title": "How you feel now",
+      "minutes": 1,
+      "instructions": "Sit up slowly. Rate how you feel now, the same way as at the start.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "calm-after", "label": "Calm", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "alert-after", "label": "Alert", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "drowsy-after", "label": "Drowsy", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very" }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

@@ -1,26 +1,21 @@
 {
   "id": "obe",
-  "name": "Out-of-body (right angular gyrus / TPJ)",
-  "layout": "temporal",
+  "name": "Out-of-body (right hemisphere, two coils)",
   "category": "obe",
-  "uT": 1.0,
-  "summary": "Murphy's 'altered states' order (both sides, then right only) with a 7 Hz 'hippocampal' theta signal stepping around the right-side coils, weighted to CP6/TP8 over the right angular gyrus, where Blanke 2002 evoked OBEs with electrodes. Lie down; Murphy reports most OBEs during sleep about 1 h after a session, best 00:00-04:00.",
-  "source": "Murphy, Deja vu lecture https://youtu.be/KJIAHHB8Btk?t=4271 ; https://www.god-helmet.com/wp/winshakti/rotating/shakti_obe.htm ; Blanke et al. 2002, Nature 419:269",
+  "evidence": "anecdote",
+  "origin": "Todd Murphy (8 Coil Shakti OBE recipe, modulated 40 Hz 'obe45' signal); target site after Blanke et al. 2002",
+  "uT": 1,
+  "summary": "Murphy's OBE recipe in its two-coil form: the 'modulated 40 Hz' (obe45) signal for 30 min through one coil in front of and below the right ear and one over the right angular gyrus, then sleep about an hour later. Murphy reports that most OBEs came while users fell asleep after a session; Blanke et al. 2002 evoked an OBE by electrical stimulation at the right angular gyrus.",
+  "notes": "Murphy's OBE page suggests 30-min sessions over the right hemisphere (temporal lobes, parietal lobes or the area behind them) with the hippocampal, the modulated 40 Hz or the chirp signal; his modulated 40 Hz (obe45) page adds the two-coil option used here, \"one coil in front of and below the right ear, and one coil over the angular gyrus on the right side\". FT10 and P6 are an inference from that wording; the other six channels stay silent. The obe45 file is proprietary; the vendor says it \"has a constant tone\" and that \"the correct calibration will be 10mG for either channel, when measured from one coil\" (10 mG = 1 uT, the default here). It is approximated by a 40 Hz carrier whose phase swings up to 3 rad ahead of and behind a steady 40 Hz every 2 s (pm pattern, 1-ms points). Blanke's effect came from milliamp currents on the cortex of one patient; weak-field effects at the angular gyrus are untested. Murphy says \"there is no such thing as a pushbutton technology for OBEs\" and expects them more often in 'right-hemispheric' people. Stop using the signal if you have trouble finding words; right-hemisphere-only sessions can bring fear or unease, so stop at once on distress. Not for people with epilepsy or a seizure history. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012).",
+  "setting": "Lie down in a dark, quiet room at night (Murphy: midnight to 4 am is best for experiences). Plan to go to sleep about 1 h (the obe45 page says about 90 min) after the session, with your OBE exercises.",
+  "schedule": "At most weekly (or every 72 h), never on consecutive days; six sessions, then a 21-day break.",
+  "targets": ["right-angular-gyrus", "right-tpj"],
+  "source": "Murphy, Out of body experiences and the 8 Coil Shakti https://www.god-helmet.com/wp/winshakti/rotating/shakti_obe.htm ; Murphy, Shakti demo: Modulated 40 Hz (obe45) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/obe45_consent.htm ; Murphy, Shakti demo: right angular gyrus https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rangularg.htm ; McTaggart interview with Murphy (2006) https://youtu.be/K-0PHkfvEhg ; Blanke et al. 2002, Nature 419:269 https://pubmed.ncbi.nlm.nih.gov/12239558/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": { "sites": ["", "", "", "", "FT10", "P6", "", ""] },
   "fadeInS": 10,
   "fadeOutS": 15,
   "phases": [
-    {
-      "name": "Bilateral theta",
-      "minutes": 10,
-      "pattern": {"type": "sine", "f0": 7, "pointMs": 1},
-      "spatial": {"mode": "bilateral"}
-    },
-    {
-      "name": "Right TPJ theta, rotating",
-      "minutes": 20,
-      "pattern": {"type": "sine", "f0": 7, "pointMs": 1},
-      "spatial": {"mode": "cycle", "side": "right", "dir": "ccw", "dwellMs": 20, "crossfade": true,
-                  "weights": [0, 0, 0, 0, 0.5, 0.7, 1, 1]}
-    }
+    {"name": "Modulated 40 Hz, right ear and angular gyrus", "minutes": 30, "pattern": {"type": "pm", "f0": 40, "f1": 0.5, "depth": 3, "pointMs": 1}, "spatial": {"mode": "right"}}
   ]
 }

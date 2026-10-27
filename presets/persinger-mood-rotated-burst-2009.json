@@ -1,0 +1,39 @@
+{
+  "id": "persinger-mood-rotated-burst-2009",
+  "name": "Rotating burst-firing, temporoparietal ring, 20 min (Tsang 2009 mood study)",
+  "category": "mood",
+  "evidence": "single-lab",
+  "origin": "Tsang, Koren & Persinger, Laurentian University",
+  "uT": 1,
+  "summary": "The burst-firing arm of Tsang, Koren & Persinger 2009: a 1 uT burst-firing field rotated around the head at the level of the temporoparietal lobes, 20 min once a week for 3 weeks. Persinger's lab reported better mood and vigour than with sham or the six other field configurations.",
+  "notes": "Tsang, Koren & Persinger 2009 exposed normal volunteers for 20 min once a week, 3 sessions in all, to 1 of 7 configurations of weak (1 microTesla) fields or to a sham field; \"the fields were spatially rotated and applied through the brain at the level of the temporoparietal lobes\". Mood (Profile of Mood States) was rated before and after each session, and heart rate, plethysmography and skin conductance were measured before, during and after; the abstract states no autonomic effect. Persinger's lab reported that the burst-firing pattern \"previously demonstrated to be effective for clinical depression\" improved mood and vigour compared with sham and the other configurations, and that burst-firing, a complex-sequenced pattern and an LTP pattern reduced fatigue compared with sham and random-sequenced fields. The arms rebuilt here are persinger-mood-rotated-burst-2009, persinger-mood-rotated-ltp-2009 and persinger-mood-rotated-random-2009 (run sham, or the app's Blind option, for the sham arm); the complex-sequenced arm and the other three configurations are not described well enough to rebuild. Approximations: the abstract gives no rotation schedule, so one of the lab's documented schedules, '20+2' (20, 18 ... 6 ms per solenoid, one turn 104 ms; Persinger & Lavallee 2010), turning counter-clockwise (the lab standard; Lehman 2016), stands in; the ring of 8 coils about 45 degrees apart on the 10% line, coil 1 over the left frontal region and coil 8 over the right prefrontal region (Fp1, FFT7, TP7, POO7, POO8, TP8, FFT8, Fp2), is an inference from the lab's circumcerebral device. The paper puts the rotation \"through the brain at the level of the temporoparietal lobes\", that is around T7, TP7, P7 and T8, TP8, P8, while this ring follows the lab's own solenoid order, whose first and last coils sit over the left frontal and right prefrontal regions: the side and back coils are near the paper's plane and the two forehead coils sit above and in front of it. The burst-firing point values were never published, so the built-in accelerating burst (6 to 30 Hz) stands in: 230 points of 3 ms (0.69 s, the best-supported of the lab's 230, 248 and 289-point lengths) once every 4 s; with the 104-ms rotation each burst sweeps the ring about six and a half times. Source cautions: one lab, mood questionnaires, a modest sample spread over 8 groups, never independently replicated. A randomized, sham-controlled test of the 8 Coil Shakti amygdala signal found no effect on emotional responses (Gendle & McGrath 2012), and a double-blind God Helmet test found no field effect (Granqvist 2005). Not a treatment for low mood or depression. Not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "setting": "Seated, eyes closed, in a quiet, dim room. Fill in the same mood questionnaire (the study used the Profile of Mood States) before and after each session.",
+  "schedule": "20 min once a week for 3 weeks. To separate the pattern from expectation, compare blinded against the sham program and the random-field arm.",
+  "targets": ["left-tpj", "right-tpj", "left-superior-temporal-gyrus-posterior", "right-superior-temporal-gyrus-posterior"],
+  "source": "Tsang, Koren & Persinger 2009, Electromagn Biol Med 28:365 https://pubmed.ncbi.nlm.nih.gov/20017627/ ; Persinger & Lavallee 2010, J Conscious Explor Res 1(7):785 (ring order and the '20+2' notation) https://jcer.com/index.php/jcj/article/view/99 ; Lehman 2016, PhD thesis, Laurentian University, pp. 56-57 (CCW standard, 1-5 uT inside each solenoid) https://laurentian.scholaris.ca/items/e809389f-805c-4414-8177-d0bf8d7127bb ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Martin & Persinger 2004, Neurosci Lett 366:226 (burst-firing once every 4 s) https://pubmed.ncbi.nlm.nih.gov/15276252/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": ["Fp1", "FFT7", "TP7", "POO7", "POO8", "TP8", "FFT8", "Fp2"]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Burst-firing, CCW ring, 20+2 (20 -> 6 ms)",
+      "minutes": 20,
+      "pattern": {
+        "type": "burst",
+        "f0": 6,
+        "f1": 30,
+        "sweepMs": 690,
+        "gapMs": 3310,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "ccw",
+        "dwell": [20, -2, 6]
+      }
+    }
+  ]
+}

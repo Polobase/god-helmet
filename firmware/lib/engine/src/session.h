@@ -17,23 +17,31 @@ namespace engine {
 constexpr int kMaxPhases = 12;
 
 struct Phase {
-  char name[40] = {0};
+  char name[64] = {0};
   uint32_t durationMs = 0;
   PatternParams pattern;
   SpatialParams spatial;
   float level = 1.0f;       // relative amplitude of this phase, 0..1
   bool crossfade = false;   // ramp in over kPhaseRampMs instead of switching abruptly
+  // Optional second simultaneous track ("stereo", e.g. burst-firing on the
+  // left and theta-burst on the right); the two tracks are summed per coil.
+  bool hasTrack2 = false;
+  PatternParams pattern2;
+  SpatialParams spatial2;
+  float level2 = 1.0f;
 };
 
 struct Session {
-  char id[40] = {0};
-  char name[64] = {0};
+  char id[64] = {0};
+  char name[96] = {0};
   Layout layout = Layout::Temporal;
+  Geometry geometry = geometryFor(Layout::Temporal);  // sides + rotation order used by render()
+  char sites[kChannels][8] = {{0}};                    // 10-10 site per channel ("" = not used)
   uint8_t phaseCount = 0;
   Phase phases[kMaxPhases];
   uint32_t fadeInMs = 10000;
   uint32_t fadeOutMs = 10000;
-  std::vector<int8_t> table;  // backing store for PatternType::Table phases
+  std::vector<int8_t> table;  // pool for Table patterns (session tableData + inline pattern data)
 
   uint32_t totalMs() const;
   // Points every Table-pattern phase at this session's table storage.

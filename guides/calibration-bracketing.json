@@ -1,0 +1,196 @@
+{
+  "id": "calibration-bracketing",
+  "name": "Calibration trials around a main session",
+  "category": "remote-viewing",
+  "summary": "SRI's operational habit, as a test: a short blind photo trial before and after an important session was meant to show whether the viewer was 'on line'. This guide runs three committed trials in a row: a quick calibration, the main free-response session, and a second calibration. The rationale was operational, not validated. Analyse every main session, including those the calibration would have told you to defer.",
+  "evidence": "single-lab",
+  "minutes": 62,
+  "requires": { "headphones": false, "helmet": "optional", "pool": true },
+  "setting": "One sitting, same day. A pool whose sets all have the same size, ideally 5 or 6 pictures: each trial draws from every usable set, and the chance of a rank-1 hit is 1 in the size of the drawn set.",
+  "cautions": "Deferral rules create selection bias; record whether you would have deferred, but analyse all sessions. The 1995 AIR evaluation found a statistically significant laboratory effect that could not be clearly attributed to psi, and no operational value. Never use people as targets without their consent. One trial means little: with a realistic effect size (about 0.16) even 50 trials have only about 30 % power. Decide the number of trials in advance and keep every result.",
+  "sources": [
+    { "title": "Puthoff HE (1984) Remote Viewing Reliability, Enhancement and Evaluation (SRI/GF-0257), SRI International" },
+    {
+      "title": "May EC, Utts JM, Humphrey BS, Luke WLW, Frivold TJ, Trask VV (1990) Advances in remote-viewing analysis. J Parapsychol 54:193-228"
+    },
+    {
+      "title": "Mumford MD, Rose AM, Goslin DA (1995) An Evaluation of Remote Viewing: Research and Applications. American Institutes for Research",
+      "url": "https://documents3.theblackvault.com/documents/stargate/pdfs/CIA-RDP96-00791R000200180006-4.pdf"
+    }
+  ],
+  "steps": [
+    {
+      "id": "task-a",
+      "title": "Calibration 1: blind target",
+      "minutes": 1,
+      "instructions": "The helmet commits to a new target picture.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "rv" },
+      "advance": "manual"
+    },
+    {
+      "id": "describe-a",
+      "title": "Calibration 1: describe",
+      "minutes": 5,
+      "instructions": "Five minutes of quick, raw impressions: shapes, colours, textures, the feel of the place.",
+      "audio": null,
+      "input": { "type": "text", "key": "calib-a", "prompt": "Quick impressions of the target" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock-a",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response. The app stores its fingerprint (SHA-256), so nothing can be changed after you see the target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge-a",
+      "title": "Rank the pictures",
+      "minutes": 3,
+      "instructions": "You now see all pictures of the drawn set in random order. Rank them, best match with your response first. Judge by what you wrote and drew. If someone who doesn't know the target can judge, hand them the phone now; otherwise the trial counts as self-judged. Never re-judge after the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal-a",
+      "title": "Reveal",
+      "minutes": 1,
+      "instructions": "The helmet reveals the target and its nonce, and the app checks the commitment, the pool and your locked response. A rank-1 hit has a chance of 1 in the number of pictures in the set.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    },
+    {
+      "id": "deferral",
+      "title": "Would you defer?",
+      "minutes": 1,
+      "instructions": "SRI deferred operational tasks after a poor calibration, for example a rank above 2 or a match under 3 on the 0-7 scale. Here you continue either way and only record whether you would have deferred, so that you can later test whether calibration predicts the main result.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          {
+            "key": "would-defer",
+            "label": "Would SRI have deferred the main task (rank above 2 or a poor match)? (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "task-main",
+      "title": "Main session: blind target",
+      "minutes": 1,
+      "instructions": "The helmet commits to the main target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "rv" },
+      "advance": "manual"
+    },
+    {
+      "id": "cool-down",
+      "title": "Cool-down",
+      "minutes": 5,
+      "instructions": "Close your eyes and relax.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "describe-main",
+      "title": "Main session: describe",
+      "minutes": 20,
+      "instructions": "Describe the target in detail for 15 to 30 minutes, as in the photo-target trial.",
+      "audio": null,
+      "input": { "type": "text", "key": "main", "prompt": "Your impressions of the main target" },
+      "advance": "manual"
+    },
+    {
+      "id": "sketch-main",
+      "title": "Main session: sketch",
+      "minutes": 5,
+      "instructions": "Sketch the main shapes and their layout.",
+      "audio": null,
+      "input": { "type": "sketch", "key": "main-sketch", "prompt": "Sketch the main target" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock-main",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response. The app stores its fingerprint (SHA-256), so nothing can be changed after you see the target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge-main",
+      "title": "Rank the pictures",
+      "minutes": 5,
+      "instructions": "You now see all pictures of the drawn set in random order. Rank them, best match with your response first. Judge by what you wrote and drew. If someone who doesn't know the target can judge, hand them the phone now; otherwise the trial counts as self-judged. Never re-judge after the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal-main",
+      "title": "Reveal",
+      "minutes": 2,
+      "instructions": "The helmet reveals the target and its nonce, and the app checks the commitment, the pool and your locked response. A rank-1 hit has a chance of 1 in the number of pictures in the set.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    },
+    {
+      "id": "task-b",
+      "title": "Calibration 2: blind target",
+      "minutes": 1,
+      "instructions": "The helmet commits to a new target picture.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "rv" },
+      "advance": "manual"
+    },
+    {
+      "id": "describe-b",
+      "title": "Calibration 2: describe",
+      "minutes": 5,
+      "instructions": "Five minutes of quick, raw impressions: shapes, colours, textures, the feel of the place.",
+      "audio": null,
+      "input": { "type": "text", "key": "calib-b", "prompt": "Quick impressions of the target" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock-b",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response. The app stores its fingerprint (SHA-256), so nothing can be changed after you see the target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge-b",
+      "title": "Rank the pictures",
+      "minutes": 3,
+      "instructions": "You now see all pictures of the drawn set in random order. Rank them, best match with your response first. Judge by what you wrote and drew. If someone who doesn't know the target can judge, hand them the phone now; otherwise the trial counts as self-judged. Never re-judge after the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal-b",
+      "title": "Reveal",
+      "minutes": 1,
+      "instructions": "The helmet reveals the target and its nonce, and the app checks the commitment, the pool and your locked response. A rank-1 hit has a chance of 1 in the number of pictures in the set.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    }
+  ]
+}

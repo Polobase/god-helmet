@@ -1,0 +1,70 @@
+{
+  "id": "lowfield-lfms-pattern",
+  "name": "LFMS pattern (500 Hz trains, McLean timing)",
+  "category": "lowfield",
+  "evidence": "single-lab",
+  "origin": "McLean Hospital / Harvard Medical School (Rohan, Cohen); multisite trial led by Massachusetts General Hospital (Fava)",
+  "uT": 5,
+  "summary": "The timing of low-field magnetic stimulation (LFMS), tested at McLean Hospital for rapid mood effects in depression: 500 Hz alternating pulses in 0.5-s trains every 2 s for 20 min, on all eight ring coils in phase. A pattern replica at about a thousandth of the original field, not a copy of the treatment.",
+  "notes": "Fava 2018 describe the LFMS waveform as 1-ms trapezoids of alternating polarity with 256-µs ramps (500 Hz peak to peak), in 0.5-s trains every 2 s for 20 min; here each half-wave is two 0.5-ms ticks at full scale (600 trains per session), so the ramps are lost and the edges are square. The original field came from a gradient head coil around the whole head (under 50 G, i.e. 5 mT, with a peak induced field of about 0.5 V/m); this helmet gives at most about 5 µT at 20 mm, roughly 1000 times less field and 3-4 orders of magnitude less induced field, so this copies the timing only. The eight ring coils in phase stand in for the whole-head coil; its uniform gradient cannot be reproduced, and no front-to-back polarity split is attempted. Rohan 2014 reported mood gains only in combined secondary analyses, the Fava 2018 multisite trial was null, Dubin 2019 saw a benefit only after the third session, and a 2026 meta-analysis of 9 trials found a pooled benefit but rated its certainty low; nothing is known about this pattern at µT strength. Not a depression treatment: don't change medication or treatment because of it. The coils may click or whine at 500 Hz; the original sham reproduced the coil sound, so mask the sound in both arms of a blinded comparison. Not for people with epilepsy; stop on headache or distress.",
+  "setting": "Lie flat or reclined with eyes closed in a quiet room (in the trials people lay supine with the top of the head, up to the eyebrows, inside the coil).",
+  "schedule": "Original schedules: one 20-min session (Rohan 2014); three sessions 48 h apart (Dubin 2019); 20 min a day on 4 consecutive days (Fava 2018); twice daily for 2 weeks at home (Wu 2026).",
+  "targets": [],
+  "source": "Fava et al. 2018, Brain Stimul (LFMS waveform and multisite trial) https://pmc.ncbi.nlm.nih.gov/articles/PMC5729080/ ; Rohan et al. 2014, Biol Psychiatry 76:186 https://pubmed.ncbi.nlm.nih.gov/24331545/ ; Rohan et al. 2004, Am J Psychiatry 161:93 (MRI-based stimulator) https://pubmed.ncbi.nlm.nih.gov/14702256/ ; Dubin et al. 2019, J Affect Disord https://pmc.ncbi.nlm.nih.gov/articles/PMC6486658/ ; Wu et al. 2026, J Affect Disord https://pubmed.ncbi.nlm.nih.gov/42203049/ ; Bharadwaj et al. 2026, meta-analysis https://pubmed.ncbi.nlm.nih.gov/41911470/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "Fpz",
+      "F7",
+      "T7",
+      "P7",
+      "Oz",
+      "P8",
+      "T8",
+      "F8"
+    ]
+  },
+  "fadeInS": 5,
+  "fadeOutS": 5,
+  "phases": [
+    {
+      "name": "LFMS trains, all coils",
+      "minutes": 20,
+      "pattern": {
+        "type": "table",
+        "pointMs": 0.5,
+        "gapMs": 1500,
+        "data": [
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,
+          255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1,255,255,1,1
+        ]
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

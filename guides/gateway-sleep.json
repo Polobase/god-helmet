@@ -1,0 +1,64 @@
+{
+  "id": "gateway-sleep",
+  "name": "Sleep descent (Gateway-style)",
+  "category": "sleep",
+  "summary": "A non-drug wind-down for falling asleep: a descent from alpha through theta to delta over 40 minutes, after which the sound fades out by itself. The timeline and level relations follow Monroe's 'sleep processor' patent (US 5,356,368): alpha with theta, theta with delta, then delta with lower delta; the second group 15 dB below the first at the start; phased pink noise 20 dB below, on a 6-second cycle. The beat values are our design. For a nap with a gentle wake-up, use the nap guide. The guide ends when the sound has faded, so the phone can go dark; rate the night in the morning with the \"Sleep descent: morning check-in\" guide, before you reveal a blinded (sham) night in this run's summary.",
+  "evidence": "claim",
+  "minutes": 40,
+  "requires": { "headphones": true, "helmet": "none", "pool": false },
+  "setting": "In bed, lights off, very low volume. Soft headphones or a sleep headband for binaural mode; on a speaker, switch to isochronic mode. Phone face down and on charge.",
+  "cautions": "Not a treatment for insomnia or sleep apnoea; see a doctor if sleep problems persist. MIAS's claim that 40 of 45 insomniacs found its tapes as good as medication was uncontrolled. Keep the volume minimal. Never use it while driving or operating machinery. Don't wear the helmet while you sleep.",
+  "sources": [
+    {
+      "title": "Monroe RA, US Patent 5,356,368 (1994): method and apparatus for inducing desired states of consciousness (sleep timeline, phased pink sound, 6 s cycle)",
+      "url": "https://patents.google.com/patent/US5356368A/en"
+    },
+    {
+      "title": "Monroe Institute of Applied Sciences, research history (200/210 Hz example; sequencing), CREST CIA-RDP96-00788R001700210025-5",
+      "url": "https://archive.org/details/cia-readingroom-document-cia-rdp96-00788r001700210025-5"
+    },
+    {
+      "title": "Elnazer et al. (2026) review of music and binaural beats in young adults (small, heterogeneous effects)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41656644/"
+    },
+    {
+      "title": "WHO: Deafness and hearing loss, safe listening",
+      "url": "https://www.who.int/news-room/questions-and-answers/item/deafness-and-hearing-loss-safe-listening"
+    }
+  ],
+  "steps": [
+    {
+      "id": "settle",
+      "title": "Settle",
+      "minutes": 5,
+      "instructions": "Lie comfortably and turn the volume down until you can only just hear the sound. Take three slow breaths. Put the day's concerns into your set-aside box and close the lid.\n\n*Sound: alpha (10 Hz on 200 Hz) with a theta layer (6 Hz on 150 Hz) 15 dB below it, and phased pink noise 20 dB below, as in the patent's first five minutes. Beat values are our design.*",
+      "audio": { "layers": [{ "carrier": 200, "beat": 10 }, { "carrier": 150, "beat": 6, "gainDb": -15 }], "noise": { "levelDb": -20, "swellS": 6 } },
+      "advance": "timer"
+    },
+    {
+      "id": "descend",
+      "title": "Descend",
+      "minutes": 15,
+      "instructions": "Nothing to do. Let sleep come.",
+      "audio": {
+        "layers": [{ "carrier": 150, "beat": 6 }, { "carrier": 100, "beat": 3 }],
+        "noise": { "levelDb": -20, "swellS": 6 },
+        "crossfadeS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "deep",
+      "title": "Deep",
+      "minutes": 20,
+      "instructions": "Nothing to do. The sound fades out by itself at the end.",
+      "audio": {
+        "layers": [{ "carrier": 100, "beat": 3, "gainDb": -3 }, { "carrier": 120, "beat": 1.5 }],
+        "noise": { "levelDb": -20, "swellS": 6 },
+        "crossfadeS": 30,
+        "fadeOutS": 120
+      },
+      "advance": "timer"
+    }
+  ]
+}

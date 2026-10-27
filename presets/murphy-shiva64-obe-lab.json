@@ -1,0 +1,23 @@
+{
+  "id": "murphy-shiva64-obe-lab",
+  "name": "64-coil Shiva OBE lab case (8-coil version, 5 min)",
+  "category": "obe",
+  "evidence": "single-lab",
+  "origin": "Saroka, Mulligan, Murphy & Persinger 2010 (Persinger's lab), 64-coil Shiva headset",
+  "uT": 1,
+  "summary": "Five minutes of the amygdala burst-firing signal circled over the whole head, after a single-case report from Persinger's lab in which a man reported an out-of-body experience shortly after 5 min in a 64-coil Shiva headset (Saroka, Mulligan, Murphy & Persinger 2010). This 8-coil version keeps the signal type, the duration and a rotation over both upper and lower head, not the 64-coil pattern.",
+  "notes": "Persinger's lab reported one 27-year-old man who wore a headset of 64 coils that 'circled the same flickering magnetic fields around the entire head, and not just a circle around its edge' for 5 min with the amygdala burst-firing pattern. Shortly afterwards he described lightness, then 'floating'. The EEG showed excess theta and beta over the left temporal and right frontal regions with cross-hemispheric coherence. These details come from a press release and Murphy's blog; the paper (NeuroQuantology 8(4):466-477) was not available to the research. Left out: 64 coils cannot be copied with 8, and the 64-coil sequence, step times and field strength are unpublished. Here the 8 coils form two interleaved rings, a lower one (F7, P7, P8, F8) and an upper one around the vertex (Fz, C3, Pz, C4). The field steps counter-clockwise seen from above while alternating between them (Fz, F7, C3, P7, Pz, P8, C4, F8), so each turn covers both levels (an inference). The step time is Murphy's Shiva lecture example, 10 to 20 ms per coil in 2-ms steps. The amygdala signal is proprietary; it is approximated by the built-in accelerating burst (6 to 30 Hz), 230 points of 3 ms (0.69 s) once every 3 s. This combines burst-firing timings Persinger's lab published around then: 230 points every 3 s (with 4-ms points, Ryczko & Persinger 2002) and about 0.7 s every 3 s at 1 µT (Persinger, Hoang & Baker-Price 2009). The subject had anxiety, nausea and a headache afterwards: lie down, have someone present, and stop at once on anxiety, nausea or headache. This is a single uncontrolled case. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or prone to anxiety.",
+  "setting": "The original was a laboratory session with EEG recording. Lie down in a dark, quiet room with eyes closed and someone present who can stop the session.",
+  "schedule": "One 5-min session; no repeat schedule was published. Keep at least a week between sessions, as Murphy advises for Shiva.",
+  "targets": ["left-amygdala", "right-amygdala"],
+  "source": "Saroka, Mulligan, Murphy & Persinger 2010, NeuroQuantology 8(4):466-477 (ResearchGate listing) https://www.researchgate.net/publication/275606923_Experimental_Elicitation_of_an_Out_of_Body_Experience_and_Concomitant_Cross-Hemispheric_Electroencephalographic_Coherence ; PRLog press release (2012) https://www.prlog.org/11844110-god-helmet-inventor-induces-out-of-body-experience-in-under-six-minutes-using-quiet-magnetic-fields.html ; Murphy blog: OBE in less than six minutes https://sacredneurology.com/2017/08/01/out-of-body-experience-in-under-six-minutes-with-advanced-magnetic-stimulation/ ; Murphy, Psychic Skills & Miracles lecture https://www.youtube.com/watch?v=tmC1174POpA ; Ryczko & Persinger 2002, Percept Mot Skills 95:592 https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Persinger, Hoang & Baker-Price 2009, Electromagn Biol Med 28:374 https://pubmed.ncbi.nlm.nih.gov/20017628/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["Fz", "F7", "C3", "P7", "Pz", "P8", "C4", "F8"], "order": [0, 1, 2, 3, 4, 5, 6, 7]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    { "name": "Amygdala burst-firing, whole-head rotation", "minutes": 5,
+      "pattern": {"type": "burst", "f0": 6, "f1": 30, "sweepMs": 690, "gapMs": 2310, "pointMs": 3},
+      "spatial": {"mode": "rotate", "dir": "ccw", "dwell": [10, 2, 20]} }
+  ]
+}

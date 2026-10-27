@@ -21,7 +21,9 @@ export function describePattern(p) {
     case 'thomas': return `Decelerating ${round(p.f0)} → ${round(p.f1)} Hz, ${round(p.sweepMs / 1000)} s, ${round(p.pointMs)} ms points`
     case 'pulse': return `${round(p.pulseMs)} ms pulses${p.gapMs ? `, ${round(p.gapMs)} ms gaps` : ''}${p.alternate ? ', alternating polarity' : ''}`
     case 'semirandom': return `Random value every ${round(p.pointMs)} ms`
-    case 'table': return `Point table, ${round(p.pointMs)} ms per point`
+    case 'table': return `Point table${p.table ? ` of ${p.table.length}` : ''}, ${round(p.pointMs)} ms per point${p.gapMs ? `, ${round(p.gapMs)} ms pause` : ''}`
+    case 'pm': return `${round(p.f0)} Hz phase-modulated at ${round(p.f1)} Hz (depth ${round(p.depth)} rad)${p.pointMs ? `, ${round(p.pointMs)} ms points` : ''}`
+    case 'noise': return `Random noise ${round(p.f0)}–${round(p.f1)} Hz${p.pointMs ? `, ${round(p.pointMs)} ms points` : ''}`
     case 'dc': return 'Constant current'
     default: return 'No output'
   }
@@ -36,7 +38,9 @@ export function describeSpatial(s) {
     case 'left': return `Left side only${weighted}`
     case 'right': return `Right side only${weighted}`
     case 'rotate': return `Rotating ${dir} around all coils, ${dwell}`
-    case 'cycle': return `Stepping ${dir} around the ${s.side} side, ${dwell}${weighted}`
+    case 'cycle': return s.side === 'both'
+      ? `Stepping around both sides at once (left ${s.ccwLeft ? 'counter-clockwise' : 'clockwise'}, right ${s.ccwRight ? 'counter-clockwise' : 'clockwise'}), ${dwell}${weighted}`
+      : `Stepping ${dir} around the ${s.side} side, ${dwell}${weighted}`
     case 'alternate': return `Left ↔ right every ${round(s.alternateMs / 1000)} s`
     case 'single': return `Coil CH${s.channel + 1} only`
   }

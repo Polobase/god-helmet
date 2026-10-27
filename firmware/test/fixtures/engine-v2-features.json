@@ -1,0 +1,17 @@
+{
+  "id": "engine-v2-features",
+  "name": "Engine v2 feature fixture (tests only)",
+  "layout": "custom",
+  "placement": { "sites": ["FT7", "C5", "TP7", "T9", "FT8", "C6", "TP8", "T10"], "order": [0, 1, 2, 3, 7, 6, 5, 4] },
+  "fadeInS": 2,
+  "fadeOutS": 2,
+  "tableData": [128, 160, 192, 224, 255, 224, 192, 160, 128, 96, 64, 32, 0, 32, 64, 96],
+  "phases": [
+    { "name": "pm rotate", "seconds": 70, "pattern": { "type": "pm", "f0": 40, "f1": 0.5, "depth": 3 }, "spatial": { "mode": "rotate", "dir": "ccw", "dwell": [10, 2, 20], "crossfade": true } },
+    { "name": "noise both sides", "seconds": 70, "pattern": { "type": "noise", "f0": 4, "f1": 7, "seed": 5 }, "spatial": { "mode": "cycle", "side": "both", "dirLeft": "cw", "dirRight": "ccw", "dwellMs": 25 } },
+    { "name": "stereo tracks", "seconds": 70, "tracks": [
+      { "pattern": { "type": "burst" }, "spatial": { "mode": "left" } },
+      { "pattern": { "type": "table", "pointMs": 2, "data": [128, 255, 0, 255, 0, 128, 128, 128], "gapMs": 50 }, "spatial": { "mode": "cycle", "side": "right", "dwellMs": 40 }, "level": 0.6 } ] },
+    { "name": "shared table + weights", "seconds": 70, "level": 0.8, "pattern": { "type": "table", "pointMs": 1.5 }, "spatial": { "mode": "alternate", "alternateMs": 700, "weights": [1, -0.5, 1, -0.5, 1, -0.5, 1, -0.5] } }
+  ]
+}

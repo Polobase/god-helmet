@@ -1,0 +1,22 @@
+{
+  "id": "murphy-shakti-test-session-amygdala",
+  "name": "Shakti side test (10 min per side): amygdala signal",
+  "category": "signals",
+  "evidence": "claim",
+  "origin": "Todd Murphy (Shakti software)",
+  "uT": 1,
+  "summary": "Murphy's laterality test before any one-sided series: 10 min of the amygdala burst-firing signal over the right temporal lobe, where he says it is usually unpleasant, then at once 10 min at the mirror site on the left. It checks for what Murphy calls a 'reversed' structure.",
+  "setting": "Quiet, dim room, eyes closed, relaxed. One coil above each ear: T8 (right) for phase 1 and T7 (left) for phase 2; the other six stay unused. Note how each half feels: pleasant, unpleasant or nothing.",
+  "schedule": "One signal per test and at most one test every 72 hours (vendor rule).",
+  "notes": "The vendor: start over the side where the signal is usually UNPLEASANT (amygdala: right), then switch immediately to the mirror location, 5-10 min each; this file uses 10 min per side (Skip ends a side early). Murphy uses the result to choose sides for one-sided sessions: a response opposite to the usual one points, in his view, to a 'reversed' or 'left-handed' structure, while 'If you get no response at all, you probably do not have one'. Negative imagery during an amygdala session is his sign that it has run too long, so skip or stop then. T7/T8 is the research translation of 'the same location on each side'; if a one-sided series will use other sites, test there instead. The laterality rule comes from user reports and a small Persinger-lab study (Richards, Koren & Persinger 1992: burst-firing over the right temporal lobe raised apprehension in women). Murphy links the right amygdala with fear and sadness, mostly from user reports, so the first half can bring fear; press Skip to move to the mirror side. The amygdala ('burstx') file is proprietary; it is approximated by the built-in accelerating burst (6 to 30 Hz), 230 points at the vendor's standard 3-ms points (0.69 s), followed by the vendor's standard latency of about 4 s. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy, seizure history or a psychiatric condition; stop on distress.",
+  "targets": ["right-amygdala", "left-amygdala"],
+  "source": "Murphy, Shakti demo: Test sessions https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/testsession.htm ; Murphy, Shakti demo: 10 minute sessions https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/10m.htm ; Murphy, Shakti demo: 'Reversed' or 'left-handed' brain structures https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/reversed.htm ; Murphy, Shakti demo: Getting started (8-coil chart; one test every 72 hours) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/getting_started_basic.htm ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? (3-ms points, 4-s latency) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Ryczko & Persinger 2002, Percept Mot Skills 95:592 (230-point burst-firing pattern) https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Richards, Koren & Persinger 1992, Percept Mot Skills 75:667 https://pubmed.ncbi.nlm.nih.gov/1408634/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["T7", "", "", "", "T8", "", "", ""]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Right side (usually unpleasant): rate how it feels", "minutes": 10, "pattern": {"type": "burst", "f0": 6, "f1": 30, "sweepMs": 690, "gapMs": 4000, "pointMs": 3}, "spatial": {"mode": "right"}},
+    {"name": "Left side (mirror site): rate how it feels", "minutes": 10, "pattern": {"type": "burst", "f0": 6, "f1": 30, "sweepMs": 690, "gapMs": 4000, "pointMs": 3}, "spatial": {"mode": "left"}}
+  ]
+}

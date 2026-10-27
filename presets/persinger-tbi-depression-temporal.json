@@ -1,0 +1,37 @@
+{
+  "id": "persinger-tbi-depression-temporal",
+  "name": "Weekly burst-firing, both temporal lobes, 30 min (Baker-Price & Persinger)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Baker-Price & Persinger, Persinger/Koren lab, Laurentian University",
+  "uT": 1,
+  "summary": "The bilateral-temporal arm of Baker-Price & Persinger's open-label studies of depression after closed head injury: 30 min of 1 uT burst-firing fields across both temporal lobes, once a week for 5 weeks (1996, 4 patients) or 6 weeks (2003, 14 patients). The authors reported lower depression scores, but there was no sham arm and the left-frontal arm improved as much.",
+  "notes": "Baker-Price & Persinger 1996 gave four patients \"30 min. of weak (1 microT) burst-firing magnetic fields across the temporal lobes once per week for 5 weeks\" and reported less depression and fewer phobias, while physical symptoms did not change; their rationale was that the depression reflects subclinical hippocampal-amygdaloid seizure activity. In 2003, 14 patients got the fields either across the temporal lobes (this program) or over the left frontal lobe (persinger-tbi-depression-left-frontal), 30 min once a week for 6 weeks: depression fell over 5 weeks of treatment and 6 weeks of follow-up with no significant difference between the arms, and only the 7 bilateral-temporal patients reported fewer complex-partial-epileptic-like experiences and showed more 16-18 Hz power 6 weeks after the last session. Approximations: the burst-firing point values were never published, so the built-in accelerating burst (6 to 30 Hz) stands in: 230 points of 3 ms (0.69 s, the best-supported of the lab's 230, 248 and 289-point lengths) once every 4 s; Persinger, Hoang & Baker-Price 2009 describe the field as \"once every 3 s for about 0.7 s\" (set gapMs to 2310 for that variant). The papers give no coil count or sites; two coils per side at T7, TP7 and T8, TP8, all driven together, are an inference from \"across the temporal lobes\" (the same exposure as persinger-koren-boxes-tsang-2004). A Saroka thesis recalls 50 min per week; the published 30 min is used. Source cautions: no sham arm, 4 and 14 patients, self-rated outcomes in an open series where improvement over weeks is expected anyway, no independent replication; and rats given the same weekly field spent about half as much time in the open arms of a plus maze after two sessions, an anxious-looking effect (Fitzpatrick & Persinger 2004). These were clinical research sessions on diagnosed patients under ethics review. This program is not a treatment: depression and head injury need a clinician. A head injury raises seizure risk; not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012).",
+  "setting": "Seated or reclined, eyes closed, in a quiet room. The studies were an outpatient clinical series with depression questionnaires before and after (and QEEG in 2003).",
+  "schedule": "30 min once a week for 5 weeks (1996) or 6 weeks (2003), followed in 2003 by 6 weeks without sessions.",
+  "targets": ["left-amygdala", "right-amygdala", "left-hippocampus-head", "right-hippocampus-head"],
+  "source": "Baker-Price & Persinger 1996, Percept Mot Skills 83:491 https://pubmed.ncbi.nlm.nih.gov/8902023/ ; Baker-Price & Persinger 2003, Percept Mot Skills 96:965 https://pubmed.ncbi.nlm.nih.gov/12831278/ ; Fitzpatrick & Persinger 2004, Percept Mot Skills 98:983 (rats, weekly burst-firing) https://pubmed.ncbi.nlm.nih.gov/15209315/ ; Persinger, Hoang & Baker-Price 2009, Electromagn Biol Med 28:374 ('once every 3 s for about 0.7 s') https://pubmed.ncbi.nlm.nih.gov/20017628/ ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Martin & Persinger 2004, Neurosci Lett 366:226 (burst-firing once every 4 s) https://pubmed.ncbi.nlm.nih.gov/15276252/ ; Saroka, PhD thesis, Laurentian University, p. 28 (50 min per week) https://laurentian.scholaris.ca/items/5260328f-a7c5-4d7b-b8a2-00b943eee977 ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": ["T7", "TP7", "", "", "T8", "TP8", "", ""]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Burst-firing across both temporal lobes",
+      "minutes": 30,
+      "pattern": {
+        "type": "burst",
+        "f0": 6,
+        "f1": 30,
+        "sweepMs": 690,
+        "gapMs": 3310,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

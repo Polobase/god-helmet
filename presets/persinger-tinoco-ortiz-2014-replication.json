@@ -1,0 +1,54 @@
+{
+  "id": "persinger-tinoco-ortiz-2014-replication",
+  "name": "Tinoco & Ortiz 2014: independent 8-coil 'God Helmet' rebuild, 100 Hz figure-eight (20 min)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Carlos A. Tinoco & Joao P. L. Ortiz, Integrated Center for Experimental Research, Curitiba, Brazil (independent of Persinger's lab)",
+  "uT": 1,
+  "summary": "The only published rebuild of the God Helmet by a group unconnected to Persinger's lab: 100 Hz pulses for 20 min, one yoked left-right coil pair at a time, stepping every 250 ms in a figure-eight over four coils per temporal lobe. The authors reported 'spiritual experiences' in some volunteers, but field and sham groups differed only in the wording of their post-session reports, not during the sessions.",
+  "notes": "The authors say this is not a Persinger pattern: lacking the burst-firing and 'chirp' files, they used 'simple' 100 Hz pulses from a home-built oscillator and a 4017 Johnson decade counter to test moving weak fields. Per side, four coils in a 2 x 2 grid (their Figure 2; the text also calls the layout 'cross-shaped'); the active coil changes every 250 ms: posterior then anterior superior, posterior then anterior inferior, a figure-eight of 1000 ms, the same on both sides with contralateral coils yoked, so the dorsal and ventral pairs get 500 ms each in turn. The paper gives no electrode positions, only 'above the temporal-parietal region' and helmet holes about 8 cm across at the height of the temporal lobes; TP7h, T7h (upper) and TP9h, T9h (lower), about 3 x 4 cm apart, and their right mirrors are an inference. The coils (500 turns of 26 AWG on ferrite rods) were driven through a DC current amplifier, so the pulses have one polarity; the duty cycle is not stated, so 5 ms on and 5 ms off is used. The circuit drawings do not show how the 100 Hz pulses and the 250-ms steps were combined; this follows the text. Field strength is inconsistent within the paper: 'RMS peaks of 0.000001 Tesla (10 mG)' in the methods, '0.0001 Tesla (10 mG)' in the abstract, and a build note whose measured current is said to give 0.001 uT; 1 uT (10 mG) is used. Design: 10 field and 10 sham (zero-amplitude) subjects, blindfolded, 20 min, questioned in the last 2 min, told they were in a 'God Helmet' experiment to plant a suggestion; their reports were scored with Whissell's Dictionary of Affect in Language. What field and sham subjects said during the session did not differ; the differences were in post-session wording, with p < .10 as the criterion for part of the analysis. Experimenter blinding is not reported, the journal is outside the mainstream literature, and the authors call it a partial replication. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Run it against sham with the app's Blind option. Not for people with epilepsy or a seizure history; stop on distress.",
+  "setting": "Seated in a comfortable chair with a blindfold, told only that it is a 'God Helmet' session. In the last 2 minutes, ask about sights, sounds, touch, smells, tastes and emotions, and record the answers for blind scoring.",
+  "schedule": "One 20-min session per person; the originals ran in the afternoon (14:00-18:00) on three days with a K index of 0-2.",
+  "targets": [
+    "left-superior-temporal-gyrus-posterior",
+    "right-superior-temporal-gyrus-posterior",
+    "left-tpj",
+    "right-tpj"
+  ],
+  "source": "Tinoco & Ortiz 2014, Magnetic stimulation of the temporal cortex: a partial 'God Helmet' replication study, J Conscious Explor Res 5(3):234-257 https://jcer.com/index.php/jcj/article/view/361 ; Wikipedia, God helmet (the only direct replication by a group unconnected to Persinger's lab) https://en.wikipedia.org/wiki/God_helmet ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "TP7h",
+      "T7h",
+      "TP9h",
+      "T9h",
+      "TP8h",
+      "T8h",
+      "TP10h",
+      "T10h"
+    ],
+    "order": [0, 1, 2, 3, 4, 5, 6, 7]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "100 Hz pulses, yoked pairs, figure-eight, 250 ms per coil",
+      "minutes": 20,
+      "pattern": {
+        "type": "pulse",
+        "pulseMs": 5,
+        "gapMs": 5,
+        "alternate": false
+      },
+      "spatial": {
+        "mode": "cycle",
+        "side": "both",
+        "dirLeft": "ccw",
+        "dirRight": "ccw",
+        "dwellMs": 250
+      }
+    }
+  ]
+}

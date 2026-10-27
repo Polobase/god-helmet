@@ -1,20 +1,14 @@
 #include "spatial.h"
 
+#include <cctype>
 #include <cmath>
 #include <cstring>
 
 namespace engine {
 namespace {
 
-constexpr int kRingCcw[kChannels] = {0, 1, 2, 3, 4, 5, 6, 7};
-constexpr int kTemporalCcw[kChannels] = {0, 1, 2, 3, 7, 6, 5, 4};
-
-constexpr int kRingLeftCcw[] = {1, 2, 3};    // F7 -> T7 -> P7 (front to back)
-constexpr int kRingRightCcw[] = {5, 6, 7};   // P8 -> T8 -> F8 (back to front)
-constexpr int kTemporalLeftCcw[] = {0, 1, 2, 3};
-constexpr int kTemporalRightCcw[] = {7, 6, 5, 4};
-
 int copyOrder(const int* src, int n, bool ccw, int out[kChannels]) {
+  if (n <= 0) return 0;
   if (ccw) {
     for (int i = 0; i < n; ++i) out[i] = src[i];
   } else {
@@ -43,26 +37,75 @@ const char* const kModeNames[] = {"bilateral", "left", "right", "rotate",
 
 }  // namespace
 
+Geometry geometryFor(Layout layout) {
+  Geometry g;
+  if (layout == Layout::Ring) {
+    // Fpz F7 T7 P7 Oz P8 T8 F8: midline front/back, left 1-3, right 5-7.
+    const int8_t side[kChannels] = {0, -1, -1, -1, 0, 1, 1, 1};
+    for (int i = 0; i < kChannels; ++i) {
+      g.side[i] = side[i];
+      g.order[i] = static_cast<uint8_t>(i);
+    }
+  } else {
+    // FT7 T7 CP5 TP7 | FT8 T8 CP6 TP8: CCW = left front->back, right back->front.
+    const uint8_t order[kChannels] = {0, 1, 2, 3, 7, 6, 5, 4};
+    for (int i = 0; i < kChannels; ++i) {
+      g.side[i] = i < 4 ? -1 : 1;
+      g.order[i] = order[i];
+    }
+  }
+  g.count = kChannels;
+  return g;
+}
+
+bool sideFromSite(const char* site, int8_t& side) {
+  // Letters, then a number or "z", then an optional "h" (10-5 half positions, e.g. FTT8h).
+  if (site == nullptr) return false;
+  size_t n = std::strlen(site);
+  if (n > 0 && (site[n - 1] == 'h' || site[n - 1] == 'H')) --n;
+  size_t letters = 0;
+  while (letters < n && std::isalpha(static_cast<unsigned char>(site[letters]))) ++letters;
+  if (letters == 0 || n < 2) return false;
+  const char last = site[n - 1];
+  if (letters == n) {  // no digits: must end in z (Fpz, Cz, Oz ...)
+    if (last != 'z' && last != 'Z') return false;
+    side = 0;
+    return true;
+  }
+  for (size_t i = letters; i < n; ++i)
+    if (site[i] < '0' || site[i] > '9') return false;
+  side = ((last - '0') % 2 == 1) ? -1 : 1;
+  return true;
+}
+
+int rotationOrder(const Geometry& g, bool ccw, int out[kChannels]) {
+  int src[kChannels];
+  const int n = g.count <= kChannels ? g.count : kChannels;
+  for (int i = 0; i < n; ++i) src[i] = g.order[i];
+  return copyOrder(src, n, ccw, out);
+}
+
+int sideOrder(const Geometry& g, Side side, bool ccw, int out[kChannels]) {
+  int src[kChannels];
+  int n = 0;
+  const int count = g.count <= kChannels ? g.count : kChannels;
+  for (int i = 0; i < count; ++i) {
+    const int ch = g.order[i];
+    if (side == Side::Left ? isLeft(g, ch) : isRight(g, ch)) src[n++] = ch;
+  }
+  return copyOrder(src, n, ccw, out);
+}
+
 int rotationOrder(Layout layout, bool ccw, int out[kChannels]) {
-  return copyOrder(layout == Layout::Ring ? kRingCcw : kTemporalCcw, kChannels, ccw, out);
+  return rotationOrder(geometryFor(layout), ccw, out);
 }
 
 int sideOrder(Layout layout, Side side, bool ccw, int out[kChannels]) {
-  if (layout == Layout::Ring) {
-    return side == Side::Left ? copyOrder(kRingLeftCcw, 3, ccw, out)
-                              : copyOrder(kRingRightCcw, 3, ccw, out);
-  }
-  return side == Side::Left ? copyOrder(kTemporalLeftCcw, 4, ccw, out)
-                            : copyOrder(kTemporalRightCcw, 4, ccw, out);
+  return sideOrder(geometryFor(layout), side, ccw, out);
 }
 
-bool isLeft(Layout layout, int ch) {
-  return layout == Layout::Ring ? (ch >= 1 && ch <= 3) : (ch >= 0 && ch <= 3);
-}
-
-bool isRight(Layout layout, int ch) {
-  return layout == Layout::Ring ? (ch >= 5 && ch <= 7) : (ch >= 4 && ch <= 7);
-}
+bool isLeft(Layout layout, int ch) { return isLeft(geometryFor(layout), ch); }
+bool isRight(Layout layout, int ch) { return isRight(geometryFor(layout), ch); }
 
 DwellPosition dwellPosition(const SpatialParams& s, double tMs) {
   DwellPosition pos{0, 0.0f};
@@ -87,6 +130,10 @@ DwellPosition dwellPosition(const SpatialParams& s, double tMs) {
 }
 
 void spatialGains(const SpatialParams& s, Layout layout, double tMs, float out[kChannels]) {
+  spatialGains(s, geometryFor(layout), tMs, out);
+}
+
+void spatialGains(const SpatialParams& s, const Geometry& g, double tMs, float out[kChannels]) {
   for (int ch = 0; ch < kChannels; ++ch) out[ch] = 0.0f;
 
   switch (s.mode) {
@@ -96,23 +143,32 @@ void spatialGains(const SpatialParams& s, Layout layout, double tMs, float out[k
     case SpatialMode::Left:
     case SpatialMode::Right:
       for (int ch = 0; ch < kChannels; ++ch) {
-        const bool on = s.mode == SpatialMode::Left ? isLeft(layout, ch) : isRight(layout, ch);
+        const bool on = s.mode == SpatialMode::Left ? isLeft(g, ch) : isRight(g, ch);
         out[ch] = on ? 1.0f : 0.0f;
       }
       break;
     case SpatialMode::Rotate:
     case SpatialMode::Cycle: {
-      int order[kChannels];
-      const int n = s.mode == SpatialMode::Rotate ? rotationOrder(layout, s.ccw, order)
-                                                  : sideOrder(layout, s.side, s.ccw, order);
       const DwellPosition pos = dwellPosition(s, tMs);
-      const int current = order[pos.step % n];
-      if (s.crossfade) {
-        const int next = order[(pos.step + 1) % n];
-        out[current] += 1.0f - pos.frac;
-        out[next] += pos.frac;
+      auto step = [&](const int* order, int n) {
+        if (n == 0) return;
+        const int current = order[pos.step % n];
+        if (s.crossfade) {
+          out[current] += 1.0f - pos.frac;
+          out[order[(pos.step + 1) % n]] += pos.frac;
+        } else {
+          out[current] = 1.0f;
+        }
+      };
+      int order[kChannels];
+      if (s.mode == SpatialMode::Rotate) {
+        step(order, rotationOrder(g, s.ccw, order));
+      } else if (s.side == Side::Both) {
+        int right[kChannels];
+        step(order, sideOrder(g, Side::Left, s.ccwLeft, order));
+        step(right, sideOrder(g, Side::Right, s.ccwRight, right));
       } else {
-        out[current] = 1.0f;
+        step(order, sideOrder(g, s.side, s.ccw, order));
       }
       break;
     }
@@ -120,7 +176,7 @@ void spatialGains(const SpatialParams& s, Layout layout, double tMs, float out[k
       const float half = s.alternateMs > 1.0f ? s.alternateMs : 1.0f;
       const bool left = (static_cast<uint64_t>(tMs / half) % 2) == 0;
       for (int ch = 0; ch < kChannels; ++ch)
-        out[ch] = (left ? isLeft(layout, ch) : isRight(layout, ch)) ? 1.0f : 0.0f;
+        out[ch] = (left ? isLeft(g, ch) : isRight(g, ch)) ? 1.0f : 0.0f;
       break;
     }
     case SpatialMode::Single:
@@ -146,7 +202,13 @@ bool spatialModeFromName(const char* name, SpatialMode& out) {
   return false;
 }
 
-const char* layoutName(Layout layout) { return layout == Layout::Ring ? "ring" : "temporal"; }
+const char* layoutName(Layout layout) {
+  switch (layout) {
+    case Layout::Ring: return "ring";
+    case Layout::Temporal: return "temporal";
+    default: return "custom";
+  }
+}
 
 bool layoutFromName(const char* name, Layout& out) {
   if (name == nullptr) return false;
@@ -156,6 +218,10 @@ bool layoutFromName(const char* name, Layout& out) {
   }
   if (std::strcmp(name, "temporal") == 0 || std::strcmp(name, "B") == 0) {
     out = Layout::Temporal;
+    return true;
+  }
+  if (std::strcmp(name, "custom") == 0) {
+    out = Layout::Custom;
     return true;
   }
   return false;

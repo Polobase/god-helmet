@@ -1,0 +1,27 @@
+{
+  "id": "murphy-shiva-hippocampus-simple-fast",
+  "name": "Shiva hippocampus signal (fast, 3x)",
+  "category": "signals",
+  "evidence": "claim",
+  "origin": "Shiva software by Todd Murphy (signal templates licensed from Persinger and Koren)",
+  "uT": 1,
+  "summary": "Murphy's simple Shiva hippocampus session with the 'LTP' theta-burst signal played three times faster, stepped counter-clockwise around the head. The vendor presents the hippocampal signal for cognitive, non-verbal, imagery and intuition effects.",
+  "notes": "Coils sit on Murphy's Shiva ring (Fp1, FT7, TP7, O1, O2, TP8, FT8, Fp2; one coil per site instead of Shiva's coil pairs) and step counter-clockwise seen from above, with Murphy's lecture example of 10, 12 ... 20 ms per coil (about 8 rotations a second; Murphy writes 'around 9 times per second'). Phase 1 (20 min) is the 20-min version; phase 2 makes it the 30-min version (a 60-min Shiva version also exists). The Shiva LTP file is proprietary. The normal-speed approximation (trains of 4 theta bursts of 4 biphasic pulses at 3-ms points, bursts every 186 ms = 5.4 Hz, the vendor's reported LTP spectral peak, then 4 s of silence) is played here at 1-ms points, three times faster: pulses 3 ms apart, bursts every 62 ms (16 Hz), a 248-ms train every 1.58 s. Murphy's Shakti 'high-speed' signals likewise use 1-ms points and drop the latency; whether Shiva's fast version shortens or drops it is not published, so it is shortened 3x with the rest of the signal. Murphy's cautions: word-finding problems or feeling 'spaced out' mean switch to another signal; about 2% get headaches or pressure, in which case lower the intensity by one-third. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy; stop if distressed.",
+  "setting": "Dark, quiet room, eyes closed, relaxed without meditating or falling asleep. Shiva offers 20, 30 and 60-min versions; start with the short one.",
+  "schedule": "At most once a week, never on consecutive days; up to 6 sessions, then a 21-day break. 60-min sessions weekly or every two weeks at most.",
+  "targets": ["left-hippocampus-head", "left-hippocampus-body", "left-hippocampus-tail", "right-hippocampus-head", "right-hippocampus-body", "right-hippocampus-tail"],
+  "source": "Murphy, Shiva demo: Hippocampus signal https://www.god-helmet.com/wp/shiva/shiva_demo/hippocampus_page.htm ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Murphy, Shakti demo: Random theta band output (LTP spectral peak) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/5jut4ranconsent.htm ; Murphy, Shiva demo: Consumer information https://www.god-helmet.com/wp/shiva/shiva_demo/shiva_infomed_consent.htm ; Murphy, Shiva / Octopus and the 40 Hz binding factor https://www.god-helmet.com/wp/shiva/shiva_demo/shiva_explanation.htm ; Murphy, Psychic Skills & Miracles lecture https://www.youtube.com/watch?v=tmC1174POpA ; Murphy, Shiva demo: Session lengths https://www.god-helmet.com/wp/shiva/shiva_demo/session_length.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": { "sites": ["Fp1", "FT7", "TP7", "O1", "O2", "TP8", "FT8", "Fp2"], "order": [0, 1, 2, 3, 4, 5, 6, 7] },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "tableData": [255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,255,1,128,255,1,128,255,1,128,255,1,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128],
+  "phases": [
+    { "name": "Hippocampal theta bursts 3x, CCW 10-20 ms (20-min version)", "minutes": 20,
+      "pattern": { "type": "table", "pointMs": 1, "gapMs": 1333 },
+      "spatial": { "mode": "rotate", "dir": "ccw", "dwell": [10, 2, 20] } },
+    { "name": "Hippocampal theta bursts 3x, continued (30-min version)", "minutes": 10,
+      "pattern": { "type": "table", "pointMs": 1, "gapMs": 1333 },
+      "spatial": { "mode": "rotate", "dir": "ccw", "dwell": [10, 2, 20] } }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "lowfield-ghione-50hz-part-2",
+  "name": "50 Hz head exposure, part 2 of 2 (Ghione 2005)",
+  "category": "lowfield",
+  "evidence": "single-lab",
+  "origin": "Ghione, Del Seppia et al. (CNR Pisa), 2005",
+  "uT": 5,
+  "summary": "Second half of the 90-min 50 Hz head exposure after Ghione et al. 2005: 45 more minutes of a 50 Hz sine on all eight ring coils in phase. Run it straight after part 1.",
+  "notes": "Ghione's 40 healthy men were exposed for 90 min to a 50 Hz field at 40 or 80 uT, randomised and double-blind against sham, with EEG alpha measured afterwards; the authors report that alpha almost doubled at 80 uT and the pain threshold fell at 40 uT. The coil geometry is not given in the abstract, so all eight ring coils in phase stand in for a whole-head field. The helmet is limited to 5 uT at 20 mm from each coil, 8-16 times below the original 40-80 uT and further below it deeper in the head, so this copies the frequency and timing only. The 90 min exceed the 60-min program limit and are split into two 45-min parts with short fades; start part 2 straight after part 1. The finding is single-lab: Legros 2012 found no EEG effect after 1 h at 60 Hz and 1800 uT (balance and tremor changed), and mains-frequency pickup makes 50 Hz EEG studies especially prone to artefacts. Avoid if you have epilepsy (WHO notes greater susceptibility to induced fields, although the field here is tiny); stop on discomfort. The app's Blind option draws real or sham anew for each run, so it can mix them across the two parts; for a blinded 90-min copy, have a helper secretly choose the arm and run both parts, or the Sham (no field) program twice. If the coils hum audibly, mask the sound in both arms.",
+  "setting": "Seated, as in the study. Ghione measured EEG alpha after the exposure.",
+  "schedule": "One 90-min exposure: part 1, then part 2 without a break.",
+  "targets": [],
+  "source": "Ghione et al. 2005, Neurosci Lett https://pubmed.ncbi.nlm.nih.gov/15911132/ ; Legros et al. 2012, Eur J Appl Physiol https://pubmed.ncbi.nlm.nih.gov/21894451/ ; WHO Environmental Health Criteria 238, Extremely low frequency fields (2007) https://inchem.org/documents/ehc/ehc/ehc238.pdf",
+  "layout": "custom",
+  "placement": {"sites": ["Fpz", "F7", "T7", "P7", "Oz", "P8", "T8", "F8"]},
+  "fadeInS": 5,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "50 Hz sine, whole head (minutes 45-90)", "minutes": 45, "pattern": {"type": "sine", "f0": 50, "pointMs": 0.5}, "spatial": {"mode": "bilateral"}}
+  ]
+}

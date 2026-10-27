@@ -1,7 +1,7 @@
 // Offline cache: the app shell is network-first (so updates arrive), other
 // same-origin files and Google Fonts are cache-first. NOAA requests are
 // never cached.
-const CACHE = 'godhelmet-v1'
+const CACHE = 'godhelmet-v2'
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html', './manifest.webmanifest', './icon.svg'])))

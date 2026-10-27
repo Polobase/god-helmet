@@ -49,7 +49,8 @@ constexpr NameEntry kNames[] = {
     {PatternType::Sine, "sine"},     {PatternType::Chirp, "chirp"},
     {PatternType::Burst, "burst"},   {PatternType::Thomas, "thomas"},
     {PatternType::Pulse, "pulse"},   {PatternType::SemiRandom, "semirandom"},
-    {PatternType::Table, "table"},
+    {PatternType::Table, "table"},     {PatternType::PhaseMod, "pm"},
+    {PatternType::Noise, "noise"},
 };
 
 }  // namespace
@@ -98,6 +99,19 @@ PatternParams patternDefaults(PatternType type) {
     case PatternType::Table:
       p.pointMs = 3.0f;
       break;
+    case PatternType::PhaseMod:
+      // "Modulated 40 Hz ... almost in sync with the binding factor, but not
+      // quite" (Murphy): 40 Hz carrier with a slow phase drift (our approximation).
+      p.f0 = 40.0f;
+      p.f1 = 0.5f;
+      p.depth = 3.0f;
+      p.pointMs = 1.0f;
+      break;
+    case PatternType::Noise:
+      p.f0 = 4.0f;
+      p.f1 = 8.0f;
+      p.pointMs = 1.0f;
+      break;
     case PatternType::Off:
     case PatternType::DC:
       break;
@@ -133,6 +147,25 @@ float patternValue(const PatternParams& p, double tMs) {
       const uint32_t k = static_cast<uint32_t>(static_cast<uint64_t>(tMs / step));
       const uint32_t h = mix32(k ^ mix32(p.seed));
       return static_cast<float>(h) / 2147483647.5f - 1.0f;
+    }
+    case PatternType::PhaseMod: {
+      const double ts = t / 1000.0;
+      const double mod = p.depth * std::sin(6.283185307179586 * p.f1 * ts);
+      return sinCycles(p.f0 * ts + mod / 6.283185307179586);
+    }
+    case PatternType::Noise: {
+      // Sum of 12 sines spread evenly over [f0, f1] with seeded random phases,
+      // scaled to an RMS of about 0.4 and clipped to [-1, 1].
+      constexpr int kParts = 12;
+      const double ts = t / 1000.0;
+      double sum = 0.0;
+      for (int i = 0; i < kParts; ++i) {
+        const double f = p.f0 + (i + 0.5) * (p.f1 - p.f0) / kParts;
+        const double phase = mix32(p.seed * 0x9E3779B9u + static_cast<uint32_t>(i)) / 4294967296.0;
+        sum += sinCycles(f * ts + phase);
+      }
+      const double v = sum / (2.5 * std::sqrt(kParts / 2.0));
+      return static_cast<float>(v > 1.0 ? 1.0 : (v < -1.0 ? -1.0 : v));
     }
     case PatternType::Table: {
       if (p.table == nullptr || p.tableLen == 0) return 0.0f;

@@ -1,0 +1,112 @@
+{
+  "id": "psiball-detection",
+  "name": "Psi-ball detection test (two people)",
+  "category": "self-test",
+  "summary": "Can a psi-ball or 'energy field' be felt by someone who doesn't know where it is? A blinded test modelled on the 1998 JAMA therapeutic-touch study (Rosa et al.): an opaque screen, hands on fixed marks, a coin toss per trial, and guesses written down before anyone compares. Mode A tests whether the receiver feels the practitioner's ball; mode B tests whether the practitioner senses the partner's hand. Chance is 1 in 2: with 30 trials, 20 or more hits happen by chance less than 5 % of the time. Our design; the app records the results.",
+  "evidence": "unverified",
+  "minutes": 53,
+  "requires": { "headphones": false, "helmet": "none", "pool": false },
+  "setting": "Two people at a table with an opaque cloth screen between them. The receiver's forearms pass under the screen, palms up, hands on tape marks 10 cm apart. Stable room temperature, no fans. A coin, pencils and two sheets of paper.",
+  "cautions": "Radiant heat and air movement are ordinary cues that people can feel. In mode A the practitioner holds both hands symmetrically above both of the receiver's hands every time, forming the ball over one; in mode B keep the distance fixed, and remember that sensing warmth is a normal ability. No touching. Neither of you sees the other's sheet until the end. Decide the number of trials or sessions before you start, keep every result, and report them all.",
+  "sources": [
+    {
+      "title": "Rosa L, Rosa E, Sarner L, Barrett S (1998) A close look at therapeutic touch. JAMA 279:1005-1010",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9533499/"
+    },
+    { "title": "Connelly S (2004) The Psion's Handbook. PsiPog (summarised only; the licence forbids excerpts)" }
+  ],
+  "steps": [
+    {
+      "id": "setup",
+      "title": "Set up",
+      "minutes": 5,
+      "instructions": "Set up the screen and tape marks. Agree on 30 trials per mode and the same words and timing for every trial. The practitioner rates their confidence.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          {
+            "key": "confidence",
+            "label": "Practitioner: confidence that the ball can be felt",
+            "min": 0,
+            "max": 10,
+            "minLabel": "None",
+            "maxLabel": "Certain"
+          }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "targets-a",
+      "title": "Mode A: target list",
+      "minutes": 5,
+      "instructions": "**Practitioner, behind the screen:** toss the coin 30 times and write the results down the left of your sheet: heads = left hand, tails = right hand. Keep the sheet face down.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "trials-a",
+      "title": "Mode A: trials",
+      "minutes": 15,
+      "instructions": "For each trial the practitioner reads the next entry, holds **both** hands above the receiver's hands and forms the ball over the indicated one for about 20 seconds, then says \"now\".\n\nThe receiver writes \"left\" or \"right\" on their own sheet. If breathing or rustling could give cues, play steady pink noise in the room.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "results-a",
+      "title": "Mode A: results",
+      "minutes": 3,
+      "instructions": "Compare the two sheets and count the hits. Expect 15 by chance.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "hits-a", "label": "Mode A: hits", "min": 0, "max": 30 },
+          { "key": "trials-a", "label": "Mode A: trials done", "min": 0, "max": 30 }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "targets-b",
+      "title": "Mode B: target list",
+      "minutes": 5,
+      "instructions": "Swap roles. **Partner, behind the screen:** toss the coin 30 times and write the results: heads = hover over the practitioner's left hand, tails = right. Now the practitioner's forearms go under the screen.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "trials-b",
+      "title": "Mode B: trials",
+      "minutes": 15,
+      "instructions": "For each trial the partner hovers one hand, at a fixed distance, over the indicated hand for about 20 seconds and says \"now\". The practitioner writes which hand they sensed.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "results-b",
+      "title": "Mode B: results",
+      "minutes": 3,
+      "instructions": "Compare the sheets and count the hits.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "hits-b", "label": "Mode B: hits", "min": 0, "max": 30 },
+          { "key": "trials-b", "label": "Mode B: trials done", "min": 0, "max": 30 }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "debrief",
+      "title": "Sensations",
+      "minutes": 2,
+      "instructions": "Describe the sensations, and whether they were stronger on hits than on misses.",
+      "audio": null,
+      "input": { "type": "text", "key": "sensations", "prompt": "What the sensations felt like" },
+      "advance": "manual"
+    }
+  ]
+}

@@ -196,7 +196,9 @@ Reply test(const mj::Value& v) {
   engine::Phase& ph = s->phases[0];
   ph.durationMs = seconds * 1000;
   ph.pattern = engine::patternDefaults(engine::PatternType::DC);
-  if (!engine::layoutFromName(v["layout"].str("temporal"), s->layout)) s->layout = engine::Layout::Temporal;
+  if (!engine::layoutFromName(v["layout"].str("temporal"), s->layout) || s->layout == engine::Layout::Custom)
+    s->layout = engine::Layout::Temporal;
+  s->geometry = engine::geometryFor(s->layout);
   if (mode == "dc") {
     const int ch = static_cast<int>(v["channel"].num(0));
     if (ch < 0 || ch > 7) return Reply::fail("channel must be 0..7");
@@ -278,6 +280,25 @@ Reply trialRanks(const mj::Value& v) {
   return Reply::json(json);
 }
 
+// Hardware random bytes for micro-PK tasks. esp_fill_random() is a true RNG
+// while the radio (BLE) is running.
+Reply rngBytes(const mj::Value& v) {
+  const int n = static_cast<int>(v["n"].num(32));
+  if (n < 1 || n > 256) return Reply::fail("n must be 1..256");
+  uint8_t buf[256];
+  esp_fill_random(buf, n);
+  static const char* kHex = "0123456789abcdef";
+  std::string hex;
+  hex.reserve(n * 2);
+  for (int i = 0; i < n; ++i) {
+    hex += kHex[buf[i] >> 4];
+    hex += kHex[buf[i] & 15];
+  }
+  mj::Writer w;
+  w.beginObject().key("hex").string(hex).key("source").string("esp_fill_random").endObject();
+  return Reply::json(w.str());
+}
+
 Reply trialList(const mj::Value& v) {
   mj::Writer w;
   w.beginObject();
@@ -338,6 +359,7 @@ Reply dispatch(const std::string& op, const mj::Value& v, const std::string& raw
     return Reply::json(json);
   }
   if (op == "trial.list") return trialList(v);
+  if (op == "rng.bytes") return rngBytes(v);
   return Reply::fail(String("unknown op: ") + op.c_str());
 }
 

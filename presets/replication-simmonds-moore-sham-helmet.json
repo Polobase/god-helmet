@@ -1,0 +1,28 @@
+{
+  "id": "replication-simmonds-moore-sham-helmet",
+  "name": "Simmonds-Moore sham God Helmet: 30 min relaxation, inert helmet (no field)",
+  "category": "replication",
+  "evidence": "single-lab",
+  "origin": "Christine Simmonds-Moore, D. L. Rice, C. O'Gwin & R. Hopkins (sham-helmet study, Imagination, Cognition and Personality)",
+  "uT": 1,
+  "summary": "The sham-helmet study of Simmonds-Moore et al.: 32 paranormal sceptics and 35 believers each relaxed for 30 min in a Faraday chamber without a helmet (baseline) and twice wearing an inert 'God Helmet' (morning and afternoon). No field was ever applied; believers reported more exceptional experiences, and the conditions did not change their Phenomenology of Consciousness Inventory scores.",
+  "notes": "No field at any time: this program keeps every coil silent for 30 min. It copies the exposure (wearing an inert helmet while relaxing), not a stimulus. Original: each participant completed a baseline without any helmet (Psi Encyclopedia) and two sessions with a sham 'God Helmet' that applied no stimulation, one in the morning and one in the afternoon, relaxing for 30 min in a Faraday chamber. Exit interviews explored the experiences (coded for exceptional experiences by inductive thematic analysis), and participants completed the Phenomenology of Consciousness Inventory; traits were paranormal belief, synaesthesia, locus of control, hyperaesthesia and prior anomalous experiences. Results: believers scored higher than sceptics on some inventory dimensions and reported more exceptional experiences; condition (baseline, morning, afternoon) did not change inventory scores, with no belief x condition interaction; hyperaesthesia predicted alterations in consciousness and synaesthesia predicted exceptional experiences. The paper's title claims placebo, individual-difference and time-of-day influences, while the Psi Encyclopedia summary reports no morning/afternoon difference in reports; morning against afternoon does not test the evening or night claims of Persinger's lab and Murphy. The order of conditions, what participants were told, the lighting and whether eyes were covered are not in the available sources (the paper is closed access). How to reproduce it with the app: a known sham cannot raise expectations, so either run an active 30-min program with the Blind option (its sham arm is this exposure) or let a helper choose secretly between this file and an active program of the same length; ticking Blind on this file changes nothing, since both arms are silent. Do a baseline in the same room without the helmet, then one helmet session in the morning and one in the afternoon; after each, give a free report first (spoken to the helper or written), then any checklist, then the 0-10 rating. If you run it for someone else, tell them beforehand that the helmet may or may not produce a field, and reveal it afterwards. Guides -> Enrollment battery gives SenPQ, IPIP Imagination and the Short Suggestibility Scale; the app has no Phenomenology of Consciousness Inventory, synaesthesia or hyperaesthesia scale. The Log tab stores time of day and Kp; the Experiment tab runs psi trials and is not needed. Unpleasant feelings can come from the setting alone; stop on distress. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012).",
+  "setting": "Relaxing, seated or reclining, for 30 min in a quiet, shielded room (the original used a Faraday chamber), with the helmet worn but inert; the baseline session is in the same room without the helmet.",
+  "schedule": "Three sessions per person: baseline (no helmet), sham helmet in the morning, sham helmet in the afternoon; order and spacing are not given in the available sources.",
+  "targets": [],
+  "source": "Simmonds-Moore, Rice, O'Gwin & Hopkins, Exceptional experiences following exposure to a sham 'God Helmet': evidence for placebo, individual difference, and time of day influences, Imagination, Cognition and Personality 39:44-87 (online 2017) https://doi.org/10.1177/0276236617749185 ; Psi Encyclopedia (SPR), Christine Simmonds-Moore (dummy helmet; baseline without a helmet; no morning/afternoon difference) https://psi-encyclopedia.spr.ac.uk/articles/christine-simmonds-moore/ ; Maij & van Elk 2018, Conscious Cogn 66:1 https://pubmed.ncbi.nlm.nih.gov/30355534/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Inert helmet, relaxation (no field)",
+      "minutes": 30,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

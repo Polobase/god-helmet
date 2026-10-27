@@ -1,0 +1,44 @@
+{
+  "id": "gateway-sleep-morning",
+  "name": "Sleep descent: morning check-in",
+  "category": "sleep",
+  "summary": "A short morning rating of the night, kept apart from the sleep descent so that the phone does not stay lit all night: time to fall asleep, awakenings, sleep quality and grogginess. Use it every morning of a series, including nights without the sleep descent, so the nights can be compared.",
+  "evidence": "claim",
+  "minutes": 2,
+  "requires": { "headphones": false, "helmet": "none", "pool": false },
+  "setting": "Right after you get up, before you look at last night's run summary.",
+  "cautions": "Estimates of sleep time are rough. These ratings are not a diagnosis; see a doctor if sleep problems persist.",
+  "sources": [
+    {
+      "title": "Monroe RA, US Patent 5,356,368 (1994): method and apparatus for inducing desired states of consciousness (sleep timeline, phased pink sound, 6 s cycle)",
+      "url": "https://patents.google.com/patent/US5356368A/en"
+    }
+  ],
+  "steps": [
+    {
+      "id": "morning",
+      "title": "Morning check-in",
+      "minutes": 2,
+      "instructions": "When you get up, rate the night, before you look at the run summary of last night's session. Answer on nights without the sleep descent too: the ratings are most useful when you compare nights with the guide, nights without it and sham nights, in random order.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          {
+            "key": "used-guide",
+            "label": "Did you use the sleep descent last night? (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          },
+          { "key": "sleep-latency", "label": "Minutes to fall asleep (estimate)", "min": 0, "max": 120 },
+          { "key": "awakenings", "label": "Times you woke up in the night", "min": 0, "max": 10 },
+          { "key": "sleep-quality", "label": "Sleep quality", "min": 0, "max": 10, "minLabel": "Very poor", "maxLabel": "Excellent" },
+          { "key": "grogginess", "label": "Grogginess this morning", "min": 0, "max": 10, "minLabel": "None", "maxLabel": "Very groggy" }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

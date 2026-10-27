@@ -1,0 +1,94 @@
+{
+  "id": "persinger-7hz-point-duration-2003",
+  "name": "7 Hz sine at 1-20 ms point durations, right hemisphere (Booth 2003)",
+  "category": "presence",
+  "evidence": "single-lab",
+  "origin": "Booth, Koren & Persinger (Laurentian University), 2003 point-duration study, n = 6",
+  "uT": 1,
+  "summary": "Booth, Koren & Persinger's (2003) test of point ('pixel') duration alone: a 7 Hz sine over the right hemisphere, played with points of 1, 3, 5, 7, 10 and 20 ms for 5 min each. The lab reported the most left-sided sensed presences and occipital EEG spikes at 1 and 10 ms, in six subjects.",
+  "notes": "The abstract gives all the parameters: digital-to-analogue 7 Hz sine waves at 1, 3, 5, 7, 10 or 20 ms per point, 5 min each, 1 uT, over the right hemisphere, in a sequential counterbalanced order for six subjects (30 min in all). The six orders are not published; this file uses one row of a balanced Latin square, 1, 3, 20, 5, 10, 7 ms. For repeat sessions, reorder the phases to another row: 3-5-1-7-20-10, 5-7-3-10-1-20, 7-10-5-20-3-1, 10-20-7-1-5-3 or 20-1-10-3-7-5. The sine stays at 7 Hz and each value is held for the point duration, so at 20 ms a cycle is a staircase of about 7 steps; the lab file's exact point values are unpublished. Three right-side coils at T8, TP8 and P8 approximate 'over the right hemisphere'; the left side stays silent. Phase changes are abrupt. Note the time and side of anything you feel. Six subjects, six conditions and two separated optima is a shape chance produces easily; there is no independent replication, and independent double-blind tests found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop on fear or distress.",
+  "setting": "Seated in a quiet, dark room with the eyes covered; in the original, EEG was recorded over the occipital regions and presences were scored by side.",
+  "schedule": "One session per person in the original. For a self-test, use a different Latin-square order each time and compare with sham sessions (the app's Blind option).",
+  "targets": ["right-superior-temporal-gyrus-posterior", "right-tpj", "right-angular-gyrus"],
+  "source": "Booth, Koren & Persinger 2003, Increased proportions of sensed presences and occipital spikes with 1- and 10-msec. point duration of continuous 7-Hz transcerebral magnetic fields, Percept Mot Skills 97:951-952 https://pubmed.ncbi.nlm.nih.gov/14738362/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": ["", "", "", "", "T8", "TP8", "P8", ""]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "7 Hz sine, 1 ms points",
+      "minutes": 5,
+      "pattern": {
+        "type": "sine",
+        "f0": 7,
+        "pointMs": 1
+      },
+      "spatial": {
+        "mode": "right"
+      }
+    },
+    {
+      "name": "7 Hz sine, 3 ms points",
+      "minutes": 5,
+      "pattern": {
+        "type": "sine",
+        "f0": 7,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "right"
+      }
+    },
+    {
+      "name": "7 Hz sine, 20 ms points",
+      "minutes": 5,
+      "pattern": {
+        "type": "sine",
+        "f0": 7,
+        "pointMs": 20
+      },
+      "spatial": {
+        "mode": "right"
+      }
+    },
+    {
+      "name": "7 Hz sine, 5 ms points",
+      "minutes": 5,
+      "pattern": {
+        "type": "sine",
+        "f0": 7,
+        "pointMs": 5
+      },
+      "spatial": {
+        "mode": "right"
+      }
+    },
+    {
+      "name": "7 Hz sine, 10 ms points",
+      "minutes": 5,
+      "pattern": {
+        "type": "sine",
+        "f0": 7,
+        "pointMs": 10
+      },
+      "spatial": {
+        "mode": "right"
+      }
+    },
+    {
+      "name": "7 Hz sine, 7 ms points",
+      "minutes": 5,
+      "pattern": {
+        "type": "sine",
+        "f0": 7,
+        "pointMs": 7
+      },
+      "spatial": {
+        "mode": "right"
+      }
+    }
+  ]
+}

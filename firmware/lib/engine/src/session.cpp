@@ -11,11 +11,14 @@ uint32_t Session::totalMs() const {
 }
 
 void Session::bindTable() {
+  auto bind = [this](PatternParams& p) {
+    if (p.type != PatternType::Table) return;
+    const bool fits = p.tableLen > 0 && p.tableOffset + p.tableLen <= table.size();
+    p.table = fits ? table.data() + p.tableOffset : nullptr;
+  };
   for (int i = 0; i < phaseCount; ++i) {
-    PatternParams& p = phases[i].pattern;
-    if (p.type != PatternType::Table) continue;
-    p.table = table.empty() ? nullptr : table.data();
-    p.tableLen = static_cast<uint32_t>(table.size());
+    bind(phases[i].pattern);
+    bind(phases[i].pattern2);
   }
 }
 
@@ -116,14 +119,23 @@ void render(const Session& session, const SessionRunner::Frame& frame, float out
   for (int ch = 0; ch < kChannels; ++ch) out[ch] = 0.0f;
   if (!frame.running || frame.phase >= session.phaseCount) return;
   const Phase& ph = session.phases[frame.phase];
-  const float s = patternValue(ph.pattern, frame.phaseMs);
-  const float scale = frame.envelope * ph.level * s;
-  if (scale == 0.0f) return;
   float gains[kChannels];
-  spatialGains(ph.spatial, session.layout, frame.phaseMs, gains);
+  const float scale = frame.envelope * ph.level * patternValue(ph.pattern, frame.phaseMs);
+  if (scale != 0.0f) {
+    spatialGains(ph.spatial, session.geometry, frame.phaseMs, gains);
+    for (int ch = 0; ch < kChannels; ++ch) out[ch] += scale * gains[ch];
+  }
+  if (ph.hasTrack2) {
+    const float scale2 = frame.envelope * ph.level2 * patternValue(ph.pattern2, frame.phaseMs);
+    if (scale2 != 0.0f) {
+      spatialGains(ph.spatial2, session.geometry, frame.phaseMs, gains);
+      for (int ch = 0; ch < kChannels; ++ch) out[ch] += scale2 * gains[ch];
+    }
+  }
   for (int ch = 0; ch < kChannels; ++ch) {
-    float v = scale * gains[ch];
-    out[ch] = v > 1.0f ? 1.0f : (v < -1.0f ? -1.0f : v);
+    out[ch] = out[ch] > 1.0f ? 1.0f : (out[ch] < -1.0f ? -1.0f : out[ch]);
+    // A custom placement leaves some channels without a site: keep them silent.
+    if (session.layout == Layout::Custom && session.sites[ch][0] == '\0') out[ch] = 0.0f;
   }
 }
 

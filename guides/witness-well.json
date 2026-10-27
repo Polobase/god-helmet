@@ -1,0 +1,67 @@
+{
+  "id": "witness-well",
+  "name": "Witness-well detection test (device vs symbolic copy)",
+  "category": "self-test",
+  "summary": "Can a radionic box, stick pad, pendulum or rods find a hidden target, and do the electronics matter? A loader hides a target (for example your own photo or a mineral sample) in one of 8 identical containers and leaves; you then pick a container with your usual method, using your real device, an identical-looking symbolic copy, or no device. Our design, after Cosimano's partner exercises and the double-blind GT200 test. Chance is 1 in 8: with 20 trials, 6 or more hits happen by chance about 3 % of the time. If the device mattered, the real one should beat the copy.",
+  "evidence": "unverified",
+  "minutes": 36,
+  "requires": { "headphones": false, "helmet": "none", "pool": false },
+  "setting": "Two rooms and two people, a loader and an operator. Eight identical opaque envelopes or cans, matched blanks of the same weight and thickness, eight numbered cards for drawing the target, and covers that make the real device and the symbolic copy look the same.",
+  "cautions": "The containers must not differ in weight, sound, smell, temperature or marks. The loader is never in the room with the operator during trials. Use 'witness' samples only from people who agree. This test makes no diagnostic or health claims, and neither should the device: radionics has a long history of court cases. Decide the number of trials or sessions before you start, keep every result, and report them all.",
+  "sources": [
+    {
+      "title": "Mochan JL, Ramirez-Solis A: Effectiveness of the GT200 molecular detector: a double-blind test (arXiv 1301.3971)",
+      "url": "https://arxiv.org/abs/1301.3971"
+    },
+    { "title": "Cosimano CW, Elementary Psionics and Psionic Magick (self-published practice books; device and pendulum claims)" },
+    {
+      "title": "Gardner M (1957) Fads and Fallacies in the Name of Science, chapter on radionics",
+      "url": "https://archive.org/details/fads-and-fallacies-in-the-name-of-science-ocr"
+    }
+  ],
+  "steps": [
+    {
+      "id": "plan",
+      "title": "Plan",
+      "minutes": 3,
+      "instructions": "Agree on 20 trials in blocks across three conditions: the real device, the symbolic copy, and no device (intuition only). The loader decides the block order by shuffling, and covers the devices so the operator can't tell real from copy.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "load",
+      "title": "Loading (loader only)",
+      "minutes": 10,
+      "instructions": "**Loader, alone:** number the containers 1 to 8. For each trial, shuffle the eight numbered cards and draw one: that container gets the target, the others get blanks. Write the trial number, the condition and the target on your sheet and keep it hidden.\n\nBefore each trial the operator waits outside while you reload and set out the device for the block; then you leave and the operator comes in. You never meet in the room.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "trials",
+      "title": "Detection trials (operator)",
+      "minutes": 20,
+      "instructions": "**Operator:** for each trial, use your usual method to choose one container, and write the trial number and your choice. Use the device the loader set out for this block. There is no feedback until the end.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "results",
+      "title": "Results",
+      "minutes": 3,
+      "instructions": "Together, compare the loader's sheet with the operator's choices and count the hits per condition. Chance is 1 in 8 per trial.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "hits-real", "label": "Real device: hits", "min": 0, "max": 20 },
+          { "key": "trials-real", "label": "Real device: trials", "min": 0, "max": 20 },
+          { "key": "hits-copy", "label": "Symbolic copy: hits", "min": 0, "max": 20 },
+          { "key": "trials-copy", "label": "Symbolic copy: trials", "min": 0, "max": 20 },
+          { "key": "hits-none", "label": "No device: hits", "min": 0, "max": 20 },
+          { "key": "trials-none", "label": "No device: trials", "min": 0, "max": 20 }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

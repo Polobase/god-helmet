@@ -4,11 +4,14 @@ import { reactive } from 'vue'
 export const TABS = [
   { key: 'programs', label: 'Programs' },
   { key: 'placement', label: 'Placement' },
+  { key: 'brain', label: 'Brain' },
+  { key: 'guides', label: 'Guides' },
   { key: 'experiment', label: 'Experiment' },
   { key: 'targets', label: 'Targets' },
   { key: 'log', label: 'Log' },
   { key: 'setup', label: 'Setup' },
   { key: 'safety', label: 'Safety' },
+  { key: 'docs', label: 'Docs' },
 ]
 
 function parse() {

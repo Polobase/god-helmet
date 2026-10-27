@@ -1,0 +1,21 @@
+{
+  "id": "lowfield-gamma-40hz-square",
+  "name": "40 Hz gamma, magnetic square (GENUS timing)",
+  "layout": "custom",
+  "placement": { "sites": ["Fpz", "F7", "T7", "P7", "Oz", "P8", "T8", "F8"] },
+  "category": "lowfield",
+  "evidence": "unverified",
+  "origin": "Timing from the Tsai lab's GENUS light and sound flicker (MIT Picower Institute; Cognito Therapeutics trials); the magnetic version is a project construct",
+  "uT": 5,
+  "summary": "A 40 Hz on/off square field (12.5 ms on, 12.5 ms off) on all eight ring coils in phase for 1 h, copying the timing of the Tsai lab's GENUS light flicker. GENUS is sensory stimulation; a magnetic 40 Hz field is not GENUS and has no evidence.",
+  "notes": "GENUS (gamma entrainment using sensory stimuli) is an LED flickering 12.5 ms on / 12.5 ms off at 40 Hz (Iaccarino 2016) and, in Martorell 2019, also a 1-ms 10 kHz tone every 25 ms aligned to the light onset, 1 h a day. This program copies only that timing, as a unipolar magnetic square wave on the full ring with all coils in phase. The research protocol's optional LED and audio channel needs new hardware (a GPIO-driven LED and I2S audio on the ESP32) and is left out, so the part of GENUS that has data is missing here. The sensory results are themselves contested: Soula 2023 found no gamma entrainment or amyloid change from 40 Hz light in mice, the human data are small trials (e.g. Chan 2022), and a meta-analysis (Ang 2025) found no established cognitive benefit. This program is not a treatment for Alzheimer's disease or any other condition. For a bipolar square use the square40 table generator; a smooth version is lowfield-gamma-40hz-sine. The research sets 5 uT, the top of the app's range; the app caps it at the coils' calibrated maximum (about 3-6 uT at 20 mm). If you add 40 Hz light flicker from another device, screen for photosensitive epilepsy first and offer a sound-only mode; the same meta-analysis raised a tinnitus signal for the sound. Not for people with epilepsy; stop on headache or distress.",
+  "setting": "Seated and relaxed, eyes open or closed, in a quiet room.",
+  "schedule": "The GENUS studies used 1 h a day (Chan et al. 2022: daily for 3 months). No schedule has been tested for a magnetic 40 Hz field.",
+  "targets": ["primary-visual-cortex", "left-primary-auditory-cortex", "left-hippocampus-body", "right-hippocampus-body"],
+  "source": "Iaccarino et al. 2016, Nature 540:230 https://pmc.ncbi.nlm.nih.gov/articles/PMC5656389/ ; Martorell et al. 2019, Cell 177:256 https://pmc.ncbi.nlm.nih.gov/articles/PMC6774262/ ; Soula et al. 2023, Nat Neurosci https://pmc.ncbi.nlm.nih.gov/articles/PMC10839995/ ; Chan et al. 2022, PLoS One https://pmc.ncbi.nlm.nih.gov/articles/PMC9714926/ ; Ang et al. 2025, meta-analysis https://pmc.ncbi.nlm.nih.gov/articles/PMC12700959/",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "40 Hz square, all coils in phase", "minutes": 60, "pattern": {"type": "pulse", "pulseMs": 12.5, "gapMs": 12.5, "alternate": false}, "spatial": {"mode": "bilateral"}}
+  ]
+}

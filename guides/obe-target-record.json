@@ -1,0 +1,74 @@
+{
+  "id": "obe-target-record",
+  "name": "Out-of-body hidden-target check (2 of 2: record and reveal)",
+  "category": "self-test",
+  "summary": "The second half of the hidden-target check: after the night's attempt (part 1 armed the target), write what you saw or felt and whether an out-of-body experience happened, then lock the response, rank the pictures and see the reveal. Record every night, including nights that ended in ordinary sleep.",
+  "evidence": "unverified",
+  "minutes": 17,
+  "requires": { "headphones": false, "helmet": "required", "pool": true },
+  "setting": "In bed or nearby, straight after the attempt or when you wake, before you look at the spare device or talk to anyone. The helmet stays on the shelf.",
+  "cautions": "Don't look at the spare device before the reveal, and keep it face-up where it was until then. Rank the pictures before the reveal, even after a night without an OBE. Count every night you decided to count before the series.",
+  "sources": [
+    { "title": "Connelly S (2004) The Psion's Handbook. PsiPog (summarised only; the licence forbids excerpts)" },
+    { "title": "Monroe RA (1971) Journeys Out of the Body. Doubleday" }
+  ],
+  "steps": [
+    {
+      "id": "record",
+      "title": "Record before the reveal",
+      "minutes": 10,
+      "instructions": "Straight after any experience, or when you wake, write what you saw or felt. If you saw the shelf, describe the picture. If nothing happened, write \"no OBE\".",
+      "audio": null,
+      "input": { "type": "text", "key": "report", "prompt": "What you saw or felt" },
+      "advance": "manual"
+    },
+    {
+      "id": "obe-flag",
+      "title": "Did it happen?",
+      "minutes": 1,
+      "instructions": "Answer before you see any picture.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          {
+            "key": "obe",
+            "label": "Did you have an out-of-body experience tonight? (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "lock",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Pick tonight's trial from the list, then lock your response. Its fingerprint is stored, so it cannot be changed after the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge",
+      "title": "Rank the pictures",
+      "minutes": 3,
+      "instructions": "Rank the pictures by how well they match your report, before the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 2,
+      "instructions": "The helmet reveals the target and the app checks the commitment. Record the rank of the true target, whatever happened tonight.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+{
+  "id": "crv-session",
+  "name": "CRV guided session (Stages I-VI)",
+  "category": "remote-viewing",
+  "summary": "A complete Coordinate Remote Viewing session in the order of the 1986 DIA manual and the 1985 working paper: declare inclemencies, get a blind target, cool down, work through Stages I to VI on worksheets, summarise, lock, rank and see the reveal. The helmet commits to the target picture before you begin; you see only the trial number, your tag. Timings are soft guidance: press Next when a stage is done. The cool-down sound and an optional blinded helmet arm during the cool-down only (the first 15 minutes of the Remote viewing program, ring layout) are our design; neither is known to help. Self-marking afterwards inflates scores, so the blind rank you give before the reveal is the result that counts.",
+  "evidence": "single-lab",
+  "minutes": 107,
+  "requires": { "headphones": true, "helmet": "optional", "pool": true },
+  "setting": "A quiet, plain room with dim, adjustable light; a desk; the phone or tablet (a stylus helps), and modelling clay within reach for Stage VI. Stereo headphones for the cool-down sound (on speakers, pick isochronic mode, or mute it). If you use the helmet, fit it in the ring layout (see Placement): the Remote viewing program rotates around the head and plays on the wrong sites in the temporal fit. Solo, the app is your tasker and you are blind to the target. With a monitor, the monitor must be blind too and may use only neutral prompts.",
+  "cautions": "CRV is a documented structure, but the evidence that it improves accuracy comes from one programme (SRI and Army INSCOM, mainly one key viewer, partly non-blind ratings) and was never independently replicated. Never let a monitor ask yes/no or leading questions. If you get tired, take a break, and stop on a high point. The 1995 AIR evaluation found a statistically significant laboratory effect that could not be clearly attributed to psi, and no operational value. Never use people as targets without their consent. One trial means little: with a realistic effect size (about 0.16) even 50 trials have only about 30 % power. Decide the number of trials in advance and keep every result. The helmet arm is experimental and runs only blinded (real or sham, revealed in the run summary): the god-helmet.com Shakti safety page advises against combining the helmet with binaural-beat devices in real time, so to follow that advice, mute the sound during the cool-down or leave the helmet off.",
+  "sources": [
+    {
+      "title": "Smith PH (1986) Coordinate Remote Viewing manual, DIA/INSCOM, after Ingo Swann's SRI training (widely posted; Swann did not write it)"
+    },
+    {
+      "title": "Coordinate Remote Viewing Stages I-VI and Beyond (working paper, February 1985), CREST CIA-RDP96-00788R001000400001-7",
+      "url": "https://www.cia.gov/readingroom/document/cia-rdp96-00788r001000400001-7"
+    },
+    {
+      "title": "Puthoff HE (1984) Special Orientation Techniques S-I to S-III, SRI International, CREST CIA-RDP96-00788R001800290001-2",
+      "url": "https://www.cia.gov/readingroom/document/cia-rdp96-00788r001800290001-2"
+    },
+    {
+      "title": "Puthoff HE (1984) Special Orientation Techniques S-V and S-VI, SRI International, CREST CIA-RDP96-00788R001800280001-3",
+      "url": "https://www.cia.gov/readingroom/document/cia-rdp96-00788r001800280001-3"
+    },
+    { "title": "Puthoff HE (1984) Remote Viewing Reliability, Enhancement and Evaluation (SRI/GF-0257), SRI International" },
+    { "title": "Smith D (2005) Open Source CRV, version 2 (freely distributable home-practice guide)" },
+    {
+      "title": "May EC, Utts JM, Humphrey BS, Luke WLW, Frivold TJ, Trask VV (1990) Advances in remote-viewing analysis. J Parapsychol 54:193-228"
+    },
+    {
+      "title": "Mumford MD, Rose AM, Goslin DA (1995) An Evaluation of Remote Viewing: Research and Applications. American Institutes for Research",
+      "url": "https://documents3.theblackvault.com/documents/stargate/pdfs/CIA-RDP96-00791R000200180006-4.pdf"
+    },
+    {
+      "title": "god-helmet.com: Shakti safety page (do not combine with binaural-beat devices in real time)",
+      "url": "https://www.god-helmet.com/wp/winshakti/safety.htm"
+    }
+  ],
+  "helmetArm": { "preset": "remote-viewing", "blind": true, "steps": ["cool-down", "cool-down-end"] },
+  "steps": [
+    {
+      "id": "inclemencies",
+      "title": "Inclemencies and advance visuals",
+      "minutes": 2,
+      "instructions": "Write down anything that might get in the way today: pain, cold, stress, tiredness, a hangover. These are personal inclemencies (PI). Then write any picture or guess about the target that is already in your mind: advance visuals (AP). Declaring them helps you set them aside.\n\nIf you are hungry or need the toilet, stop and come back later: the 1986 manual names these as the conditions that block the work completely. If an inclemency is severe, postpone the session.",
+      "audio": null,
+      "input": {
+        "type": "text",
+        "key": "inclemencies",
+        "prompt": "Personal inclemencies (PI) and advance visuals (AP)",
+        "placeholder": "PI: slight headache, tired. AP: none."
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "task",
+      "title": "Blind target",
+      "minutes": 1,
+      "instructions": "The helmet now picks a target picture from your pool with its random generator and commits to it before you write anything. You see only the trial number: it is your tag. (The original method used coordinates; a random tag works the same way.)",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "rv" },
+      "advance": "manual"
+    },
+    {
+      "id": "fit",
+      "title": "Helmet (optional)",
+      "minutes": 1,
+      "instructions": "If you use the helmet, put it on now in the **ring layout** (see the Placement tab), not the temporal fit. It runs blinded during the cool-down only, real or sham. Without the helmet, press Next.\n\nPut on the headphones for the cool-down.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "cool-down",
+      "title": "Cool-down",
+      "minutes": 10,
+      "instructions": "Relax for about 15 minutes in all: breathe slowly, let your body settle, let thoughts pass. Silence works as well; mute the sound if you prefer it.\n\n*Sound (our design, optional): pink noise and a beat on a 200 Hz carrier gliding from 10 to 7 Hz. No validated parameters exist for remote viewing.*",
+      "audio": { "layers": [{ "carrier": 200, "beat": { "from": 10, "to": 7 } }], "noise": { "levelDb": -15 } },
+      "advance": "timer"
+    },
+    {
+      "id": "cool-down-end",
+      "title": "End of cool-down",
+      "minutes": 5,
+      "instructions": "Keep resting. In the last minute or two, open your eyes, write the tag at the top left of your page, and have the stylus or pen ready. The sound and the helmet arm stop before Stage I; take off the headphones (and the helmet, if you like).",
+      "audio": { "layers": [{ "carrier": 200, "beat": 7 }], "noise": { "levelDb": -15 }, "fadeOutS": 20 },
+      "advance": "timer"
+    },
+    {
+      "id": "stage-1",
+      "title": "Stage I: ideogram, A and B",
+      "minutes": 8,
+      "instructions": "1. Look at the tag, then immediately let your hand make a quick mark: the ideogram. Don't plan it.\n2. **A:** describe the motion of the mark first (across, angle up, down, curving), then how it felt: solid, liquid, energetic, airy, a temperature.\n3. **B:** write the first one-word gestalt that comes (land, water, structure, mountain) or \"no B\".\n\nRepeat 3 to 6 times, pressing **New iteration** for each. If the same ideogram keeps coming back, trace it again at the same speed and decode its A again.\n\nDeclare a break whenever you need one: **AOL** for an analytic label or picture (often \"it looks like...\", a sharp still image, a hesitation, or data that comes as a question), **Confusion**, **Too much** (too much at once) or **Miss** (you missed the ideogram or its feeling). Give each break a 1-2 word label.",
+      "audio": null,
+      "input": {
+        "type": "crv",
+        "stage": 1,
+        "fields": [
+          { "key": "ideogram", "label": "Ideogram", "kind": "sketch" },
+          { "key": "a", "label": "A: motion of the mark first, then its feel", "kind": "text" },
+          { "key": "b", "label": "B: first one-word gestalt, or \"no B\"", "kind": "text" },
+          { "key": "breaks", "label": "Breaks in this iteration, each with a 1-2 word label", "kind": "words" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "stage-2",
+      "title": "Stage II: senses",
+      "minutes": 8,
+      "instructions": "Write single, basic sensory words as they come, often in clusters of 3 or 4: sounds, textures, temperatures, colours, brightness, contrast, tastes, smells, energies. Avoid complex words: \"panoramic\" is a conclusion, not a sensation.\n\nThen note **dimensionals**: tall, wide, long, big, open, heavy.\n\nAfter two or three dimensionals, an **aesthetic impact** may come: how the place makes you feel (vast, oppressive, peaceful). Declare it, write it down and wait until it fades. Don't work through it.",
+      "audio": null,
+      "input": {
+        "type": "crv",
+        "stage": 2,
+        "fields": [
+          { "key": "sensory", "label": "Sensory words, one per line", "kind": "words" },
+          { "key": "dimensionals", "label": "Dimensionals (tall, wide, long, open...)", "kind": "words" },
+          { "key": "ai", "label": "Aesthetic impact (AI): how the site makes you feel", "kind": "text" },
+          { "key": "breaks", "label": "Breaks with a label", "kind": "words" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "stage-3",
+      "title": "Stage III: sketch",
+      "minutes": 10,
+      "instructions": "Sketch the site quickly, by feel. Place horizontals first, then verticals, then diagonals, then details. To follow a shape, draw a slow dotted line, lifting the pen between dots (a tracker). Note words that come while you sketch.\n\nA monitor may use only passive prompts such as \"300 metres north, something should be visible\", never \"move\", \"go\" or \"what do you see\".",
+      "audio": null,
+      "input": {
+        "type": "crv",
+        "stage": 3,
+        "fields": [
+          { "key": "sketch", "label": "Stage III sketch", "kind": "sketch" },
+          { "key": "notes", "label": "Words that came while sketching", "kind": "words" },
+          { "key": "breaks", "label": "Breaks with a label", "kind": "words" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "stage-4",
+      "title": "Stage IV: matrix",
+      "minutes": 15,
+      "instructions": "Put single words into the column they belong to:\n- **S-2** sensory, **D** dimensionals, **AI** aesthetic impact;\n- **EI** emotional impressions: the feel of the place or of people there;\n- **T** tangibles: things you could touch (stone, water, vehicles);\n- **I** intangibles: qualities and purposes (religious, busy, old, industrial);\n- **AOL** analytic labels, each declared as a break; **AOL/S** labels that seem to come from the signal itself, with no break.\n\nKeep all columns fed: when the flow slows, rest on EI and wait. A tangible may want a sketch, and a sketch may hold more tangibles. The 1985 working paper calls Stage IV the point where a viewer starts to become operational.",
+      "audio": null,
+      "input": {
+        "type": "crv",
+        "stage": 4,
+        "fields": [
+          { "key": "s2", "label": "S-2: sensory", "kind": "words" },
+          { "key": "d", "label": "D: dimensionals", "kind": "words" },
+          { "key": "ai", "label": "AI: aesthetic impact", "kind": "words" },
+          { "key": "ei", "label": "EI: emotional impressions", "kind": "words" },
+          { "key": "t", "label": "T: tangibles", "kind": "words" },
+          { "key": "i", "label": "I: intangibles", "kind": "words" },
+          { "key": "aol", "label": "AOL: analytic labels (declared as breaks)", "kind": "words" },
+          { "key": "aols", "label": "AOL/S: labels from the signal (no break)", "kind": "words" },
+          { "key": "sketch", "label": "Sketches triggered by tangibles", "kind": "sketch" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "stage-5",
+      "title": "Stage V: emanations",
+      "minutes": 6,
+      "instructions": "Stage V is an addition to the basic structure (SRI called it corrective). Press Next if you have not trained it.\n\nPick one word from your Stage IV intangibles or AOLs. Write the word, a category and \"emanations?\", for example *library / objects / emanations?* Write down what comes. When nothing comes for more than a few seconds, the cluster is done. Repeat with attributes, subjects and topics. For an AOL, write *AOL ... / prior emanations?*",
+      "audio": null,
+      "input": {
+        "type": "crv",
+        "stage": 5,
+        "fields": [
+          { "key": "query", "label": "Word / category / emanations?", "kind": "text" },
+          { "key": "emanations", "label": "What came (one per line)", "kind": "words" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "stage-6",
+      "title": "Stage VI: modelling",
+      "minutes": 15,
+      "instructions": "Also an addition; press Next if you have not trained it.\n\nModel the Stage IV tangibles in clay while you keep a Stage VI matrix going. Keep your attention on the data, not on how good the model looks. Note what the model shows and any new matrix entries with their column, for example \"T: arch\". If you like, photograph the model from 3 or 4 angles for your own records.",
+      "audio": null,
+      "input": {
+        "type": "crv",
+        "stage": 6,
+        "fields": [
+          { "key": "model", "label": "What the model shows", "kind": "words" },
+          { "key": "matrix", "label": "Stage VI matrix entries (column: word)", "kind": "words" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "rest",
+      "title": "Break",
+      "minutes": 5,
+      "instructions": "Take a five-minute break. Stand up, stretch, drink some water.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "minutes": 8,
+      "instructions": "Write a short summary in plain, low-level sentences that bring your clusters together. Describe; don't name or interpret.\n\nIf you felt especially good in this session, stop training for today: quit on a high point.",
+      "audio": null,
+      "input": {
+        "type": "text",
+        "key": "summary",
+        "prompt": "Summary in plain sentences",
+        "placeholder": "There is a tall, boxy structure with white surfaces near water."
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "lock",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response. The app stores its fingerprint (SHA-256), so nothing can be changed after you see the target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge",
+      "title": "Rank the pictures",
+      "minutes": 5,
+      "instructions": "You now see all pictures of the drawn set in random order. Rank them, best match with your response first. Judge by what you wrote and drew. If someone who doesn't know the target can judge, hand them the phone now; otherwise the trial counts as self-judged. Never re-judge after the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 2,
+      "instructions": "The helmet reveals the target and its nonce, and the app checks the commitment, the pool and your locked response. A rank-1 hit has a chance of 1 in the number of pictures in the set.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    },
+    {
+      "id": "self-mark",
+      "title": "Self-marking (training only)",
+      "minutes": 5,
+      "instructions": "Mark each descriptor against the target: correct, probably correct, near the site, or can't be checked. Count those that fit and those that don't; anything that can't be checked counts as neither. Your accuracy is fit / (fit + wrong).\n\nThese self-marks are training data only. The blind rank you gave before the reveal is the result.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "descriptors-fit", "label": "Descriptors that fit the target", "min": 0, "max": 60 },
+          { "key": "descriptors-wrong", "label": "Descriptors that do not fit", "min": 0, "max": 60 },
+          {
+            "key": "self-quality",
+            "label": "Overall match, self-judged",
+            "min": 0,
+            "max": 7,
+            "minLabel": "No match",
+            "maxLabel": "Excellent"
+          }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

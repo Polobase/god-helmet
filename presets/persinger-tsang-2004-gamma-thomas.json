@@ -1,0 +1,54 @@
+{
+  "id": "persinger-tsang-2004-gamma-thomas",
+  "name": "Tsang 2004: 25->11 ms CCW rotation, Thomas pulse (gamma)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Tsang, Koren & Persinger 2004 (Laurentian University), circumcerebral \"Octopus\" ring",
+  "uT": 1,
+  "summary": "The one configuration of Tsang, Koren & Persinger 2004 reported as effective: a counter-clockwise rotation through eight coils around the head, 25 ms on the first coil and 2 ms less on each of the next seven (last 11 ms, one turn 144 ms), for 5 min. Persinger's lab reported more 35-45 Hz power over frontal and occipital, but not parietal or temporal, regions in 11 people.",
+  "notes": "The abstract gives the rotation, 5 min per configuration and an EEG sample after 2.5 min, but not the waveform (\"pulsed magnetic fields\"), the intensity or the other five configurations of the 30-min battery. The lab's 2010 review describes the rotated field as its frequency-modulated pattern, and Saroka (2016) names the Thomas pulse as the pattern rotated in Cook 1999, so the exact 849-point Thomas table plays here at 3 ms per point (2.55 s per cycle); that choice is an inference. The abstract's \"+2 ms acceleration\" means 2 ms shorter, the lab's \"25+2\" ([25, -2, 11]). Coil 1 left frontal, coil 8 right prefrontal (Persinger & Lavallee 2010): Fp1, FT7, TP7, O1, O2, TP8, FT8, Fp2. The default of 1 uT follows the same authors' sibling study (\"1 microTesla range\"; Persinger, Koren & Tsang 2003); Cook 1999 and Richards 2002 used 5-10 uT. circumcerebral-gamma runs the same rotation with a synthetic burst on an Fpz-Oz ring. Scalp gamma is easily swamped by muscle and stimulation artefacts, which the paper does not say it removed, and one positive result among six conditions in 11 people may be chance. Single-lab, never independently replicated. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "setting": "Seated, eyes closed, in a quiet, dim room. To check the gamma claim, record EEG over frontal and occipital sites and take a 20-s sample 2.5 min in.",
+  "schedule": "One 5-min exposure, as one configuration of the original; compare it with a blinded sham session on another day.",
+  "targets": [
+    "vmpfc",
+    "lateral-orbitofrontal-cortex",
+    "primary-visual-cortex"
+  ],
+  "source": "Tsang, Koren & Persinger 2004, Power increases within the gamma range over the frontal and occipital regions during acute exposures to cerebrally counterclockwise rotating magnetic fields with specific derivatives of change, Int J Neurosci 114:1183-1193 https://pubmed.ncbi.nlm.nih.gov/15370182/ ; Persinger, Koren & Tsang 2003, Percept Mot Skills 97:877-894 (six 5-min ring configurations, 1 microTesla range) https://pubmed.ncbi.nlm.nih.gov/14738355/ ; Persinger & Lavallee 2010, J Conscious Explor Res 1(7):785-807 (20+2 notation; coil 1 left frontal, coil 8 right prefrontal) https://jcer.com/index.php/jcj/article/view/99 ; Saroka 2016, PhD dissertation, Laurentian University (Cook 1999 rotated the Thomas pulse with \"the Octopus\") https://laurentian.scholaris.ca/server/api/core/bitstreams/be015982-0b0f-4c27-a031-797637c364e1/content ; Thomas, Prato, Kavaliers & Persinger, US 6,234,953 B1, Table 1 (Thomas pulse point values) https://patents.google.com/patent/US6234953B1/en ; Buckner et al. 2015, PLoS ONE 10(4) (Thomas file: 849 points at 3 ms, 2.55 s per cycle) https://europepmc.org/article/MED/25875081 ; Granqvist et al. 2005, Neurosci Lett 379:1-6 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "Fp1",
+      "FT7",
+      "TP7",
+      "O1",
+      "O2",
+      "TP8",
+      "FT8",
+      "Fp2"
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "CCW 25->11 ms per coil (lab \"25+2\"), Thomas 3 ms",
+      "minutes": 5,
+      "pattern": {
+        "type": "table",
+        "pointMs": 3,
+        "gapMs": 0
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "ccw",
+        "dwell": [
+          25,
+          -2,
+          11
+        ]
+      }
+    }
+  ],
+  "tableData": [128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128]
+}

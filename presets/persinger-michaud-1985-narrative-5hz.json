@@ -1,0 +1,22 @@
+{
+  "id": "persinger-michaud-1985-narrative-5hz",
+  "name": "Michaud & Persinger 1985: 5 Hz for 60 s during a 3-min story",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Michaud & Persinger 1985 (Laurentian University)",
+  "uT": 1,
+  "summary": "The lab's earliest narrative-memory test: while you listen to a 3-min story, a 5 Hz field runs at the side of the head for the first 60 s, then stops. Michaud & Persinger reported that people given 5 Hz during minute 1 or 2 later made about twice as many inferences about the first minute's material as the other groups; they proposed that such fields may not change the amount of recall but its details.",
+  "notes": "The fields came from unnamed \"commercial devices applied externally to the side of the head at the level of the temporal lobe\"; the paper gives neither the side, the waveform nor the intensity. One coil at T7 (left) is an inference (T8 fits the wording as well); a smooth 5 Hz sine on 1-ms points and 1 uT, the lab's later standard, are assumptions. The field sits in minute 1 because the effect concerned minute-1 material; the paper's other arms put the 60 s in minute 2 or 3, or used 20 Hz or a sham, and the doubling was reported for 5 Hz in minute 1 or 2 only. The sample size is not given in the abstract. The fade-in is 2 s so the 60 s stay almost whole. You need a recorded 3-min story you have not heard; afterwards retell it in writing and count, per minute of the story, the direct recalls and the inferences (the paper used \"discourse analyses\"). Persinger's lab later argued that simple sine fields are not equivalent to its complex patterns (Richards, Persinger & Koren 1993). No independent group has tested this protocol. Independent double-blind tests of the lab's later God Helmet patterns found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy.",
+  "setting": "Seated, eyes closed, in a quiet room; start the 3-min story and the program together.",
+  "schedule": "One exposure per person in the original (between groups). For a self-test, use a new story each time and the app's Blind option, and have the retellings scored by someone who does not know the condition.",
+  "targets": ["left-superior-temporal-gyrus-posterior", "left-primary-auditory-cortex"],
+  "source": "Michaud & Persinger 1985, Geophysical variables and behavior: XXV. Alterations in memory for a narrative following application of theta frequency electromagnetic fields, Percept Mot Skills 60:416-418 https://pubmed.ncbi.nlm.nih.gov/4000856/ ; Richards, Persinger & Koren 1993, Modification of activation and evaluation properties of narratives by weak complex magnetic field patterns that simulate limbic burst firing, Int J Neurosci 71:71-85 https://pubmed.ncbi.nlm.nih.gov/8407157/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["T7", "", "", "", "", "", "", ""]},
+  "fadeInS": 2,
+  "fadeOutS": 2,
+  "phases": [
+    {"name": "Minute 1 of the story: 5 Hz field (60 s)", "seconds": 60, "pattern": {"type": "sine", "f0": 5, "pointMs": 1}, "spatial": {"mode": "left"}},
+    {"name": "Minutes 2-3 of the story: no field", "seconds": 120, "pattern": {"type": "off"}, "spatial": {"mode": "left"}}
+  ]
+}

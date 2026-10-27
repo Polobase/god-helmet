@@ -1,0 +1,16 @@
+{
+  "id": "guide-gateway-4hz",
+  "name": "Guide arm: 4 Hz bilateral sine (Gateway Focus 10/12)",
+  "layout": "temporal",
+  "category": "research",
+  "evidence": "unverified",
+  "origin": "This app's Gateway-style guides (our design; no published protocol)",
+  "uT": 2.0,
+  "summary": "Experimental arm of the Gateway-style Focus-10 and Focus-12 guides (our design, untested): the same 4 Hz sine on all temporal coils, in phase, at 2 uT or less. The arm steps take 22 min; the program runs 32 min so that a paused guide (the helmet keeps running while the guide is paused) does not cut it short, and the guide stops it after its last arm step. Run it blinded (real vs sham) from the guide. The god-helmet.com Shakti safety page advises against combining the helmet with binaural-beat devices in real time, so this arm exists only to test that combination under blinding.",
+  "source": "Our design after the Gateway research notes; Lane et al. 1998, Physiol Behav 63:249 (4 Hz binaural layer); Shakti safety page https://www.god-helmet.com/wp/winshakti/safety.htm",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "4 Hz in-phase sine", "minutes": 32, "pattern": {"type": "sine", "f0": 4, "f1": 4}, "spatial": {"mode": "bilateral"}}
+  ]
+}

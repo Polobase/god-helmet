@@ -2,7 +2,7 @@
 // s(t) in [-1, 1]. Synthesised from the published descriptions of the
 // Persinger/Koren signals; the original point files were never published.
 
-export const PATTERN_TYPES = ['off', 'dc', 'sine', 'chirp', 'burst', 'thomas', 'pulse', 'semirandom', 'table']
+export const PATTERN_TYPES = ['off', 'dc', 'sine', 'chirp', 'burst', 'thomas', 'pulse', 'semirandom', 'table', 'pm', 'noise']
 
 export const PATTERN_INFO = {
   off: 'No output (sham)',
@@ -13,11 +13,13 @@ export const PATTERN_INFO = {
   thomas: 'Decelerating FM "Thomas pulse" (~25 → 6 Hz)',
   pulse: 'Rectangular pulses',
   semirandom: 'Pseudo-random value per point',
-  table: 'Uploaded point table',
+  table: 'Point table (exact published waveform or generated pulse train)',
+  pm: 'Phase-modulated sine, e.g. Murphy\'s "modulated 40 Hz"',
+  noise: 'Band-limited random noise, e.g. theta-band noise',
 }
 
 export function patternDefaults(type) {
-  const p = { type, f0: 7, f1: 7, sweepMs: 2000, gapMs: 0, pointMs: 0, pulseMs: 100, alternate: true, seed: 1, table: null }
+  const p = { type, f0: 7, f1: 7, sweepMs: 2000, gapMs: 0, pointMs: 0, pulseMs: 100, alternate: true, seed: 1, depth: 1, table: null }
   switch (type) {
     case 'sine': Object.assign(p, { f0: 7, f1: 7, pointMs: 1 }); break
     case 'chirp': Object.assign(p, { f0: 4, f1: 40, sweepMs: 2000, pointMs: 1 }); break
@@ -26,6 +28,8 @@ export function patternDefaults(type) {
     case 'pulse': Object.assign(p, { pulseMs: 100, gapMs: 100, alternate: true }); break
     case 'semirandom': Object.assign(p, { pointMs: 3 }); break
     case 'table': Object.assign(p, { pointMs: 3 }); break
+    case 'pm': Object.assign(p, { f0: 40, f1: 0.5, depth: 3, pointMs: 1 }); break
+    case 'noise': Object.assign(p, { f0: 4, f1: 8, pointMs: 1 }); break
   }
   return p
 }
@@ -75,6 +79,21 @@ export function patternValue(p, tMs) {
       const k = Math.floor(tMs / step) >>> 0
       const h = mix32(k ^ mix32(p.seed))
       return h / 2147483647.5 - 1
+    }
+    case 'pm': {
+      const ts = t / 1000
+      return sinCycles(p.f0 * ts + (p.depth * Math.sin(2 * Math.PI * p.f1 * ts)) / (2 * Math.PI))
+    }
+    case 'noise': {
+      const K = 12
+      const ts = t / 1000
+      let sum = 0
+      for (let i = 0; i < K; i++) {
+        const f = p.f0 + ((i + 0.5) * (p.f1 - p.f0)) / K
+        const phase = mix32((Math.imul(p.seed, 0x9e3779b9) + i) >>> 0) / 4294967296
+        sum += sinCycles(f * ts + phase)
+      }
+      return Math.max(-1, Math.min(1, sum / (2.5 * Math.sqrt(K / 2))))
     }
     case 'table': {
       if (!p.table || p.table.length === 0) return 0

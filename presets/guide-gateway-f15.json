@@ -1,0 +1,17 @@
+{
+  "id": "guide-gateway-f15",
+  "name": "Guide arm: 4 then 7 Hz bilateral sine (Gateway Focus 15)",
+  "layout": "temporal",
+  "category": "research",
+  "evidence": "unverified",
+  "origin": "This app's Gateway-style guides (our design; no published protocol)",
+  "uT": 2.0,
+  "summary": "Experimental arm of the Gateway-style Focus-15 guide (our design, untested): 4 Hz in-phase sine on all temporal coils for 11 min (Focus-10 and Focus-12-style steps), then 7 Hz (count 13 to 15 and open awareness, 12 min), at 2 uT or less. The 7 Hz phase runs 10 min longer than its steps so that a paused guide (the helmet keeps running while the guide is paused) does not cut it short; the guide stops it after its last arm step. A pause still moves the switch to 7 Hz earlier than the steps it belongs to. Run it blinded (real vs sham) from the guide. The Shakti safety page advises against real-time combination with binaural-beat devices.",
+  "source": "Our design after the Gateway research notes; Wahbeh et al. 2007, J Altern Complement Med 13:199 (7 Hz layer); Shakti safety page https://www.god-helmet.com/wp/winshakti/safety.htm",
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "4 Hz in-phase sine", "minutes": 11, "pattern": {"type": "sine", "f0": 4, "f1": 4}, "spatial": {"mode": "bilateral"}},
+    {"name": "7 Hz in-phase sine", "minutes": 22, "pattern": {"type": "sine", "f0": 7, "f1": 7}, "spatial": {"mode": "bilateral"}}
+  ]
+}

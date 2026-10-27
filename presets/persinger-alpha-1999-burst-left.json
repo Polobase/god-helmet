@@ -1,0 +1,48 @@
+{
+  "id": "persinger-alpha-1999-burst-left",
+  "name": "Burst-firing 1 s every 4 s, left hemisphere, 5 uT, 30 min (Persinger 1999)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Persinger (Laurentian University), 1999 EEG alpha study in a dark acoustic chamber, left-hemisphere arm",
+  "uT": 5,
+  "summary": "The left-hemisphere arm of Persinger (1999): a 5 uT burst-firing field for 1 s every 4 s over the left hemisphere for 30 min, with opaque goggles in an acoustic chamber. Persinger reported more alpha over the left than the right temporal lobe only when the field was over the left hemisphere.",
+  "notes": "Persinger (1999) measured the percentage of alpha per minute over the left and right temporal lobes during the first and second 15 min while subjects wore opaque goggles in an acoustic chamber and 'a weak (5 microT), burst-firing magnetic field was presented during this period for 1 s every 4 s primarily over the left or the right cerebral hemisphere'. It was one continuous exposure; the two 15-min phases here only mark the two analysis intervals (900 s is a whole number of 4-s cycles, so the switch is seamless). The burst-firing point values are unpublished, so an accelerating burst on 3-ms points (the lab default) stands in, on for the paper's 1 s and off for 3 s. The lab's file was 230-289 points at 3 ms (0.69-0.87 s; Carniello 2020, Collins 2014), and a rat version 230 points at 4 ms (0.92 s; Ryczko & Persinger 2002), so '1 s' may be a rounded on-time. The default 5 uT is the paper's intensity and this helmet's maximum, as peak field 20 mm in front of each coil; the paper does not say where it measured. Two coils per side approximate 'primarily over the left or right hemisphere': T7/TP7 play and the right side stays silent. This differs from presence-left and presence-right (after Persinger & Healey 2002: 1 uT, a 0.69-s burst every 4 s, four coils per side). In a related study the lab reported EEG driving in 43% of volunteers, who also reported more fear and odd tastes (Persinger, Richards & Koren 1997). The abstract reports no sham arm; this is a within-subject EEG asymmetry from one lab without independent replication, and independent double-blind tests found no field effect (Granqvist 2005; Gendle & McGrath 2012). Checking the result needs EEG. Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop on fear, odd tastes or smells, headache or distress.",
+  "setting": "Seated or reclined in darkness and silence with opaque goggles (the original used an acoustic chamber); EEG over the left and right temporal lobes (near T7 and T8) if you have it.",
+  "schedule": "One session per person in the original. For a self-test with EEG, compare the left, right and sham arms on separate days in counterbalanced order.",
+  "targets": ["left-superior-temporal-gyrus-posterior", "left-tpj"],
+  "source": "Persinger 1999, Increased emergence of alpha activity over the left but not the right temporal lobe within a dark acoustic chamber, Int J Psychophysiol 34:163-169 https://pubmed.ncbi.nlm.nih.gov/10576400/ ; Persinger, Richards & Koren 1997, Differential entrainment of electroencephalographic activity by weak complex electromagnetic fields, Percept Mot Skills 84:527-536 https://pubmed.ncbi.nlm.nih.gov/9106844/ ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Collins 2014, MA thesis 'Investigating the Shiva', Laurentian University (289 points, 3 ms) https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc ; Ryczko & Persinger 2002 (rats: 230 points, 4 ms per point, once every 3 s) https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": ["T7", "TP7", "", "", "T8", "TP8", "", ""]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Burst-firing left, 1 s every 4 s (min 0-15)",
+      "minutes": 15,
+      "pattern": {
+        "type": "burst",
+        "sweepMs": 1000,
+        "gapMs": 3000,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "left"
+      }
+    },
+    {
+      "name": "Burst-firing left, 1 s every 4 s (min 15-30)",
+      "minutes": 15,
+      "pattern": {
+        "type": "burst",
+        "sweepMs": 1000,
+        "gapMs": 3000,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "left"
+      }
+    }
+  ]
+}

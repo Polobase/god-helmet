@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { device, connect, disconnect, call } from './ble/device.js'
 import { nav, TABS, go } from './lib/nav.js'
 import ProgramsView from './views/ProgramsView.vue'
@@ -9,8 +9,13 @@ import TargetsView from './views/TargetsView.vue'
 import LogView from './views/LogView.vue'
 import SetupView from './views/SetupView.vue'
 import SafetyView from './views/SafetyView.vue'
+import DocsView from './views/DocsView.vue'
 
-const views = { programs: ProgramsView, placement: PlacementView, experiment: ExperimentView, targets: TargetsView, log: LogView, setup: SetupView, safety: SafetyView }
+// Guides load on demand (audio engine + content).
+const GuidesView = defineAsyncComponent(() => import('./views/GuidesView.vue'))
+// The brain view loads three.js and the meshes on demand.
+const BrainView = defineAsyncComponent(() => import('./views/BrainView.vue'))
+const views = { programs: ProgramsView, placement: PlacementView, brain: BrainView, guides: GuidesView, experiment: ExperimentView, targets: TargetsView, log: LogView, setup: SetupView, safety: SafetyView, docs: DocsView }
 const view = computed(() => views[nav.tab])
 const running = computed(() => device.status && device.status.state !== 'idle')
 

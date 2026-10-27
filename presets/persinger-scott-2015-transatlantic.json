@@ -1,0 +1,124 @@
+{
+  "id": "persinger-scott-2015-transatlantic",
+  "name": "Scott 2015 trans-Atlantic pairs: toroid primer/effector (42 min)",
+  "category": "psi",
+  "evidence": "claim",
+  "origin": "Persinger lab, Laurentian University (Scott, Rouleau, Lehman, Tessaro, Juden-Kelly, Saroka & Persinger 2015), Arduino-driven toroid",
+  "uT": 0.1,
+  "summary": "The 42-min send/receive paradigm of Scott et al. 2015: from minute 11, a 6-min primer of seven 3-ms pulses whose gaps lengthen from 20 to 32 ms, then a 14-min effector whose gaps shorten from 20 to 6 ms, stepped counter-clockwise around the head. Persinger's lab reported excess correlation of right-hemisphere theta-gamma power between five pairs of people more than 6000 km apart during the effector.",
+  "notes": "Timeline (22 segments): 3 min eyes open, 3 min eyes closed, six trials of 1 min rest, 2 min send/receive and 2 min receive/send, then 3 min eyes closed and 3 min eyes open. The field runs from minute 11 to 31 (trial 2 under the primer, trials 3-5 under the effector) and starts and stops abruptly. The original was one toroid per head (a 25.4-cm ring wound with 225 turns of 16-gauge wire, held by an elastic cap) pulsed by an Arduino Uno, so every pulse reached the whole ring at once, and a toroid's field runs around the ring while these coils point into the head: the field geometry is not reproduced. Here each 3-ms pulse steps to the next of eight coils on the 10 % ring (Fpz, F7, T7, P7, Oz, P8, T8, F8), counter-clockwise seen from above, an inference from the lab's \"rotating field\" wording; a toroid has no first coil, and to pulse all coils at once change \"rotate\" to \"bilateral\". Primer: the paper's 7 pulses with gaps of 20, 22 ... 32 ms (203 ms), so the gap ramp restarts every 7 coils. Effector: the paper says only that the same pulses follow gaps starting at 20 ms and falling by 2 ms per pulse; the 128-ms cycle Rouleau & Persinger 2015 measured on the same toroid system fits 8 pulses down to 6 ms (one per coil, used here), while 7 pulses down to 8 ms (119 ms) is the other reading. Pulses are unipolar 5-V steps, as from the Arduino. The field averaged 30 nT (0.3 mG), the intensity the lab found most effective in its pH studies; 0.1 uT at 20 mm is the app's lowest setting. Five pairs, a very large set of EEG comparisons (19 x 19 channels, 8 bands, 22 segments), no pre-registration, published in JCER; no independent replication of any excess-correlation result exists. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "setting": "Both partners wear a helmet running this program, started within 1 s of each other (the original pairs began at agreed UTC times, 16:00-19:00 UTC in June 2015). Each sits still in a comfortable chair, eyes closed except for the eyes-open baselines. Cues come from a separate player, not the helmet: at each 1-min rest one partner hears a 220 Hz tone pulsed at 6.5 Hz and the other a single tone then silence (swapped every trial); then 2 min \"send\" and 2 min \"receive\" (imagine sending or receiving white light), Group A sending first while Group B receives. Both filled in the Profile of Mood States before and after.",
+  "schedule": "One session per pair in the original. For a self-test, decide the EEG comparison in advance and also run a blinded sham session (the app's Blind option) on another day.",
+  "targets": [
+    "right-superior-temporal-gyrus-posterior",
+    "right-temporal-pole"
+  ],
+  "source": "Scott, Rouleau, Lehman, Tessaro, Juden-Kelly, Saroka & Persinger 2015, Experimental production of excess correlation across the Atlantic Ocean of right hemispheric theta-gamma power between subject pairs sharing circumcerebral rotating magnetic fields (Part I), J Conscious Explor Res 6(9):658-684 https://jcer.com/index.php/jcj/article/view/493 ; Rouleau, Koren & Persinger 2015, J Conscious Explor Res 6(9):708-715 (effect 20-30 s after effector onset) https://jcer.com/index.php/jcj/article/view/495 ; Rouleau & Persinger 2015, J Electromagn Anal Appl 7(2) (toroid; 203- and 128-ms cycles) https://file.scirp.org/Html/1-9801584_54135.htm ; Rouleau, Carniello & Persinger 2014, J Biophys Chem 5:44-53 https://file.scirp.org/Html/4-7100209_45572.htm ; Karbowski 2017, PhD thesis, Laurentian University, ch. 10 (pulse notation \"p, 20 ms ... p, 6 ms\") https://laurentian.scholaris.ca/server/api/core/bitstreams/7903b99a-d7b7-4b93-9cd7-7b5ef113aa57/content ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "Fpz",
+      "F7",
+      "T7",
+      "P7",
+      "Oz",
+      "P8",
+      "T8",
+      "F8"
+    ]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Baseline: eyes open (no field)",
+      "minutes": 3,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "Baseline: eyes closed (no field)",
+      "minutes": 3,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "Trial 1, no field: rest 1, S-R 2, R-S 2 min",
+      "minutes": 5,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "Primer, min 11-17 (trial 2): 7 pulses, gaps 20->32 ms, CCW",
+      "minutes": 6,
+      "pattern": {
+        "type": "table",
+        "pointMs": 1,
+        "gapMs": 0,
+        "data": [255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128]
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "ccw",
+        "dwell": [23, 2, 35]
+      }
+    },
+    {
+      "name": "Effector, min 17-31 (trials 3-5): 8 pulses, gaps 20->6 ms",
+      "minutes": 14,
+      "pattern": {
+        "type": "table",
+        "pointMs": 1,
+        "gapMs": 0,
+        "data": [255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128]
+      },
+      "spatial": {
+        "mode": "rotate",
+        "dir": "ccw",
+        "dwell": [23, -2, 9]
+      }
+    },
+    {
+      "name": "Trial 6, no field: rest 1, S-R 2, R-S 2 min",
+      "minutes": 5,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "Post baseline: eyes closed (no field)",
+      "minutes": 3,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    },
+    {
+      "name": "Post baseline: eyes open (no field)",
+      "minutes": 3,
+      "pattern": {
+        "type": "off"
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}

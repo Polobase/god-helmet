@@ -1,0 +1,22 @@
+{
+  "id": "persinger-tiller-1994-right-then-left",
+  "name": "Tiller & Persinger 1994: right then left temporal lobe (15 min)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Tiller & Persinger 1994 (Laurentian University)",
+  "uT": 1,
+  "summary": "Fifteen minutes of a weak (1 uT) pulsed field over the temporal lobes, the right side first and then the left, here as burst-firing in two 7.5-min halves. Tiller & Persinger 1994 reported raised hypnotic-induction-profile scores only in people whose right hemisphere was stimulated first (an effect size equivalent to r = 0.41).",
+  "notes": "Tiller & Persinger gave 'brief (15 min) exposures to weak (1 microT) pulsed magnetic fields over the temporal lobes' in one of two hemispheric orders and measured hypnotizability before and after; only the right-first order raised the scores. This file is the right-first order and persinger-tiller-1994-left-then-right the other. The abstract neither says how the 15 min were split nor names the pattern: equal halves are an assumption (another reading is 15 min per side), and burst-firing stands in for 'pulsed' because the lab's next suggestibility study, Healey, Persinger & Koren 1996, applied burst-firing over the right side and called itself 'a replication'. The burst-firing point values were never published; the built-in accelerating burst (6 to 30 Hz) plays 230 points of 3 ms (0.69 s; Carniello 2020) once every 4 s (Collins 2014; Persinger, Hoang & Baker-Price 2009 give 'once every 3 s for about 0.7 s'). Two coils per side, T7/TP7 and T8/TP8, are an inference from 'over the temporal lobes'; the switch between sides is abrupt. A field that raises suggestibility would confound every unblinded session of this kind; the effect has not been replicated outside the lab, and in Granqvist 2005 suggestibility traits, not the field, predicted the reports. Independent double-blind tests found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop at once on fear, headache or distress.",
+  "setting": "Partial sensory deprivation: blindfold or opaque goggles, reclining in a quiet, darkened room. Take a standard hypnotic-susceptibility scale before and after (the lab used Spiegel's Hypnotic Induction Profile), scored by someone who does not know the order.",
+  "schedule": "One 15-min session; at most once a week. Run both orders and a sham in blinded, counterbalanced order.",
+  "targets": ["right-tpj","right-superior-temporal-gyrus-posterior","left-tpj","left-superior-temporal-gyrus-posterior"],
+  "source": "Tiller & Persinger 1994, Int J Neurosci 79:157 https://pubmed.ncbi.nlm.nih.gov/7744557/ ; Healey, Persinger & Koren 1996, Int J Neurosci 87:201 https://pubmed.ncbi.nlm.nih.gov/9003980/ ; Carniello 2020, PhD thesis, Laurentian University, p. 89 (230-point burst-firing file, 3-ms points) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Collins 2014, MA thesis 'Investigating the Shiva', Laurentian University, p. 31 (289 points, 3 ms, 4000 ms) https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc ; Persinger, Hoang & Baker-Price 2009, Electromagn Biol Med 28:374 ('once every 3 s for about 0.7 s') https://pubmed.ncbi.nlm.nih.gov/20017628/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites":["T7","TP7","","","T8","TP8","",""]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name":"Right temporal lobe, burst-firing (first 7.5 min)","seconds":450,"pattern":{"type":"burst","sweepMs":690,"gapMs":3310,"pointMs":3},"spatial":{"mode":"right"}},
+    {"name":"Left temporal lobe, burst-firing (last 7.5 min)","seconds":450,"pattern":{"type":"burst","sweepMs":690,"gapMs":3310,"pointMs":3},"spatial":{"mode":"left"}}
+  ]
+}

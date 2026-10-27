@@ -1,0 +1,133 @@
+{
+  "id": "helmet-session-flow",
+  "name": "Blinded helmet session with questionnaires",
+  "category": "questionnaire",
+  "summary": "The full question flow around one blinded real/sham helmet session: expectancy and state before, a 4-minute rest, the program itself (Sensed presence, right temporoparietal), a free report first and only then the checklists, a blinding guess, and the reveal at the end. The free report comes before any checklist because checklist wording shapes what people report (Lifshitz et al. 2019). In the sham-controlled study by Granqvist et al. (2005), suggestibility and absorption, not the field, predicted experiences; this flow lets you test that in your own data. An untested design.",
+  "evidence": "claim",
+  "minutes": 53,
+  "requires": { "headphones": false, "helmet": "required", "pool": false },
+  "setting": "Quiet, dim room, eyes closed or a blindfold, seated or reclined. Helmet fitted in the temporal layout (see Placement) and connected; safety screening done in the Safety tab. Ideally the enrollment battery was done on an earlier day.",
+  "cautions": "Trait effects appear in both arms and are not evidence of a field effect. If you sense a frightening presence or feel distressed, stop, turn on the light and talk to someone; seek help if it persists. No alcohol or drugs before a session.",
+  "sources": [
+    {
+      "title": "Granqvist P et al. (2005) Sensed presence and mystical experiences are predicted by suggestibility, not by the application of transcranial weak complex magnetic fields. Neurosci Lett 379:1-6",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15849873/"
+    },
+    {
+      "title": "Maij DLR, van Elk M (2018) Getting absorbed in experimentally induced extraordinary experiences",
+      "url": "https://europepmc.org/abstract/MED/30355534"
+    },
+    {
+      "title": "Lifshitz M, van Elk M, Luhrmann TM (2019) Absorption and spiritual experience: a review of evidence and potential mechanisms. Conscious Cogn",
+      "url": "https://thefpr.org/wp-content/uploads/Lifshitz-van-Elk-Luhrmann-Consciousness-and-Cognition.pdf"
+    },
+    {
+      "title": "Bang H, Ni L, Davis CE (2004) Assessment of blinding in clinical trials. Control Clin Trials 25:143-156",
+      "url": "https://europepmc.org/abstract/MED/15020033"
+    }
+  ],
+  "helmetArm": { "preset": "presence-right", "blind": true, "steps": ["program"] },
+  "steps": [
+    {
+      "id": "expectancy",
+      "title": "Expectations",
+      "minutes": 3,
+      "instructions": "Before anything runs, answer the questions about what you expect.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "expectancy" },
+      "advance": "manual"
+    },
+    {
+      "id": "state",
+      "title": "Your state now",
+      "minutes": 2,
+      "instructions": "Rate how you are right now.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "relaxed", "label": "Relaxed", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "tense", "label": "Anxious or tense", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very" },
+          { "key": "sleepy", "label": "Sleepy", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very" },
+          {
+            "key": "substances",
+            "label": "Alcohol, cannabis or other drugs in the last 12 hours (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          },
+          {
+            "key": "caffeine",
+            "label": "Caffeine in the last 4 hours (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          },
+          { "key": "sleep-hours", "label": "Hours slept last night", "min": 0, "max": 12 }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "fit",
+      "title": "Fit the helmet",
+      "minutes": 2,
+      "instructions": "Fit the helmet in the temporal layout and close your eyes or put on the blindfold. The program will be real or sham; neither you nor anyone present will know which until the end.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "baseline",
+      "title": "Rest",
+      "minutes": 4,
+      "instructions": "Rest quietly with your eyes closed. Nothing is running yet; this is your baseline.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "program",
+      "title": "The program",
+      "minutes": 30,
+      "instructions": "The program runs now, real or sham. Keep your eyes closed and let whatever happens happen. There are no questions until it ends.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "free-report",
+      "title": "Free report",
+      "minutes": 5,
+      "instructions": "Before any checklist, describe in your own words anything you experienced, or that nothing happened.",
+      "audio": null,
+      "input": { "type": "text", "key": "free-report", "prompt": "Describe anything you experienced" },
+      "advance": "manual"
+    },
+    {
+      "id": "checklist",
+      "title": "Experience checklist",
+      "minutes": 4,
+      "instructions": "Now rate specific experiences.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "state-post" },
+      "advance": "manual"
+    },
+    {
+      "id": "blinding",
+      "title": "Real or sham?",
+      "minutes": 2,
+      "instructions": "Guess whether the field was real or sham, and how sure you are.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "blinding" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 1,
+      "instructions": "Only now is the condition revealed. If you felt a threatening presence or distress, take your time, talk to someone you trust, and seek help if it stays with you.",
+      "audio": null,
+      "advance": "manual"
+    }
+  ]
+}

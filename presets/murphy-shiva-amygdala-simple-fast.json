@@ -1,0 +1,26 @@
+{
+  "id": "murphy-shiva-amygdala-simple-fast",
+  "name": "Shiva amygdala signal (fast, 3x)",
+  "category": "signals",
+  "evidence": "claim",
+  "origin": "Shiva software by Todd Murphy (signal templates licensed from Persinger and Koren)",
+  "uT": 1,
+  "summary": "Murphy's simple Shiva amygdala session with the signal played three times faster; Murphy says the fast version gives 'fewer phenomenal effects' than the normal speed. The vendor presents the amygdala signal for emotional effects.",
+  "notes": "Coils sit on Murphy's Shiva ring (Fp1, FT7, TP7, O1, O2, TP8, FT8, Fp2; one coil per site instead of Shiva's coil pairs) and step counter-clockwise seen from above, with Murphy's lecture example of 10, 12 ... 20 ms per coil (about 8 rotations a second; Murphy writes 'around 9 times per second'). Phase 1 (20 min) is the 20-min version; phase 2 makes it the 30-min version (a 60-min Shiva version also exists). The amygdala ('burstx') file is proprietary and approximated by the built-in accelerating burst; the normal version's 230 points x 3 ms (6 to 30 Hz) and 4-s latency are compressed three times here: 1-ms points, a 230-ms burst sweeping 18 to 90 Hz, every 1.56 s. Murphy's Shakti 'high-speed' signals likewise use 1-ms points and drop the latency; whether Shiva's fast version shortens or drops it is not published, so it is shortened 3x with the rest of the signal. Murphy suggests moving between temporal and frontal presentations over a series to keep frontal and temporal activity balanced, and trying a frontal session if a session feels good but you feel down afterwards. Persinger-lab studies reported that three weekly bilateral burst-firing sessions increased aggression and lowered trust (Gillis 1993) and that 20 min of burst-firing over the right temporoparietal lobe raised hypnotic suggestibility (Healey 1996). An independent randomized sham-controlled test of the 8 Coil Shakti amygdala signal found no effect on emotional responses (Gendle & McGrath 2012), and a double-blind God Helmet test found no field effect (Granqvist 2005). Not for people with epilepsy; stop if distressed.",
+  "setting": "Dark, quiet room, eyes closed, relaxed without meditating or falling asleep. Shiva offers 20, 30 and 60-min versions; start with the short one.",
+  "schedule": "At most once a week, never on consecutive days; up to 6 sessions, then a 21-day break. 60-min sessions weekly or every two weeks at most.",
+  "targets": ["left-amygdala", "right-amygdala"],
+  "source": "Murphy, Shiva demo: Amygdala signal https://www.god-helmet.com/wp/shiva/shiva_demo/amygdala_page.htm ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Murphy, Shiva / Octopus and the 40 Hz binding factor https://www.god-helmet.com/wp/shiva/shiva_demo/shiva_explanation.htm ; Murphy, Psychic Skills & Miracles lecture https://www.youtube.com/watch?v=tmC1174POpA ; Murphy, Shiva demo: Session lengths https://www.god-helmet.com/wp/shiva/shiva_demo/session_length.htm ; Murphy, Shiva demo: Staying safe with Shiva https://www.god-helmet.com/wp/shiva/shiva_demo/shiva_safety.htm ; Ryczko & Persinger 2002, Percept Mot Skills 95:592 https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Gillis & Persinger 1993, Percept Mot Skills 76:168 https://pubmed.ncbi.nlm.nih.gov/8451123/ ; Healey, Persinger & Koren 1996, Int J Neurosci 87:201 https://pubmed.ncbi.nlm.nih.gov/9003980/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/",
+  "layout": "custom",
+  "placement": { "sites": ["Fp1", "FT7", "TP7", "O1", "O2", "TP8", "FT8", "Fp2"], "order": [0, 1, 2, 3, 4, 5, 6, 7] },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    { "name": "Amygdala signal 3x, CCW 10-20 ms (20-min version)", "minutes": 20,
+      "pattern": { "type": "burst", "f0": 18, "f1": 90, "sweepMs": 230, "gapMs": 1333, "pointMs": 1 },
+      "spatial": { "mode": "rotate", "dir": "ccw", "dwell": [10, 2, 20] } },
+    { "name": "Amygdala signal 3x, continued (30-min version)", "minutes": 10,
+      "pattern": { "type": "burst", "f0": 18, "f1": 90, "sweepMs": 230, "gapMs": 1333, "pointMs": 1 },
+      "spatial": { "mode": "rotate", "dir": "ccw", "dwell": [10, 2, 20] } }
+  ]
+}

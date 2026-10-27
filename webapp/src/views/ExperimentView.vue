@@ -6,6 +6,7 @@ import { listSets, usableSets, manifestHash, getSet } from '../lib/pool.js'
 import { idb } from '../lib/idb.js'
 import { sha256Hex } from '../lib/crypto.js'
 import { summarise } from '../lib/stats.js'
+import { arvTrials, isArvTrial } from '../lib/runs.js'
 import { fmtDate, downloadBlob } from '../lib/format.js'
 import { go } from '../lib/nav.js'
 import SketchPad from '../components/SketchPad.vue'
@@ -42,7 +43,9 @@ async function loadTrials() {
       if (all.length >= page.total || page.items.length === 0) break
     }
     trials.value = all
-    const open = all.find((t) => ['open', 'locked', 'judging'].includes(t.state))
+    arv.value = await arvTrials().catch(() => [])
+    // ARV trials (Guides) are judged and revealed from their run summary, not here.
+    const open = all.find((t) => ['open', 'locked', 'judging'].includes(t.state) && !isArvTrial(arv.value, t))
     if (open && !current.value) await openTrial(open)
   } catch (e) {
     error.value = e.message
@@ -57,8 +60,11 @@ onMounted(async () => {
 })
 watch(() => device.kind, loadTrials)
 
+// ARV trials rank "predicted outcome A", not a hit, so they stay out of the hit statistics.
+const arv = ref([])
+const arvCount = computed(() => trials.value.filter((t) => isArvTrial(arv.value, t)).length)
 const stats = computed(() => {
-  const revealed = trials.value.filter((t) => t.state === 'revealed')
+  const revealed = trials.value.filter((t) => t.state === 'revealed' && !isArvTrial(arv.value, t))
   return [
     ['All revealed', revealed],
     ['Active field', revealed.filter((t) => t.condition === 'active')],
@@ -300,6 +306,7 @@ async function showSender() {
         </table>
       </div>
       <p v-else class="muted small">No revealed trials yet.</p>
+      <p v-if="arvCount" class="muted small">{{ arvCount }} associative remote-viewing trial(s) from Guides are left out: their result is scored in the guide's run summary.</p>
       <p class="muted small">One-sided p-values against chance. With 30 trials at 5 pictures, chance gives about 6 hits; about 11 are needed for p &lt; 0.05. A real effect of the field shows as active better than sham.</p>
       <div v-if="trials.length" class="table-wrap">
         <table>

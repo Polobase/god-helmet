@@ -1,0 +1,34 @@
+{
+  "id": "obe-target-check",
+  "name": "Out-of-body hidden-target check (1 of 2: arm the target)",
+  "category": "self-test",
+  "summary": "If an out-of-body experience happens in your real surroundings, you should be able to see a picture that only a viewpoint near the ceiling could see. In this guide, before bed, the helmet commits to a hidden picture as a telepathy trial, and a spare phone lying face-up on top of a wardrobe shows it through the sender view. The guide then ends, so your own phone can go dark for the night. You try for an OBE with a wake-back-to-bed routine, and afterwards run part 2 to record what you saw, rank the pictures and see the reveal. Our design; the induction is summarised from the Psion's Handbook, whose author thanks Robert Monroe and recommends his book. Most nights end in ordinary sleep, which is expected.",
+  "evidence": "unverified",
+  "minutes": 5,
+  "requires": { "headphones": false, "helmet": "required", "pool": true },
+  "setting": "Your bedroom. A spare phone or tablet, connected to the helmet as a second app, with auto-lock off, lying face-up on a high shelf or wardrobe, above eye level and away from mirrors and windows. Keep only sets of 4 pictures in the pool for the series: a trial draws from every usable set, and the chance figures here assume 1 in 4. The helmet only supplies the random target: it stays on the shelf, not on your head.",
+  "cautions": "Do not wear the helmet while sleeping. Not for people with sleep disorders, distressing sleep paralysis or dissociative conditions. Make sure no reflection or light spill can show the screen. Keep sleep loss modest, and don't do this before driving or work that needs you alert. Decide before the series whether nights without an OBE count, and how many nights you will try (for example 20 nights with 4-picture sets: 9 or more rank-1 hits happen by chance about 4 % of the time).",
+  "sources": [
+    { "title": "Connelly S (2004) The Psion's Handbook. PsiPog (summarised only; the licence forbids excerpts)" },
+    { "title": "Monroe RA (1971) Journeys Out of the Body. Doubleday" }
+  ],
+  "steps": [
+    {
+      "id": "arm",
+      "title": "Arm the target",
+      "minutes": 3,
+      "instructions": "Before bed, the helmet picks a hidden picture and commits to it. On the spare device, open Experiment → telepathy sender and type the trial number; turn the screen away from you (or ask someone else) before you show the picture. Lay the device face-up on the high shelf and don't look at it until the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "telepathy" },
+      "advance": "manual"
+    },
+    {
+      "id": "night",
+      "title": "Tonight",
+      "minutes": 2,
+      "instructions": "Don't look at the spare device until the reveal. This guide ends here, so your phone can sleep; leave the trial open.\n\n1. Set an alarm 2-3 hours before your usual waking time, and go to sleep.\n2. When it rings, get up briefly in dim light for a few minutes, then lie back down with the intention to leave your body and look at the top of the shelf.\n3. Relax progressively from your feet to your face for about 20 minutes, then stay in a passive, still state at the edge of sleep, repeating a simple intention of your own. If you fall asleep, that is the usual outcome.\n\nStraight after any experience, or when you wake, open **Out-of-body hidden-target check (2 of 2: record and reveal)** before anything else.",
+      "audio": null,
+      "advance": "manual"
+    }
+  ]
+}

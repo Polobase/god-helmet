@@ -1,0 +1,20 @@
+{
+  "id": "murphy-shakti-septal-vertical",
+  "name": "Shakti septal ('pleasure center') signal, coils front to back",
+  "category": "body",
+  "evidence": "anecdote",
+  "origin": "Todd Murphy (Shakti software)",
+  "uT": 1,
+  "summary": "Murphy's Shakti septal signal from two still coils in a front-to-back line on the midline at the top of the head, over the upper parietal strip. The vendor presents it for pleasant and sexual sensations and reports after-effects.",
+  "setting": "Quiet room, eyes closed, relaxed. Only two coils, one behind the other on the midline: Cz at the top of the head and CPz behind it; the other six stay unused.",
+  "schedule": "At most weekly; the vendor warns not to over-use it.",
+  "notes": "Front-to-back two-coil arrangement; Cz/CPz is the research translation. The vendor's text starts the strip about an inch behind the very top of the head, so the pair may sit a little further back than Cz. Both coils play the signal together without moving (murphy-shakti-septal-horizontal has the side-by-side arrangement). The vendor puts the coils 'over the tops of both parietal lobes', on 'the upper portion of the parietal strip ... from an inch behind the very top of the head to two inches from that point'. The septal file is proprietary; Murphy says only that it has 'very low frequencies' and needs a higher volume. As in this project's Shiva septum program, it is approximated by the built-in accelerating burst lowered to 1-6 Hz, in the vendor's standard format (230 points × 3 ms, then about 4 s of silence). The vendor's 'square wave' version is unpublished and not included. The vendor's volume table (PCI sound card 65% for men and 42% for women; onboard or laptop sound 100% and 85%) gives sound-card settings, not field strengths (it implies the vendor ran this signal lower for women), so the default here is 1 µT; adjust the intensity in the app. The vendor adds that over the frontal lobes the signal 'can help people feel relaxed'. It says the signal was 'tested with only a few human and no animal subjects' and is 'not a treatment' for sexual dysfunction; the reported effects are testimonials. The septal nuclei are not in the brain view's region list, so no target is highlighted. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy; stop if it is unpleasant.",
+  "source": "Murphy, Shakti and the brain's pleasure center – the septum https://www.god-helmet.com/wp/pleasure_center.htm ; Murphy, Shakti demo: Septum signal https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/septum_consent.htm ; Murphy, Shakti demo: Sexual effects https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/sexual_effects.htm ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? (3-ms points, 4-s latency) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Murphy, Shakti demo: Safety – how often https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/how_often_is_safe.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["Cz", "CPz", "", "", "", "", "", ""]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Septal signal (slow burst stand-in), both coils still", "minutes": 20, "pattern": {"type": "burst", "f0": 1, "f1": 6, "sweepMs": 690, "gapMs": 4000, "pointMs": 3}, "spatial": {"mode": "bilateral"}}
+  ]
+}

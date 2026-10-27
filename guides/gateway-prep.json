@@ -1,0 +1,164 @@
+{
+  "id": "gateway-prep",
+  "name": "Gateway 1 · Preparation and the way back",
+  "category": "gateway",
+  "summary": "A warm-up to learn on its own and then use before every Gateway-style session: settle, set worries aside, breathe, hum, repeat your own intention, relax by counting from 1 to 10, then practise the way back and the emergency exit. The order follows the documented Gateway exercises (1977 workbook, 1983 Army assessment); the wording, timings and levels are our design. Sound (our design): pink noise with a slow left-right swell, a 10 Hz beat on a 200 Hz carrier gliding to 7 Hz, then the delta/theta and beta tone sets of Lane et al. 1998, with the tones 15 dB above the noise.",
+  "evidence": "claim",
+  "minutes": 27,
+  "requires": { "headphones": true, "helmet": "none", "pool": false },
+  "setting": "Quiet room, dim (not dark) light, reclined or lying down, closed-back stereo headphones (needed for binaural mode; on speakers switch to isochronic mode). Not right after a heavy meal; empty your bladder and silence your phone. Best when you are rested. Never while driving.",
+  "cautions": "Stop at once (count back and open your eyes, or move a finger) on dizziness, panic, headache or ringing ears. Do not use these sessions if you have epilepsy or photosensitivity, are in a psychiatric crisis or have a hearing problem, unless a doctor agrees. Keep the volume low: WHO advises an average of 80 dB(A) or less and device volume of 60 % or less. No driving, machinery or exams for at least 30 minutes afterwards: theta and delta beats did worse than beta beats on vigilance (Lane et al. 1998) and lowered recall against a noise control (Garcia-Argibay et al. 2019). Sound only; the app never uses flicker. This is an untested composite and not The Monroe Institute's program: no recordings, scripts or affirmation of theirs are used. Breath holds are optional here; skip them if you have heart or lung problems or are pregnant.",
+  "sources": [
+    {
+      "title": "Monroe Institute of Applied Sciences (1977) Gateway Intermediate Workbook, CREST CIA-RDP96-00788R001700210023-7",
+      "url": "https://archive.org/details/cia-readingroom-document-cia-rdp96-00788r001700210023-7"
+    },
+    {
+      "title": "McDonnell, LTC, US Army INSCOM (1983) Analysis and Assessment of Gateway Process, CREST CIA-RDP96-00788R001700210016-5 (a full copy is on archive.org)",
+      "url": "https://archive.org/details/cia-gateway"
+    },
+    {
+      "title": "MIAS newsletter 'Waves of Change' No. 2-84, CREST CIA-RDP96-00788R001700210039-0",
+      "url": "https://archive.org/details/cia-readingroom-document-cia-rdp96-00788r001700210039-0"
+    },
+    {
+      "title": "Monroe Institute of Applied Sciences, research history (200/210 Hz example; sequencing), CREST CIA-RDP96-00788R001700210025-5",
+      "url": "https://archive.org/details/cia-readingroom-document-cia-rdp96-00788r001700210025-5"
+    },
+    {
+      "title": "Lane JD, Kasian SJ, Owens JE, Marsh GR (1998) Binaural auditory beats affect vigilance performance and mood. Physiol Behav 63:249-252",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9423966/"
+    },
+    {
+      "title": "Lane et al. 1998, full text with the stimulus description (carriers 100/200/250/300 Hz, tones 15 dB above pink noise)",
+      "url": "https://hemi-sync.com/research-papers/binaural-auditory-beats-affect-vigilance-performance-mood/"
+    },
+    {
+      "title": "Monroe RA, US Patent 5,356,368 (1994): method and apparatus for inducing desired states of consciousness (sleep timeline, phased pink sound, 6 s cycle)",
+      "url": "https://patents.google.com/patent/US5356368A/en"
+    },
+    {
+      "title": "WHO: Deafness and hearing loss, safe listening",
+      "url": "https://www.who.int/news-room/questions-and-answers/item/deafness-and-hearing-loss-safe-listening"
+    }
+  ],
+  "steps": [
+    {
+      "id": "check-in",
+      "title": "Check-in and volume",
+      "minutes": 3,
+      "instructions": "Put on the headphones the right way round and lie back.\n\nYou hear soft pink noise, like distant surf, drifting slowly from side to side. Keep the volume you set at calibration, or turn it down until the sound is quiet and comfortable: the tones that follow are about 15 dB louder than this noise. Stay at or below 60 % device volume.\n\nTry not to watch the step timer during the session. Rate how you feel right now.",
+      "audio": { "layers": [], "noise": { "levelDb": -15, "swellS": 6 } },
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "calm-before", "label": "Calm", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "alert-before", "label": "Alert", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "drowsy-before", "label": "Drowsy", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "write-intention",
+      "title": "Write your intention",
+      "minutes": 1,
+      "instructions": "Write one or two short sentences: what you want from this practice and how you want to feel while you do it. Keep it simple and kind to yourself. You will repeat it silently later.",
+      "audio": { "layers": [], "noise": { "levelDb": -15, "swellS": 6 } },
+      "input": {
+        "type": "text",
+        "key": "intention",
+        "prompt": "Your intention, in your own words",
+        "placeholder": "For example: I explore calmly and safely, I stay in charge, and I remember what is useful."
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "box",
+      "title": "Set-aside box",
+      "minutes": 3,
+      "instructions": "Close your eyes. Picture a strong container with a lid, any shape you like.\n\nTurn each current worry, task or ache into a simple symbol, such as a key, a clock or a wallet, and place it inside. Close the lid. Tell yourself that you can take these things back afterwards if you still want them.\n\n*Sound: a 10 Hz beat (200 Hz left, 210 Hz right, the example pair in an MIAS research history), 15 dB above the noise.*",
+      "audio": { "layers": [{ "carrier": 200, "beat": 10 }], "noise": { "levelDb": -15, "swellS": 6 } },
+      "advance": "timer"
+    },
+    {
+      "id": "breathing",
+      "title": "Resonant breathing",
+      "minutes": 4,
+      "instructions": "Breathe in slowly and imagine fresh energy rising into your head. Hold the breath only as long as it is comfortable, or not at all. Breathe out slowly through the mouth, as if blowing gently on a candle, and let tension flow out through the soles of your feet.\n\nWith each new breath, fill the next region down: chest and arms, belly, pelvis, thighs and knees, lower legs and feet.\n\n*The 1977 workbook builds up to a long held breath. Here the hold is optional, a safety change of ours.*",
+      "audio": { "layers": [{ "carrier": 200, "beat": 10 }], "noise": { "levelDb": -15, "swellS": 6 } },
+      "advance": "timer"
+    },
+    {
+      "id": "humming",
+      "title": "Humming",
+      "minutes": 4,
+      "instructions": "On each out-breath, hum one long, steady, comfortable tone and feel the vibration in your head and chest. Let the breath and the hum slow down by themselves. Stop humming if you feel light-headed.\n\n*Sound: a soft 100 Hz drone, the same in both ears, joins as a humming reference (our design).*",
+      "audio": { "layers": [{ "carrier": 200, "beat": 10 }, { "carrier": 100, "beat": 0, "gainDb": -12 }], "noise": { "levelDb": -15, "swellS": 6 } },
+      "advance": "timer"
+    },
+    {
+      "id": "intention",
+      "title": "Silent intention",
+      "minutes": 2,
+      "instructions": "Silently repeat the intention you wrote, slowly, two or three times. Then just rest.\n\n*Sound: the beat glides from 10 to 7 Hz over these two minutes (our design).*",
+      "audio": { "layers": [{ "carrier": 200, "beat": { "from": 10, "to": 7 } }], "noise": { "levelDb": -15, "swellS": 6 } },
+      "advance": "timer"
+    },
+    {
+      "id": "count-down",
+      "title": "Counted relaxation 1 to 10",
+      "minutes": 4,
+      "instructions": "On each out-breath, count the next number and let one part of your body relax further, from the feet up to the head or from the head down to the feet. If ten does not feel deep, start again from five.\n\nDrowsiness is fine. Try to stay just aware.\n\n*Sound: the delta/theta set of Lane et al. 1998: 1.5 Hz on 100 Hz, 4 Hz on 200 and 250 Hz, and a plain 300 Hz tone.*",
+      "audio": {
+        "layers": [{ "carrier": 100, "beat": 1.5 }, { "carrier": 200, "beat": 4 }, { "carrier": 250, "beat": 4 }, { "carrier": 300, "beat": 0 }],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 30
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "return",
+      "title": "The way back and the emergency exit",
+      "minutes": 2,
+      "instructions": "Count slowly from 10 down to 1 and feel more awake with each number. Open your eyes.\n\nPractise the emergency exit once: think of one finger and move it. That brings you fully back at once, at any time, in any session (a rule of the 1977 workbook).\n\nTake back anything from the box that you still want.\n\n*Sound: the beta set of Lane et al. 1998 (16 Hz on 200 Hz, 24 Hz on 300 Hz), 3 dB quieter, then a fade.*",
+      "audio": {
+        "layers": [
+          { "carrier": 200, "beat": 16, "gainDb": -3 },
+          { "carrier": 300, "beat": 24, "gainDb": -3 },
+          { "carrier": 100, "beat": 0, "gainDb": -3 },
+          { "carrier": 250, "beat": 0, "gainDb": -3 }
+        ],
+        "noise": { "levelDb": -15, "swellS": 6 },
+        "crossfadeS": 20,
+        "fadeOutS": 20
+      },
+      "advance": "timer"
+    },
+    {
+      "id": "report",
+      "title": "Session report",
+      "minutes": 3,
+      "instructions": "Fill in the session report while the session is fresh.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "gateway-report" },
+      "advance": "manual"
+    },
+    {
+      "id": "check-out",
+      "title": "How you feel now",
+      "minutes": 1,
+      "instructions": "Sit up slowly. Rate how you feel now, the same way as at the start.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "calm-after", "label": "Calm", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "alert-after", "label": "Alert", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "drowsy-after", "label": "Drowsy", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very" }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "id": "persinger-collins-gh-c3-hippbi-amyl",
+  "name": "Collins 2014 C3: hippocampal both sides, then amygdaloid left (Shiva God Helmet, 40 min)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "origin": "Todd Murphy, 'God Helmet Sessions for the Shiva Neural System' v1H; tested in Persinger's lab, Laurentian University (Collins 2014, MA thesis, ch. 4)",
+  "uT": 1.5,
+  "summary": "Condition 3 of Collins's 2014 Persinger-lab test of Todd Murphy's Shiva God Helmet software: the 'Hippocampal' (LTP) field over both sides for 20 min, then the 'Amygdaloid' (burst-firing) field over the left side for 20 min, on the thesis's four coils per side with one left-right pair on at a time. The lab reported no EEG change in this condition and more reports of anger than in most other groups.",
+  "notes": "Condition 3 of the 8 primer-target sessions of Murphy's 'God Helmet Sessions for the Shiva Neural System' v1H that Collins (MA thesis, Laurentian University, Persinger's lab) gave to 24 students, 3 per session, 20 + 20 min (Table 3). Thesis geometry: four solenoids per side on a Velcro square, 5 cm apart vertically and 8 cm horizontally, one left-right pair on at a time, the left side stepping clockwise and the right side counter-clockwise. Its photo numbers one side's coils top, back, bottom, front, which is counter-clockwise seen from the right and, mirrored, clockwise seen from the left, as here; C5, TP7, T9h, FFT7 and their right mirrors (about 5.8 x 7.7 cm) are an inference. The Shiva files are proprietary, so the fields are stand-ins: 'Amygdaloid' = the built-in accelerating burst (6-30 Hz) on 289 points of 3 ms, then 4 s of silence, the figures the thesis gives for Shiva's amygdaloid file in its 64-coil study (ch. 2, software 5E); 'Hippocampal' = a primed burst after Rose et al. 1988 (cited by Collins), as Corradini 2014 describes the Shiva file (a primer, then 4 pulses 150 ms later, 1-ms points, positive only); 1-ms pulses 10 ms apart, five trains in 1 s and 4 s of silence are assumptions. The thesis gives no step time: the amygdaloid field steps every 100 ms (the first-column dwell of Shiva's 64-coil software in ch. 2); the hippocampal field every 200 ms, so each primer and its 4 pulses fall on the same coil (at 100 ms they would always land on different coils). The thesis measured 1-2 uT at the centre of the cap; 1.5 uT here is the peak 20 mm in front of each coil, so the field inside the head is weaker than in the thesis. Collins says each left-right pair is arranged so 'a field is generated between them' but gives no polarity, so both sides use the same drive sign. The vendor rebuild murphy-gh-hippbi-amyl-40min uses an FT7/C5/TP7/T9 cross, 125-ms steps, 1 uT, a 230-point burst and theta-burst (Larson & Lynch) LTP. This group reported anger more often than most other groups; stop at once if irritability or anger appears. It and condition 7 got a bilateral limbic field as the primer instead of the target and showed no rise in right-frontal high-beta power (seen only with a bilateral target, conditions 4 and 8), which Collins took to show that the order of fields matters; grouped by primer, these two groups reported memories from childhood most often. The EEG change was not linked to reported experiences, no clear pattern of experiences emerged, and the thesis had set an eta2 of about 30 % as its bar for a clinically conspicuous effect. Three people per condition, no sham group in this study, one lab, no replication; independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on fear, anger, headache or distress.",
+  "setting": "Seated in a comfortable chair, eyes closed, in a quiet, dark room (the thesis used a shielded acoustic chamber), told that a field may or may not be on. The thesis recorded 19-channel EEG every 5 min and gave the Personal Philosophy Inventory before and a 20-item exit questionnaire after.",
+  "schedule": "One 40-min session per person in the thesis. For a self-test, run it against sham with the app's Blind option and fix the measure in advance (the thesis effect: right-frontal high-beta at 35 min).",
+  "targets": [
+    "left-hippocampus-head",
+    "left-hippocampus-body",
+    "left-hippocampus-tail",
+    "right-hippocampus-head",
+    "right-hippocampus-body",
+    "right-hippocampus-tail",
+    "left-amygdala"
+  ],
+  "source": "Collins 2014 (title page dated 2013), Quantitative differences in participants exposed to patterned, weak-intensity electromagnetic fields: investigating the Shiva, MA thesis (Psychology), Laurentian University, ch. 4 and Table 3 (the 289-point amygdaloid file of the 64-coil study in ch. 2) https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc ; Collins 2014, full text https://laurentian.scholaris.ca/server/api/core/bitstreams/c03e0259-4b31-410f-9552-d90c9c2b81a4/content ; Murphy, God Helmet session list https://www.god-helmet.com/wp/god-helmet/koren_session_list.htm ; Murphy, Shiva: sessions used in lab experiments (the chirp's 'longer and longer gaps') https://www.god-helmet.com/wp/shiva/shiva_demo/experiment_signals.htm ; Murphy, Shiva demo: modulated 40 Hz chirp https://www.god-helmet.com/wp/shiva/shiva_demo/mod40_chirp.htm ; Corradini 2014, MA thesis, Laurentian University (Shiva hippocampal file: primer pulse, then 4 pulses 150 ms later, 1-ms points) https://laurentian.scholaris.ca/items/1455e1f3-2f1d-47b5-93cd-23713d69e651 ; Rose, Diamond, Pang & Dunwiddie 1988, primed burst potentiation (cited by Collins for the hippocampal field) ; Sculthorpe & Persinger 2003, Percept Mot Skills 97:1031 (40 Hz phase-modulated five times per second) https://pubmed.ncbi.nlm.nih.gov/15002842/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": [
+      "C5",
+      "TP7",
+      "T9h",
+      "FFT7",
+      "C6",
+      "TP8",
+      "T10h",
+      "FFT8"
+    ],
+    "order": [0, 3, 2, 1, 4, 5, 6, 7]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Primer: hippocampal (primed burst), both sides, 200 ms/coil",
+      "minutes": 20,
+      "pattern": {
+        "type": "table",
+        "pointMs": 1,
+        "gapMs": 4000,
+        "data": [255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128]
+      },
+      "spatial": {
+        "mode": "cycle",
+        "side": "both",
+        "dirLeft": "cw",
+        "dirRight": "ccw",
+        "dwellMs": 200
+      }
+    },
+    {
+      "name": "Target: amygdaloid (burst 289 x 3 ms), left side CW",
+      "minutes": 20,
+      "pattern": {
+        "type": "burst",
+        "f0": 6,
+        "f1": 30,
+        "sweepMs": 867,
+        "gapMs": 4000,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "cycle",
+        "side": "left",
+        "dir": "cw",
+        "dwellMs": 100
+      }
+    }
+  ]
+}

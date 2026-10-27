@@ -1,0 +1,82 @@
+{
+  "id": "rng-pk",
+  "name": "Micro-PK with the hardware random generator",
+  "category": "self-test",
+  "summary": "Can intention bias a random generator? The helmet's hardware random generator (WebCrypto in demo mode) produces blocks of 1,000 bits while you aim high or low as the app tells you. The measure is the difference between high-aim and low-aim blocks, which cancels any bias in the generator. A no-intention control block comes first. Based on the May and Honorton volitional task (Maimonides, mid-1970s) and the Psion's Handbook claim that intention biases dice. Effects in the literature are tiny and contested (Bösch et al. 2006).",
+  "evidence": "single-lab",
+  "minutes": 26,
+  "requires": { "headphones": false, "helmet": "optional", "pool": false },
+  "setting": "Alone and seated, phone in front of you. The helmet's coils stay off: it only supplies random bits. Keep it still and away from chargers.",
+  "cautions": "No optional stopping. Even a striking run can come from chance or from a fault; the control block and the high-minus-low design guard against generator bias, not against selective reporting. Decide the number of trials or sessions before you start, keep every result, and report them all.",
+  "sources": [
+    {
+      "title": "May EC, Honorton C: A dynamic PK experiment with Ingo Swann; Honorton C, May EC: Volitional control in a PK task (Maimonides, c. 1975-76), CREST CIA-RDP96-00787R000200130005-3",
+      "url": "https://www.cia.gov/readingroom/document/cia-rdp96-00787r000200130005-3"
+    },
+    {
+      "title": "Bösch H, Steinkamp F, Boller E (2006) Examining psychokinesis: the interaction of human intention with random number generators. A meta-analysis. Psychol Bull 132:497-523",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16822162/"
+    },
+    { "title": "Connelly S (2004) The Psion's Handbook. PsiPog (summarised only; the licence forbids excerpts)" }
+  ],
+  "steps": [
+    {
+      "id": "intro",
+      "title": "How it works",
+      "minutes": 1,
+      "instructions": "Each trial collects 1,000 random bits, and each bit is compared with an alternating target (1, 0, 1, 0 ...), so a generator that favours ones or zeros cancels out. By chance about 500 bits are hits, give or take 16 (1.6 %). In the intention blocks the app tells you before each trial whether to aim **high** (more hits) or **low** (fewer hits); the aims alternate.\n\nDecide now how many sessions this series will have.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "control",
+      "title": "Control block",
+      "minutes": 5,
+      "instructions": "Tap through the trials without intending anything; there is no aim and no feedback. Think of something else while the bits run. This block shows how the generator behaves on its own.",
+      "audio": null,
+      "input": { "type": "rng", "key": "control", "prompt": "Control block: tap through without intending", "trials": 10, "bits": 1000, "aim": "none" },
+      "advance": "manual"
+    },
+    {
+      "id": "block-1",
+      "title": "Intention block 1",
+      "minutes": 9,
+      "instructions": "Before each trial, read the aim. Hold it calmly while the bits are collected, as if wishing the display to move that way. Don't strain.",
+      "audio": null,
+      "input": { "type": "rng", "key": "intention-1", "prompt": "Hold the aim shown for each trial", "trials": 20, "bits": 1000, "aim": "alternate" },
+      "advance": "manual"
+    },
+    {
+      "id": "rest",
+      "title": "Rest",
+      "minutes": 1,
+      "instructions": "Rest for a minute. In the original studies the first runs scored best, so expect a decline.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "block-2",
+      "title": "Intention block 2",
+      "minutes": 9,
+      "instructions": "Same as before.",
+      "audio": null,
+      "input": { "type": "rng", "key": "intention-2", "prompt": "Hold the aim shown for each trial", "trials": 20, "bits": 1000, "aim": "alternate" },
+      "advance": "manual"
+    },
+    {
+      "id": "reflect",
+      "title": "Reflection",
+      "minutes": 1,
+      "instructions": "Rate the session. Compare the high-minus-low result with the control block, and add it to your series.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "focus", "label": "How focused were you?", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Completely" },
+          { "key": "mood", "label": "Mood", "min": 0, "max": 10, "minLabel": "Low", "maxLabel": "Very good" }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

@@ -1,25 +1,21 @@
 {
   "id": "presence-left",
-  "name": "Sensed presence (left TPJ, Arzy variant)",
-  "layout": "temporal",
+  "name": "Sensed presence (left temporoparietal)",
   "category": "presence",
-  "uT": 1.0,
-  "summary": "Mirror of the right-sided preset. Arzy et al. 2006 evoked a 'shadow person' by electrical stimulation of the LEFT temporoparietal junction (implanted electrodes, far stronger than this device). Use to compare hemispheres in blinded trials.",
-  "source": "Arzy et al. 2006, Nature 443:287 https://pubmed.ncbi.nlm.nih.gov/16988702/",
+  "evidence": "single-lab",
+  "origin": "Persinger & Healey 2002 (Laurentian University), left-hemisphere arm; left-TPJ interest after Arzy et al. 2006",
+  "uT": 1,
+  "summary": "Burst-firing over the left temporal and temporoparietal region (FT7, T7, CP5, TP7) for 20 min: the left-hemisphere arm of Persinger & Healey 2002, which by their report gave fewer \"presences\" than right or bilateral fields. Arzy et al. 2006 evoked a \"shadow person\" by electrical stimulation of the LEFT temporoparietal junction; compare this preset with presence-right in blinded trials.",
+  "notes": "Persinger & Healey ran a double-blind study with 48 subjects at 0.1-1 uT for 20 min, with opaque goggles in a very quiet room, and reported more presences, fears and odd smells with fields primarily over the right or equally across both hemispheres than with fields \"primarily over the left temporoparietal region\" or sham, so by Persinger's account this left-sided version should do less. Phase 1 is the 20-min exposure; phase 2 continues to 30 min so that it matches presence-right (Meli & Persinger 2009 used 30 min over the right side). Persinger & Healey name no waveform (\"complex, pulsed\"), so the lab's burst-firing pattern stands in, an assumption: the built-in accelerating burst (6 to 30 Hz) with the published Burst-X timing, 230 points of 3 ms (0.69 s; Carniello 2020; 248 and 289 points in other theses) once every 4 s (Martin & Persinger 2004; Persinger, Hoang & Baker-Price 2009 give \"once every 3 s for about 0.7 s\"); the point values were never published. Changed after the primary-source check: it was 230 points of 4 ms once every 3 s, the rat timing of Ryczko & Persinger 2002. All four left-side coils play together and the right side stays silent; how much field that arm put on the right is not published. Arzy's patient had epilepsy and was stimulated directly on the cortex through implanted electrodes, with currents far stronger than this helmet; Blanke 2014 produced a felt presence in healthy people with a robot creating sensorimotor conflict, without any field. Weak-field stimulation of the left TPJ is untested outside Persinger's lab. Murphy says the presence rarely appears at home without true silence. In the only large independent double-blind test (Granqvist 2005, 89 people) suggestibility, not the field, predicted sensed presence; Gendle & McGrath 2012 also found no field effect. Stop on fear or distress; not for people with epilepsy.",
+  "setting": "Seated or reclined in a quiet, darkened room with the eyes covered (Persinger & Healey used opaque goggles).",
+  "schedule": "At most weekly; run it against presence-right and sham in blinded, counterbalanced order, with the outcome decided in advance.",
+  "targets": ["left-tpj", "left-supramarginal-gyrus", "left-superior-temporal-gyrus-posterior"],
+  "source": "Persinger & Healey 2002, J Nerv Ment Dis 190:533 https://pubmed.ncbi.nlm.nih.gov/12193838/ ; Meli & Persinger 2009, Int J Neurosci 119:68 https://doi.org/10.1080/00207450802507689 ; Carniello 2020, PhD thesis, Laurentian University, p. 89 (230-point burst-firing file, 3-ms points; Thomas file with 3-ms points and intervals) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Martin & Persinger 2004, Neurosci Lett 366:226-229 (burst-firing once every 4 s) https://pubmed.ncbi.nlm.nih.gov/15276252/ ; Persinger, Hoang & Baker-Price 2009, Electromagn Biol Med 28:374-382 (\"once every 3 s for about 0.7 s\") https://pubmed.ncbi.nlm.nih.gov/20017628/ ; Ryczko & Persinger 2002, Percept Mot Skills 95:592 (rat timing: 230 points of 4 ms once every 3 s) https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Arzy et al. 2006, Nature 443:287 https://pubmed.ncbi.nlm.nih.gov/16988702/ ; Blanke et al. 2014, Curr Biol 24:2681 https://pubmed.ncbi.nlm.nih.gov/25447995/ ; Murphy-Balbin interview https://youtu.be/1uVjHmi51HM?t=1222 ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "temporal",
   "fadeInS": 10,
   "fadeOutS": 10,
   "phases": [
-    {
-      "name": "Left TPJ burst-firing",
-      "minutes": 20,
-      "pattern": {"type": "burst"},
-      "spatial": {"mode": "left", "weights": [0.4, 0.6, 1, 1, 0, 0, 0, 0]}
-    },
-    {
-      "name": "Bilateral TPJ burst-firing",
-      "minutes": 10,
-      "pattern": {"type": "burst"},
-      "spatial": {"mode": "bilateral", "weights": [0.4, 0.6, 1, 1, 0.4, 0.6, 1, 1]}
-    }
+    {"name": "Left temporoparietal burst-firing (20 min)", "minutes": 20, "pattern": {"type": "burst", "f0": 6, "f1": 30, "sweepMs": 690, "gapMs": 3310, "pointMs": 3}, "spatial": {"mode": "left"}},
+    {"name": "Left temporoparietal, continued to 30 min", "minutes": 10, "pattern": {"type": "burst", "f0": 6, "f1": 30, "sweepMs": 690, "gapMs": 3310, "pointMs": 3}, "spatial": {"mode": "left"}}
   ]
 }

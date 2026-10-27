@@ -1,0 +1,145 @@
+{
+  "id": "shapes-colors",
+  "name": "Shapes and colours telepathy test (two people)",
+  "category": "self-test",
+  "summary": "A blinded version of the PsiPog 'Shapes and Colors' game. A sender in another room looks at a hidden target picture of a coloured shape while you, the receiver, describe it and then rank the pictures. The helmet draws and commits to the target as a telepathy trial; the sender sees it on a second phone in the Experiment tab's sender view. One committed trial per run (our adaptation; the original game guesses 1 of 16 shape-colour pairs). The game's claims have never been tested under blinding, so this is a test, not training.",
+  "evidence": "unverified",
+  "minutes": 23,
+  "requires": { "headphones": true, "helmet": "required", "pool": true },
+  "setting": "Two consenting adults in separate rooms, out of earshot, each with a phone with the same pool imported; the sender's phone is connected to the helmet as a second app. Keep only sets of simple coloured shapes (4-8 pictures each, for example a red circle and a blue triangle) in the pool for this test, because trials draw from every usable set.",
+  "cautions": "Close every ordinary channel: no talking, no messages, no sounds the other person could hear, and the sender must not learn your choices until the end. Don't run it with anyone who feels uneasy about 'telepathic' contact. Decide the number of trials or sessions before you start, keep every result, and report them all.",
+  "sources": [
+    { "title": "Connelly S (2004) The Psion's Handbook. PsiPog (summarised only; the licence forbids excerpts)" },
+    {
+      "title": "Kekecs Z et al. (2023) The Transparent Psi Project (preregistered, live-verified psi study). R Soc Open Sci",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36756055/"
+    },
+    {
+      "title": "Milton J, Wiseman R (1999) Does psi exist? Lack of replication of an anomalous process of information transfer. Psychol Bull 125:387-391",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/10414223/"
+    }
+  ],
+  "steps": [
+    {
+      "id": "belief",
+      "title": "Before you start",
+      "minutes": 2,
+      "instructions": "Rate your belief and expectation. They are stored before any result, as covariates.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "belief", "label": "Belief that telepathy is possible", "min": 0, "max": 10, "minLabel": "None", "maxLabel": "Certain" },
+          {
+            "key": "expect",
+            "label": "How likely is a hit today?",
+            "min": 0,
+            "max": 10,
+            "minLabel": "Very unlikely",
+            "maxLabel": "Certain"
+          }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "task",
+      "title": "Draw the target",
+      "minutes": 1,
+      "instructions": "The helmet draws a target picture and commits to it. Tell the sender the trial number, then go to separate rooms.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "telepathy" },
+      "advance": "manual"
+    },
+    {
+      "id": "sender",
+      "title": "Sender looks at the target",
+      "minutes": 1,
+      "instructions": "**Sender:** on your phone, open Experiment → telepathy sender, enter the trial number and look at the picture. Keep looking at it calmly for the next 10 minutes; think of its shape and its colour. Make no sound or signal.\n\n**Receiver:** stay in your room and put on headphones.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "settle",
+      "title": "Settle",
+      "minutes": 3,
+      "instructions": "Relax with your eyes closed. Steady pink noise masks room sounds (our design; no claim that it helps).",
+      "audio": { "layers": [], "noise": { "levelDb": -20 } },
+      "advance": "timer"
+    },
+    {
+      "id": "receive",
+      "title": "Describe the target",
+      "minutes": 7,
+      "instructions": "Write the shape and colour that come to mind, and anything else. Don't reason about which pictures are in the set.",
+      "audio": { "layers": [], "noise": { "levelDb": -20 } },
+      "input": { "type": "text", "key": "response", "prompt": "Shape, colour and anything else that comes" },
+      "advance": "manual"
+    },
+    {
+      "id": "sketch",
+      "title": "Sketch",
+      "minutes": 3,
+      "instructions": "Sketch the shape.",
+      "audio": null,
+      "input": { "type": "sketch", "key": "sketch", "prompt": "Sketch the shape" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response. Its fingerprint is stored, so it cannot be changed after the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge",
+      "title": "Rank the pictures",
+      "minutes": 2,
+      "instructions": "Rank the pictures of the set, best match with your response first.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 1,
+      "instructions": "The helmet reveals the target and the app checks the commitment. Now you may talk to the sender.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    },
+    {
+      "id": "debrief",
+      "title": "Debrief",
+      "minutes": 2,
+      "instructions": "Rate how you feel about the session. Keep this run in the series whatever the result.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          {
+            "key": "belief-after",
+            "label": "Belief that telepathy is possible, now",
+            "min": 0,
+            "max": 10,
+            "minLabel": "None",
+            "maxLabel": "Certain"
+          },
+          {
+            "key": "felt-success",
+            "label": "How successful did it feel?",
+            "min": 0,
+            "max": 10,
+            "minLabel": "Not at all",
+            "maxLabel": "Very"
+          }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "id": "srv-basic",
+  "name": "SRV-style basic session (Phases 1-4)",
+  "category": "remote-viewing",
+  "summary": "A more mechanical structured session with timed probes and fixed vocabularies, modelled on the basic phases of Courtney Brown's Scientific Remote Viewing, a CRV derivative: a 15-minute settling procedure with alternate-nostril breathing, a header, ideogram probing with fixed descriptor lists, senses and magnitudes, a quick sketch and a simplified matrix, then lock, rank and reveal. This is an independent, simplified version in our own words. 'SRV' and 'Scientific Remote Viewing' are service marks of the Farsight Institute, and its texts, including its affirmation, are not reproduced.",
+  "evidence": "claim",
+  "minutes": 76,
+  "requires": { "headphones": false, "helmet": "optional", "pool": true },
+  "setting": "Rested, fed and in a quiet room without strong scents; no psychoactive drugs. The phone or tablet with a stylus.",
+  "cautions": "Brown's own unverifiable results (Mars, extraterrestrials) show the danger of targets without feedback: score only targets you can check. Alternate-nostril breathing can make you dizzy; stop and breathe normally if it does, and skip the quick breaths if you are pregnant or have heart or lung problems. The 1995 AIR evaluation found a statistically significant laboratory effect that could not be clearly attributed to psi, and no operational value. Never use people as targets without their consent. One trial means little: with a realistic effect size (about 0.16) even 50 trials have only about 30 % power. Decide the number of trials in advance and keep every result.",
+  "sources": [
+    { "title": "Brown C (2004) Scientific Remote Viewing, version 3.5. Farsight Institute (free for individual use; not reproduced here)" },
+    {
+      "title": "Smith PH (1986) Coordinate Remote Viewing manual, DIA/INSCOM, after Ingo Swann's SRI training (widely posted; Swann did not write it)"
+    },
+    {
+      "title": "Mumford MD, Rose AM, Goslin DA (1995) An Evaluation of Remote Viewing: Research and Applications. American Institutes for Research",
+      "url": "https://documents3.theblackvault.com/documents/stargate/pdfs/CIA-RDP96-00791R000200180006-4.pdf"
+    }
+  ],
+  "steps": [
+    {
+      "id": "task",
+      "title": "Blind target",
+      "minutes": 1,
+      "instructions": "The helmet picks a target picture from your pool and commits to it. The trial number is your tag.",
+      "audio": null,
+      "input": { "type": "trial", "action": "create", "mode": "rv" },
+      "advance": "manual"
+    },
+    {
+      "id": "settle-silence",
+      "title": "Settling: silence",
+      "seconds": 30,
+      "instructions": "Close your eyes and sit in silence.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "settle-massage",
+      "title": "Settling: self-massage",
+      "seconds": 60,
+      "instructions": "Gently massage your arms, neck and chest, stroking towards the heart.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "settle-breath",
+      "title": "Settling: alternate-nostril breathing",
+      "seconds": 570,
+      "instructions": "Close the right nostril with your thumb and breathe in through the left. Close the left and breathe out through the right; in through the right, out through the left, and so on.\n\nStart with about 10 seconds of quick, light breaths, then breathe slowly: the in-breath about half as long as the out-breath, with a short pause. Never strain.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "settle-quiet",
+      "title": "Settling: quiet",
+      "seconds": 240,
+      "instructions": "Sit quietly with your eyes closed. In the last moments, open your eyes and get ready.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "header",
+      "title": "Intention and header",
+      "minutes": 2,
+      "instructions": "Write a short intention in your own words, for example that you will describe the target accurately and stay with raw impressions. Then the header: **PS** physical state, **ES** emotional state, **AP** advance perceptions (any picture or guess already in your mind).",
+      "audio": null,
+      "input": { "type": "text", "key": "header", "prompt": "Intention and header", "placeholder": "Intention: ... PS: rested. ES: calm. AP: none." },
+      "advance": "manual"
+    },
+    {
+      "id": "phase-1",
+      "title": "Phase 1: ideogram and descriptors",
+      "minutes": 10,
+      "instructions": "Write the tag and draw the ideogram without lifting the pen. **A:** only words for the motion of the pen, no labels.\n\nProbe the ideogram: touch it with the pen for 1-2 seconds (never more than 3, at most 4 probes) and pick one primitive descriptor from the list. Probe again for one advanced descriptor. Then **B**: a simple declaration (structure, water, land) or \"No-B\".\n\nDo 3 to 5 iterations, one ideogram each: press **New iteration** for the next.",
+      "audio": null,
+      "input": {
+        "type": "crv",
+        "stage": 1,
+        "fields": [
+          { "key": "ideogram", "label": "Ideogram", "kind": "sketch" },
+          { "key": "a", "label": "A: pen-motion words only", "kind": "text" },
+          { "key": "primitive", "label": "Primitive descriptor: hard, soft, semi-hard, semi-soft, wet or mushy", "kind": "text" },
+          { "key": "advanced", "label": "Advanced descriptor: natural, man-made, artificial, movement or energetics", "kind": "text" },
+          { "key": "b", "label": "B: simple declaration, or \"No-B\"", "kind": "text" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "phase-2",
+      "title": "Phase 2: senses and magnitudes",
+      "minutes": 6,
+      "instructions": "Go through the senses in order: sounds, textures, temperatures, then visuals (colours, brightness, contrasts), tastes, smells. One word per line.\n\nThen **magnitudes** in six groups: verticals, horizontals, diagonals, topology, mass/density/space/volume, energetics. Get data for at least three groups. Finish with how the target makes you feel (VF).",
+      "audio": null,
+      "input": {
+        "type": "crv",
+        "stage": 2,
+        "fields": [
+          { "key": "sensory", "label": "Sounds, textures, temperatures, colours, brightness, contrasts, tastes, smells", "kind": "words" },
+          { "key": "magnitudes", "label": "Magnitudes (at least 3 groups)", "kind": "words" },
+          { "key": "vf", "label": "Viewer feeling (VF)", "kind": "text" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "phase-3",
+      "title": "Phase 3: quick sketch",
+      "minutes": 4,
+      "instructions": "Make a quick sketch guided by feel, using your magnitudes. Five minutes at most; often less than one is enough.",
+      "audio": null,
+      "input": { "type": "crv", "stage": 3, "fields": [{ "key": "sketch", "label": "Quick sketch", "kind": "sketch" }] },
+      "advance": "manual"
+    },
+    {
+      "id": "phase-4",
+      "title": "Phase 4: matrix (simplified)",
+      "minutes": 25,
+      "instructions": "Probe one column at a time for about a second and write what comes within 3 to 5 seconds. Put labels and conclusions only in **D**; **VF** is for your own feelings. Related data go on the same line, and you never go back up.\n\nEvery so often, write one plain sentence that sums up what you have. Then work the target as a whole, go back to its emotional tone, and probe your sketch again, especially where land, water and air meet. (Column set simplified by us.)",
+      "audio": null,
+      "input": {
+        "type": "crv",
+        "stage": 4,
+        "fields": [
+          { "key": "s", "label": "S: sensory", "kind": "words" },
+          { "key": "m", "label": "M: magnitudes", "kind": "words" },
+          { "key": "e", "label": "E: emotional tone at the target", "kind": "words" },
+          { "key": "p", "label": "P: physical items", "kind": "words" },
+          { "key": "c", "label": "C: concepts and purposes", "kind": "words" },
+          { "key": "vf", "label": "VF: your own feelings", "kind": "words" },
+          { "key": "d", "label": "D: labels and deductions", "kind": "words" },
+          { "key": "syntheses", "label": "One-sentence syntheses", "kind": "words" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "minutes": 5,
+      "instructions": "Sum up the session in a few plain, low-level sentences. Describe; don't name.",
+      "audio": null,
+      "input": { "type": "text", "key": "summary", "prompt": "Summary in plain sentences" },
+      "advance": "manual"
+    },
+    {
+      "id": "lock",
+      "title": "Lock your response",
+      "minutes": 1,
+      "instructions": "Lock your response. The app stores its fingerprint (SHA-256), so nothing can be changed after you see the target.",
+      "audio": null,
+      "input": { "type": "trial", "action": "lock" },
+      "advance": "manual"
+    },
+    {
+      "id": "judge",
+      "title": "Rank the pictures",
+      "minutes": 5,
+      "instructions": "You now see all pictures of the drawn set in random order. Rank them, best match with your response first. Judge by what you wrote and drew. If someone who doesn't know the target can judge, hand them the phone now; otherwise the trial counts as self-judged. Never re-judge after the reveal.",
+      "audio": null,
+      "input": { "type": "trial", "action": "judge" },
+      "advance": "manual"
+    },
+    {
+      "id": "reveal",
+      "title": "Reveal",
+      "minutes": 2,
+      "instructions": "The helmet reveals the target and its nonce, and the app checks the commitment, the pool and your locked response. A rank-1 hit has a chance of 1 in the number of pictures in the set.",
+      "audio": null,
+      "input": { "type": "trial", "action": "reveal" },
+      "advance": "manual"
+    }
+  ]
+}

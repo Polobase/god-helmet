@@ -1,14 +1,48 @@
 {
   "id": "circumcerebral-theta",
-  "name": "Circumcerebral 20 ms CCW (theta study)",
-  "layout": "ring",
+  "name": "Circumcerebral +20 ms steps CCW (theta study)",
   "category": "research",
-  "uT": 2.0,
-  "summary": "Counter-clockwise rotation, 20 ms per coil (one revolution = 160 ms, about 6 Hz). Richards, Koren & Persinger 2002 reported ~30 % more theta power with 20 ms rates of change; Booth 2008: CCW raised right-hemisphere power.",
-  "source": "Richards, Koren & Persinger 2002, Percept Mot Skills 95:671 (PMID 12434867) ; Booth et al. 2008",
+  "evidence": "single-lab",
+  "origin": "Persinger lab, Laurentian University (Cook, Koren & Persinger 1999; Richards, Koren & Persinger 2002), circumcerebral 'Octopus'",
+  "uT": 5,
+  "summary": "A counter-clockwise rotation around the head in which the field stays 20 ms longer on each successive coil (100, 120 ... 240 ms, then back to 100 ms), carrying the lab's frequency-modulated Thomas pulse. Persinger's lab reported longer subjective time (Cook 1999) and about 30 % more theta power (Richards 2002) with 20-ms changes in the time per coil.",
+  "notes": "Changed after the primary-source check: the first dwell is now 100 ms (was 20 ms) and the waveform is the Thomas pulse (was a synthetic burst on rat timing). Cook 1999 (\"successive additions of 20 ms ... at each solenoid\") and Richards 2002 (\"20-msec. rates of change in the duration of delivery ... to each successive solenoid\") describe a 20-ms change per coil, not a 20-ms dwell, and neither abstract gives the first dwell. Where the lab printed a configuration with 20-ms changes, it starts at 100 ms: the six-configuration table of the Swann paper, which cites Cook 1999 for its patterns (100 ms, change +20), Persinger, Koren & Tsang 2003 (\"100 msec. with changes in rate of 20 msec.\") and the lab's Shiva study (100 ms plus 20 ms per column, Collins 2014). Hence 100 -> 240 ms, one turn 1.36 s, inside Cook's \"about 200 and 2000 ms\" (\"100-20\" in the lab's later notation, where + means shorter); the base is an inference, and the former reading is \"dwell\": [20, 20, 160]. Saroka (2016) says Cook rotated the Thomas pulse on the \"Octopus\", and the lab calls its rotated field \"complex frequency-modulated\" (Persinger & Lavallee 2010), so the exact 849-point patent table plays at 1 ms per point with 1 ms between repeats, the settings the Swann table prints for its frequency-modulated configuration with 100 ms and +20 (rechecked on the page scan); the lab's other Thomas setting, 3 ms per point (2.55 s per cycle; Buckner 2015), is the alternative. Cook ran six patterns of 2.5 min each and Richards six configurations of unstated length; 5 min follows the lab's 6 x 5-min ring studies. Intensity was about 10 uT (Cook), 5-10 uT (Richards) or 2-5 uT (Swann table); the default is this helmet's 5 uT limit. The ring layout (Fpz, F7, T7, P7, Oz, P8, T8, F8, counter-clockwise from above) starts on the midline, while the lab's coil 1 sat over the left frontal and coil 8 over the right prefrontal region (Persinger & Lavallee 2010). Richards also reported about 20 % more right-hemisphere 5.0-5.9 Hz power with all six configurations, and Booth 2008 more right-hemisphere power with counter-clockwise and more left with clockwise rotation. Single-lab results (Richards: 8 people) with no independent replication; testing them needs EEG. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "setting": "Seated or reclined, eyes closed, in a quiet, dim room (the lab used an acoustic chamber). Record EEG before, during and after if you want to check the theta claim.",
+  "schedule": "At most weekly (Murphy's rule for circumcerebral Shiva sessions); six sessions, then a 21-day break.",
+  "targets": ["right-superior-temporal-gyrus-posterior", "right-temporal-pole"],
+  "source": "Richards, Koren & Persinger 2002, Percept Mot Skills 95:671-686 https://pubmed.ncbi.nlm.nih.gov/12434867/ ; Cook, Koren & Persinger 1999, Neurosci Lett 268:61-64 https://pubmed.ncbi.nlm.nih.gov/10400078/ ; Persinger, Roll, Tiller, Koren & Cook 2002, Remote viewing with the artist Ingo Swann, Percept Mot Skills 94:927-949 (Table 1: six circumcerebral configurations) https://pubmed.ncbi.nlm.nih.gov/12081299/ (full-text scan https://www.remoteviewed.com/biblo/papers/INGO%20SWANN%20NEUROPSYCHOLOGICAL%20PROFILE-ELECTROENCEPHALOGRAPHIC%20CORRELATES-MAGNETIC%20RESONANCE%20IMAGING%20AND%20POSSIBLE%20MECHANISMS.pdf) ; Persinger, Koren & Tsang 2003, Percept Mot Skills 97:877-894 https://pubmed.ncbi.nlm.nih.gov/14738355/ ; Collins 2014, MA thesis 'Investigating the Shiva', Laurentian University (Shiva amygdaloid signal: 289 points, 3 ms, 4000 ms between cycles; 100 ms plus 20 ms per column; ch. 4: Shiva 4+4 helmet) https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc ; Saroka 2016, PhD dissertation, Laurentian University (Cook 1999 rotated the Thomas pulse with \"the Octopus\") https://laurentian.scholaris.ca/server/api/core/bitstreams/be015982-0b0f-4c27-a031-797637c364e1/content ; Persinger & Lavallee 2010, J Conscious Explor Res 1(7):785-807 (base +/- change notation, \"20+2\" = 20, 18 ... 6 ms; coil 1 left frontal, coil 8 right prefrontal; sibling and yoked studies retold) https://jcer.com/index.php/jcj/article/view/99 ; Thomas, Prato, Kavaliers & Persinger, US 6,234,953 B1, Table 1 and FIG. 2 \"Thomas Pulse (Cnp)\" https://patents.google.com/patent/US6234953B1/en ; Buckner et al. 2015, PLoS ONE 10(4):e0124136 (Thomas file: 849 points at 3 ms, 2.55 s per cycle) https://europepmc.org/article/MED/25875081 ; Booth, Koren & Persinger 2008, Electromagn Biol Med 27:426-436 https://pubmed.ncbi.nlm.nih.gov/19037792/ ; Granqvist et al. 2005, Neurosci Lett 379:1-6 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "ring",
   "fadeInS": 10,
   "fadeOutS": 10,
   "phases": [
-    {"name": "CCW 20 ms burst-firing", "minutes": 25, "pattern": {"type": "burst"}, "spatial": {"mode": "rotate", "dir": "ccw", "dwellMs": 20}}
+    {
+      "name": "CCW 100->240 ms (+20 ms per coil), Thomas 1-ms points",
+      "minutes": 5,
+      "pattern": {"type": "table", "pointMs": 1, "gapMs": 1, "data": [
+        128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,
+        255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,
+        12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,
+        224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,
+        75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,
+        212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,
+        212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,
+        200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,
+        200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,
+        128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,
+        200,200,75,75,0,12,36,72,128
+      ]},
+      "spatial": {"mode": "rotate", "dir": "ccw", "dwell": [100, 20, 240]}
+    }
   ]
 }

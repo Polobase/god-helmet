@@ -1,0 +1,29 @@
+{
+  "id": "persinger-makarec-1987-4hz-cue",
+  "name": "Persinger & Makarec 1987: 4 Hz field as a cue in card guessing",
+  "category": "persinger",
+  "evidence": "anecdote",
+  "origin": "Persinger & Makarec 1987 (Laurentian University), single-subject case study",
+  "uT": 1,
+  "summary": "Zener-card guessing with a field cue: 40 trials of 30 s, with a 4 Hz field at both temporal lobes during the 15 s before each target card only (8 of the 40 trials here). In Persinger & Makarec's single subject, guesses stayed systematically above chance (about 50% against 20%) only when the 4 Hz field preceded the target, which they read as the field becoming a learned cue; they also saw habituation.",
+  "notes": "Cards were shown \"for 15 sec. every 30 sec.\", with the field in \"the 15 sec. before the presentation of one of the symbols (target)\": so each trial is 15 s without a card, then 15 s with the card shown. When the subject guessed is not stated; here the guess falls in the first 15 s. A helper keeps the 30-s clock from the program start and shows the cards: one target symbol, chosen once, right after each 15-s field, and any of the other four symbols on all other trials. The eight cue trials (4, 9, 11, 17, 22, 28, 31, 37) are a project choice, one in five as for one of five symbols in random order; the paper gives neither their number nor their order. The phase names tell the helper, so keep the app out of the subject's sight; before starting the program, run 0-4 extra uncued trials (a new random number each session) so the cue positions cannot be learned. The paper also used 1 Hz and 7 Hz fields, which did not work as cues. Its \"specific 4-Hz pattern\" is not described, so a 4 Hz sine on 1-ms points, gated to 15 s (a chirp from 4 to 4 Hz), stands in for it. The field was \"in the order of milligauss\"; 1 uT (10 mG) is used. T7 and T8 render \"bilaterally at the level of the temporal lobes\" (an inference). One subject with \"temporal lobe lability\", 17 sessions, no blinding reported, no replication. A field can also be noticed through coil sound, so mask it. Independent double-blind tests of the lab's later God Helmet patterns found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy.",
+  "setting": "The subject sits facing the card display in a quiet room; the helper sits out of view with the app. Score hits on cued and uncued trials separately.",
+  "schedule": "The original ran 17 sessions of 40 trials with one subject. Score each session, and include some Blind (possibly sham) sessions: with no field, cued trials should stay at chance.",
+  "targets": ["left-superior-temporal-gyrus-posterior", "right-superior-temporal-gyrus-posterior"],
+  "source": "Persinger & Makarec 1987, Possible learned detection of exogenous brain frequency electromagnetic fields: a case study, Percept Mot Skills 65:444-446 https://pubmed.ncbi.nlm.nih.gov/3696915/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["T7", "", "", "", "T8", "", "", ""]},
+  "fadeInS": 2,
+  "fadeOutS": 2,
+  "phases": [
+    {"name": "Trials 1-3: no field", "seconds": 90, "pattern": {"type": "off"}, "spatial": {"mode": "bilateral"}},
+    {"name": "Trial 4: 4 Hz cue before the target card, then trials 5-8", "seconds": 150, "pattern": {"type": "chirp", "f0": 4, "f1": 4, "sweepMs": 15000, "gapMs": 300000, "pointMs": 1}, "spatial": {"mode": "bilateral"}},
+    {"name": "Trial 9: 4 Hz cue before the target card, then trial 10", "seconds": 60, "pattern": {"type": "chirp", "f0": 4, "f1": 4, "sweepMs": 15000, "gapMs": 300000, "pointMs": 1}, "spatial": {"mode": "bilateral"}},
+    {"name": "Trial 11: 4 Hz cue before the target card, then trials 12-16", "seconds": 180, "pattern": {"type": "chirp", "f0": 4, "f1": 4, "sweepMs": 15000, "gapMs": 300000, "pointMs": 1}, "spatial": {"mode": "bilateral"}},
+    {"name": "Trial 17: 4 Hz cue before the target card, then trials 18-21", "seconds": 150, "pattern": {"type": "chirp", "f0": 4, "f1": 4, "sweepMs": 15000, "gapMs": 300000, "pointMs": 1}, "spatial": {"mode": "bilateral"}},
+    {"name": "Trial 22: 4 Hz cue before the target card, then trials 23-27", "seconds": 180, "pattern": {"type": "chirp", "f0": 4, "f1": 4, "sweepMs": 15000, "gapMs": 300000, "pointMs": 1}, "spatial": {"mode": "bilateral"}},
+    {"name": "Trial 28: 4 Hz cue before the target card, then trials 29-30", "seconds": 90, "pattern": {"type": "chirp", "f0": 4, "f1": 4, "sweepMs": 15000, "gapMs": 300000, "pointMs": 1}, "spatial": {"mode": "bilateral"}},
+    {"name": "Trial 31: 4 Hz cue before the target card, then trials 32-36", "seconds": 180, "pattern": {"type": "chirp", "f0": 4, "f1": 4, "sweepMs": 15000, "gapMs": 300000, "pointMs": 1}, "spatial": {"mode": "bilateral"}},
+    {"name": "Trial 37: 4 Hz cue before the target card, then trials 38-40", "seconds": 120, "pattern": {"type": "chirp", "f0": 4, "f1": 4, "sweepMs": 15000, "gapMs": 300000, "pointMs": 1}, "spatial": {"mode": "bilateral"}}
+  ]
+}

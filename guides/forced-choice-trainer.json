@@ -1,0 +1,102 @@
+{
+  "id": "forced-choice-trainer",
+  "name": "Ten-choice trainer (Tart-style)",
+  "category": "esp-training",
+  "summary": "A fast ESP practice task with immediate feedback, after Charles Tart's Ten-Choice Trainer: ten positions, a WebCrypto random target for each trial with a SHA-256 commitment, 25 trials per run, and the correct position shown after every choice. Chance is 2.5 hits per run; 6 or more hits in one run happen by chance about 3 % of the time, 10 or more in both runs together about 2 %. Tart's idea was that immediate feedback lets people learn and slows the decline of scores; the evidence comes from one lab.",
+  "evidence": "single-lab",
+  "minutes": 18,
+  "requires": { "headphones": false, "helmet": "none", "pool": false },
+  "setting": "Seated, alone, phone in hand, no time pressure. If a sender watches the targets, they must not be able to signal through sound or timing.",
+  "cautions": "Picking your best runs afterwards guarantees disappointment, because of regression to the mean: count every run, and confirm a good score with new runs. Don't look for hits on neighbouring positions or on the next trial unless you decided to before you started. As in Tart's trainer, you may pass when nothing comes; passes are not scored, but don't use them to skip trials that feel wrong after the fact. Decide the number of trials or sessions before you start, keep every result, and report them all.",
+  "sources": [
+    { "title": "Tart CT (1976) Learning to Use Extrasensory Perception. University of Chicago Press" },
+    {
+      "title": "Tart CT, Improving real-time ESP by suppressing the future: trans-temporal inhibition, CREST CIA-RDP96-00787R000500060001-2",
+      "url": "https://www.cia.gov/readingroom/document/cia-rdp96-00787r000500060001-2"
+    },
+    {
+      "title": "Milton J, Wiseman R (1999) Does psi exist? Lack of replication of an anomalous process of information transfer. Psychol Bull 125:387-391",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/10414223/"
+    }
+  ],
+  "steps": [
+    {
+      "id": "intro",
+      "title": "How it works",
+      "minutes": 1,
+      "instructions": "For each trial the app draws one of ten positions (WebCrypto) and commits to it. You choose a position, or pass if nothing comes; then the correct one is shown. There are two runs of 25 trials.\n\nDon't try hard. Let your attention move over the positions and pick the one that draws you.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "settle",
+      "title": "Settle",
+      "minutes": 2,
+      "instructions": "Sit comfortably, breathe slowly, and let your hand and attention relax.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "run-1",
+      "title": "Run 1",
+      "minutes": 6,
+      "instructions": "Pick without deliberating. After each choice, notice what a hit felt like compared with a miss.",
+      "audio": null,
+      "input": {
+        "type": "choice",
+        "key": "run-1",
+        "prompt": "Which position is the target?",
+        "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+        "trials": 25,
+        "feedback": true
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "rest",
+      "title": "Rest",
+      "minutes": 2,
+      "instructions": "Look away from the screen and rest.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "run-2",
+      "title": "Run 2",
+      "minutes": 6,
+      "instructions": "Same as before. Stay relaxed; scores often drop when you start to try hard.",
+      "audio": null,
+      "input": {
+        "type": "choice",
+        "key": "run-2",
+        "prompt": "Which position is the target?",
+        "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+        "trials": 25,
+        "feedback": true
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "reflect",
+      "title": "Reflection",
+      "minutes": 1,
+      "instructions": "Rate the session.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "effort", "label": "How hard did you try?", "min": 0, "max": 10, "minLabel": "Not at all", "maxLabel": "Very hard" },
+          {
+            "key": "hit-feeling",
+            "label": "Did hits feel different from misses?",
+            "min": 0,
+            "max": 10,
+            "minLabel": "No difference",
+            "maxLabel": "Clearly different"
+          }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

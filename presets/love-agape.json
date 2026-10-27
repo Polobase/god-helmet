@@ -1,14 +1,21 @@
 {
   "id": "love-agape",
   "name": "Love / agape (left temporal)",
-  "layout": "temporal",
   "category": "mood",
-  "uT": 1.0,
-  "summary": "Amygdala-derived burst-firing signal over the LEFT temporal lobe only. Murphy links the left amygdala with positive feeling and reports bliss when he moved the amygdala signal to the left side; anecdotal.",
-  "source": "Murphy, Enlightenment lecture https://youtu.be/zqrpKUTMXgY?t=714 ; Sacred Body lecture https://youtu.be/R8GIKT8TY1k?t=2112 ; McTaggart interview https://youtu.be/K-0PHkfvEhg",
+  "evidence": "anecdote",
+  "origin": "Todd Murphy (left-amygdala rule; the left-sided amygdala phase of his Shiva God Helmet sessions)",
+  "uT": 1,
+  "summary": "The amygdala burst-firing signal cycling around four coils on the LEFT temporal lobe only, as in the left-sided second phase of Murphy's God Helmet sessions. Murphy links the left amygdala with positive feelings (elation, joy, love) and reports bliss when he moved the amygdala signal to the left side; this is his anecdote, not a tested result.",
+  "notes": "Murphy's God Helmet sessions that end on the left (for example chirp on both sides, then amygdala on the left; 30 + 30 or 20 + 20 min) cycle the amygdala signal clockwise around a 4-coil cross on the left temporal lobe (about FT7, C5, TP7, T9; the site names are an inference). This preset runs that 30-min left phase on its own, so it is a project construct, not one of his sessions. The step time is not published; 125 ms per coil is an inference (as in god-helmet-classic). The amygdala 'burstx' template is proprietary and is approximated by the built-in accelerating burst (6 to 30 Hz, 230 points of 3 ms = 0.69 s) with the vendor's standard 4 s of silence. Murphy's \"left positive, right negative\" rule grew out of two small Persinger-lab studies (right-temporal burst-firing raised apprehension in women, Richards 1992; right-hemisphere LTP-pattern fields felt more pleasant than left, Persinger, Richards & Koren 1994) and from user reports; mainstream studies find that both amygdalae respond to pleasant and unpleasant stimuli. Murphy suggests a 10-min test of a signal on each side first, starting on the side usually unpleasant for it (the right for the amygdala signal), because some people have 'reversed' structures. If anger appears during or after a session, don't use it again; for lethargy or fogginess after one-sided sessions Murphy offers a frontal 'stopping unwanted effects' session (murphy-frontal-reset). Not for people prone to anger, or with epilepsy, a psychiatric diagnosis or medication. Independent double-blind tests found no effect of the field (Granqvist 2005; Gendle & McGrath 2012).",
+  "setting": "Quiet, dim room, seated or reclined; darkness and silence only if you want effects during the session.",
+  "schedule": "At most weekly (or every 72 h), never on consecutive days; a series of six, then a 21-day break. At most one 10-min side test every 72 h.",
+  "targets": ["left-amygdala", "left-temporal-pole"],
+  "source": "Murphy, God Helmet: chirp first and amygdala (left) second https://www.god-helmet.com/wp/god-helmet/god_helm_1_mod40c_bi_2_bx_l.htm ; Murphy, God Helmet session list https://www.god-helmet.com/wp/god-helmet/koren_session_list.htm ; Murphy, Shakti test sessions https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/testsession.htm ; Murphy, 'Reversed' or 'left-handed' brain structures https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/reversed.htm ; Murphy, Enlightenment lecture https://youtu.be/zqrpKUTMXgY?t=714 ; Murphy, Sacred Body lecture https://youtu.be/R8GIKT8TY1k?t=2112 ; McTaggart interview with Murphy (2006) https://youtu.be/K-0PHkfvEhg ; Persinger, Richards & Koren 1994, Int J Neurosci 79:191 https://pubmed.ncbi.nlm.nih.gov/7744561/ ; Richards, Koren & Persinger 1992, Percept Mot Skills 75:667 https://pubmed.ncbi.nlm.nih.gov/1408634/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": { "sites": ["FT7", "C5", "TP7", "T9", "", "", "", ""], "order": [1, 0, 3, 2] },
   "fadeInS": 10,
   "fadeOutS": 10,
   "phases": [
-    {"name": "Left burst-firing", "minutes": 25, "pattern": {"type": "burst"}, "spatial": {"mode": "left"}}
+    {"name": "Left amygdala burst-firing, clockwise", "minutes": 30, "pattern": {"type": "burst", "f0": 6, "f1": 30, "sweepMs": 690, "gapMs": 4000, "pointMs": 3}, "spatial": {"mode": "cycle", "side": "left", "dir": "cw", "dwellMs": 125}}
   ]
 }

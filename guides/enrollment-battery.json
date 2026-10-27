@@ -1,0 +1,188 @@
+{
+  "id": "enrollment-battery",
+  "name": "Enrollment battery (one time)",
+  "category": "questionnaire",
+  "summary": "A one-time set of trait questionnaires, done at least a day (better several days) before your first helmet session or psi trial, so that the answers neither prime the sessions nor are coloured by them: a safety screen, background, personality (TIPI), belief and expectancy, imagination and absorption (IPIP), suggestibility (Short Suggestibility Scale) and sensed-presence proneness (SenPQ). Only freely usable instruments are included; licensed scales such as the Tellegen Absorption Scale, the Australian Sheep-Goat Scale, the transliminality scale and mysticism scales are left out. The order follows the research synthesis; it is an untested design.",
+  "evidence": "claim",
+  "minutes": 24,
+  "requires": { "headphones": false, "helmet": "none", "pool": false },
+  "setting": "At home, unhurried, in one sitting of about 25 minutes. Answer honestly; there are no right answers.",
+  "cautions": "If the safety screen flags epilepsy or seizures, psychosis or bipolar disorder, current psychiatric treatment, an implanted electronic device, or pregnancy, do not use the helmet. The scores are research covariates, not diagnoses, and the app gives no interpretation of them.",
+  "sources": [
+    {
+      "title": "Gosling SD, Rentfrow PJ, Swann WB (2003) Ten-Item Personality Inventory (free for any use)",
+      "url": "https://gosling.psy.utexas.edu/scales-weve-developed/ten-item-personality-measure-tipi/"
+    },
+    { "title": "International Personality Item Pool (public domain)", "url": "https://ipip.ori.org/" },
+    {
+      "title": "Kotov RI, Bellman SB, Watson DB (2004) Multidimensional Iowa Suggestibility Scale, brief manual (Short Suggestibility Scale)",
+      "url": "https://medicine.stonybrookmedicine.edu/sites/default/files/MISSBriefManual.pdf"
+    },
+    {
+      "title": "Barnby JM, Bell V (2017) The Sensed Presence Questionnaire (SenPQ): initial psychometric validation (open licence; items on OSF)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5372834"
+    },
+    {
+      "title": "Lifshitz M, van Elk M, Luhrmann TM (2019) Absorption and spiritual experience: a review of evidence and potential mechanisms. Conscious Cogn",
+      "url": "https://thefpr.org/wp-content/uploads/Lifshitz-van-Elk-Luhrmann-Consciousness-and-Cognition.pdf"
+    },
+    {
+      "title": "Granqvist P, Larsson M (2006) Contribution of religiousness in the prediction and interpretation of mystical experiences in a sensory deprivation context",
+      "url": "https://europepmc.org/abstract/MED/16967739"
+    },
+    {
+      "title": "Irving et al. (2024) The relationship between transliminality, hypnotic and imaginative suggestibility. Acta Psychol 243:104125",
+      "url": "https://strathprints.strath.ac.uk/87921/1/Irving-etal-AP-2024-The-relationship-between-transliminality-hypnotic-and-imaginative-suggestibility.pdf"
+    },
+    {
+      "title": "Mossbridge J, Radin D (2021) smartphone-based psi tests with TIPI and belief items. J Anomalous Exp Cogn 1:78-113",
+      "url": "https://journals.lub.lu.se/jaex/article/download/23419/20896"
+    },
+    {
+      "title": "Lush P et al. (2018) The Sussex-Waterloo Scale of Hypnotizability (SWASH). Neurosci Conscious",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6007130"
+    }
+  ],
+  "steps": [
+    {
+      "id": "consent",
+      "title": "About this battery",
+      "minutes": 2,
+      "instructions": "These questionnaires describe you, not your sessions. Your answers stay on this phone unless you export them, and you can stop at any time. You must be 18 or older.\n\nDo this battery on a different day from any session; doing them together can colour both.",
+      "audio": null,
+      "advance": "manual"
+    },
+    {
+      "id": "screen",
+      "title": "Safety screen",
+      "minutes": 2,
+      "instructions": "Answer each question. If any answer is yes, don't use the helmet; the questionnaires and psi tests without the helmet are still fine.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          {
+            "key": "epilepsy",
+            "label": "Epilepsy, seizures or photosensitivity (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          },
+          {
+            "key": "psychosis",
+            "label": "Psychosis or bipolar disorder, ever (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          },
+          {
+            "key": "psych-treatment",
+            "label": "Current psychiatric treatment (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          },
+          {
+            "key": "implant",
+            "label": "An implanted electronic device (pacemaker, cochlear implant...) (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          },
+          { "key": "pregnant", "label": "Pregnant (0 = no, 1 = yes)", "min": 0, "max": 1, "minLabel": "No", "maxLabel": "Yes" }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "background",
+      "title": "Background",
+      "minutes": 3,
+      "instructions": "A few facts about you that the psi and helmet literature reports as possible moderators.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "age", "label": "Age", "min": 18, "max": 100 },
+          { "key": "meditation-years", "label": "Years of regular meditation or similar practice", "min": 0, "max": 50 },
+          { "key": "arts-years", "label": "Years of training in art, music, drama or dance", "min": 0, "max": 50 },
+          { "key": "psi-experiences", "label": "Personal psi experiences you have had (count)", "min": 0, "max": 20 },
+          {
+            "key": "presence-before",
+            "label": "How often you have sensed an unseen presence before",
+            "min": 0,
+            "max": 10,
+            "minLabel": "Never",
+            "maxLabel": "Very often"
+          },
+          {
+            "key": "psychedelics",
+            "label": "Have you ever used psychedelics? (0 = no, 1 = yes)",
+            "min": 0,
+            "max": 1,
+            "minLabel": "No",
+            "maxLabel": "Yes"
+          }
+        ]
+      },
+      "advance": "manual"
+    },
+    {
+      "id": "tipi",
+      "title": "Personality (TIPI)",
+      "minutes": 1,
+      "instructions": "Ten short items on how you see yourself.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "tipi" },
+      "advance": "manual"
+    },
+    {
+      "id": "belief",
+      "title": "Belief and expectancy",
+      "minutes": 2,
+      "instructions": "Questions about belief in ESP, in your own ability, and in what can happen in this app's experiments.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "expectancy" },
+      "advance": "manual"
+    },
+    {
+      "id": "imagination",
+      "title": "Imagination and absorption (IPIP)",
+      "minutes": 6,
+      "instructions": "Items on imagination and becoming absorbed in experiences.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "ipip-imagination" },
+      "advance": "manual"
+    },
+    {
+      "id": "suggestibility",
+      "title": "Suggestibility (SSS)",
+      "minutes": 4,
+      "instructions": "Items on how easily you are influenced by others and by situations.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "sss" },
+      "advance": "manual"
+    },
+    {
+      "id": "presence",
+      "title": "Sensed presence (SenPQ)",
+      "minutes": 3,
+      "instructions": "Items on the feeling that someone is there when nobody is, over the last month.",
+      "audio": null,
+      "input": { "type": "questionnaire", "instrument": "senpq" },
+      "advance": "manual"
+    },
+    {
+      "id": "done",
+      "title": "Done",
+      "minutes": 1,
+      "instructions": "Thank you. Wait at least a day before your first session.\n\nOptional for research: a hypnotic suggestibility test (the Sussex-Waterloo Scale, SWASH, materials on OSF) on yet another day. It is not built into the app.",
+      "audio": null,
+      "advance": "manual"
+    }
+  ]
+}

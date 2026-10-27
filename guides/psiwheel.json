@@ -1,0 +1,76 @@
+{
+  "id": "psiwheel",
+  "name": "Psi-wheel test with heat controls",
+  "category": "self-test",
+  "summary": "Do psi-wheels turn by intention, or by heat, breath and static? A paper or foil wheel balanced on a needle under a glass cover is filmed in three parts: drift with nobody near, a hand-warmer at hand distance with no intention, and intention trials whose direction (clockwise, counter-clockwise or rest) and hand position (near, or more than 1 m away behind a board) are set by dice. Our design, after the Psion's Handbook, Elementary Psionics and Stine's energy-wheel notes. A genuine effect should hold with the hands far away.",
+  "evidence": "unverified",
+  "minutes": 45,
+  "requires": { "headphones": false, "helmet": "none", "pool": false },
+  "setting": "A firm, vibration-free table; a paper or foil wheel balanced on a needle under a glass cover (not plastic, which builds up static); a phone filming from above; a thermometer and a hygrometer; a hand-warmer pack; an insulating board; a die.",
+  "cautions": "Breath, vibration, static and the warmth of your hands all move light rotors. Report the drift and heat-control results next to the intention results. Score from the video only after all trials, ideally by someone who does not know the assigned directions. Decide the number of trials or sessions before you start, keep every result, and report them all.",
+  "sources": [
+    { "title": "Connelly S (2004) The Psion's Handbook. PsiPog (summarised only; the licence forbids excerpts)" },
+    { "title": "Cosimano CW, Elementary Psionics and Psionic Magick (self-published practice books; device and pendulum claims)" },
+    {
+      "title": "Stine GH (1992) Amazing and Wonderful Mind Machines You Can Build (energy-wheel chapter)",
+      "url": "https://archive.org/details/amazing-and-wonderful-mind-machines-you-can-build-"
+    },
+    {
+      "title": "DIA/FTD (1978) Paraphysics R&D - Warsaw Pact, DST-1810S-202-78",
+      "url": "https://archive.org/details/ParaphysicsRDWarsawPact_201609"
+    }
+  ],
+  "steps": [
+    {
+      "id": "setup",
+      "title": "Set up",
+      "minutes": 5,
+      "instructions": "Set up the wheel under the glass, mark the \"near\" hand position, and start filming from above. Note the room temperature and humidity.",
+      "audio": null,
+      "input": { "type": "text", "key": "conditions", "prompt": "Room temperature and humidity at the start" },
+      "advance": "manual"
+    },
+    {
+      "id": "drift",
+      "title": "Drift (nobody near)",
+      "minutes": 5,
+      "instructions": "Step more than 2 m away and leave the wheel alone. Keep filming.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "heat",
+      "title": "Heat control",
+      "minutes": 5,
+      "instructions": "Place the warm hand-warmer where your hands would be, without any intention. Keep filming. This shows how much heat alone moves the wheel.",
+      "audio": null,
+      "advance": "timer"
+    },
+    {
+      "id": "trials",
+      "title": "Intention trials",
+      "minutes": 20,
+      "instructions": "For each 60-second trial, roll the die twice. First roll: 1-2 clockwise, 3-4 counter-clockwise, 5-6 rest. Second roll: 1-3 hands near (cupped at the mark), 4-6 hands far (more than 1 m away, behind the board).\n\nSay the trial number, direction and hand position aloud for the video, then intend that direction (or rest) for 60 seconds. Log each trial here.",
+      "audio": null,
+      "input": { "type": "text", "key": "trial-log", "prompt": "Trial list: number, direction, hands near or far" },
+      "advance": "manual"
+    },
+    {
+      "id": "scoring",
+      "title": "Scoring",
+      "minutes": 10,
+      "instructions": "From the video, measure the net turn in each directional trial (or ask someone who doesn't know the list). A trial matches if the wheel turned the intended way. Chance is 1 in 2 per trial. Report the near and far results separately, next to the drift and heat results.",
+      "audio": null,
+      "input": {
+        "type": "rating",
+        "items": [
+          { "key": "near-match", "label": "Hands near: trials that turned the intended way", "min": 0, "max": 30 },
+          { "key": "near-trials", "label": "Hands near: directional trials", "min": 0, "max": 30 },
+          { "key": "far-match", "label": "Hands far: trials that turned the intended way", "min": 0, "max": 30 },
+          { "key": "far-trials", "label": "Hands far: directional trials", "min": 0, "max": 30 }
+        ]
+      },
+      "advance": "manual"
+    }
+  ]
+}

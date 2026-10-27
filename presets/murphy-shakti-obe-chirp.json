@@ -1,0 +1,21 @@
+{
+  "id": "murphy-shakti-obe-chirp",
+  "name": "Shakti OBE: chirp, right hemisphere",
+  "category": "obe",
+  "evidence": "anecdote",
+  "origin": "Todd Murphy, 8 Coil Shakti OBE recipe",
+  "uT": 1,
+  "summary": "Murphy's OBE recipe for the 8 Coil Shakti with the chirp signal: 30 min over the right hemisphere, in front of and below the right ear and over the right angular gyrus, then sleep about an hour later. Murphy reports that most OBEs came during that later sleep.",
+  "setting": "Lie down in a dark, quiet room. Murphy reports that most OBEs came when users fell asleep about 1 h (or 90 min) after a session, so plan to go to sleep then and use your OBE exercises; he expects it to work more often in 'right-hemispheric' people.",
+  "schedule": "Vendor rules: at most once a week or every 72 h, never on consecutive days; a series of up to 6 sessions, then a 21-day break.",
+  "notes": "Murphy's placement: 'sessions over the right hemisphere (temporal lobes, parietal lobes or the area behind the parietal lobes)', or two coils, 'one coil in front of and below the right ear, and one coil over the angular gyrus on the right side'. Here six coils cover those two spots, FT10 and T10 in front of and below the right ear, TP8, CP6, P6 and P8 around the right angular gyrus (the site names are an inference); all six play together and channels 7-8 stay silent. 30 min, one phase. The Shakti 'modulated 40 Hz chirp' file is proprietary. Murphy relates it to a frequency-modulated pulse 'named for its designer' (taken here to be the Thomas pattern), so it is approximated by a sweep falling from 40 to 6 Hz on 3-ms points, 2.5 s on and 1.5 s off (837 points of 3 ms once every 4 s, after the published FM pattern); neither the 40 Hz modulation nor the build the vendor describes (frequency-modulated gaps, with amplitudes and gap lengths varied in Fibonacci steps) is reproduced. The vendor warns that the chirp can be 'very unpleasant over the right side'; stop if fear comes and do not make it an endurance test. The right angular gyrus is where Blanke et al. 2002 evoked an OBE with implanted electrodes at far higher currents; weak-field effects there are untested. Vendor cautions: word-finding trouble means stop using the signal, and 'There is no such thing as a pushbutton technology for OBEs.' Right-hemisphere-only sessions can bring fear or unease. Not for people with epilepsy or a seizure history; stop at once on fear or any distress. Independent double-blind tests found no effect of God-Helmet-type fields (Granqvist 2005; Gendle & McGrath 2012).",
+  "targets": ["right-angular-gyrus", "right-tpj"],
+  "source": "Murphy, Out of Body Experiences and the 8 Coil Shakti https://www.god-helmet.com/wp/winshakti/rotating/shakti_obe.htm ; Murphy, Shakti demo: Right angular gyrus https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rangularg.htm ; Murphy, Shakti demo: Modulated 40 Hz chirp signal https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/mod40_chirp_consent.htm ; Dixon & Persinger 2001, Int J Neurosci 108:87 (837-point FM pattern, once every 4 s) https://pubmed.ncbi.nlm.nih.gov/11328704/ ; Tiller & Persinger 2002, Percept Mot Skills 94:26 (Thomas pattern, 3-ms points) https://pubmed.ncbi.nlm.nih.gov/11883572/ ; Blanke et al. 2002, Nature 419:269 https://pubmed.ncbi.nlm.nih.gov/12239558/ ; Murphy, Shakti demo: Safety, how often https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/how_often_is_safe.htm ; Murphy, Shakti demo: Taking breaks https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/break.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["FT10", "T10", "TP8", "CP6", "P6", "P8", "", ""]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Chirp, right hemisphere", "minutes": 30, "pattern": {"type": "chirp", "f0": 40, "f1": 6, "sweepMs": 2511, "gapMs": 1489, "pointMs": 3}, "spatial": {"mode": "right"}}
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "persinger-synthetic-ghost-2000",
+  "name": "Synthetic ghost: Thomas pattern right, then burst both sides (Persinger 2000)",
+  "category": "presence",
+  "evidence": "anecdote",
+  "origin": "Persinger, Tiller & Koren (Laurentian University), 2000 case study of one man who had experienced a haunt",
+  "uT": 1,
+  "summary": "Persinger's lab tried to re-create one man's earlier 'haunt': a frequency-modulated (Thomas) pattern over the right hemisphere, then a second pattern through both hemispheres. The lab reported rushes of fear and an apparition during the right-sided pattern and pleasant experiences during the bilateral one, in one unblinded subject.",
+  "notes": "Persinger, Tiller & Koren (2000) exposed one 45-year-old man to 1 uT complex transcerebral fields: a frequency-modulated pattern over the right hemisphere, then a second pattern applied bilaterally. The lab reported that within 10 min of the right-sided pattern he felt 'rushes of fear' that ended in an apparition he judged very similar to his natural one, with 1-2 s paroxysmal 15 Hz complex spikes in the EEG, and that the bilateral pattern brought pleasant experiences. The paper gives no exposure durations ('within 10 min' is an onset latency); 30 + 30 min follows the lab's own two-phase sensed-presence protocol (30 min of the frequency-modulated pattern, then 30 min of BurstX; Saroka 2015) and its stated 20-40 min per pattern. The frequency-modulated pattern is taken to be the Thomas pattern (Saroka equates the two) and plays the exact patent table, 849 points at 3 ms (Buckner 2015), with a 3-ms pause between repeats: the point and interstimulus durations at which this pattern provoked the most seizures in the lab's epileptic rats (Persinger & Belanger-Chellew 1999). The second pattern is not named; the lab's burst-firing pattern stands in for it (an inference from Saroka's protocol). Its point values are unpublished, so an accelerating burst of 230 points at 3 ms (690 ms) once every 4 s (Martin & Persinger 2004; Persinger, Hoang & Baker-Price 2009 give about 0.7 s every 3 s) approximates it. Two static coils per side, T8/TP8 and T7/TP7, approximate 'over the right hemisphere' and 'bilaterally'. Unlike this file, persinger-saroka-2015-sensed-presence plays the Thomas phase on both sides, as Saroka describes, and god-helmet-classic is Murphy's Shiva version (a chirp approximation and a burst stepping around four coils per side). French et al. (2009) based the waveform of their room-scale Haunt study on this paper's; with 79 people the reports were unrelated to condition and best explained by suggestibility. This is n = 1, unblinded, in a man chosen because he had had the experience and who knew the purpose: a case report, not evidence of an effect. Independent double-blind tests found no field effect (Granqvist 2005; Gendle & McGrath 2012). Phase 1 is the part the lab reported as frightening: press Skip to go to phase 2, and stop at once on fear or distress. Not for people with epilepsy or a seizure history, implanted devices or pregnancy; not for anyone with anxiety or trauma symptoms; have someone nearby.",
+  "setting": "Seated in a quiet, dark room with the eyes covered (the lab used blindfolds or opaque goggles in an acoustic chamber); the original subject had EEG recorded throughout.",
+  "schedule": "One session in the original. At most weekly; for a self-test, use the app's Blind option and write down what you felt before unblinding.",
+  "targets": ["right-superior-temporal-gyrus-posterior", "right-tpj", "left-superior-temporal-gyrus-posterior", "left-tpj"],
+  "source": "Persinger, Tiller & Koren 2000, Experimental simulation of a haunt experience and elicitation of paroxysmal electroencephalographic activity by transcerebral complex magnetic fields: induction of a synthetic 'ghost'?, Percept Mot Skills 90:659-674 https://pubmed.ncbi.nlm.nih.gov/10833767/ ; Saroka 2015, PhD thesis, Laurentian University, p. 29 (sensed-presence protocol: 30 min of the frequency-modulated Thomas pattern over both temporoparietal regions, then 30 min of BurstX) https://laurentian.scholaris.ca/items/5260328f-a7c5-4d7b-b8a2-00b943eee977 ; US 6,234,953 B1 (Thomas, Prato, Kavaliers & Persinger), Table 1, Thomas pulse https://patents.google.com/patent/US6234953B1/en ; Buckner et al. 2015, PLoS ONE 10:e0124136 (Thomas pattern: 849 points at 3 ms) https://europepmc.org/article/MED/25875081 ; Persinger & Belanger-Chellew 1999, Percept Mot Skills 89:486 (most seizures in epileptic rats with the Thomas pattern at 3-ms pixel and interstimulus durations) https://pubmed.ncbi.nlm.nih.gov/10597585/ ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Persinger, Hoang & Baker-Price 2009, Electromagn Biol Med 28:374 (burst-firing about 0.7 s every 3 s) https://pubmed.ncbi.nlm.nih.gov/20017628/ ; Martin & Persinger 2004, Neurosci Lett 366:226-229 (burst-firing once every 4 s) https://pubmed.ncbi.nlm.nih.gov/15276252/ ; Persinger to Larhammar, 22 Nov 2004 (20-40 min per pattern) https://web.archive.org/web/2011/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+2.htm ; French, Haque, Bunton-Stasyshyn & Davis 2009, The Haunt project, Cortex 45:619 https://pubmed.ncbi.nlm.nih.gov/18635163/ ; French et al., The Haunt project, accepted manuscript with the full method https://research.gold.ac.uk/4209/2/French_et_al_Haunt_accepted.pdf ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {
+    "sites": ["T7", "TP7", "", "", "T8", "TP8", "", ""]
+  },
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {
+      "name": "Thomas pattern (patent table, 3 ms), right hemisphere",
+      "minutes": 30,
+      "pattern": {
+        "type": "table",
+        "pointMs": 3,
+        "gapMs": 3,
+        "data": [128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,128,140,152,164,176,188,200,212,224,236,248,255,255,0,12,24,78,128,255,200,200,75,75,0,12,36,72,128]
+      },
+      "spatial": {
+        "mode": "right"
+      }
+    },
+    {
+      "name": "Second pattern, both sides (burst-firing stand-in)",
+      "minutes": 30,
+      "pattern": {
+        "type": "burst",
+        "sweepMs": 690,
+        "gapMs": 3310,
+        "pointMs": 3
+      },
+      "spatial": {
+        "mode": "bilateral"
+      }
+    }
+  ]
+}
