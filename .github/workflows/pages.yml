@@ -3,7 +3,7 @@ name: Web app → GitHub Pages
 on:
   push:
     branches: [main]
-    paths: ["webapp/**", "presets/**", ".github/workflows/pages.yml"]
+    paths: ["webapp/**", "presets/**", "docs/**", "README.md", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
