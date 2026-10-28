@@ -59,6 +59,24 @@ The default board is the **ESP32-S3-DevKitC-1** (N8R8/N16R8, firmware env `esp32
 
 On the S3 the pins avoid the strapping pins (0, 3, 45, 46), USB (19, 20) and the pins the octal flash/PSRAM uses on N8R8/N16R8 modules (26–37). The module's logic level is 3.3 V, so no level shifter is needed. Set the module's reference jumper to **1-2 (onboard 2.5 V)**.
 
+## The AD5328 module ("AD5328模块 V1.2")
+
+What the board itself shows (silkscreen and parts, from photos of a V1.2 board):
+
+| Connector | Order on the board | Use |
+|---|---|---|
+| Output terminal block (10 screws) | GND, AO8, AO7, AO6, AO5, AO4, AO3, AO2, AO1, GND | AOx → 2.2 kΩ → coil; either GND screw is the module ground |
+| Logic header H1 (6 pins) | 5V, GND, CLK, DIN, SYNC, LDAC | To the ESP32 (pin table above). CLK, DIN and SYNC pass a 100 Ω resistor array (RN1) on the board |
+| Power terminal (2 screws) | 5V, GND | The same 5 V as H1; use one of them, not both from different supplies |
+| Reference jumper (3 pins, "基准源") | 1 = 2V5, 2 = EX, 3 = GND | **1-2: onboard 2.5 V reference (use this).** Pin 2 alone is the external-reference input. Never bridge 2-3: it shorts the reference to ground |
+| Test pads | 5V, 12V, −12V, VREF, GND | Bench checks (docs/CALIBRATION.md §1) |
+
+Parts:
+- **DAC:** AD5328BRU (TSSOP-16). The date code on the one photographed is 0331 (2003): old stock or a recovered part, so run the bench test before trusting it.
+- **Output amplifiers:** four SGMicro SGM8272 dual op-amps (one amplifier per channel), rated for supplies up to ±18 V ([SGM8272](https://sg-micro.com/product/SGM8272)).
+- **Supply:** an on-board DC-DC converter followed by 78L12 and 79L12 regulators makes ±12 V for the op-amps; LED1 is the power light.
+- **Per channel:** 3 kΩ, 12 kΩ, 30 kΩ and 120 kΩ resistors (codes 302, 123, 303, 124), both pairs in a 1 : 4 ratio. That is a difference amplifier with a gain of 4 between the DAC output and the 2.5 V reference: **V_out = ±4 · (V_DAC − 2.5 V)**. With the DAC set to 0–5 V (GAIN ×2, the firmware default), code 0x800 gives 0 V and the full range is ±10 V. Which input the DAC feeds, and so the sign, cannot be seen from the photos; the bench test shows it. Code 0 (the DAC's power-on state) gives −10 V (or +10 V) on every output, not 0 V, which is why the arming switch is needed.
+
 ## One output channel (×8)
 
 ```

@@ -9,7 +9,7 @@ The module's output stage is undocumented. The firmware assumes:
 
 Verify this before connecting coils:
 
-1. Module jumper on **1-2**, 5 V from a USB supply, ESP32 wired as in docs/WIRING.md, **no coils, arming switch not connected**.
+1. Module jumper on **1-2**, 5 V from a USB supply, ESP32 wired as in docs/WIRING.md, **no coils, arming switch not connected**. First check the module's test pads against GND: **5V** ≈ 5 V, **12V** ≈ +12 V, **−12V** ≈ −12 V, **VREF** ≈ 2.50 V. If VREF reads 0 V or drifts, the reference jumper is on 2-3 or missing (docs/WIRING.md, "The AD5328 module").
 2. Flash the firmware (`cd firmware && pio run -t upload`) and connect the app (Connect → GodHelmet-XXXX).
 3. **Power-on state.** Before the ESP32 boots (hold its EN button), measure AO1…AO8 against GND. Expect ≈ −10 V (DAC code 0). This is why the arming switch exists.
 4. **After boot.** All outputs should read **0 V ± 20 mV** (mid-scale).
