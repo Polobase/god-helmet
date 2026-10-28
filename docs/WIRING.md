@@ -91,6 +91,19 @@ Parts:
 - The coil is 4.2 Ω. Without the resistor, ±10 V would try to push 2.4 A through it, a dead short for the module's output op-amps and about 100× the intended field.
 - With 2.2 kΩ, current is at most 10 V / 2204 Ω = **4.54 mA**: about 3–6 µT at the cortex and about 100 µT at the coil face.
 - Resistor dissipation is at most 45 mW.
+
+**Maximum current per pin.**
+
+| Pin | Case | Current |
+|---|---|---|
+| AO1–AO8 → 2.2 kΩ → coil | Full scale: ±9.995 V over 2204 Ω (resistor + coil + 2 m of cable) | **4.53 mA** (45 mW in the resistor, 0.09 mW in the coil) |
+| AO1–AO8 | Tolerances: resistor 1 % low, module gain or reference high (its resistors are 3-digit-code parts, probably 5 %), output ±10.5 V | about 4.8 mA |
+| AO1–AO8 | Fault: amplifier stuck at its rail, about ±11 V on the ±12 V supply | about **5.0 mA, the hard ceiling** (≈ 9.4 µT at 20 mm, 55 mW in the resistor) |
+| AO1–AO8 without the resistor | Never: ±10 V into 4.2 Ω | limited only by the op-amp's short-circuit current, about 100× the intended field |
+| All 8 outputs together | Same sign, full scale | 36 mA from one ±12 V rail (78L12/79L12: 100 mA) |
+| GPIO4 → 330 Ω → PhotoMOS LED | (3.3 V − 1.2 V) / 330 Ω | about 6 mA: enough to switch the AQY212EH reliably, well under the ESP32's 20 mA default drive |
+| CLK, DIN, SYNC, LDAC, STOP | Logic inputs | microamps (STOP: about 0.07 mA through the internal pull-up when pressed) |
+
 - Inductance: τ = L/R = 1.9 µs, so the coil behaves as a resistor at these frequencies and no flyback diode is needed.
 
 **Why the arming switch.**
