@@ -34,14 +34,15 @@ Result startSession(engine::Session* session, float fieldUT, bool blind, bool sh
 Result startFromDoc(const mj::Value& doc, const String& presetId, double fieldUT, bool blind);
 
 struct TestRequest {
-  String mode = "dc";       // "dc" (one coil), "rotate" (slow rotation), "led" (one output,
-                            // + then - every second, for LEDs in place of a coil), "leds" (AO1..AO8 in turn)
+  String mode = "dc";       // "dc" (one coil), "rotate" (slow rotation), "led" (one output
+                            // flashing + then -, for LEDs in place of a coil), "leds" (AO1..AO8 in turn)
   float mA = 1.0f;          // |mA| <= limits::kMaxTestMA
   uint32_t seconds = 30;    // 1..limits::kMaxTestSeconds
   int channel = 0;          // dc: 0..7
   String layout = "temporal";
   bool ccw = true;          // rotate
   float dwellMs = 1000;     // rotate
+  float blinkHz = 1.0f;     // led/leds: flashes per second of each LED, 0.1..20; 0 = rising 0.5 to 10 Hz
 };
 // Calibration and wiring checks; never logged.
 Result startTest(const TestRequest& t);

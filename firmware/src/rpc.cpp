@@ -133,6 +133,7 @@ Reply test(const mj::Value& v) {
   t.layout = v["layout"].str("temporal");
   t.ccw = std::string(v["dir"].str("ccw")) != "cw";
   t.dwellMs = static_cast<float>(v["dwellMs"].num(1000));
+  t.blinkHz = static_cast<float>(v["blinkHz"].num(1.0));
   return toReply(control::startTest(t));
 }
 

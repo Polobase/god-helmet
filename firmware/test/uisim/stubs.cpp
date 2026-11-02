@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "bench.h"
 #include "ble.h"
 #include "config.h"
 #include "control.h"
@@ -280,13 +281,28 @@ Result startTest(const TestRequest& t) {
   gRun.startMs = sim::nowMs;
   gRun.totalMs = t.seconds * 1000;
   gRun.testMA = t.mA;
+  if (t.mode == "led" || t.mode == "leds") {  // the firmware's own LED test session
+    engine::Session s;
+    std::string err;
+    if (!engine::ledTestSession(s, t.mode == "led" ? t.channel : -1, t.blinkHz, t.seconds, &err)) {
+      gRun = Running();
+      r.ok = false;
+      r.error = err.c_str();
+      return r;
+    }
+    gRun.name = s.name;
+    gRun.totalMs = 0;
+    for (int i = 0; i < s.phaseCount; ++i) {
+      gRun.phases.emplace_back(s.phases[i].name, s.phases[i].durationMs);
+      gRun.totalMs += s.phases[i].durationMs;
+    }
+    return r;
+  }
   char name[96];
   if (t.mode == "dc") std::snprintf(name, sizeof name, "DC test CH%d %.2f mA", t.channel + 1, t.mA);
-  else if (t.mode == "led") std::snprintf(name, sizeof name, "LED test AO%d", t.channel + 1);
-  else if (t.mode == "leds") std::snprintf(name, sizeof name, "LED test AO1-AO8");
   else std::snprintf(name, sizeof name, "Slow rotation test %.2f mA", t.mA);
   gRun.name = name;
-  gRun.phases.emplace_back(t.mode == "dc" ? "DC" : t.mode == "leds" ? "Each output 2 s: + then -" : t.mode == "led" ? "+ then -" : "Rotate", gRun.totalMs);
+  gRun.phases.emplace_back(t.mode == "dc" ? "DC" : "Rotate", gRun.totalMs);
   return r;
 }
 bool rate(uint32_t, int rating, const String&, String& json, String&) {

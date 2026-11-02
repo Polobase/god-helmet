@@ -60,7 +60,7 @@ Implementations:
 | `session.stop` | – | fades out over 2 s |
 | `session.skip` | – | next phase (after the last phase: stop) |
 | `session.field` | `fieldUT` | live intensity change, clamped to `maxFieldUT` |
-| `test` | `mode` `dc`/`rotate`/`led` (one output: 0.8 s +, pause, 0.8 s −, for two LEDs in place of a coil)/`leds` (the same on AO1 to AO8 in turn, 2 s each), `channel`, `mA` (≤ 4.6), `seconds` (≤ 120), `layout`, `dir`, `dwellMs` | `logId: 0` (not logged) |
+| `test` | `mode` `dc`/`rotate`/`led` (one output flashing +, pause, −, pause, for two LEDs in place of a coil)/`leds` (the same on AO1 to AO8 in turn, 2 s each), `channel`, `mA` (≤ 4.6), `seconds` (≤ 120), `layout`, `dir`, `dwellMs`, `blinkHz` (`led`/`leds`: flashes per second of each LED, 0.1–20, default 1; 0 = 0.5, 1, 2, 5, 10 Hz in turn, `seconds`/5 each, at least one round of AO1 to AO8 for `leds`) | `logId: 0` (not logged) |
 | `log.list` | `offset`, `limit` (≤ 10) | `total`, `items` (newest first; unrated blind sessions show `condition: "hidden"`) |
 | `log.rate` | `id`, `rating` 0–10, `notes` | the entry with its condition revealed; refused while that session is still running, and for a trial's session until the trial is revealed or aborted |
 | `trial.new` | `mode` `rv`/`telepathy`, `manifestHash`, `sets` `[{id, size}]`, optional `session` + `presetId` + `blind` + `fieldUT` | public trial |

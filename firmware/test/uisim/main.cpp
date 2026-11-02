@@ -218,6 +218,17 @@ int main(int argc, char** argv) {
   shot("settings-screen-on");
   tap(6, "led test");
   shot("led-test");
+  for (int i = 0; i < 4; ++i) tap(6, "faster");  // 1 Hz -> 2, 5, 10 Hz -> rising
+  shot("led-test-rising");
+  tap(3, "this output");
+  run(10000);
+  expect(seq::busy() && std::string(seq::status().phaseName).find("1 Hz") != std::string::npos,
+         "rising LED test: 1 Hz after 8 s");
+  shot("led-test-rising-running");
+  tapAt(120, 290);  // STOP
+  run(400);
+  tap(5, "slower");  // rising -> 10 Hz
+  expect(ui::button(4) != nullptr, "back on the LED test after STOP");
   tap(4, "all in turn");
   run(3000);
   expect(seq::busy(), "LED test running");

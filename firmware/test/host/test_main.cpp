@@ -10,6 +10,7 @@
 
 #include "ad5328_words.h"
 #include "astro.h"
+#include "bench.h"
 #include "bleframe.h"
 #include "drive.h"
 #include "minijson.h"
@@ -819,45 +820,87 @@ static int dumpReference(const char* dir, const char* outPath) {
 
 // The LED output test (control.cpp, test mode "leds"): AO1..AO8 in turn, 2 s
 // each, + for 0.8 s then - for 0.8 s, nothing on the other outputs.
+// Drives on all eight outputs at `when` (ms from the start); runner time only moves forward.
+static void ledAt(const Session& s, SessionRunner& r, double& t, double when, float v[kChannels]) {
+  const SessionRunner::Frame f = r.advance(when - t);
+  t = when;
+  render(s, f, v);
+}
+
 static void testLedChase() {
-  std::printf("LED test chase\n");
-  Session s;
-  s.fadeInMs = 500;
-  s.fadeOutMs = 500;
-  s.phaseCount = 1;
-  Phase& ph = s.phases[0];
-  ph.durationMs = 60000;
-  ph.pattern = patternDefaults(PatternType::Pulse);
-  ph.pattern.pulseMs = 800;
-  ph.pattern.gapMs = 200;
-  ph.pattern.alternate = true;
-  s.geometry = Geometry();
-  ph.spatial.mode = SpatialMode::Rotate;
-  ph.spatial.ccw = true;
-  ph.spatial.dwellStartMs = ph.spatial.dwellEndMs = 2000;
-  ph.spatial.dwellStepMs = 0;
-  SessionRunner r;
-  r.start(&s);
-  float v[kChannels];
-  double t = 0;
-  for (int round = 0; round < 2; ++round) {
-    for (int k = 0; k < 8; ++k) {
-      for (int half = 0; half < 2; ++half) {
-        const double at = 16000.0 * round + 2000.0 * k + (half ? 1400 : 600);
-        const SessionRunner::Frame f = r.advance(at - t);
-        t = at;
-        render(s, f, v);
-        for (int ch = 0; ch < kChannels; ++ch) {
-          if (ch == k) CHECK(half ? v[ch] < -0.99f : v[ch] > 0.99f);
-          else CHECK(v[ch] == 0.0f);
+  std::printf("LED test (blink rates)\n");
+  std::string err;
+  // AO1..AO8 in turn at 1 Hz: each output 2 s = two blinks of + (250 ms), pause, - (250 ms), pause.
+  {
+    Session s;
+    CHECK(ledTestSession(s, -1, 1.0f, 60, &err));
+    CHECK(s.phaseCount == 1 && s.phases[0].durationMs == 60000);
+    SessionRunner r;
+    r.start(&s);
+    float v[kChannels];
+    double t = 0;
+    for (int round = 0; round < 2; ++round) {
+      for (int k = 0; k < 8; ++k) {
+        for (int blink = 0; blink < 2; ++blink) {
+          const double base = 16000.0 * round + 2000.0 * k + 1000.0 * blink;
+          const double marks[4] = {125, 375, 625, 875};  // +, pause, -, pause
+          for (int m = 0; m < 4; ++m) {
+            if (base + marks[m] < 600) continue;  // fade-in
+            ledAt(s, r, t, base + marks[m], v);
+            for (int ch = 0; ch < kChannels; ++ch) {
+              if (ch != k || m == 1 || m == 3) CHECK(v[ch] == 0.0f);
+              else CHECK(m == 0 ? v[ch] > 0.99f : v[ch] < -0.99f);
+            }
+          }
         }
       }
-      const SessionRunner::Frame gap = r.advance(2000.0 * k + 16000.0 * round + 1900 - t);  // pause after -
-      t = 2000.0 * k + 16000.0 * round + 1900;
-      render(s, gap, v);
-      CHECK(v[k] == 0.0f);
     }
   }
+  // One output, rising: 0.5, 1, 2, 5, 10 Hz, 8 s each; each step starts on its + pulse.
+  {
+    Session s;
+    CHECK(ledTestSession(s, 2, 0.0f, 40, &err));
+    CHECK(s.phaseCount == kLedRisingSteps);
+    SessionRunner r;
+    r.start(&s);
+    float v[kChannels];
+    double t = 0, start = 0;
+    for (int i = 0; i < s.phaseCount; ++i) {
+      CHECK(s.phases[i].durationMs == 8000);
+      CHECK(std::string(s.phases[i].name).find(i == 0 ? "0.5 Hz" : i == 4 ? "10 Hz" : " Hz") != std::string::npos);
+      const double q = 250.0 / kLedRisingHz[i];  // a quarter blink
+      int flashes = 0;
+      for (double at = start + q / 2; at < start + 8000 - 600; at += q) {  // clear of the fades
+        if (at < 600) continue;
+        ledAt(s, r, t, at, v);
+        const int quarter = static_cast<int>((at - start) / q) % 4;
+        CHECK(quarter == 0 ? v[2] > 0.99f : quarter == 2 ? v[2] < -0.99f : v[2] == 0.0f);
+        if (quarter == 0) ++flashes;
+        for (int ch = 0; ch < kChannels; ++ch) if (ch != 2) CHECK(v[ch] == 0.0f);
+      }
+      CHECK(flashes >= 8 * kLedRisingHz[i] * 0.85f - 1 && flashes <= 8 * kLedRisingHz[i] + 1);  // the rate changes
+      start += 8000;
+    }
+  }
+  // AO1..AO8 rising: each step is at least one whole round (8 x 2 s).
+  {
+    Session s;
+    CHECK(ledTestSession(s, -1, 0.0f, 60, &err));
+    CHECK(s.phaseCount == kLedRisingSteps);
+    for (int i = 0; i < s.phaseCount; ++i) CHECK(s.phases[i].durationMs == 16000);
+    CHECK(ledTestSession(s, -1, 0.0f, 80, &err) && s.phases[4].durationMs == 16000);
+  }
+  // A slow rate: one output per whole blink when that is longer than 2 s.
+  {
+    Session s;
+    CHECK(ledTestSession(s, -1, 0.25f, 60, &err));
+    CHECK(s.phases[0].spatial.dwellStartMs == 4000.0f);
+  }
+  Session s;
+  CHECK(!ledTestSession(s, 8, 1.0f, 60, &err));
+  CHECK(!ledTestSession(s, 0, 30.0f, 60, &err));
+  CHECK(!ledTestSession(s, 0, -1.0f, 60, &err));
+  CHECK(!ledTestSession(s, 0, 1.0f, 0, &err));
 }
 
 int main(int argc, char** argv) {

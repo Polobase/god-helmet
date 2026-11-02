@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -110,6 +111,7 @@ bool gModuleConfirmed = false;
 Screen gModuleBack = Screen::Settings;
 int gModStep = 0, gModCh = 0;
 int gLedCh = 0;
+int gLedRate = 1;  // index into kLedRates: 1 Hz
 
 // Number editor (head size, clock, brightness, limits, coil test)
 struct Field {
@@ -1535,24 +1537,40 @@ void onModuleCheck(uint8_t id) {
 // ---------------------------------------------------------------- LED test
 
 constexpr float kLedTestMA = 4.0f;  // about 3 mA through a red LED behind the 2.2 kOhm resistor
+// Blink rates to pick from; 0 = rising, 0.5 to 10 Hz in one run.
+constexpr float kLedRates[] = {0.5f, 1.0f, 2.0f, 5.0f, 10.0f, 0.0f};
+constexpr int kLedRateCount = sizeof kLedRates / sizeof kLedRates[0];
+
+String ledRateName(float hz) {
+  if (hz == 0.0f) return "0.5 to 10 Hz";
+  char buf[16];
+  std::snprintf(buf, sizeof buf, "%g Hz", hz);
+  return buf;
+}
 
 void drawLedTest() {
   clear();
   header("LED test", true);
   fontSmall();
-  drawWrapped("Wire two LEDs where a coil goes, one each way round (or one red/green two-leg LED), from the "
-              "2.2 kOhm resistor to GND. One lights on +, the other on -.",
-              kMargin, kTop, kW - 2 * kMargin, color::kText, 134);
-  drawButton(addButton(kMargin, 136, 56, 40, 1, "", Style::Normal, 0, Icon::Left));
-  drawButton(addButton(kW - kMargin - 56, 136, 56, 40, 2, "", Style::Normal, 0, Icon::Right));
+  drawWrapped("Two LEDs where a coil goes, one each way round, from the 2.2 kOhm resistor to GND.",
+              kMargin, kTop, kW - 2 * kMargin, color::kText, 88);
+  drawButton(addButton(kMargin, 92, 48, 36, 1, "", Style::Normal, 0, Icon::Left));
+  drawButton(addButton(kW - kMargin - 48, 92, 48, 36, 2, "", Style::Normal, 0, Icon::Right));
+  drawButton(addButton(kMargin, 134, 48, 36, 5, "", Style::Normal, 0, Icon::Left));
+  drawButton(addButton(kW - kMargin - 48, 134, 48, 36, 6, "", Style::Normal, 0, Icon::Right));
   fontBold();
-  text("AO" + String(gLedCh + 1), kW / 2, 156, color::kText, textdatum_t::middle_center);
-  drawButton(addButton(kMargin, 182, 108, 44, 3, "This output", Style::Primary));
-  drawButton(addButton(kW - kMargin - 108, 182, 108, 44, 4, "All in turn"));
+  text("AO" + String(gLedCh + 1), kW / 2, 110, color::kText, textdatum_t::middle_center);
+  text(ledRateName(kLedRates[gLedRate]), kW / 2, 152, color::kAccent, textdatum_t::middle_center);
+  drawButton(addButton(kMargin, 178, 108, 44, 3, "This output", Style::Primary));
+  drawButton(addButton(kW - kMargin - 108, 178, 108, 44, 4, "All in turn"));
   fontSmall();
-  drawWrapped("Runs 60 s; STOP ends it. All in turn: AO1 to AO8, 2 s each. No LED lights: Module check. Only "
-              "one lights: the other is missing or reversed.",
-              kMargin, 232, kW - 2 * kMargin, color::kMuted, kH - 2);
+  drawWrapped(kLedRates[gLedRate] == 0.0f
+                  ? "Flashes at 0.5, 1, 2, 5, then 10 Hz. "
+                    "One LED on +, the other on -. An LED that stays lit, even with no test running: "
+                    "the module gets no data (Module check)."
+                  : "Each LED flashes at this rate, one on +, the other on -. An LED that stays lit, even "
+                    "with no test running: the module gets no data (Module check).",
+              kMargin, 228, kW - 2 * kMargin, color::kMuted, kH - 2);
 }
 
 void onLedTest(uint8_t id) {
@@ -1561,12 +1579,18 @@ void onLedTest(uint8_t id) {
   } else if (id == 1 || id == 2) {
     gLedCh = (gLedCh + (id == 2 ? 1 : 7)) % 8;
     drawLedTest();
+  } else if (id == 5 || id == 6) {
+    gLedRate = (gLedRate + (id == 6 ? 1 : kLedRateCount - 1)) % kLedRateCount;
+    drawLedTest();
   } else if (id == 3 || id == 4) {
+    const float hz = kLedRates[gLedRate];
     control::TestRequest t;
     t.mode = id == 3 ? "led" : "leds";
     t.channel = gLedCh;
     t.mA = kLedTestMA;
-    t.seconds = 60;
+    t.blinkHz = hz;
+    // Rising: five steps, 8 s on one output or one 16 s round of AO1..AO8 each.
+    t.seconds = hz != 0.0f ? 60 : id == 3 ? 40 : 80;
     const control::Result r = control::startTest(t);
     if (!r.ok) {
       message("Not started", r.error, Screen::LedTest);

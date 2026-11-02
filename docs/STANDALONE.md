@@ -99,9 +99,13 @@ Settings in detail:
   **Module OK** confirms the module until the next power-on.
 - **LED test:** checks the outputs without coils or a multimeter.
   - **Wiring:** in place of a coil, two LEDs side by side and opposite ways round, from the coil's 2.2 kΩ resistor to GND. A two-leg red/green LED works too.
-  - **What it does:** the output alternates +4 mA and −4 mA, 0.8 s each with a short pause, so one LED lights, then the other. The resistor keeps the LEDs at about 3 mA.
+  - **What it does:** each LED flashes at the rate you pick: +4 mA, pause, −4 mA, pause, a quarter of a blink each, so one LED flashes, then the other. The resistor keeps the LEDs at about 3 mA.
+  - **Rate:** 0.5, 1, 2, 5 or 10 Hz, or **0.5 to 10 Hz**: 8 s at each rate on one output (40 s), or one round of AO1 to AO8 at each rate (80 s). The session screen shows the current rate. If the flashing follows the rate you picked, the board is driving that output.
   - **Modes:** **This output** tests the selected AO. **All in turn** steps AO1 to AO8, 2 s each.
-  - **What you see:** neither LED lights → run the Module check. Only one lights → the other is missing or the wrong way round.
+  - **What you see:**
+    - Neither LED lights → run the Module check.
+    - Only one lights → the other is missing or the wrong way round.
+    - An LED lights all the time, also when no test runs → the module gets no data. It still holds its power-up output of about −10 V. Check CLK (IO18), DIN (IO23), SYNC (IO27) and the GND wire, then the Module check.
 
   Use two LEDs rather than one: on its own, a single LED gets up to 9 V in reverse on the − half, more than LEDs are rated for.
 - **Coil test:** a steady current through one coil (**DC test**, for the bench test and the µT/mA calibration in [CALIBRATION.md](CALIBRATION.md)), or each coil in turn (**Rotate**, to check the wiring). Measure the field 20 mm from the coil face, divide by the mA, enter it as **µT per mA** for that coil, and **Save**.
