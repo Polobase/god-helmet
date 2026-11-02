@@ -34,7 +34,7 @@ ls "$LGFX"/lgfx/v1/*.cpp "$LGFX"/lgfx/v1/misc/*.cpp "$LGFX"/lgfx/v1/panel/*.cpp 
     src="$1"; obj="$BUILD/obj/$(basename "$src").o"
     [ "$obj" -nt "$src" ] && exit 0
     case "$src" in
-      *.c) ${CC:-cc} -O1 -w $SYSROOT $SDL_CFLAGS -I"$LGFX" -c "$src" -o "$obj" ;;
+      *.c) ${CC:-cc} -std=gnu11 -O1 -w $SYSROOT $SDL_CFLAGS -I"$LGFX" -c "$src" -o "$obj" ;;
       *) ${CXX:-c++} -std=c++17 -O1 -w $SYSROOT $SDL_CFLAGS -I"$LGFX" -c "$src" -o "$obj" ;;
     esac' _
 
