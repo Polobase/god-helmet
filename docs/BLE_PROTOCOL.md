@@ -1,11 +1,12 @@
-# Bluetooth LE protocol
+# Bluetooth LE and USB protocol
 
-The web app (webapp/, served from GitHub Pages) talks to the helmet with **Web Bluetooth**. Any client that follows this page can control the helmet.
+The web app (webapp/, served from GitHub Pages) talks to the helmet with **Web Bluetooth**, or over a USB cable with **Web Serial**. Both carry the same JSON requests and responses ([below](#requests-and-responses)). Any client that follows this page can control the helmet.
 
-| Platform | Browser |
-|---|---|
-| Android, macOS, Windows, Linux, ChromeOS | Chrome or Edge |
-| iPhone / iPad | **Bluefy** (Safari has no Web Bluetooth) |
+| Platform | Bluetooth | USB |
+|---|---|---|
+| macOS, Windows, Linux, ChromeOS | Chrome or Edge | Chrome or Edge |
+| Android | Chrome or Edge | – |
+| iPhone / iPad | **Bluefy** (Safari has no Web Bluetooth) | – |
 
 ## GATT
 
@@ -35,6 +36,22 @@ Implementations:
 - `firmware/lib/bleframe` (C++, host-tested);
 - `webapp/src/ble/frame.js` (JS, tested against the same cases).
 
+## USB
+
+One JSON message per line at 115200 baud (the chips' own USB ignores the baud rate). Implementations: `firmware/src/usblink.cpp`, `webapp/src/ble/serial.js` (tested against a fake board).
+
+```
+→ {"c":1234567,"id":7,"op":"hello"}\n
+← @{"c":1234567,"id":7,"ok":true,"data":{...}}\n
+```
+
+- **Replies** start with `@`. Every other line from the helmet is log text (the boot log, errors), so a terminal program shows both.
+- **Requests** are lines that start with `{`, up to 96 KB, like over Bluetooth. Other lines are ignored.
+- **No status pushes:** the app asks with `status`, every 0.5 s while running and every 2 s idle. Each request counts as the app being connected (status LED, `keepaliveS`).
+- **Opening the port:** the app turns RTS off, then DTR. Auto-reset circuits, and the chips' own USB, restart the board while RTS is on and DTR is off; this order never produces that.
+- **Restarts:** the first line after a restart is `God helmet controller <version> (<board>, <chip>)`. Seeing it means the board restarted, and any session on it has ended.
+- **Two USB sockets:** on the S3, C3 and C6 both work, the chip's own USB and the bridge chip's UART.
+
 ## Requests and responses
 
 ```json
@@ -43,7 +60,7 @@ Implementations:
 ← {"c": 1234567, "id": 8, "ok": false, "error": "a session is already running"}
 ```
 
-- `c` is a random tag per app. Responses are notified to every connected app, so each app keeps only its own.
+- `c` is a random tag per app. Bluetooth responses are notified to every connected app, so each app keeps only its own.
 - `id` matches a response to its request.
 - The helmet handles requests one at a time.
 
@@ -51,7 +68,8 @@ Implementations:
 
 | op | Parameters | Returns |
 |---|---|---|
-| `hello` | – | `firmware`, `protocol`, `board`, `calibrated`, `safetyAccepted`, `maxReachableUT`, `maxFieldUT`, `defaultFieldUT`, `lastSessionEpoch`, `minIntervalS`, `freeHeap`, `fsUsed`, `fsTotal`, `env` |
+| `hello` | – | `firmware`, `protocol`, `board`, `chip` (e.g. `ESP32-C3`), `transports` (`["ble","usb"]`, or `["usb"]` with Bluetooth off), `calibrated`, `safetyAccepted`, `maxReachableUT`, `maxFieldUT`, `defaultFieldUT`, `lastSessionEpoch`, `minIntervalS`, `freeHeap`, `fsUsed`, `fsTotal`, `env` |
+| `status` | – | the live status (the same JSON as the Bluetooth status notification) |
 | `time.set` | `epochMs` | `env` (the app sends its clock on every connect) |
 | `env.set` | `kp` (0–9), `ap`, `source` | `env` |
 | `settings.get` | – | settings (below) |

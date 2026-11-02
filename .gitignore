@@ -14,3 +14,6 @@ research/data/
 
 # SD-card program pack output (npm run sd-pack -- <dir>)
 godhelmet/
+
+# Firmware images for the web installer (firmware/scripts/web_bundle.sh; CI builds them)
+webapp/public/firmware/

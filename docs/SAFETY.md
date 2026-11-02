@@ -13,6 +13,7 @@ Evidence words follow the project's scale (see [PRESET_FORMAT.md](PRESET_FORMAT.
 - **Static fields.** The DC tests in the **Setup** tab (calibration and wiring check) and the DC program drive a constant current, and unipolar pulse or table signals add a steady part. With DC at the full 4.54 mA, the static field is about 0.47 mT at the coil face and 0.2 mT at the scalp. ICNIRP says implanted devices are generally not affected by static fields below 0.5 mT ([ICNIRP 2009](https://www.icnirp.org/cms/upload/publications/ICNIRPstatgdl.pdf)). That is close, so no one with an implant should run DC either.
 - **Electrical.** ±10 V maximum, at most 4.5 mA per coil, battery-powered.
   - Always use a **USB power bank** while the helmet is worn. Never use a mains charger or a laptop on mains during a session.
+  - **Over USB** the cable connects the helmet to the computer. Control it only from a **laptop running on its battery, with the charger unplugged**, never from a desktop computer.
   - **Never** remove the series resistors or connect coils directly to the module.
   - Insulate the coils and leads. ICNIRP's contact-current reference level for the public is 0.5 mA up to 2.5 kHz ([ICNIRP 2010](https://www.icnirp.org/cms/upload/publications/ICNIRPLFgdl.pdf)). A coil channel can drive up to 4.5 mA, so no bare conductor may touch the skin.
 - **Heat.** None to speak of: coil dissipation at full current is about 0.1 mW.
@@ -33,8 +34,10 @@ Evidence words follow the project's scale (see [PRESET_FORMAT.md](PRESET_FORMAT.
 
 ## How to use it
 
-- Sit or lie down in a quiet, dark room. Keep the **STOP** button in your hand. On the standalone display board, STOP is the red button on the screen (with the screen set to go dark: the bottom quarter of it) or the board's BOOT button.
+- Sit or lie down in a quiet, dark room. Keep the **STOP** button in your hand. The board's **BOOT** button is a second STOP on every board. On the standalone display board, STOP is the red button on the screen (with the screen set to go dark: the bottom quarter of it) or the BOOT button.
 - Standalone display board (no arming switch): power it, **wait for the screen**, then put the helmet on. Never flash, reset or connect it to a computer while you wear it ([WIRING.md](WIRING.md#esp32-32e-28-display-board)).
+- **Installing firmware** (from the app or PlatformIO) restarts the board: never while you wear the helmet.
+- **USB connection:** connect before putting the helmet on, disconnect after taking it off. On boards with an auto-reset circuit, opening or closing the port can pull the BOOT line (a STOP) or restart the board. Either one ends a running session.
 - Have a second person present for your first session.
 - Take hearing aids out, or switch the telecoil off. A telecoil picks up the signal as hum.
 - No magnets anywhere in the headband or coil clips. Use Velcro.
@@ -54,7 +57,7 @@ Evidence words follow the project's scale (see [PRESET_FORMAT.md](PRESET_FORMAT.
 |---|---|
 | Series resistors | Hardware current limit of 4.54 mA per coil (±10 V through 2.2 kΩ). No setting in the firmware or the app can exceed it |
 | Arming switch (PhotoMOS) | Coil return stays open at power-up until the DAC is at 0 V, and closes only when a session starts. Opens on STOP, at session end and on any reset (a 10 kΩ pull-down holds it open while the ESP32 restarts). Not on the standalone display board: there the DAC is set to 0 V first thing at power-on, and the helmet goes on only after the screen is up |
-| STOP button | Hardware interrupt that cuts the coil return instantly, independent of Bluetooth and the app. No fade. Display board: the BOOT button and the on-screen STOP set all outputs to 0 V within 0.5 ms |
+| STOP button | Hardware interrupt that cuts the coil return instantly, independent of Bluetooth, USB and the app. No fade. The board's BOOT button does the same on every board. Display board: the BOOT button and the on-screen STOP set all outputs to 0 V within 0.5 ms |
 | Field ceiling | User ceiling (default 5 µT, at most 10 µT at 20 mm) clamps every program; DC tests limited to 4.6 mA and 120 s (the resistors cap the current at 4.54 mA anyway) |
 | Fades | 10 s fade-in/out unless a program sets its own; tests use 0.5 s. A stop from the app, or a lost keepalive, fades out over 2 s |
 | Watchdog | The real-time task is supervised by the ESP32 task watchdog; a hang of more than about 5 s resets the ESP32, which opens the arming switch |

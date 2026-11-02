@@ -110,6 +110,8 @@ Settings in detail:
   Use two LEDs rather than one: on its own, a single LED gets up to 9 V in reverse on the − half, more than LEDs are rated for.
 - **Coil test:** a steady current through one coil (**DC test**, for the bench test and the µT/mA calibration in [CALIBRATION.md](CALIBRATION.md)), or each coil in turn (**Rotate**, to check the wiring). Measure the field 20 mm from the coil face, divide by the mA, enter it as **µT per mA** for that coil, and **Save**.
 - **Bluetooth:** on lets the web app connect as before. Changing it restarts the board (helmet off).
+
+The web app can also control the board over its USB cable (the **USB** button, Chrome or Edge on a computer), with Bluetooth off. Connect before putting the helmet on. Only a laptop on battery, with the charger unplugged ([SAFETY.md](SAFETY.md)). The touchscreen keeps working alongside.
 - **Display:** the panel driver is detected at boot (ILI9341 or ST7789). If the colours or the picture look wrong, try the next driver. The board restarts.
 - **Touch calibration:** redo it here, or hold the **BOOT** button for 3 s while no session runs, if taps land in the wrong place.
 

@@ -151,7 +151,7 @@ const shownAim = computed(() => (current.value && phase.value === 'running' ? cu
       {{ total }} trials of {{ bits }} random bits, drawn live at {{ rate }} bits per second. Each bit is compared with an alternating target; chance is 50 % hits.
       <template v-if="aimMode === 'alternate'">The aim alternates between HIGH (more hits) and LOW (fewer hits).</template>
       <template v-else-if="aimMode === 'none'">Control block: no aim, no feedback; let the bits run.</template>
-      Source: {{ device.kind === 'ble' ? 'helmet hardware RNG' : device.kind === 'demo' ? 'demo (WebCrypto)' : 'WebCrypto (helmet not connected)' }}.
+      Source: {{ device.kind === 'ble' || device.kind === 'usb' ? 'helmet hardware RNG' : device.kind === 'demo' ? 'demo (WebCrypto)' : 'WebCrypto (helmet not connected)' }}.
     </p>
 
     <section v-if="!done || phase !== 'ready'" class="trial">

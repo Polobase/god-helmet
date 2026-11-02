@@ -13,6 +13,7 @@ import { fetchKp } from '../lib/noaa.js'
 import { LAYOUTS } from '../lib/layouts.js'
 import { fmtDuration } from '../lib/format.js'
 import { goSafety } from '../lib/nav.js'
+import FirmwareInstall from '../components/FirmwareInstall.vue'
 
 const s = ref(null)  // editable copy of the settings
 watch(() => device.settings, (v) => (s.value = v ? JSON.parse(JSON.stringify(v)) : null), { immediate: true })
@@ -95,7 +96,8 @@ const setKp = () => run(async () => {
   <div class="page">
     <p v-if="!device.kind" class="card row">
       <span class="warn small">Connect the helmet (or the demo) to change its settings.</span>
-      <button class="btn primary sm" :disabled="!device.bluetooth" @click="connect('ble')">Connect helmet</button>
+      <button class="btn primary sm" :disabled="!device.bluetooth" @click="connect('ble')">Bluetooth</button>
+      <button v-if="device.serial" class="btn sm" @click="connect('usb')">USB</button>
       <button class="btn sm" @click="connect('demo')">Try the demo</button>
     </p>
 
@@ -181,6 +183,8 @@ const setKp = () => run(async () => {
         <p class="small muted">Kp, ap and sidereal time are recorded with every session and trial. They are never used to schedule sessions; the reported effects did not replicate.</p>
       </section>
     </template>
+
+    <FirmwareInstall />
 
     <div class="toasts" aria-live="polite">
       <p v-if="toast" class="small" :class="toast.bad ? 'bad' : 'ok'">{{ toast.text }}</p>

@@ -1,11 +1,12 @@
 // Shared connection state for all views.
 import { reactive } from 'vue'
 import { openBluetooth, bluetoothAvailable } from './bluetooth.js'
+import { openSerial, serialAvailable } from './serial.js'
 import { openDemo } from './demo.js'
 import { fetchKp } from '../lib/noaa.js'
 
 export const device = reactive({
-  kind: null,          // 'ble' | 'demo' | null
+  kind: null,          // 'ble' | 'usb' | 'demo' | null
   name: '',
   connecting: false,
   info: null,          // "hello" data
@@ -13,6 +14,7 @@ export const device = reactive({
   status: null,        // live status (2 Hz while running)
   error: '',
   bluetooth: bluetoothAvailable(),
+  serial: serialAvailable(),  // Web Serial: USB
   kp: null,            // { kp, ap, time } from NOAA
   testLayout: 'temporal', // layout to draw while a rotation test runs
 })
@@ -47,10 +49,16 @@ export async function connect(kind) {
       onStatus: (s) => (device.status = s),
       onDisconnect: () => {
         if (device.kind === 'ble') device.error = 'Helmet disconnected. A running session continues on the helmet; reconnect to control it.'
+        if (device.kind === 'usb') device.error = 'USB disconnected. A running session continues on the helmet; plug it in and connect again to control it.'
         reset()
       },
+      // The board printed its start-up line: it restarted, and any session on it has ended.
+      onRestart: () => {
+        if (device.kind) device.error = 'The helmet restarted (any running session has ended). Reconnect if it does not answer.'
+      },
     }
-    await afterConnect(kind === 'demo' ? openDemo(handlers) : await openBluetooth(handlers))
+    const open = { demo: () => openDemo(handlers), usb: () => openSerial(handlers), ble: () => openBluetooth(handlers) }
+    await afterConnect(await (open[kind] ?? open.ble)())
   } catch (e) {
     if (e.name !== 'NotFoundError') device.error = e.message // NotFoundError = chooser cancelled
     transport?.close()

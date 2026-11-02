@@ -95,7 +95,7 @@ if (!state.pending && !done.value && state.trials.length) draw()
       {{ total }} scored trials, {{ options.length }} options: chance is {{ (100 / options.length).toFixed(0) }} % per trial
       ({{ (total / options.length).toFixed(1) }} hits expected<template v-if="needed !== null">; {{ needed }} or more give p &lt; 0.05</template>).
       {{ feedback ? 'You see the answer after each guess.' : 'Answers are shown at the end.' }} Pass skips a target without scoring.
-      Targets: {{ device.kind === 'ble' ? 'helmet hardware RNG' : device.kind === 'demo' ? 'demo helmet (WebCrypto)' : 'WebCrypto (helmet not connected)' }}.
+      Targets: {{ device.kind === 'ble' || device.kind === 'usb' ? 'helmet hardware RNG' : device.kind === 'demo' ? 'demo helmet (WebCrypto)' : 'WebCrypto (helmet not connected)' }}.
     </p>
     <p v-if="notice" class="small warn">{{ notice }}</p>
 

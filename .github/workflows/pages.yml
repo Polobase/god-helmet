@@ -3,7 +3,7 @@ name: Web app → GitHub Pages
 on:
   push:
     branches: [main]
-    paths: ["webapp/**", "presets/**", "docs/**", "README.md", ".github/workflows/pages.yml"]
+    paths: ["webapp/**", "presets/**", "docs/**", "README.md", "firmware/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
@@ -16,7 +16,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Firmware images and manifests for the web app's installer (Setup page).
+  firmware:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.platformio
+          key: platformio-${{ hashFiles('firmware/platformio.ini') }}
+      - run: pip install platformio
+      - name: Build every board and merge the images
+        run: ./firmware/scripts/web_bundle.sh webapp/public/firmware
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-firmware
+          path: webapp/public/firmware
+
   build:
+    needs: firmware
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,6 +49,10 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: webapp/package-lock.json
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-firmware
+          path: webapp/public/firmware
       - run: npm ci
       - run: npm test
       - run: npm run build

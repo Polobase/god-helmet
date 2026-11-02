@@ -1,9 +1,9 @@
 {
   "name": "god-helmet-app",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
-  "description": "Web Bluetooth control app for the 8-coil weak-field helmet (ESP32 + AD5328)",
+  "description": "Web Bluetooth / USB control app for the 8-coil weak-field helmet (ESP32 + AD5328)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,9 +12,13 @@
     "sd-pack": "node scripts/sd-pack.mjs"
   },
   "dependencies": {
+    "esp-web-tools": "10.4.0",
     "marked": "18.0.14",
     "three": "0.185.1",
     "vue": "3.5.13"
+  },
+  "overrides": {
+    "@material/web": "2.4.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.2.1",

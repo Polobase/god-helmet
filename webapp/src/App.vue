@@ -64,7 +64,8 @@ window.addEventListener('resize', tabsScrolled)
           <button v-if="!running" class="btn ghost sm" @click="disconnect">Disconnect</button>
         </template>
         <template v-else>
-          <button class="btn primary sm" :disabled="!device.bluetooth || device.connecting" @click="connect('ble')">{{ device.connecting ? 'Connecting…' : 'Connect' }}</button>
+          <button class="btn primary sm" :disabled="!device.bluetooth || device.connecting" title="Connect over Bluetooth" @click="connect('ble')">{{ device.connecting ? 'Connecting…' : 'Bluetooth' }}</button>
+          <button v-if="device.serial" class="btn sm" :disabled="device.connecting" title="Connect over a USB cable (Chrome or Edge on a computer)" @click="connect('usb')">USB</button>
           <button class="btn ghost sm" @click="connect('demo')">Demo</button>
         </template>
         <button class="btn ghost sm" :title="`Theme: ${theme} (click to change)`" :aria-label="`Theme: ${theme}. Change theme`" @click="nextTheme">{{ THEME_LABEL[theme] }}</button>
@@ -77,9 +78,10 @@ window.addEventListener('resize', tabsScrolled)
     </nav>
   </header>
 
-  <div v-if="device.error || !device.bluetooth || (device.kind && device.info && !device.info.safetyAccepted && nav.tab !== 'safety')" class="notices">
+  <div v-if="device.error || device.kind === 'usb' || (!device.bluetooth && !device.serial) || (device.kind && device.info && !device.info.safetyAccepted && nav.tab !== 'safety')" class="notices">
     <p v-if="device.error" class="notice bad">{{ device.error }}</p>
-    <p v-if="!device.bluetooth" class="notice">This browser has no Web Bluetooth. Use Chrome or Edge on Android, Mac or Windows, or the free Bluefy browser on iPhone. The demo works everywhere.</p>
+    <p v-if="!device.bluetooth && !device.serial" class="notice">This browser can't reach the helmet: no Web Bluetooth and no USB (Web Serial). Use Chrome or Edge on a computer (Bluetooth or USB) or on Android (Bluetooth), or the free Bluefy browser on iPhone. The demo works everywhere.</p>
+    <p v-if="device.kind === 'usb'" class="notice warn">Connected over USB: the cable joins the helmet to this computer. Wear the helmet only with a laptop on battery, charger unplugged, never with a desktop computer. Connect before putting it on.</p>
     <p v-if="device.kind && device.info && !device.info.safetyAccepted && nav.tab !== 'safety'" class="notice warn">Read and accept the <a href="#safety">safety page</a> before the first session.</p>
   </div>
 

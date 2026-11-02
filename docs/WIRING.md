@@ -39,25 +39,36 @@ The outer winding is the layer that touches fingers, scalp and neighbouring wire
                        │ GPIO5 ◄── STOP button ── GND                   │
                        └────────────────────────────────────────────────┘
         Bluetooth LE ◄──► phone / laptop browser (web app on GitHub Pages)
+   or   USB cable    ◄──► computer browser (Chrome or Edge, Web Serial)
 ```
+
+The diagram shows the ESP32-S3; the other chips use the pins in the table below.
 
 ## Pin table
 
-The default board is the **ESP32-S3-DevKitC-1** (N8R8/N16R8, firmware env `esp32s3`). A classic **ESP32 DevKitC** works too (env `esp32dev`) with the pins in the last column. For the **2.8" ESP32-32E display board** see [its own section](#esp32-32e-28-display-board) below.
+The firmware runs on four ESP32 chips, each with its own fixed pins (firmware env in brackets). The default board is the **ESP32-S3-DevKitC-1** (N8R8/N16R8, `esp32s3`). A classic **ESP32 DevKitC** (`esp32dev`), an **ESP32-C3** board (DevKitM-1 or a "C3 Super Mini", `esp32c3`) and an **ESP32-C6** board (DevKitC-1, `esp32c6`) work the same way. Install from the web app (Setup → Install the firmware; it recognises the chip) or with PlatformIO. For the **2.8" ESP32-32E display board** see [its own section](#esp32-32e-28-display-board) below.
 
-| Function | ESP32-S3 | Direction | Connects to | ESP32 classic |
-|---|---|---|---|---|
-| SPI clock, 20 MHz, mode 1 | GPIO12 | out | AD5328 module **CLK** | GPIO18 |
-| SPI data | GPIO11 | out | module **DIN** | GPIO23 |
-| Frame select, high between every 16-bit word | GPIO10 | out | module **SYNC** | GPIO5 |
-| Pulsed low after the 8 words: all coils change at the same instant | GPIO9 | out | module **LDAC** | GPIO17 |
-| **Arming switch** (add a 10 kΩ pull-down so it stays off during boot/reset) | GPIO4 | out | PhotoMOS LED via 330 Ω | GPIO26 |
-| STOP button to GND; interrupt opens the coil return immediately | GPIO5 | in | push button | GPIO27 |
-| Status LED: blue blink idle, steady blue app connected, amber session (also during sham) | on-board RGB (GPIO48) | out | – | GPIO2 |
-| Module supply (max 5.5 V) | 5V pin | power | module **5V** | 5V / VIN |
-| Common ground | GND | – | module **GND** (header and output terminal) | GND |
+| Function | ESP32-S3 | ESP32 classic | ESP32-C3 | ESP32-C6 | Direction | Connects to |
+|---|---|---|---|---|---|---|
+| SPI clock, 20 MHz, mode 1 | GPIO12 | GPIO18 | GPIO4 | GPIO21 | out | AD5328 module **CLK** |
+| SPI data | GPIO11 | GPIO23 | GPIO6 | GPIO19 | out | module **DIN** |
+| Frame select, high between every 16-bit word | GPIO10 | GPIO5 | GPIO7 | GPIO18 | out | module **SYNC** |
+| Pulsed low after the 8 words: all coils change at the same instant | GPIO9 | GPIO17 | GPIO5 | GPIO20 | out | module **LDAC** |
+| **Arming switch** (add a 10 kΩ pull-down so it stays off during boot/reset) | GPIO4 | GPIO26 | GPIO10 | GPIO22 | out | PhotoMOS LED via 330 Ω |
+| STOP button to GND; interrupt opens the coil return immediately | GPIO5 | GPIO27 | GPIO3 | GPIO23 | in | push button |
+| The board's **BOOT** button is a second STOP | GPIO0 | GPIO0 | GPIO9 | GPIO9 | in | (on the board) |
+| Status LED: blue blink idle, steady blue app connected (Bluetooth or USB), amber session (also during sham) | on-board RGB (GPIO48) | GPIO2 | on-board RGB (GPIO8) | on-board RGB (GPIO8) | out | – |
+| Module supply (max 5.5 V) | 5V pin | 5V / VIN | 5V | 5V | power | module **5V** |
+| Common ground | GND | GND | GND | GND | – | module **GND** (header and output terminal) |
 
-On the S3 the pins avoid the strapping pins (0, 3, 45, 46), USB (19, 20) and the pins the octal flash/PSRAM uses on N8R8/N16R8 modules (26–37). The module's logic level is 3.3 V, so no level shifter is needed. Set the module's reference jumper to **1-2 (onboard 2.5 V)**.
+The pins avoid each chip's strapping pins, USB pins, UART pins and flash pins:
+- **S3:** strapping 0, 3, 45, 46; USB 19, 20; the octal flash/PSRAM of N8R8/N16R8 modules, 26–37.
+- **C3:** strapping 2, 8, 9; USB 18, 19; UART 20, 21; flash 12–17.
+- **C6:** strapping 4, 5, 8, 9, 15; USB 12, 13; UART 16, 17; flash 24–30.
+
+The module's logic level is 3.3 V, so no level shifter is needed. Set the module's reference jumper to **1-2 (onboard 2.5 V)**.
+
+**USB:** the web app can also control the helmet over the USB cable instead of Bluetooth: the **USB** button, Chrome or Edge on a computer. On the S3, C3 and C6 both sockets work: the chip's own USB and the one with the bridge chip. The C3 and C6 have one core, which the 2 kHz output loop shares with Bluetooth. The live status shows `overruns` if it ever falls behind.
 
 ## ESP32-32E 2.8" display board
 
