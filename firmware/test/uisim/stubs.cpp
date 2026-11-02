@@ -282,9 +282,11 @@ Result startTest(const TestRequest& t) {
   gRun.testMA = t.mA;
   char name[96];
   if (t.mode == "dc") std::snprintf(name, sizeof name, "DC test CH%d %.2f mA", t.channel + 1, t.mA);
+  else if (t.mode == "led") std::snprintf(name, sizeof name, "LED test AO%d", t.channel + 1);
+  else if (t.mode == "leds") std::snprintf(name, sizeof name, "LED test AO1-AO8");
   else std::snprintf(name, sizeof name, "Slow rotation test %.2f mA", t.mA);
   gRun.name = name;
-  gRun.phases.emplace_back(t.mode == "dc" ? "DC" : "Rotate", gRun.totalMs);
+  gRun.phases.emplace_back(t.mode == "dc" ? "DC" : t.mode == "leds" ? "Each output 2 s: + then -" : t.mode == "led" ? "+ then -" : "Rotate", gRun.totalMs);
   return r;
 }
 bool rate(uint32_t, int rating, const String&, String& json, String&) {

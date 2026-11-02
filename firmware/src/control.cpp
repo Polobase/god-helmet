@@ -152,8 +152,32 @@ Result startTest(const TestRequest& t) {
     std::snprintf(s->id, sizeof s->id, "test-rotate");
     std::snprintf(s->name, sizeof s->name, "Slow rotation test %.2f mA", t.mA);
     std::snprintf(ph.name, sizeof ph.name, "Rotate");
+  } else if (t.mode == "led" || t.mode == "leds") {
+    // Two LEDs (one each way round) in place of a coil: 0.8 s +, pause, 0.8 s -,
+    // pause, slow enough to watch. "leds" steps AO1..AO8, 2 s each (one + and one -).
+    ph.pattern = engine::patternDefaults(engine::PatternType::Pulse);
+    ph.pattern.pulseMs = 800;
+    ph.pattern.gapMs = 200;
+    ph.pattern.alternate = true;
+    if (t.mode == "led") {
+      if (t.channel < 0 || t.channel > 7) return fail("channel must be 0..7");
+      ph.spatial.mode = engine::SpatialMode::Single;
+      ph.spatial.channel = static_cast<uint8_t>(t.channel);
+      std::snprintf(s->id, sizeof s->id, "test-led");
+      std::snprintf(s->name, sizeof s->name, "LED test AO%d", t.channel + 1);
+      std::snprintf(ph.name, sizeof ph.name, "AO%d: + then -", t.channel + 1);
+    } else {
+      s->geometry = engine::Geometry();  // channel order AO1..AO8
+      ph.spatial.mode = engine::SpatialMode::Rotate;
+      ph.spatial.ccw = true;
+      ph.spatial.dwellStartMs = ph.spatial.dwellEndMs = 2000;
+      ph.spatial.dwellStepMs = 0;
+      std::snprintf(s->id, sizeof s->id, "test-leds");
+      std::snprintf(s->name, sizeof s->name, "LED test AO1-AO8");
+      std::snprintf(ph.name, sizeof ph.name, "Each output 2 s: + then -");
+    }
   } else {
-    return fail("mode must be dc or rotate");
+    return fail("mode must be dc, rotate, led or leds");
   }
   const String id = s->id;
   return startSession(s.release(), 0.0f, false, false, t.mA, id);

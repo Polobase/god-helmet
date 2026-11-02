@@ -34,7 +34,8 @@ Result startSession(engine::Session* session, float fieldUT, bool blind, bool sh
 Result startFromDoc(const mj::Value& doc, const String& presetId, double fieldUT, bool blind);
 
 struct TestRequest {
-  String mode = "dc";       // "dc" (one coil) or "rotate" (slow rotation)
+  String mode = "dc";       // "dc" (one coil), "rotate" (slow rotation), "led" (one output,
+                            // + then - every second, for LEDs in place of a coil), "leds" (AO1..AO8 in turn)
   float mA = 1.0f;          // |mA| <= limits::kMaxTestMA
   uint32_t seconds = 30;    // 1..limits::kMaxTestSeconds
   int channel = 0;          // dc: 0..7

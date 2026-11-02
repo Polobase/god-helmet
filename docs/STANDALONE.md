@@ -85,7 +85,7 @@ The AD5328 has no data-out pin, so the board cannot tell whether the module is c
 | **Session** | Time left, phase, field ±, **Skip phase**, **STOP**. The BOOT button is STOP too. The screen stays on, or follows **Settings → Screen in session**: dimmed, or dark after 10 s (touch it higher up to see it again; **in the dark, the bottom quarter of the screen is STOP**) |
 | **Rate** | 0 (nothing) to 10 (profound), before you look anything up. Blind sessions show real or sham once rated. **Later** leaves it in the log |
 | **Log** | Past sessions, newest first; tap an unrated one to rate it |
-| **Settings** | Head size, Clock, Brightness, Screen in session, Field limits, Module check, Coil test, Bluetooth, Touch calibration, Display, Safety page, About |
+| **Settings** | Head size, Clock, Brightness, Screen in session, Field limits, Module check, LED test, Coil test, Bluetooth, Touch calibration, Display, Safety page, About |
 
 Settings in detail:
 - **Head size:** three tape measurements in cm. Each one goes over the crown, or round the band line: nasion to inion, ear to ear (tragus to tragus), and the band line round the head. Until you enter them, the coil directions use a typical head ([PLACEMENT.md](PLACEMENT.md)).
@@ -97,6 +97,13 @@ Settings in detail:
   3. Each output in turn at +5 V or −5 V for 60 s.
 
   **Module OK** confirms the module until the next power-on.
+- **LED test:** checks the outputs without coils or a multimeter.
+  - **Wiring:** in place of a coil, two LEDs side by side and opposite ways round, from the coil's 2.2 kΩ resistor to GND. A two-leg red/green LED works too.
+  - **What it does:** the output alternates +4 mA and −4 mA, 0.8 s each with a short pause, so one LED lights, then the other. The resistor keeps the LEDs at about 3 mA.
+  - **Modes:** **This output** tests the selected AO. **All in turn** steps AO1 to AO8, 2 s each.
+  - **What you see:** neither LED lights → run the Module check. Only one lights → the other is missing or the wrong way round.
+
+  Use two LEDs rather than one: on its own, a single LED gets up to 9 V in reverse on the − half, more than LEDs are rated for.
 - **Coil test:** a steady current through one coil (**DC test**, for the bench test and the µT/mA calibration in [CALIBRATION.md](CALIBRATION.md)), or each coil in turn (**Rotate**, to check the wiring). Measure the field 20 mm from the coil face, divide by the mA, enter it as **µT per mA** for that coil, and **Save**.
 - **Bluetooth:** on lets the web app connect as before. Changing it restarts the board (helmet off).
 - **Display:** the panel driver is detected at boot (ILI9341 or ST7789). If the colours or the picture look wrong, try the next driver. The board restarts.

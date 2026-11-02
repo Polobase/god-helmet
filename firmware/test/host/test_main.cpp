@@ -817,6 +817,49 @@ static int dumpReference(const char* dir, const char* outPath) {
   return 0;
 }
 
+// The LED output test (control.cpp, test mode "leds"): AO1..AO8 in turn, 2 s
+// each, + for 0.8 s then - for 0.8 s, nothing on the other outputs.
+static void testLedChase() {
+  std::printf("LED test chase\n");
+  Session s;
+  s.fadeInMs = 500;
+  s.fadeOutMs = 500;
+  s.phaseCount = 1;
+  Phase& ph = s.phases[0];
+  ph.durationMs = 60000;
+  ph.pattern = patternDefaults(PatternType::Pulse);
+  ph.pattern.pulseMs = 800;
+  ph.pattern.gapMs = 200;
+  ph.pattern.alternate = true;
+  s.geometry = Geometry();
+  ph.spatial.mode = SpatialMode::Rotate;
+  ph.spatial.ccw = true;
+  ph.spatial.dwellStartMs = ph.spatial.dwellEndMs = 2000;
+  ph.spatial.dwellStepMs = 0;
+  SessionRunner r;
+  r.start(&s);
+  float v[kChannels];
+  double t = 0;
+  for (int round = 0; round < 2; ++round) {
+    for (int k = 0; k < 8; ++k) {
+      for (int half = 0; half < 2; ++half) {
+        const double at = 16000.0 * round + 2000.0 * k + (half ? 1400 : 600);
+        const SessionRunner::Frame f = r.advance(at - t);
+        t = at;
+        render(s, f, v);
+        for (int ch = 0; ch < kChannels; ++ch) {
+          if (ch == k) CHECK(half ? v[ch] < -0.99f : v[ch] > 0.99f);
+          else CHECK(v[ch] == 0.0f);
+        }
+      }
+      const SessionRunner::Frame gap = r.advance(2000.0 * k + 16000.0 * round + 1900 - t);  // pause after -
+      t = 2000.0 * k + 16000.0 * round + 1900;
+      render(s, gap, v);
+      CHECK(v[k] == 0.0f);
+    }
+  }
+}
+
 int main(int argc, char** argv) {
   if (argc == 4 && std::string(argv[1]) == "--dump") return dumpReference(argv[2], argv[3]);
   testAd5328Words();
@@ -830,6 +873,7 @@ int main(int argc, char** argv) {
   testTableData();
   testCustomPlacement();
   testEngineV2();
+  testLedChase();
   testPresets(argc > 1 ? argv[1] : "../presets");
   testTape(argc > 2 ? argv[2] : "test/tape/tape-reference.json");
   std::printf("\n%d checks, %d failures\n", g_checks, g_failures);

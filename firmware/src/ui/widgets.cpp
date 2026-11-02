@@ -203,7 +203,7 @@ void header(const String& title, bool back) {
     x = 50;
   }
   fontBold();
-  text(fit(title, kW - x - 50), x, kHeaderH / 2, color::kText, textdatum_t::middle_left);
+  text(fit(title, kW - x - 60), x, kHeaderH / 2, color::kText, textdatum_t::middle_left);  // clear of the clock
   headerClock();
 }
 

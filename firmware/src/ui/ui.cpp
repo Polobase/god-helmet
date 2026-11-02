@@ -30,7 +30,7 @@ namespace {
 
 enum class Screen : uint8_t {
   Calibrate, Safety, Home, Categories, Programs, Program, Details, Coils, Start, Session, Rate, Log,
-  Settings, Editor, Message, ModuleCheck,
+  Settings, Editor, Message, ModuleCheck, LedTest,
 };
 
 void go(Screen s);
@@ -109,6 +109,7 @@ Screen gAfterCalibrate = Screen::Home;
 bool gModuleConfirmed = false;
 Screen gModuleBack = Screen::Settings;
 int gModStep = 0, gModCh = 0;
+int gLedCh = 0;
 
 // Number editor (head size, clock, brightness, limits, coil test)
 struct Field {
@@ -1531,6 +1532,51 @@ void onModuleCheck(uint8_t id) {
   }
 }
 
+// ---------------------------------------------------------------- LED test
+
+constexpr float kLedTestMA = 4.0f;  // about 3 mA through a red LED behind the 2.2 kOhm resistor
+
+void drawLedTest() {
+  clear();
+  header("LED test", true);
+  fontSmall();
+  drawWrapped("Wire two LEDs where a coil goes, one each way round (or one red/green two-leg LED), from the "
+              "2.2 kOhm resistor to GND. One lights on +, the other on -.",
+              kMargin, kTop, kW - 2 * kMargin, color::kText, 134);
+  drawButton(addButton(kMargin, 136, 56, 40, 1, "", Style::Normal, 0, Icon::Left));
+  drawButton(addButton(kW - kMargin - 56, 136, 56, 40, 2, "", Style::Normal, 0, Icon::Right));
+  fontBold();
+  text("AO" + String(gLedCh + 1), kW / 2, 156, color::kText, textdatum_t::middle_center);
+  drawButton(addButton(kMargin, 182, 108, 44, 3, "This output", Style::Primary));
+  drawButton(addButton(kW - kMargin - 108, 182, 108, 44, 4, "All in turn"));
+  fontSmall();
+  drawWrapped("Runs 60 s; STOP ends it. All in turn: AO1 to AO8, 2 s each. No LED lights: Module check. Only "
+              "one lights: the other is missing or reversed.",
+              kMargin, 232, kW - 2 * kMargin, color::kMuted, kH - 2);
+}
+
+void onLedTest(uint8_t id) {
+  if (id == kIdBack) {
+    go(Screen::Settings);
+  } else if (id == 1 || id == 2) {
+    gLedCh = (gLedCh + (id == 2 ? 1 : 7)) % 8;
+    drawLedTest();
+  } else if (id == 3 || id == 4) {
+    control::TestRequest t;
+    t.mode = id == 3 ? "led" : "leds";
+    t.channel = gLedCh;
+    t.mA = kLedTestMA;
+    t.seconds = 60;
+    const control::Result r = control::startTest(t);
+    if (!r.ok) {
+      message("Not started", r.error, Screen::LedTest);
+      return;
+    }
+    gAfterTest = Screen::LedTest;
+    beginSessionScreen(true, true, 0, id == 3 ? "LED test AO" + String(gLedCh + 1) : String("LED test"));
+  }
+}
+
 // ---------------------------------------------------------------- settings
 
 const char* const kPanelNames[] = {"auto", "ILI9341", "ST7789", "ST7789, not inverted"};
@@ -1561,7 +1607,7 @@ String aboutText() {
   return s;
 }
 
-constexpr int kSetRows = 6, kSetRowH = 39, kSetItems = 12;
+constexpr int kSetRows = 7, kSetRowH = 33, kSetItems = 13;
 
 void settingItem(int i, String& label, String& value) {
   switch (i) {
@@ -1589,11 +1635,12 @@ void settingItem(int i, String& label, String& value) {
     case 3: label = "Screen in session"; value = kSessionScreenNames[gSettings.sessionScreen % 3]; break;
     case 4: label = "Field limits"; value = "max " + String(gSettings.maxFieldUT, 1) + " uT"; break;
     case 5: label = "Module check"; value = gModuleConfirmed ? "confirmed" : "not checked"; break;
-    case 6: label = "Coil test"; value = gSettings.calibrated ? "calibrated" : "not calibrated"; break;
-    case 7: label = "Bluetooth"; value = gSettings.bleEnabled ? "on" : "off"; break;
-    case 8: label = "Touch calibration"; value = ""; break;
-    case 9: label = "Display"; value = kPanelNames[gSettings.panel % 4]; break;
-    case 10: label = "Safety page"; value = ""; break;
+    case 6: label = "LED test"; value = "outputs"; break;
+    case 7: label = "Coil test"; value = gSettings.calibrated ? "calibrated" : "not calibrated"; break;
+    case 8: label = "Bluetooth"; value = gSettings.bleEnabled ? "on" : "off"; break;
+    case 9: label = "Touch calibration"; value = ""; break;
+    case 10: label = "Display"; value = kPanelNames[gSettings.panel % 4]; break;
+    case 11: label = "Safety page"; value = ""; break;
     default: label = "About"; value = kFirmwareVersion; break;
   }
 }
@@ -1645,26 +1692,27 @@ void onSettings(uint8_t id) {
       gModStep = 0;
       go(Screen::ModuleCheck);
       break;
-    case 6: openCoilTest(); break;
-    case 7:
+    case 6: go(Screen::LedTest); break;
+    case 7: openCoilTest(); break;
+    case 8:
       message("Bluetooth",
               String(gSettings.bleEnabled ? "Bluetooth is on: the web app can connect. "
                                           : "Bluetooth is off. Turn it on to use the web app as well. ") +
                   "Changing it restarts the controller (take the helmet off first).",
               Screen::Settings, gSettings.bleEnabled ? "Turn off" : "Turn on", nullptr, onBleToggle);
       break;
-    case 8:
+    case 9:
       gAfterCalibrate = Screen::Settings;
       go(Screen::Calibrate);
       break;
-    case 9:
+    case 10:
       message("Display",
               "Driver: " + String(kPanelNames[gSettings.panel % 4]) + " (in use: " + gPanelName +
                   "). If colours or the picture look wrong, try the next driver: auto, ILI9341, ST7789, ST7789 not "
                   "inverted. The controller restarts.",
               Screen::Settings, "Next driver", nullptr, onPanel);
       break;
-    case 10:
+    case 11:
       gLinePage = 0;
       go(Screen::Safety);
       break;
@@ -1716,6 +1764,7 @@ void go(Screen s) {
     case Screen::Editor: drawEditor(); break;
     case Screen::Message: drawMessage(); break;
     case Screen::ModuleCheck: drawModuleCheck(); break;
+    case Screen::LedTest: drawLedTest(); break;
   }
 }
 
@@ -1736,6 +1785,7 @@ void onButton(uint8_t id, int16_t x, int16_t y) {
     case Screen::Editor: onEditor(id); break;
     case Screen::Message: onMessage(id); break;
     case Screen::ModuleCheck: onModuleCheck(id); break;
+    case Screen::LedTest: onLedTest(id); break;
     case Screen::Calibrate: break;
   }
 }

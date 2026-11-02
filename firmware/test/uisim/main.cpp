@@ -216,6 +216,16 @@ int main(int argc, char** argv) {
   tap(30, "save");
   tap(3, "screen in session");  // dark after 10 s -> on
   shot("settings-screen-on");
+  tap(6, "led test");
+  shot("led-test");
+  tap(4, "all in turn");
+  run(3000);
+  expect(seq::busy(), "LED test running");
+  shot("led-test-running");
+  tapAt(120, 290);  // STOP
+  run(400);
+  expect(!seq::busy() && ui::button(4) != nullptr, "STOP ends the LED test and returns to its screen");
+  tap(kIdBack, "back");
   tap(kIdNext, "settings page 2");
   shot("settings-p2");
   tap(0, "coil test");
