@@ -15,18 +15,66 @@ bool fail(std::string* error, const std::string& msg) {
   return false;
 }
 
-// Appends point values 0..255 (128 = zero field) to the session's table pool.
-bool appendTable(const mj::Value& arr, std::vector<int8_t>& pool, uint32_t& offset, uint32_t& len,
+int b64Value(char c) {
+  if (c >= 'A' && c <= 'Z') return c - 'A';
+  if (c >= 'a' && c <= 'z') return c - 'a' + 26;
+  if (c >= '0' && c <= '9') return c - '0' + 52;
+  if (c == '+') return 62;
+  if (c == '/') return 63;
+  return -1;
+}
+
+// Standard base64 (with or without padding) -> bytes. False on bad input.
+bool decodeBase64(const char* s, std::vector<uint8_t>& out) {
+  out.clear();
+  uint32_t acc = 0;
+  int bits = 0;
+  for (; *s && *s != '='; ++s) {
+    const int v = b64Value(*s);
+    if (v < 0) return false;
+    acc = (acc << 6) | static_cast<uint32_t>(v);
+    bits += 6;
+    if (bits >= 8) {
+      bits -= 8;
+      out.push_back(static_cast<uint8_t>((acc >> bits) & 0xFF));
+    }
+  }
+  for (; *s == '='; ++s) {
+  }
+  return *s == '\0';
+}
+
+bool checkTableSize(size_t n, size_t pool, std::string* error) {
+  if (n == 0 || n > kMaxTablePoints) return fail(error, "a table needs 1..8192 values");
+  if (pool + n > kMaxTablePool) return fail(error, "tables exceed 16384 points per session");
+  return true;
+}
+
+inline int8_t toPoint(int v) {
+  const int x = v - 128;
+  return static_cast<int8_t>(x < -127 ? -127 : x);
+}
+
+// Appends point values 0..255 (128 = zero field) to the session's table pool:
+// a JSON array of numbers, or (compact, SD-card programs) a base64 string of bytes.
+bool appendTable(const mj::Value& v, std::vector<int8_t>& pool, uint32_t& offset, uint32_t& len,
                  std::string* error) {
-  if (arr.size() == 0 || arr.size() > kMaxTablePoints) return fail(error, "a table needs 1..8192 values");
-  if (pool.size() + arr.size() > kMaxTablePool) return fail(error, "tables exceed 16384 points per session");
+  if (v.isString()) {
+    std::vector<uint8_t> bytes;
+    if (!decodeBase64(v.str(), bytes)) return fail(error, "table base64 is invalid");
+    if (!checkTableSize(bytes.size(), pool.size(), error)) return false;
+    offset = static_cast<uint32_t>(pool.size());
+    len = static_cast<uint32_t>(bytes.size());
+    for (uint8_t b : bytes) pool.push_back(toPoint(b));
+    return true;
+  }
+  if (!checkTableSize(v.size(), pool.size(), error)) return false;
   offset = static_cast<uint32_t>(pool.size());
-  len = static_cast<uint32_t>(arr.size());
-  for (size_t i = 0; i < arr.size(); ++i) {
-    const double v = arr[i].num(-1);
-    if (v < 0 || v > 255) return fail(error, "table values must be 0..255");
-    const int x = static_cast<int>(v) - 128;
-    pool.push_back(static_cast<int8_t>(x < -127 ? -127 : x));
+  len = static_cast<uint32_t>(v.size());
+  for (size_t i = 0; i < v.size(); ++i) {
+    const double x = v[i].num(-1);
+    if (x < 0 || x > 255) return fail(error, "table values must be 0..255");
+    pool.push_back(toPoint(static_cast<int>(x)));
   }
   return true;
 }
@@ -52,6 +100,7 @@ bool parsePattern(const mj::Value& v, PatternParams& p, std::vector<int8_t>& poo
   if (type == PatternType::Noise && !(p.f1 > p.f0)) return fail(error, "noise needs f1 > f0");
   if (type == PatternType::Table) {
     if (v["data"].isArray()) return appendTable(v["data"], pool, p.tableOffset, p.tableLen, error);
+    if (v["dataB64"].isString()) return appendTable(v["dataB64"], pool, p.tableOffset, p.tableLen, error);
     if (sharedLen == 0) return fail(error, "table pattern needs \"data\" or the session's tableData");
     p.tableOffset = 0;
     p.tableLen = sharedLen;
@@ -164,9 +213,9 @@ bool sessionFromJson(const mj::Value& doc, Session& out, PresetInfo* info, std::
   if (phases.size() > static_cast<size_t>(kMaxPhases)) return fail(error, "too many phases");
 
   // Shared point table ("tableData"), used by table patterns without inline "data".
-  const mj::Value& shared = doc["tableData"];
+  const mj::Value& shared = doc["tableData"].isArray() ? doc["tableData"] : doc["tableDataB64"];
   uint32_t sharedLen = 0;
-  if (shared.isArray()) {
+  if (shared.isArray() || shared.isString()) {
     uint32_t offset = 0;
     std::string sub;
     if (!appendTable(shared, out.table, offset, sharedLen, &sub)) return fail(error, "tableData: " + sub);

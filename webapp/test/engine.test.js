@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
 import { parseSession, SessionRunner, render } from '../src/engine/session.js'
+import { compactProgram } from '../src/engine/compact.js'
 import { patternDefaults, patternValue } from '../src/engine/patterns.js'
 import { spatialGains, dwellPosition, sideFromSite } from '../src/engine/spatial.js'
 import { split, Reassembler, FIRST, LAST } from '../src/ble/frame.js'
@@ -47,6 +48,20 @@ test('JS engine matches the C++ engine for every preset', () => {
     compareRows(session.id, session, ref.coarse, 'coarse')
     compareRows(session.id, session, ref.fine, 'fine')
   }
+})
+
+test('compact SD-card programs (base64 tables) parse to the same session', () => {
+  for (const file of readdirSync(presetsDir).filter((f) => f.endsWith('.json'))) {
+    const doc = JSON.parse(readFileSync(join(presetsDir, file), 'utf8'))
+    const compact = compactProgram(doc)
+    assert.ok(!JSON.stringify(compact).includes('"data":['), `${doc.id}: no numeric tables left`)
+    assert.deepEqual(parseSession(compact), parseSession(doc), doc.id)
+  }
+  // Bad base64 is rejected like a bad number.
+  assert.throws(() => parseSession({ phases: [{ minutes: 1, pattern: { type: 'table', dataB64: 'ab$c' } }] }), /base64/)
+  // Same limits as numeric tables.
+  const big = btoa('\x80'.repeat(8193))
+  assert.throws(() => parseSession({ phases: [{ minutes: 1, pattern: { type: 'table', dataB64: big } }] }), /1\.\.8192/)
 })
 
 test('JS engine matches the C++ engine for the engine-v2 fixtures', () => {

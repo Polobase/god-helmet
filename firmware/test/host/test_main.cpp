@@ -15,6 +15,7 @@
 #include "minijson.h"
 #include "patterns.h"
 #include "preset_json.h"
+#include "tape.h"
 #include "session.h"
 #include "spatial.h"
 
@@ -525,6 +526,54 @@ static std::string readFile(const std::string& path) {
   return ss.str();
 }
 
+// The compact form written to the SD card (webapp/src/engine/compact.js):
+// numeric "data"/"tableData" arrays become base64 strings of their bytes.
+static std::string toBase64(const std::vector<uint8_t>& bytes) {
+  static const char* kAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  std::string out;
+  for (size_t i = 0; i < bytes.size(); i += 3) {
+    const uint32_t n = (bytes[i] << 16) | ((i + 1 < bytes.size() ? bytes[i + 1] : 0) << 8) |
+                       (i + 2 < bytes.size() ? bytes[i + 2] : 0);
+    out += kAlphabet[(n >> 18) & 63];
+    out += kAlphabet[(n >> 12) & 63];
+    out += i + 1 < bytes.size() ? kAlphabet[(n >> 6) & 63] : '=';
+    out += i + 2 < bytes.size() ? kAlphabet[n & 63] : '=';
+  }
+  return out;
+}
+
+static void writeCompact(mj::Writer& w, const mj::Value& v) {
+  char num[40];
+  switch (v.type()) {
+    case mj::Value::Type::Object:
+      w.beginObject();
+      for (const auto& m : v.members()) {
+        if ((m.first == "data" || m.first == "tableData") && m.second.isArray()) {
+          std::vector<uint8_t> bytes;
+          for (size_t i = 0; i < m.second.size(); ++i) bytes.push_back(static_cast<uint8_t>(m.second[i].num(0)));
+          w.key((m.first + "B64").c_str()).string(toBase64(bytes));
+        } else {
+          w.key(m.first.c_str());
+          writeCompact(w, m.second);
+        }
+      }
+      w.endObject();
+      break;
+    case mj::Value::Type::Array:
+      w.beginArray();
+      for (size_t i = 0; i < v.size(); ++i) writeCompact(w, v[i]);
+      w.endArray();
+      break;
+    case mj::Value::Type::Number:
+      std::snprintf(num, sizeof num, "%.17g", v.num());
+      w.raw(num);
+      break;
+    case mj::Value::Type::String: w.string(v.str()); break;
+    case mj::Value::Type::Bool: w.boolean(v.boolean()); break;
+    default: w.null(); break;
+  }
+}
+
 static void testPresets(const char* dir) {
   std::printf("presets (%s)\n", dir);
   DIR* d = opendir(dir);
@@ -546,6 +595,26 @@ static void testPresets(const char* dir) {
     if (!ok) std::printf("  %s: %s\n", name.c_str(), err.c_str());
     CHECK(ok);
     CHECK(name == std::string(s.id) + ".json");  // file name matches id
+
+    // The compact SD-card form parses to the same tables and timeline.
+    {
+      mj::Writer w;
+      writeCompact(w, doc);
+      mj::Value compact;
+      Session c;
+      const bool cParsed = mj::parse(w.str(), compact, &err) && sessionFromJson(compact, c, nullptr, &err);
+      if (!cParsed) std::printf("  %s (compact): %s\n", name.c_str(), err.c_str());
+      CHECK(cParsed);
+      CHECK(c.table == s.table);
+      CHECK(c.totalMs() == s.totalMs() && c.phaseCount == s.phaseCount);
+      bool same = true;
+      for (int i = 0; i < s.phaseCount; ++i)
+        same = same && c.phases[i].pattern.tableOffset == s.phases[i].pattern.tableOffset &&
+               c.phases[i].pattern.tableLen == s.phases[i].pattern.tableLen &&
+               c.phases[i].pattern2.tableOffset == s.phases[i].pattern2.tableOffset &&
+               c.phases[i].pattern2.tableLen == s.phases[i].pattern2.tableLen;
+      CHECK(same);
+    }
     CHECK(s.totalMs() <= kMaxSessionMs);
     CHECK(!info.source.empty() && !info.summary.empty());
     CHECK(info.uT > 0 && info.uT <= 10);
@@ -647,6 +716,57 @@ static void testTableData() {
   CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("tableData") != std::string::npos);
   mj::parse(R"({"id":"t","phases":[{"seconds":10,"pattern":{"type":"table"}}],"tableData":[300]})", doc);
   CHECK(!sessionFromJson(doc, s, nullptr, &err));
+
+  // Base64 tables (SD-card programs): "gP8AyA==" = bytes 128, 255, 0, 200.
+  mj::parse(R"({"id":"t","phases":[{"seconds":10,"pattern":{"type":"table","pointMs":3}}],"tableDataB64":"gP8AyA=="})", doc);
+  CHECK(sessionFromJson(doc, s, nullptr, &err));
+  CHECK(s.table.size() == 4 && s.table[0] == 0 && s.table[1] == 127 && s.table[2] == -127 && s.table[3] == 72);
+  mj::parse(R"({"id":"t","phases":[{"seconds":10,"pattern":{"type":"table","dataB64":"gP8A"}}]})", doc);
+  CHECK(sessionFromJson(doc, s, nullptr, &err) && s.phases[0].pattern.tableLen == 3);
+  mj::parse(R"({"id":"t","phases":[{"seconds":10,"pattern":{"type":"table","dataB64":"gP$A"}}]})", doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("base64") != std::string::npos);
+  const std::string big = R"({"id":"t","phases":[{"seconds":10,"pattern":{"type":"table","dataB64":")" +
+                          toBase64(std::vector<uint8_t>(8193, 128)) + R"("}}]})";
+  mj::parse(big, doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("8192") != std::string::npos);
+}
+
+// Tape-measure directions: the C++ port must match webapp/src/lib/tape.js
+// for every 10-5 site at a typical and a measured head
+// (fixture from `npm run sd-pack -- --fixture` in webapp/).
+static void testTape(const char* fixturePath) {
+  std::printf("tape directions (%s)\n", fixturePath);
+  using namespace engine::tape;
+  CHECK(toFixed1(1.25) == "1.3" && toFixed1(1.15) == "1.1" && toFixed1(2.8) == "2.8" && toFixed1(14) == "14.0");
+  mj::Value fx;
+  std::string err;
+  const bool parsed = mj::parse(readFile(fixturePath), fx, &err);
+  CHECK(parsed);
+  if (!parsed) return;
+  Template t;
+  CHECK(templateFromJson(fx["template"], t));
+  int mismatches = 0;
+  const mj::Value& cases = fx["cases"];
+  CHECK(cases.size() > 600);
+  for (size_t i = 0; i < cases.size(); ++i) {
+    const mj::Value& c = cases[i];
+    const mj::Value& h = c["head"];
+    const Head head = h.isArray() ? cleanHead(h[0].num(), h[1].num(), h[2].num()) : cleanHead(0, 0, 0);
+    Recipe r;
+    const bool ok = recipe(t, c["site"].str(), head, r);
+    const bool same = ok && r.band == c["band"].str() && std::fabs(r.bandCm - c["bandCm"].num()) < 1e-9 &&
+                      r.text == c["text"].str() && r.detail == c["detail"].str() && r.estimate == c["estimate"].boolean() &&
+                      describeSite(c["site"].str()) == c["describe"].str();
+    if (!same && ++mismatches <= 5)
+      std::printf("  %s: C++ \"%s\" / \"%s\" vs JS \"%s\" / \"%s\"\n", c["site"].str(), r.text.c_str(),
+                  describeSite(c["site"].str()).c_str(), c["text"].str(), c["describe"].str());
+    CHECK(same);
+  }
+  Site s;
+  CHECK(!parseSite("LPA", s) && !parseSite("Nz", s) && !parseSite("T7x", s));
+  CHECK(parseSite("FTT7h", s) && s.kind == Kind::Row && s.f == 0.875 && s.ring == "FTT7" && s.mid == "FCCz");
+  const Head typical = cleanHead(0, 0, 0);
+  CHECK(typical.typical && typical.nasionInion == 36 && typical.earEar == 35 && typical.circumference == 56);
 }
 
 // Reference values for the web app's JavaScript engine port (webapp/test):
@@ -711,6 +831,7 @@ int main(int argc, char** argv) {
   testCustomPlacement();
   testEngineV2();
   testPresets(argc > 1 ? argv[1] : "../presets");
+  testTape(argc > 2 ? argv[2] : "test/tape/tape-reference.json");
   std::printf("\n%d checks, %d failures\n", g_checks, g_failures);
   return g_failures == 0 ? 0 : 1;
 }

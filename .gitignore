@@ -11,3 +11,6 @@ docs/*.pdf
 
 # Raw research output (contains local file paths) - curated into docs/ instead
 research/data/
+
+# SD-card program pack output (npm run sd-pack -- <dir>)
+godhelmet/

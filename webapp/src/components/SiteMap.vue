@@ -9,6 +9,7 @@
 import { computed, nextTick, ref } from 'vue'
 import { SITES, siteName } from '../lib/brain.js'
 import { HEAD_CENTRE } from '../engine/field.js'
+import { makeTopView } from '../lib/topview.js'
 
 const props = defineProps({
   sites: { type: Array, default: () => [] }, // 8 names or null
@@ -33,29 +34,16 @@ const emit = defineEmits(['site', 'coil'])
 const TEN_TEN = /^(Fp|AF|F|FT|FC|T|C|TP|CP|P|PO|O|I)(z|\d+)$/
 const BAND = ['Fpz', 'Fp1', 'AF7', 'F7', 'FT7', 'T7', 'TP7', 'P7', 'PO7', 'O1', 'Oz', 'O2', 'PO8', 'P8', 'TP8', 'T8', 'FT8', 'F8', 'AF8', 'Fp2']
 const MIDLINE = ['Nz', 'Fpz', 'AFz', 'Fz', 'FCz', 'Cz', 'CPz', 'Pz', 'POz', 'Oz', 'Iz']
-const sub = (a, b) => a.map((v, i) => v - b[i])
-const unit = (a) => {
-  const l = Math.hypot(...a)
-  return a.map((v) => v / l)
-}
-const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
-const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
 const r1 = (v) => Math.round(v * 10) / 10
 
 // ---------------------------------------------------------------- top view
 const C = HEAD_CENTRE
-const up = unit(sub(SITES.Cz, C))
-const front = unit(sub(sub(SITES.Fpz, C), up.map((v) => v * dot(sub(SITES.Fpz, C), up))))
-const right = cross(front, up)
-const polar = (p) => Math.acos(Math.max(-1, Math.min(1, dot(unit(sub(p, C)), up))))
-const BAND_POLAR = BAND.reduce((s, n) => s + polar(SITES[n]), 0) / BAND.length
 const R = 100 // the band circle
 const TOP = { w: 340, h: 320, cx: 170, cy: 162 }
+const unitTop = makeTopView(SITES, C)
 function topXY(p) {
-  const d = unit(sub(p, C))
-  const r = (polar(p) / BAND_POLAR) * R
-  const phi = Math.atan2(dot(d, right), dot(d, front))
-  return [TOP.cx + r * Math.sin(phi), TOP.cy - r * Math.cos(phi)]
+  const [x, y] = unitTop(p)
+  return [TOP.cx + R * x, TOP.cy + R * y]
 }
 
 // ---------------------------------------------------------------- side views

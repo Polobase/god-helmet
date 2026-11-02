@@ -21,6 +21,16 @@ function toTable(arr, pool) {
   })
 }
 
+// Compact tables (SD-card programs): base64 of the raw point bytes 0..255.
+function b64Bytes(s) {
+  if (!/^[A-Za-z0-9+/]*={0,2}$/.test(s)) throw new Error('table base64 is invalid')
+  try {
+    return Array.from(atob(s), (c) => c.charCodeAt(0))
+  } catch {
+    throw new Error('table base64 is invalid')
+  }
+}
+
 function parsePattern(v = {}, pool, shared) {
   const type = v.type ?? 'off'
   if (!PATTERN_TYPES.includes(type)) throw new Error(`unknown pattern type: ${type}`)
@@ -33,6 +43,7 @@ function parsePattern(v = {}, pool, shared) {
   if (type === 'noise' && !(p.f1 > p.f0)) throw new Error('noise needs f1 > f0')
   if (type === 'table') {
     if (Array.isArray(v.data)) p.table = toTable(v.data, pool)
+    else if (typeof v.dataB64 === 'string') p.table = toTable(b64Bytes(v.dataB64), pool)
     else if (shared) p.table = shared
     else throw new Error('table pattern needs "data" or the session\'s tableData')
   }
@@ -115,9 +126,10 @@ export function parseSession(doc) {
   if (doc.phases.length > MAX_PHASES) throw new Error('too many phases')
   const pool = { size: 0 }
   let shared = null
-  if (Array.isArray(doc.tableData)) {
+  const sharedData = Array.isArray(doc.tableData) ? doc.tableData : typeof doc.tableDataB64 === 'string' ? doc.tableDataB64 : null
+  if (sharedData !== null) {
     try {
-      shared = toTable(doc.tableData, pool)
+      shared = toTable(typeof sharedData === 'string' ? b64Bytes(sharedData) : sharedData, pool)
     } catch (e) {
       throw new Error(`tableData: ${e.message}`)
     }
