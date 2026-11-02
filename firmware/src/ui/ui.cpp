@@ -141,6 +141,10 @@ constexpr uint32_t kDarkAfterMs = 10000;
 Lcd& lcd() { return display::lcd(); }
 
 uint8_t dimLevel() { return static_cast<uint8_t>(std::min<int>(gSettings.backlight, 40)); }
+// Backlight during a session (Settings > Screen in session): on, or dimmed.
+uint8_t sessionLevel() { return gSettings.sessionScreen == 0 ? gSettings.backlight : dimLevel(); }
+bool darkSessions() { return gSettings.sessionScreen == 2; }
+const char* const kSessionScreenNames[] = {"on", "dimmed", "dark after 10 s"};
 void lightNormal() {
   if (display::backlightLevel() != gSettings.backlight) display::backlight(gSettings.backlight);
 }
@@ -366,7 +370,7 @@ const char* const kSafetyText =
     "board with the helmet on: until the firmware runs, the coil outputs can sit at full drive.\n"
     "- Sit or lie down. No driving for an hour afterwards.\n"
     "- Stop at once on fear, headache, nausea or anything unusual: the red STOP button, or the BOOT button on "
-    "the board. In the dark, the bottom of the screen is STOP.\n"
+    "the board. With the screen dark, its bottom quarter is STOP.\n"
     "- At most one session per 72 hours.\n"
     "- Never run the coils without the 2.2 kOhm series resistors.\n"
     "- No other stimulation devices during a session.";
@@ -806,7 +810,9 @@ void drawStart() {
                                     : "Blind: real or sham at random, revealed when you rate.",
                              kMargin, 208, kW - 2 * kMargin, color::kMuted, 238);
   const String warn = startWarning();
-  drawWrapped(warn.length() ? warn.c_str() : "The screen goes dark after 10 s: touch the top to see it, the bottom is STOP.",
+  drawWrapped(warn.length()       ? warn.c_str()
+              : darkSessions() ? "The screen goes dark after 10 s: touch the top to see it, the bottom is STOP."
+                               : "STOP: the red button on the screen or the BOOT button on the board.",
               kMargin, ny + 2, kW - 2 * kMargin, warn.length() ? color::kWarn : color::kMuted, 270);
   drawButton(addButton(kMargin, kFooterY, kW - 2 * kMargin, kFooterH, 4, "Start", Style::Primary));
 }
@@ -869,7 +875,7 @@ void beginSessionScreen(bool fromUi, bool test, uint32_t logId, const String& na
   gDark = false;
   gSwallow = false;
   gSessWakeMs = millis();
-  display::backlight(dimLevel());
+  display::backlight(sessionLevel());
   go(Screen::Session);
 }
 
@@ -901,7 +907,7 @@ void openRate(uint32_t id, const String& name, const String& info, bool blind, S
 // `st` is the status after the end: idle, blind and test cleared, the stop reason set.
 void endSession(const seq::Status& st) {
   gDark = false;
-  display::backlight(dimLevel());
+  display::backlight(sessionLevel());
   if (gSessTest && gSessUi) {
     lightNormal();
     go(gAfterTest);
@@ -991,7 +997,7 @@ void tickSession(bool force) {
 void stopNow() {
   seq::emergencyStop("STOP on screen");
   gDark = false;
-  display::backlight(dimLevel());
+  display::backlight(sessionLevel());
 }
 
 void onSession(uint8_t id) {
@@ -1326,8 +1332,8 @@ void openBrightness() {
   gEd.title = "Brightness";
   gEd.n = 1;
   gEd.f[0] = {"Screen", static_cast<float>(gSettings.backlight), 10, 255, 5, 0};
-  gEd.note = "During a session the screen dims and goes dark after 10 s. Touch the top of the screen to see it; "
-             "the bottom is STOP.";
+  gEd.note = "During a session the screen follows Settings > Screen in session: on at this brightness, "
+             "dimmed, or dark after 10 s.";
   gEd.actions[0] = "Save";
   gEd.onAction = brightnessAction;
   gEd.onChange = brightnessChange;
@@ -1434,7 +1440,7 @@ String aboutText() {
   return s;
 }
 
-constexpr int kSetRows = 6, kSetRowH = 39, kSetItems = 10;
+constexpr int kSetRows = 6, kSetRowH = 39, kSetItems = 11;
 
 void settingItem(int i, String& label, String& value) {
   switch (i) {
@@ -1459,12 +1465,13 @@ void settingItem(int i, String& label, String& value) {
       break;
     }
     case 2: label = "Brightness"; value = String(gSettings.backlight); break;
-    case 3: label = "Field limits"; value = "max " + String(gSettings.maxFieldUT, 1) + " uT"; break;
-    case 4: label = "Coil test"; value = gSettings.calibrated ? "calibrated" : "not calibrated"; break;
-    case 5: label = "Bluetooth"; value = gSettings.bleEnabled ? "on" : "off"; break;
-    case 6: label = "Touch calibration"; value = ""; break;
-    case 7: label = "Display"; value = kPanelNames[gSettings.panel % 4]; break;
-    case 8: label = "Safety page"; value = ""; break;
+    case 3: label = "Screen in session"; value = kSessionScreenNames[gSettings.sessionScreen % 3]; break;
+    case 4: label = "Field limits"; value = "max " + String(gSettings.maxFieldUT, 1) + " uT"; break;
+    case 5: label = "Coil test"; value = gSettings.calibrated ? "calibrated" : "not calibrated"; break;
+    case 6: label = "Bluetooth"; value = gSettings.bleEnabled ? "on" : "off"; break;
+    case 7: label = "Touch calibration"; value = ""; break;
+    case 8: label = "Display"; value = kPanelNames[gSettings.panel % 4]; break;
+    case 9: label = "Safety page"; value = ""; break;
     default: label = "About"; value = kFirmwareVersion; break;
   }
 }
@@ -1505,27 +1512,32 @@ void onSettings(uint8_t id) {
     case 0: openHead(); break;
     case 1: openClock(); break;
     case 2: openBrightness(); break;
-    case 3: openLimits(); break;
-    case 4: openCoilTest(); break;
-    case 5:
+    case 3:  // on -> dimmed -> dark after 10 s
+      gSettings.sessionScreen = (gSettings.sessionScreen + 1) % 3;
+      gSettings.save();
+      drawSettings();
+      break;
+    case 4: openLimits(); break;
+    case 5: openCoilTest(); break;
+    case 6:
       message("Bluetooth",
               String(gSettings.bleEnabled ? "Bluetooth is on: the web app can connect. "
                                           : "Bluetooth is off. Turn it on to use the web app as well. ") +
                   "Changing it restarts the controller (take the helmet off first).",
               Screen::Settings, gSettings.bleEnabled ? "Turn off" : "Turn on", nullptr, onBleToggle);
       break;
-    case 6:
+    case 7:
       gAfterCalibrate = Screen::Settings;
       go(Screen::Calibrate);
       break;
-    case 7:
+    case 8:
       message("Display",
               "Driver: " + String(kPanelNames[gSettings.panel % 4]) + " (in use: " + gPanelName +
                   "). If colours or the picture look wrong, try the next driver: auto, ILI9341, ST7789, ST7789 not "
                   "inverted. The controller restarts.",
               Screen::Settings, "Next driver", nullptr, onPanel);
       break;
-    case 8:
+    case 9:
       gLinePage = 0;
       go(Screen::Safety);
       break;
@@ -1658,7 +1670,8 @@ void loop() {
       gTickMs = now;
       tickSession(false);
     }
-    if (gScreen == Screen::Session && !gDark && now - lastTouchMs() > kDarkAfterMs && now - gSessWakeMs > kDarkAfterMs) {
+    if (gScreen == Screen::Session && darkSessions() && !gDark && now - lastTouchMs() > kDarkAfterMs &&
+        now - gSessWakeMs > kDarkAfterMs) {
       gDark = true;
       display::backlight(0);
     }
@@ -1719,7 +1732,7 @@ void loop() {
         gDark = false;
         gSwallow = true;
         gSessWakeMs = now;
-        display::backlight(dimLevel());
+        display::backlight(sessionLevel());
         drawSession();
       }
       return;

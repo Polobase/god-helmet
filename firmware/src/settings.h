@@ -29,6 +29,7 @@ struct Settings {
   // On-device UI (display boards)
   uint8_t backlight = 160;      // 0..255 while the UI is in use
   uint8_t panel = 0;            // 0 auto, 1 ILI9341, 2 ST7789
+  uint8_t sessionScreen = 0;    // during a session: 0 on, 1 dimmed, 2 dark after 10 s
   uint16_t touchCal[8] = {0};   // LovyanGFX touch calibration, all 0 = not calibrated
   float headNI = 0, headLR = 0, headC = 0;  // head measurements in cm, 0 = typical head
   String tz = "CET-1CEST,M3.5.0,M10.5.0/3";  // POSIX TZ for the clock shown on the device

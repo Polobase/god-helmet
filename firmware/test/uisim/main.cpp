@@ -129,6 +129,7 @@ int main(int argc, char** argv) {
   shot("details-p2");
   tap(kIdBack, "back");
 
+  gSettings.sessionScreen = 2;  // dark after 10 s: the dark-screen STOP band is tested below
   tap(3, "start...");
   {
     const ui::Button* b = ui::button(4);  // "Start" sits where "Start..." was: a quick second tap
@@ -194,7 +195,9 @@ int main(int argc, char** argv) {
   shot("head");
   tap(11, "nasion-inion +");
   tap(30, "save");
-  tap(4, "coil test");
+  tap(3, "screen in session");  // dark after 10 s -> on
+  shot("settings-screen-on");
+  tap(5, "coil test");
   shot("coil-test");
   tap(11, "coil +");
   tap(30, "dc test");
@@ -203,12 +206,12 @@ int main(int argc, char** argv) {
   run(30000);
   shot("coil-test-after");
   tap(kIdBack, "back");
-  tap(5, "bluetooth");
-  shot("bluetooth");
-  tap(kIdBack, "back");
   tap(kIdNext, "settings page 2");
   shot("settings-p2");
-  tap(3, "about");
+  tap(0, "bluetooth");
+  shot("bluetooth");
+  tap(kIdBack, "back");
+  tap(4, "about");
   shot("about");
   tap(kIdBack, "back");
   tap(kIdBack, "home");

@@ -33,7 +33,7 @@ Evidence words follow the project's scale (see [PRESET_FORMAT.md](PRESET_FORMAT.
 
 ## How to use it
 
-- Sit or lie down in a quiet, dark room. Keep the **STOP** button in your hand. On the standalone display board, STOP is the red button on the screen (in the dark: the bottom of the screen) or the board's BOOT button.
+- Sit or lie down in a quiet, dark room. Keep the **STOP** button in your hand. On the standalone display board, STOP is the red button on the screen (with the screen set to go dark: the bottom quarter of it) or the board's BOOT button.
 - Standalone display board (no arming switch): power it, **wait for the screen**, then put the helmet on. Never flash, reset or connect it to a computer while you wear it ([WIRING.md](WIRING.md#esp32-32e-28-display-board)).
 - Have a second person present for your first session.
 - Take hearing aids out, or switch the telecoil off. A telecoil picks up the signal as hum.

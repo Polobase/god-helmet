@@ -31,6 +31,7 @@ void Settings::load() {
   bleEnabled = p.getBool("ble", bleEnabled);
   backlight = p.getUChar("backlight", backlight);
   panel = p.getUChar("panel", panel);
+  sessionScreen = p.getUChar("sessScreen", sessionScreen);
   if (p.getBytesLength("touchCal") == sizeof(touchCal)) p.getBytes("touchCal", touchCal, sizeof(touchCal));
   headNI = p.getFloat("headNI", headNI);
   headLR = p.getFloat("headLR", headLR);
@@ -59,6 +60,7 @@ void Settings::save() const {
   p.putBool("ble", bleEnabled);
   p.putUChar("backlight", backlight);
   p.putUChar("panel", panel);
+  p.putUChar("sessScreen", sessionScreen);
   p.putBytes("touchCal", touchCal, sizeof(touchCal));
   p.putFloat("headNI", headNI);
   p.putFloat("headLR", headLR);

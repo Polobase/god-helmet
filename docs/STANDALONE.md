@@ -78,13 +78,14 @@ The board has no clock battery. It needs the date and time for two things: the t
 | **Coils** | Seen from above, nose up, your left on the left. Step through the coils with the arrows or tap one on the map. For each coil: where it goes, in cm for your head, and how to measure it accurately |
 | **Details** | The program's full text: evidence, summary, setting, schedule, placement basis, notes |
 | **Start** | Field strength (µT at 20 mm, up to your ceiling) and **Blind**: real or sham drawn at random and revealed after you rate. Missing clock or a session less than 72 h ago: a warning, and you tap Start twice |
-| **Session** | Time left, phase, field ±, **Skip phase**, **STOP**. The screen dims, then goes dark after 10 s. Touch it higher up to see it again. **In the dark, the bottom quarter of the screen is STOP.** The BOOT button is STOP too |
+| **Session** | Time left, phase, field ±, **Skip phase**, **STOP**. The BOOT button is STOP too. The screen stays on, or follows **Settings → Screen in session**: dimmed, or dark after 10 s (touch it higher up to see it again; **in the dark, the bottom quarter of the screen is STOP**) |
 | **Rate** | 0 (nothing) to 10 (profound), before you look anything up. Blind sessions show real or sham once rated. **Later** leaves it in the log |
 | **Log** | Past sessions, newest first; tap an unrated one to rate it |
-| **Settings** | Head size, Clock, Brightness, Field limits, Coil test, Bluetooth, Touch calibration, Display, Safety page, About |
+| **Settings** | Head size, Clock, Brightness, Screen in session, Field limits, Coil test, Bluetooth, Touch calibration, Display, Safety page, About |
 
 Settings in detail:
 - **Head size:** three tape measurements in cm. Each one goes over the crown, or round the band line: nasion to inion, ear to ear (tragus to tragus), and the band line round the head. Until you enter them, the coil directions use a typical head ([PLACEMENT.md](PLACEMENT.md)).
+- **Screen in session:** tap to switch between **on** (the default), **dimmed**, and **dark after 10 s** for sessions in a dark room.
 - **Field limits:** the highest field any program may use, and the field for programs that set none.
 - **Coil test:** a steady current through one coil (**DC test**, for the bench test and the µT/mA calibration in [CALIBRATION.md](CALIBRATION.md)), or each coil in turn (**Rotate**, to check the wiring). Measure the field 20 mm from the coil face, divide by the mA, enter it as **µT per mA** for that coil, and **Save**.
 - **Bluetooth:** on lets the web app connect as before. Changing it restarts the board (helmet off).
