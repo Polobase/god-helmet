@@ -108,6 +108,11 @@ int connections() { return 0; }
 void loop() {}
 }  // namespace ble
 
+namespace usblink {
+int connections() { return 0; }
+void loop() {}
+}  // namespace usblink
+
 // ------------------------------------------------------------ SD card (a folder)
 
 namespace sdcard {

@@ -2,10 +2,10 @@
 
 #include <Arduino.h>
 #include <SPI.h>
-#include <soc/gpio_struct.h>
 
 #include "ad5328_words.h"
 #include "config.h"
+#include "fastio.h"
 
 namespace dac {
 namespace {
@@ -20,12 +20,11 @@ const SPISettings kSpiSettings(limits::kSpiHz, MSBFIRST, SPI_MODE1);  // data la
 // Boards without a free pin tie LDAC high and latch with the software
 // "single update" word instead (datasheet: LDAC pin high, mode bits as required).
 constexpr bool kHardLdac = pins::kLdac >= 0;
-constexpr uint32_t kLdacMask = kHardLdac ? 1u << pins::kLdac : 0u;
 
-inline void syncLow() { GPIO.out_w1tc = 1u << pins::kSync; }
-inline void syncHigh() { GPIO.out_w1ts = 1u << pins::kSync; }
-inline void ldacLow() { GPIO.out_w1tc = kLdacMask; }
-inline void ldacHigh() { GPIO.out_w1ts = kLdacMask; }
+inline void syncLow() { fastWrite<pins::kSync>(false); }
+inline void syncHigh() { fastWrite<pins::kSync>(true); }
+inline void ldacLow() { fastWrite<pins::kLdac>(false); }
+inline void ldacHigh() { fastWrite<pins::kLdac>(true); }
 
 // One 16-bit frame; SYNC must return high after the 16th falling SCLK edge.
 inline void sendWord(uint16_t word) {

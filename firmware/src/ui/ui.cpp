@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "../ble.h"
+#include "../usblink.h"
 #include "../config.h"
 #include "../control.h"
 #include "../envdata.h"
@@ -312,6 +313,7 @@ bool calibrateCorners(uint16_t cal[8]) {
     while ((d.getTouchRaw(&tp) > 0) == touched) {
       if (millis() - t0 > kWaitMs || seq::busy()) return false;
       ble::loop();
+      usblink::loop();
       delay(5);
     }
     return true;

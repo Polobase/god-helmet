@@ -1,10 +1,16 @@
-// Board wiring and fixed limits.
+// Board wiring and fixed limits. One block per chip (docs/WIRING.md has the
+// same tables); every block defines the same names, -1 = not present:
+//   kSclk kMosi kSync kLdac  AD5328 module (kMiso only where an SD card shares the bus)
+//   kArm                     PhotoMOS arming switch for the coil return
+//   kStop                    external STOP button to GND
+//   kBoot                    the board's BOOT button, a second STOP
+//   kRgbLed / kStatusLed     status LED: addressable RGB, or a plain LED (high = on)
 #pragma once
 #include <cstdint>
 
 #if CONFIG_IDF_TARGET_ESP32S3
 // ESP32-S3-DevKitC-1 (N8R8 / N16R8). Avoids strapping pins (0, 3, 45, 46),
-// USB (19, 20) and the octal flash/PSRAM pins (26-37). FSPI default pins.
+// USB (19, 20), UART0 (43, 44) and the octal flash/PSRAM pins (26-37). FSPI default pins.
 namespace pins {
 constexpr int kSclk = 12;   // -> AD5328 module CLK
 constexpr int kMosi = 11;   // -> DIN
@@ -13,8 +19,44 @@ constexpr int kLdac = 9;    // -> LDAC (pulse low: all 8 outputs update together
 constexpr int kArm = 4;     // -> PhotoMOS LED via 330 Ω, 10 kΩ pull-down: closes coil return
 constexpr int kStop = 5;    // <- STOP button to GND (internal pull-up)
 constexpr int kMiso = -1;   // not used
+constexpr int kBoot = 0;
+constexpr int kRgbLed = 48;  // DevKitC-1 v1.0 (v1.1 boards have it on 38)
+constexpr int kStatusLed = -1;
 }  // namespace pins
 #define BOARD_NAME "ESP32-S3"
+#elif CONFIG_IDF_TARGET_ESP32C3
+// ESP32-C3-DevKitM-1, also the small "C3 Super Mini" boards (single core).
+// Avoids strapping pins (2, 8, 9), USB (18, 19), UART0 (20, 21) and flash (12-17).
+// FSPI default pins.
+namespace pins {
+constexpr int kSclk = 4;
+constexpr int kMosi = 6;
+constexpr int kSync = 7;
+constexpr int kLdac = 5;
+constexpr int kArm = 10;
+constexpr int kStop = 3;
+constexpr int kMiso = -1;
+constexpr int kBoot = 9;
+constexpr int kRgbLed = 8;   // DevKitM-1 RGB LED (a Super Mini's blue LED on 8 just flickers)
+constexpr int kStatusLed = -1;
+}  // namespace pins
+#define BOARD_NAME "ESP32-C3"
+#elif CONFIG_IDF_TARGET_ESP32C6
+// ESP32-C6-DevKitC-1 (single core). Avoids strapping pins (4, 5, 8, 9, 15),
+// USB (12, 13), UART0 (16, 17) and flash (24-30). FSPI default pins.
+namespace pins {
+constexpr int kSclk = 21;
+constexpr int kMosi = 19;
+constexpr int kSync = 18;
+constexpr int kLdac = 20;
+constexpr int kArm = 22;
+constexpr int kStop = 23;
+constexpr int kMiso = -1;
+constexpr int kBoot = 9;
+constexpr int kRgbLed = 8;
+constexpr int kStatusLed = -1;
+}  // namespace pins
+#define BOARD_NAME "ESP32-C6"
 #elif defined(BOARD_ESP32E_LCD28)
 // "2.8inch ESP32-32E Display" (LCDwiki E32R28T / E32N28T, ESP32-D0WD, 4 MB),
 // standalone: touchscreen UI, programs on the microSD card (docs/STANDALONE.md).
@@ -29,6 +71,8 @@ constexpr int kSync = 27;   // SPI header CS
 constexpr int kLdac = -1;   // no free pin: module LDAC tied to 3.3 V, software single update
 constexpr int kArm = -1;    // no arming switch
 constexpr int kStop = 0;    // BOOT button (on-board 10 kΩ pull-up)
+constexpr int kBoot = 0;    // the same button
+constexpr int kRgbLed = -1, kStatusLed = -1;  // its own RGB LED: kLedR/G/B below
 constexpr int kSdCs = 5;
 // LCD on HSPI (ILI9341 or ST7789), touch XPT2046 read bit-banged on its own pins.
 constexpr int kLcdSclk = 14, kLcdMosi = 13, kLcdMiso = 12, kLcdCs = 15, kLcdDc = 2;
@@ -50,6 +94,9 @@ constexpr int kLdac = 17;
 constexpr int kArm = 26;
 constexpr int kStop = 27;
 constexpr int kMiso = -1;   // not used
+constexpr int kBoot = 0;
+constexpr int kRgbLed = -1;
+constexpr int kStatusLed = 2;  // the blue LED of most ESP32 DevKit boards
 }  // namespace pins
 #define BOARD_NAME "ESP32"
 #endif
@@ -63,5 +110,5 @@ constexpr uint32_t kMaxTestSeconds = 120;
 constexpr uint32_t kMinIntervalS = 72u * 3600u;  // Shakti guidance: >= 72 h between sessions
 }  // namespace limits
 
-constexpr const char* kFirmwareVersion = "0.2.0";
+constexpr const char* kFirmwareVersion = "0.3.0";
 constexpr int kProtocolVersion = 1;

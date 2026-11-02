@@ -5,7 +5,6 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
 #include <freertos/task.h>
-#include <soc/gpio_struct.h>
 
 #include <atomic>
 #include <cmath>
@@ -15,6 +14,7 @@
 #include "config.h"
 #include "dac.h"
 #include "drive.h"
+#include "fastio.h"
 #include "settings.h"
 
 namespace seq {
@@ -59,13 +59,10 @@ void IRAM_ATTR onTimer() {
   if (woken) portYIELD_FROM_ISR();
 }
 
-// Boards without an arming switch (coil returns wired to ground) get a zero
-// mask: arming is then only a status flag and STOP relies on mid-scale.
-constexpr uint32_t kArmMask = pins::kArm >= 0 ? 1u << pins::kArm : 0u;
-
+// Boards without an arming switch (coil returns wired to ground, kArm -1):
+// arming is then only a status flag and STOP relies on mid-scale.
 inline void arm(bool on) {
-  if (on) GPIO.out_w1ts = kArmMask;
-  else GPIO.out_w1tc = kArmMask;
+  fastWrite<pins::kArm>(on);
   gStatusLocal.armed = on;
 }
 
@@ -259,7 +256,9 @@ void begin() {
   for (auto& c : gCodes) c = 0x800;
 
   gQueue = xQueueCreate(8, sizeof(Command));
-  xTaskCreatePinnedToCore(task, "sequencer", 8192, nullptr, configMAX_PRIORITIES - 2, &gTask, 1);
+  // The last core: core 1 on dual-core chips (away from WiFi/BLE on core 0),
+  // core 0 on the single-core C3 and C6, where its priority keeps it ahead of BLE.
+  xTaskCreatePinnedToCore(task, "sequencer", 8192, nullptr, configMAX_PRIORITIES - 2, &gTask, portNUM_PROCESSORS - 1);
 
   gTimer = timerBegin(1000000);  // 1 MHz timebase
   timerAttachInterrupt(gTimer, &onTimer);
@@ -332,7 +331,7 @@ bool popFinished(Finished& out) {
 }
 
 void IRAM_ATTR emergencyStopFromIsr() {
-  GPIO.out_w1tc = kArmMask;  // open the coil return at once (the task then writes mid-scale)
+  fastWrite<pins::kArm>(false);  // open the coil return at once (the task then writes mid-scale)
   gEmergencyReason = "STOP button";
   gEmergency = true;
   if (gTask != nullptr) {

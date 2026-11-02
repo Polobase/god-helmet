@@ -75,6 +75,11 @@ Reply hello() {
   w.key("firmware").string(kFirmwareVersion);
   w.key("protocol").integer(kProtocolVersion);
   w.key("board").string(BOARD_NAME);
+  w.key("chip").string(ESP.getChipModel());
+  w.key("transports").beginArray();
+  if (gSettings.bleEnabled) w.string("ble");
+  w.string("usb");
+  w.endArray();
   w.key("calibrated").boolean(gSettings.calibrated);
   w.key("safetyAccepted").boolean(gSettings.safetyAccepted);
   w.key("maxReachableUT").number(control::maxReachableUT(), 3);
@@ -233,6 +238,7 @@ Reply trialStep(const mj::Value& v, TrialStep fn) {
 
 Reply dispatch(const std::string& op, const mj::Value& v, const std::string& raw) {
   if (op == "hello") return hello();
+  if (op == "status") return Reply::json(statusJson());
   if (op == "time.set") return timeSet(v);
   if (op == "env.set") return envSet(v);
   if (op == "settings.get") return Reply::json(gSettings.toJson());
