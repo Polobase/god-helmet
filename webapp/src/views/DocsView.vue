@@ -18,7 +18,7 @@ const images = import.meta.glob('../../../docs/*.svg', { eager: true, query: '?u
 
 // Reading order; files not listed here appear at the end.
 const ORDER = ['readme', 'research', 'history', 'signals', 'programs', 'preset_format', 'brain_view', 'placement', 'guides',
-  'questionnaires', 'experiments', 'wiring', 'calibration', 'safety', 'ble_protocol']
+  'questionnaires', 'experiments', 'wiring', 'standalone', 'calibration', 'safety', 'ble_protocol']
 
 const slugOf = (path) => path.split('/').pop().replace(/\.md$/i, '').toLowerCase()
 const titleOf = (md, slug) => (md.match(/^#\s+(.+)$/m)?.[1] ?? slug).replace(/[*_`]/g, '')

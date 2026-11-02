@@ -61,27 +61,33 @@ On the S3 the pins avoid the strapping pins (0, 3, 45, 46), USB (19, 20) and the
 
 ## ESP32-32E 2.8" display board
 
-The "2.8inch ESP32-32E Display" (LCDwiki E32R28T / E32N28T, often sold as a "Cheap Yellow Display") has a classic ESP32 (ESP32-D0WD-V3, 4 MB flash), so Bluetooth and the engine run unchanged. Firmware env: **`esp32e_lcd28`** (`cd firmware && pio run -e esp32e_lcd28 -t upload`).
+The "2.8inch ESP32-32E Display" (LCDwiki E32R28T / E32N28T, often sold as a "Cheap Yellow Display") has a classic ESP32 (ESP32-D0WD-V3, 4 MB flash, no PSRAM). With firmware env **`esp32e_lcd28`** it runs **standalone**: programs from the microSD card, chosen and started on the touchscreen, no phone or computer needed ([STANDALONE.md](STANDALONE.md)). Bluetooth for the web app is an optional setting.
 
-Almost every pin already drives the display, touch, SD card, speaker or RGB LED ([LCDwiki pin table](https://www.lcdwiki.com/2.8inch_ESP32-32E_Display)). Only two connectors are free, so the wiring differs from the DevKit boards:
+Almost every pin already drives the display, touch, SD card, speaker or RGB LED ([LCDwiki pin table](https://www.lcdwiki.com/2.8inch_ESP32-32E_Display)). The module goes on the 4-pin SPI peripheral header and one ground wire:
 
 | Board connector · pin | GPIO | Connects to | Notes |
 |---|---|---|---|
-| SPI header · IO18 (SCK) | 18 | module **CLK** | |
-| SPI header · IO23 (MOSI) | 23 | module **DIN** | |
+| SPI header · IO18 (SCK) | 18 | module **CLK** | shared with the microSD card |
+| SPI header · IO23 (MOSI) | 23 | module **DIN** | shared with the microSD card |
 | SPI header · IO27 (CS) | 27 | module **SYNC** | |
-| SPI header · IO19 (MISO) | 19 | **arming switch**: 330 Ω → PhotoMOS LED (pin 1), LED pin 2 → GND, **1 kΩ from IO19 to GND** | The AD5328 never sends data, so its MISO pin is free. Use 1 kΩ, not 10 kΩ: the SD-card side of this line may have a pull-up, and 1 kΩ keeps the PhotoMOS off during boot either way |
-| Expansion header · 3.3V | – | module **LDAC** | No pin is left for LDAC: tied high, the firmware updates all 8 outputs at once with the AD5328's software "single update" word instead |
-| Expansion header · IO35 | 35 | **STOP** button to GND, **10 kΩ from IO35 to 3.3V** | IO35 is input only and has no internal pull-up |
-| Expansion header · GND | – | module **GND** | The SPI header has no ground pin: this wire is the common ground |
-| BOOT button (on the board) | 0 | – | Works as a second STOP button |
+| SPI header · IO19 (MISO) | 19 | – (leave free) | the microSD card's data line; the AD5328 never sends data |
+| Expansion header · 3.3V | – | module **LDAC** | no pin is left for LDAC: tied high, the firmware updates all 8 outputs at once with the AD5328's software "single update" word |
+| Expansion header · GND | – | module **GND** | the SPI header has no ground pin: this wire is the common ground |
+| BOOT button (on the board) | 0 | – | **STOP** (as the red button on the screen) |
 | USB-C | – | power bank, 5 V | |
 
+This board has **no arming switch** and **no external STOP button**: the coil returns go straight to the module's GND, and STOP is the on-screen button or the BOOT button. Both stop the field at once (the sequencer writes 0 V to all eight outputs within 0.5 ms).
+
+**Power-on rule.** The AD5328 starts at code 0, which on the ±10 V module is about −10 V on every output (up to 4.5 mA per coil through the 2.2 kΩ resistors) until the firmware sets 0 V, a fraction of a second after power-on. A reset holds whatever the outputs had. So:
+- Power the board and the module, **wait for the screen**, then put the helmet on.
+- **Never flash, reset or plug USB into a computer with the helmet on.** Take it off first.
+- Feed board and module from the same power bank, so they lose power together.
+
 Notes:
-- **Module 5 V.** The board has no documented 5 V output. Feed the module's 5V/GND terminal from the same power bank (a USB splitter or a second USB port), and connect the grounds through the expansion header GND. The board's LiPo connector cannot power the module (no 5 V); use the power bank.
-- **The firmware keeps the board quiet:** backlight off (IO21 low, the screen stays dark during sessions), speaker amplifier off (IO4 high), SD card, LCD and touch deselected. The RGB LED shows the same dim status as the other boards: blue blink idle, steady blue connected, amber session.
-- **Leave the microSD slot empty.** IO18, IO19 and IO23 are shared with it.
-- **SPI wiring stays short** (under about 20 cm) at the 20 MHz clock; twist each signal wire with a ground wire if it must be longer.
+- **Module 5 V.** The board has no documented 5 V output. Feed the module's 5V/GND terminal from the same power bank (a USB splitter or a second USB port), and connect the grounds through the expansion header GND. The board's LiPo connector cannot power the module (no 5 V).
+- **microSD card in the slot:** it holds the program library (FAT32, any size; [STANDALONE.md](STANDALONE.md)). It shares SCK/MOSI/MISO with the module, so the firmware reads it only while no session runs.
+- **The firmware keeps the board quiet:** speaker amplifier off (IO4 high), the screen dims during a session and goes dark after 10 s. The RGB LED shows a dim status: blue blink idle, steady blue with the app connected, amber during a session.
+- **SPI wiring stays short** (under about 20 cm): the bus runs at 20 MHz to the module and 10 MHz to the card. Twist each signal wire with a ground wire if it must be longer.
 - Logic is 3.3 V, which the module accepts directly, as on the other boards.
 
 ## The AD5328 module ("AD5328模块 V1.2")
@@ -100,7 +106,7 @@ Parts:
 - **DAC:** AD5328BRU (TSSOP-16). The date code on the one photographed is 0331 (2003): old stock or a recovered part, so run the bench test before trusting it.
 - **Output amplifiers:** four SGMicro SGM8272 dual op-amps (one amplifier per channel), rated for supplies up to ±18 V ([SGM8272](https://sg-micro.com/product/SGM8272)).
 - **Supply:** an on-board DC-DC converter followed by 78L12 and 79L12 regulators makes ±12 V for the op-amps; LED1 is the power light.
-- **Per channel:** 3 kΩ, 12 kΩ, 30 kΩ and 120 kΩ resistors (codes 302, 123, 303, 124), both pairs in a 1 : 4 ratio. That is a difference amplifier with a gain of 4 between the DAC output and the 2.5 V reference: **V_out = ±4 · (V_DAC − 2.5 V)**. With the DAC set to 0–5 V (GAIN ×2, the firmware default), code 0x800 gives 0 V and the full range is ±10 V. Which input the DAC feeds, and so the sign, cannot be seen from the photos; the bench test shows it. Code 0 (the DAC's power-on state) gives −10 V (or +10 V) on every output, not 0 V, which is why the arming switch is needed.
+- **Per channel:** 3 kΩ, 12 kΩ, 30 kΩ and 120 kΩ resistors (codes 302, 123, 303, 124), both pairs in a 1 : 4 ratio. That is a difference amplifier with a gain of 4 between the DAC output and the 2.5 V reference: **V_out = ±4 · (V_DAC − 2.5 V)**. With the DAC set to 0–5 V (GAIN ×2, the firmware default), code 0x800 gives 0 V and the full range is ±10 V. Which input the DAC feeds, and so the sign, cannot be seen from the photos; the bench test shows it. Code 0 (the DAC's power-on state) gives −10 V (or +10 V) on every output, not 0 V, which is why the DevKit boards use the arming switch (the display board instead follows a power-on rule, see above).
 
 ## One output channel (×8)
 
@@ -132,7 +138,7 @@ Parts:
 
 - Inductance: τ = L/R = 1.9 µs, so the coil behaves as a resistor at these frequencies and no flyback diode is needed.
 
-**Why the arming switch.**
+**Why the arming switch** (DevKit boards; the ESP32-32E display board has none and relies on its power-on rule, see [above](#esp32-32e-28-display-board)).
 - The AD5328 resets to code 0. On this ±10 V module that is almost certainly **−10 V on every output** until the firmware writes mid-scale (verify this in the bench test, docs/CALIBRATION.md §1).
 - The PhotoMOS keeps the coil return open until then. It also opens instantly on the STOP button and on any reset.
 - AQY212EH: 60 V / 500 mA, bidirectional, silent. It is a 4-pin DIP: pin 1 LED +, pin 2 LED −, pins 3/4 the switch (pin 4 to the return bus, pin 3 to module GND).

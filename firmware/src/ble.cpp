@@ -111,6 +111,7 @@ void begin(const char* name) {
 }
 
 void loop() {
+  if (gInbox == nullptr) return;  // Bluetooth not started
   std::string* msg = nullptr;
   if (xQueueReceive(gInbox, &msg, 0) == pdTRUE && msg != nullptr) {
     const std::string reply = rpc::handle(*msg);

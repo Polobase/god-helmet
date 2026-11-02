@@ -12,30 +12,33 @@ constexpr int kSync = 10;   // -> SYNC (manual chip select, high between words)
 constexpr int kLdac = 9;    // -> LDAC (pulse low: all 8 outputs update together)
 constexpr int kArm = 4;     // -> PhotoMOS LED via 330 Ω, 10 kΩ pull-down: closes coil return
 constexpr int kStop = 5;    // <- STOP button to GND (internal pull-up)
+constexpr int kMiso = -1;   // not used
 }  // namespace pins
 #define BOARD_NAME "ESP32-S3"
 #elif defined(BOARD_ESP32E_LCD28)
-// "2.8inch ESP32-32E Display" (LCDwiki E32R28T / E32N28T, ESP32-D0WD, 4 MB).
-// Almost every pin drives the LCD, touch, SD card, speaker or RGB LED, so the
-// AD5328 sits on the 4-pin SPI peripheral header (shared with the SD card)
-// and the display stays dark. See docs/WIRING.md.
+// "2.8inch ESP32-32E Display" (LCDwiki E32R28T / E32N28T, ESP32-D0WD, 4 MB),
+// standalone: touchscreen UI, programs on the microSD card (docs/STANDALONE.md).
+// The AD5328 sits on the 4-pin SPI peripheral header and shares the VSPI bus
+// with the SD card. No arming switch (coil returns go to module GND) and no
+// external STOP button: STOP is the on-screen button and the BOOT button.
 namespace pins {
-constexpr int kSclk = 18;   // SPI header SCK
-constexpr int kMosi = 23;   // SPI header MOSI
+constexpr int kSclk = 18;   // SPI header SCK (shared with the SD card)
+constexpr int kMosi = 23;   // SPI header MOSI (shared)
+constexpr int kMiso = 19;   // SD card data out (the AD5328 never answers)
 constexpr int kSync = 27;   // SPI header CS
 constexpr int kLdac = -1;   // no free pin: module LDAC tied to 3.3 V, software single update
-constexpr int kArm = 19;    // SPI header MISO (the AD5328 never answers) -> PhotoMOS LED, 1 kΩ pull-down
-constexpr int kStop = 35;   // expansion header, input only: external 10 kΩ pull-up to 3.3 V
-constexpr int kStop2 = 0;   // BOOT button as a second STOP (on-board pull-up)
-// On-board parts held quiet: dark screen, silent speaker, SD card off the shared bus.
-constexpr int kBacklight = 21;   // high = on
-constexpr int kAudioEnable = 4;  // low = amplifier on
-constexpr int kAudioOut = 26;
+constexpr int kArm = -1;    // no arming switch
+constexpr int kStop = 0;    // BOOT button (on-board 10 kΩ pull-up)
 constexpr int kSdCs = 5;
-constexpr int kLcdCs = 15;
-constexpr int kTouchCs = 33;
+// LCD on HSPI (ILI9341 or ST7789), touch XPT2046 read bit-banged on its own pins.
+constexpr int kLcdSclk = 14, kLcdMosi = 13, kLcdMiso = 12, kLcdCs = 15, kLcdDc = 2;
+constexpr int kBacklight = 21;   // high = on (PWM)
+constexpr int kTouchSclk = 25, kTouchMosi = 32, kTouchMiso = 39, kTouchCs = 33, kTouchIrq = 36;
+constexpr int kAudioEnable = 4;  // low = amplifier on: held high (silent)
+constexpr int kAudioOut = 26;
 constexpr int kLedR = 22, kLedG = 16, kLedB = 17;  // RGB LED, common anode: low = on
 }  // namespace pins
+#define HAS_SD_CARD 1
 #define BOARD_NAME "ESP32-32E 2.8in display"
 #else
 // ESP32 DevKitC (WROOM-32), VSPI.
@@ -46,6 +49,7 @@ constexpr int kSync = 5;
 constexpr int kLdac = 17;
 constexpr int kArm = 26;
 constexpr int kStop = 27;
+constexpr int kMiso = -1;   // not used
 }  // namespace pins
 #define BOARD_NAME "ESP32"
 #endif

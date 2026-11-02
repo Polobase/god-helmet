@@ -4,7 +4,8 @@ A DIY recreation of the Persinger/Koren "God Helmet", the 8-coil Shakti and the 
 - 8 small coils on a Velcro headband;
 - an AD5328 8-channel ±10 V DAC;
 - an ESP32-S3 that runs the signals in real time;
-- a **Vue web app on GitHub Pages** that connects over **Bluetooth LE**.
+- a **Vue web app on GitHub Pages** that connects over **Bluetooth LE**;
+- or, without phone or computer, a **2.8" touchscreen board** that runs the programs from its microSD card ([docs/STANDALONE.md](docs/STANDALONE.md)).
 
 It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva and Shakti sessions on their exact 10-10 sites (with reversed-polarity coils where the Shakti wiring needs them), 38 Persinger-lab protocols (sensed presence, Thomas pulse, circumcerebral rotations, Swann remote viewing, telepathy), the timing of clinical low-field methods (LFMS, T-PEMF, Cnp, theta-burst, BHFS), and replications of the independent tests. Each program states the evidence for the original protocol and what it approximates. The app also has a **Brain tab** that shows where each program's field goes on a 3D brain, **30 guided sessions** with beat audio and questionnaires, and the means to **test it all honestly**:
 - blinded real/sham sessions;
@@ -54,7 +55,8 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
 | [docs/PRESET_FORMAT.md](docs/PRESET_FORMAT.md) | The program file format, every signal and coil mode, the pulse-table generators, the preset checker |
 | [docs/BRAIN_VIEW.md](docs/BRAIN_VIEW.md) | How the brain view's field map is computed, its accuracy, data and licences |
 | [docs/GUIDES.md](docs/GUIDES.md), [docs/QUESTIONNAIRES.md](docs/QUESTIONNAIRES.md) | Guided-session format, audio engine, questionnaires and scoring |
-| [docs/WIRING.md](docs/WIRING.md) | Schematic, coil leads (inner = signal, outer = return), pin table (S3 and classic ESP32), arming switch, Cat5 pair mapping |
+| [docs/WIRING.md](docs/WIRING.md) | Schematic, coil leads (inner = signal, outer = return), pin table (S3, classic ESP32, 2.8" display board), arming switch, Cat6A pair mapping |
+| [docs/STANDALONE.md](docs/STANDALONE.md) | The 2.8" touchscreen board without the app: flashing, the SD-card program pack, clock, screens |
 | [docs/PLACEMENT.md](docs/PLACEMENT.md) | The 10-10 system, finding sites with a tape measure, the standard and program-specific layouts, depth and field per target |
 | [docs/CALIBRATION.md](docs/CALIBRATION.md) | Bench test of the module, wiring checks, µT/mA calibration with a phone |
 | [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md) | Blinded sessions, remote-viewing and telepathy protocols, statistics |
@@ -77,6 +79,8 @@ cd firmware
 pio run -e esp32s3 -t upload  # ESP32-S3-DevKitC-1 (-e esp32dev: classic ESP32; -e esp32e_lcd28: 2.8" ESP32-32E display board)
 pio device monitor            # prints the Bluetooth name, e.g. GodHelmet-3F2A
 ```
+
+Standalone touchscreen board: `pio run -e esp32e_lcd28 -t upload`, then `npm run sd-pack -- <dir>` in `webapp/` for the SD card ([docs/STANDALONE.md](docs/STANDALONE.md)).
 
 **App:**
 

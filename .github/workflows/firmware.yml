@@ -2,7 +2,8 @@ name: Firmware
 
 on:
   push:
-    paths: ["firmware/**", "presets/**", ".github/workflows/firmware.yml"]
+    paths: ["firmware/**", "presets/**", "webapp/src/lib/**", "webapp/src/engine/**", "webapp/scripts/sd-pack.mjs",
+            ".github/workflows/firmware.yml"]
   pull_request:
   workflow_dispatch:
 
@@ -17,6 +18,18 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install platformio
-      - name: Build ESP32-S3 and ESP32
+      - name: Build ESP32-S3, ESP32 and the 2.8" display board
         working-directory: firmware
         run: pio run -e esp32s3 -e esp32dev -e esp32e_lcd28
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Touchscreen UI on the host (every screen, SD pack from the presets)
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q libsdl2-dev
+          (cd webapp && npm ci)
+          ./firmware/test/uisim/run.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ui-screenshots
+          path: firmware/.pio/uisim/shots

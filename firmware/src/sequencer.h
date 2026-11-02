@@ -62,7 +62,11 @@ void setField(float uT);                  // live intensity change
 void keepalive();                         // UI heartbeat (see Settings::keepaliveS)
 void reconfigureDac();                    // re-apply DAC gain/reference settings
 Status status();
+// True from the moment start() queues a session until it has ended, so two
+// quick starts cannot both pass a busy() check.
 bool busy();
+// Immediate stop from task context (on-screen STOP): mid-scale at once, no fade.
+void emergencyStop(const char* reason);
 // Returns true once per finished session (consumed by the logbook).
 bool popFinished(Finished& out);
 // Wired to the STOP button: cuts the coil return immediately (ISR-safe).

@@ -33,7 +33,8 @@ Evidence words follow the project's scale (see [PRESET_FORMAT.md](PRESET_FORMAT.
 
 ## How to use it
 
-- Sit or lie down in a quiet, dark room. Keep the **STOP** button in your hand.
+- Sit or lie down in a quiet, dark room. Keep the **STOP** button in your hand. On the standalone display board, STOP is the red button on the screen (in the dark: the bottom of the screen) or the board's BOOT button.
+- Standalone display board (no arming switch): power it, **wait for the screen**, then put the helmet on. Never flash, reset or connect it to a computer while you wear it ([WIRING.md](WIRING.md#esp32-32e-28-display-board)).
 - Have a second person present for your first session.
 - Take hearing aids out, or switch the telecoil off. A telecoil picks up the signal as hum.
 - No magnets anywhere in the headband or coil clips. Use Velcro.
@@ -52,14 +53,14 @@ Evidence words follow the project's scale (see [PRESET_FORMAT.md](PRESET_FORMAT.
 | Safeguard | What it does |
 |---|---|
 | Series resistors | Hardware current limit of 4.54 mA per coil (±10 V through 2.2 kΩ). No setting in the firmware or the app can exceed it |
-| Arming switch (PhotoMOS) | Coil return stays open at power-up until the DAC is at 0 V, and closes only when a session starts. Opens on STOP, at session end and on any reset (a 10 kΩ pull-down holds it open while the ESP32 restarts) |
-| STOP button | Hardware interrupt that cuts the coil return instantly, independent of Bluetooth and the app. No fade |
+| Arming switch (PhotoMOS) | Coil return stays open at power-up until the DAC is at 0 V, and closes only when a session starts. Opens on STOP, at session end and on any reset (a 10 kΩ pull-down holds it open while the ESP32 restarts). Not on the standalone display board: there the DAC is set to 0 V first thing at power-on, and the helmet goes on only after the screen is up |
+| STOP button | Hardware interrupt that cuts the coil return instantly, independent of Bluetooth and the app. No fade. Display board: the BOOT button and the on-screen STOP set all outputs to 0 V within 0.5 ms |
 | Field ceiling | User ceiling (default 5 µT, at most 10 µT at 20 mm) clamps every program; DC tests limited to 4.6 mA and 120 s (the resistors cap the current at 4.54 mA anyway) |
 | Fades | 10 s fade-in/out unless a program sets its own; tests use 0.5 s. A stop from the app, or a lost keepalive, fades out over 2 s |
 | Watchdog | The real-time task is supervised by the ESP32 task watchdog; a hang of more than about 5 s resets the ESP32, which opens the arming switch |
 | Session cap | 60 min per session; the firmware rejects longer programs |
 | Optional app keepalive | Stops the session if no app has been connected for a set time (**Setup** → Helmet) |
-| Safety gate | The helmet refuses to start sessions and tests until the safety page has been accepted in the app |
+| Safety gate | The helmet refuses to start sessions and tests until the safety page has been accepted in the app (or on the display board's screen) |
 | Interval warning | The app asks you to press Start twice if the last session was less than 72 h ago (needs the helmet clock, which the app sets) |
 
 ## Implants

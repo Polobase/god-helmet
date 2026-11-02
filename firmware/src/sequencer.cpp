@@ -7,6 +7,7 @@
 #include <freertos/task.h>
 #include <soc/gpio_struct.h>
 
+#include <atomic>
 #include <cmath>
 #include <cstring>
 #include <cstdio>
@@ -35,6 +36,8 @@ QueueHandle_t gQueue = nullptr;
 hw_timer_t* gTimer = nullptr;
 portMUX_TYPE gMux = portMUX_INITIALIZER_UNLOCKED;
 volatile bool gEmergency = false;
+const char* volatile gEmergencyReason = "STOP button";
+std::atomic<int> gPending{0};  // queued starts not yet running
 volatile uint32_t gKeepaliveMs = 0;
 
 // Owned by the sequencer task.
@@ -56,9 +59,13 @@ void IRAM_ATTR onTimer() {
   if (woken) portYIELD_FROM_ISR();
 }
 
+// Boards without an arming switch (coil returns wired to ground) get a zero
+// mask: arming is then only a status flag and STOP relies on mid-scale.
+constexpr uint32_t kArmMask = pins::kArm >= 0 ? 1u << pins::kArm : 0u;
+
 inline void arm(bool on) {
-  if (on) GPIO.out_w1ts = 1u << pins::kArm;
-  else GPIO.out_w1tc = 1u << pins::kArm;
+  if (on) GPIO.out_w1ts = kArmMask;
+  else GPIO.out_w1tc = kArmMask;
   gStatusLocal.armed = on;
 }
 
@@ -143,6 +150,8 @@ void handleCommand(const Command& c) {
   switch (c.type) {
     case CommandType::Start:
       beginSession(c.start);
+      publish();
+      gPending--;
       break;
     case CommandType::Stop:
       if (gRunner.running()) {
@@ -209,8 +218,12 @@ void task(void*) {
     if (gEmergency) {
       gEmergency = false;
       emergency = true;
-      if (gRunner.running()) finish(false, "STOP button");
-      else arm(false);
+      if (gRunner.running()) {
+        finish(false, gEmergencyReason);
+      } else {
+        dac::writeMidscale();  // defensive: outputs to 0 V even when idle
+        arm(false);
+      }
     }
 
     Command c;
@@ -239,8 +252,10 @@ bool send(const Command& c) { return gQueue != nullptr && xQueueSend(gQueue, &c,
 }  // namespace
 
 void begin() {
-  pinMode(pins::kArm, OUTPUT);
-  digitalWrite(pins::kArm, LOW);
+  if (pins::kArm >= 0) {
+    pinMode(pins::kArm, OUTPUT);
+    digitalWrite(pins::kArm, LOW);
+  }
   for (auto& c : gCodes) c = 0x800;
 
   gQueue = xQueueCreate(8, sizeof(Command));
@@ -255,7 +270,16 @@ bool start(const StartRequest& request) {
   Command c{};
   c.type = CommandType::Start;
   c.start = request;
-  return send(c);
+  gPending++;
+  if (send(c)) return true;
+  gPending--;
+  return false;
+}
+
+void emergencyStop(const char* reason) {
+  gEmergencyReason = reason;
+  gEmergency = true;
+  if (gTask != nullptr) xTaskNotifyGive(gTask);
 }
 
 void stop(const char* reason) {
@@ -293,7 +317,7 @@ Status status() {
   return s;
 }
 
-bool busy() { return status().state != State::Idle; }
+bool busy() { return gPending.load() > 0 || status().state != State::Idle; }
 
 bool popFinished(Finished& out) {
   bool has = false;
@@ -308,7 +332,8 @@ bool popFinished(Finished& out) {
 }
 
 void IRAM_ATTR emergencyStopFromIsr() {
-  GPIO.out_w1tc = 1u << pins::kArm;  // open the coil return at once
+  GPIO.out_w1tc = kArmMask;  // open the coil return at once (the task then writes mid-scale)
+  gEmergencyReason = "STOP button";
   gEmergency = true;
   if (gTask != nullptr) {
     BaseType_t woken = pdFALSE;

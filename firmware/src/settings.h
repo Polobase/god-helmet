@@ -21,9 +21,21 @@ struct Settings {
   String bleName;               // empty -> "GodHelmet-XXXX"
   uint32_t lastSessionEpoch = 0;
   bool safetyAccepted = false;
+#ifdef STANDALONE_UI
+  bool bleEnabled = false;      // standalone board: Bluetooth only when switched on
+#else
+  bool bleEnabled = true;
+#endif
+  // On-device UI (display boards)
+  uint8_t backlight = 160;      // 0..255 while the UI is in use
+  uint8_t panel = 0;            // 0 auto, 1 ILI9341, 2 ST7789
+  uint16_t touchCal[8] = {0};   // LovyanGFX touch calibration, all 0 = not calibrated
+  float headNI = 0, headLR = 0, headC = 0;  // head measurements in cm, 0 = typical head
+  String tz = "CET-1CEST,M3.5.0,M10.5.0/3";  // POSIX TZ for the clock shown on the device
 
   void load();
   void save() const;
+  void saveLastSession() const;  // one NVS key only (written at every session start)
   // JSON for the app.
   String toJson() const;
   // Applies fields present in a JSON object; returns false with a message on bad input.

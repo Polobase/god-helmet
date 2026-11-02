@@ -28,6 +28,14 @@ void Settings::load() {
   bleName = p.getString("bleName", bleName);
   lastSessionEpoch = p.getUInt("lastSess", lastSessionEpoch);
   safetyAccepted = p.getBool("safetyOk", safetyAccepted);
+  bleEnabled = p.getBool("ble", bleEnabled);
+  backlight = p.getUChar("backlight", backlight);
+  panel = p.getUChar("panel", panel);
+  if (p.getBytesLength("touchCal") == sizeof(touchCal)) p.getBytes("touchCal", touchCal, sizeof(touchCal));
+  headNI = p.getFloat("headNI", headNI);
+  headLR = p.getFloat("headLR", headLR);
+  headC = p.getFloat("headC", headC);
+  tz = p.getString("tz", tz);
   p.end();
 }
 
@@ -48,6 +56,21 @@ void Settings::save() const {
   p.putString("bleName", bleName);
   p.putUInt("lastSess", lastSessionEpoch);
   p.putBool("safetyOk", safetyAccepted);
+  p.putBool("ble", bleEnabled);
+  p.putUChar("backlight", backlight);
+  p.putUChar("panel", panel);
+  p.putBytes("touchCal", touchCal, sizeof(touchCal));
+  p.putFloat("headNI", headNI);
+  p.putFloat("headLR", headLR);
+  p.putFloat("headC", headC);
+  p.putString("tz", tz);
+  p.end();
+}
+
+void Settings::saveLastSession() const {
+  Preferences p;
+  if (!p.begin(kNamespace, false)) return;
+  p.putUInt("lastSess", lastSessionEpoch);
   p.end();
 }
 
@@ -71,6 +94,7 @@ String Settings::toJson() const {
   w.key("lastSessionEpoch").integer(lastSessionEpoch);
   w.key("safetyAccepted").boolean(safetyAccepted);
   w.key("maxCurrentMA").number(engine::maxCurrentMA(drive), 3);
+  w.key("bleEnabled").boolean(bleEnabled);
   w.endObject();
   return String(w.str().c_str());
 }
@@ -130,6 +154,9 @@ bool Settings::applyJson(const String& body, String& error) {
     bleName = name;
   }
   if (v.has("safetyAccepted")) safetyAccepted = v["safetyAccepted"].boolean(safetyAccepted);
+  // Switching Bluetooth off from the app would cut its own connection: only
+  // the device's Settings screen does that.
+  if (v.has("bleEnabled") && v["bleEnabled"].boolean(true)) bleEnabled = true;
   save();
   return true;
 }

@@ -2,6 +2,8 @@
 #pragma once
 #include <cstdint>
 
+class SPIClass;
+
 namespace dac {
 
 // Configures pins and the DAC, then sets all outputs to mid-scale (0 V).
@@ -12,5 +14,8 @@ void reconfigure(bool gain2x, bool bufferedRef);
 // Call from one task only (the sequencer).
 void writeAll(const uint16_t codes[8]);
 void writeMidscale();
+// The DAC's SPI bus, for devices that share it (the SD card on the display
+// board). Never use it while a session runs: transactions lock the bus.
+SPIClass& spi();
 
 }  // namespace dac

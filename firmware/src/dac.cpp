@@ -49,11 +49,15 @@ inline void latchPin() {
   if (kHardLdac) pulseLdac();
 }
 
+// No reset word: a reset loads code 0, which on the ±10 V module is -10 V on
+// every coil until the mid-scale words follow. Each control register is set
+// explicitly instead, so a warm reset or a settings change never passes
+// through full scale.
 void configure(bool gain2x, bool bufferedRef) {
   gSpi.beginTransaction(kSpiSettings);
-  sendWord(ad5328::resetAllWord());
   sendWord(ad5328::gainRefWord(gain2x, bufferedRef));
   sendWord(ad5328::ldacWord(ad5328::LdacMode::High));  // DAC registers update on the LDAC pin only
+  sendWord(ad5328::powerDownWord(0));                   // all channels powered (normal output)
   for (uint8_t ch = 0; ch < ad5328::kChannels; ++ch) sendWord(ad5328::dacWord(ch, ad5328::kMidscale));
   latchWord();
   gSpi.endTransaction();
@@ -69,7 +73,7 @@ void begin(bool gain2x, bool bufferedRef) {
     pinMode(pins::kLdac, OUTPUT);
     ldacHigh();
   }
-  gSpi.begin(pins::kSclk, -1, pins::kMosi, -1);
+  gSpi.begin(pins::kSclk, pins::kMiso, pins::kMosi, -1);  // MISO only where an SD card shares the bus
   configure(gain2x, bufferedRef);
 }
 
@@ -82,6 +86,8 @@ void writeAll(const uint16_t codes[8]) {
   gSpi.endTransaction();
   latchPin();
 }
+
+SPIClass& spi() { return gSpi; }
 
 void writeMidscale() {
   const uint16_t mid[8] = {ad5328::kMidscale, ad5328::kMidscale, ad5328::kMidscale, ad5328::kMidscale,
