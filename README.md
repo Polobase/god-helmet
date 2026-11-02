@@ -74,7 +74,7 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
 ```sh
 cd firmware
 ./test/run_host_tests.sh      # engine, JSON, BLE framing, every preset rendered at 2 kHz
-pio run -e esp32s3 -t upload  # ESP32-S3-DevKitC-1 (use -e esp32dev for a classic ESP32)
+pio run -e esp32s3 -t upload  # ESP32-S3-DevKitC-1 (-e esp32dev: classic ESP32; -e esp32e_lcd28: 2.8" ESP32-32E display board)
 pio device monitor            # prints the Bluetooth name, e.g. GodHelmet-3F2A
 ```
 

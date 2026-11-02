@@ -21,6 +21,28 @@ namespace {
 
 void IRAM_ATTR onStopButton() { seq::emergencyStopFromIsr(); }
 
+#ifdef BOARD_ESP32E_LCD28
+// Display board: keep the screen dark (sessions run in darkness), the speaker
+// amplifier off and every other SPI device deselected.
+void quietBoard() {
+  for (int p : {pins::kBacklight, pins::kAudioOut}) {
+    pinMode(p, OUTPUT);
+    digitalWrite(p, LOW);
+  }
+  for (int p : {pins::kAudioEnable, pins::kSdCs, pins::kLcdCs, pins::kTouchCs, pins::kLedR, pins::kLedG, pins::kLedB}) {
+    pinMode(p, OUTPUT);
+    digitalWrite(p, HIGH);
+  }
+}
+
+// Common-anode RGB LED, dimmed with PWM (0..255 brightness, inverted drive).
+void rgb(uint8_t r, uint8_t g, uint8_t b) {
+  analogWrite(pins::kLedR, 255 - r);
+  analogWrite(pins::kLedG, 255 - g);
+  analogWrite(pins::kLedB, 255 - b);
+}
+#endif
+
 void ensureDirs() {
   for (const char* d : {"/log", "/trials"})
     if (!LittleFS.exists(d)) LittleFS.mkdir(d);
@@ -32,7 +54,11 @@ void updateLed() {
   const bool running = seq::busy();
   const bool connected = ble::connections() > 0;
   const bool blinkOn = (millis() / 1000) % 2 == 0;
-#ifdef RGB_BUILTIN
+#if defined(BOARD_ESP32E_LCD28)
+  if (running) rgb(12, 4, 0);
+  else if (connected || blinkOn) rgb(0, 0, 10);
+  else rgb(0, 0, 0);
+#elif defined(RGB_BUILTIN)
   if (running) neopixelWrite(RGB_BUILTIN, 12, 4, 0);
   else if (connected || blinkOn) neopixelWrite(RGB_BUILTIN, 0, 0, 10);
   else neopixelWrite(RGB_BUILTIN, 0, 0, 0);
@@ -56,6 +82,9 @@ void setup() {
   // 1. Coil return open, DAC outputs to 0 V before anything else.
   pinMode(pins::kArm, OUTPUT);
   digitalWrite(pins::kArm, LOW);
+#ifdef BOARD_ESP32E_LCD28
+  quietBoard();
+#endif
   gSettings.load();
   dac::begin(gSettings.dacGain2x, gSettings.dacBufferedRef);
 
@@ -64,9 +93,13 @@ void setup() {
 
   // 2. Real-time engine and the hardware STOP button.
   seq::begin();
-  pinMode(pins::kStop, INPUT_PULLUP);
+  // GPIO 34-39 are input only, without internal pull-ups (the button needs an external one).
+  pinMode(pins::kStop, pins::kStop >= 34 ? INPUT : INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(pins::kStop), onStopButton, FALLING);
-#ifndef RGB_BUILTIN
+#ifdef BOARD_ESP32E_LCD28
+  pinMode(pins::kStop2, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(pins::kStop2), onStopButton, FALLING);
+#elif !defined(RGB_BUILTIN)
   pinMode(2, OUTPUT);
 #endif
 

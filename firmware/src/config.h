@@ -14,6 +14,29 @@ constexpr int kArm = 4;     // -> PhotoMOS LED via 330 Ω, 10 kΩ pull-down: clo
 constexpr int kStop = 5;    // <- STOP button to GND (internal pull-up)
 }  // namespace pins
 #define BOARD_NAME "ESP32-S3"
+#elif defined(BOARD_ESP32E_LCD28)
+// "2.8inch ESP32-32E Display" (LCDwiki E32R28T / E32N28T, ESP32-D0WD, 4 MB).
+// Almost every pin drives the LCD, touch, SD card, speaker or RGB LED, so the
+// AD5328 sits on the 4-pin SPI peripheral header (shared with the SD card)
+// and the display stays dark. See docs/WIRING.md.
+namespace pins {
+constexpr int kSclk = 18;   // SPI header SCK
+constexpr int kMosi = 23;   // SPI header MOSI
+constexpr int kSync = 27;   // SPI header CS
+constexpr int kLdac = -1;   // no free pin: module LDAC tied to 3.3 V, software single update
+constexpr int kArm = 19;    // SPI header MISO (the AD5328 never answers) -> PhotoMOS LED, 1 kΩ pull-down
+constexpr int kStop = 35;   // expansion header, input only: external 10 kΩ pull-up to 3.3 V
+constexpr int kStop2 = 0;   // BOOT button as a second STOP (on-board pull-up)
+// On-board parts held quiet: dark screen, silent speaker, SD card off the shared bus.
+constexpr int kBacklight = 21;   // high = on
+constexpr int kAudioEnable = 4;  // low = amplifier on
+constexpr int kAudioOut = 26;
+constexpr int kSdCs = 5;
+constexpr int kLcdCs = 15;
+constexpr int kTouchCs = 33;
+constexpr int kLedR = 22, kLedG = 16, kLedB = 17;  // RGB LED, common anode: low = on
+}  // namespace pins
+#define BOARD_NAME "ESP32-32E 2.8in display"
 #else
 // ESP32 DevKitC (WROOM-32), VSPI.
 namespace pins {

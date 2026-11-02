@@ -43,7 +43,7 @@ The outer winding is the layer that touches fingers, scalp and neighbouring wire
 
 ## Pin table
 
-The default board is the **ESP32-S3-DevKitC-1** (N8R8/N16R8, firmware env `esp32s3`). A classic **ESP32 DevKitC** works too (env `esp32dev`) with the pins in the last column.
+The default board is the **ESP32-S3-DevKitC-1** (N8R8/N16R8, firmware env `esp32s3`). A classic **ESP32 DevKitC** works too (env `esp32dev`) with the pins in the last column. For the **2.8" ESP32-32E display board** see [its own section](#esp32-32e-28-display-board) below.
 
 | Function | ESP32-S3 | Direction | Connects to | ESP32 classic |
 |---|---|---|---|---|
@@ -58,6 +58,31 @@ The default board is the **ESP32-S3-DevKitC-1** (N8R8/N16R8, firmware env `esp32
 | Common ground | GND | – | module **GND** (header and output terminal) | GND |
 
 On the S3 the pins avoid the strapping pins (0, 3, 45, 46), USB (19, 20) and the pins the octal flash/PSRAM uses on N8R8/N16R8 modules (26–37). The module's logic level is 3.3 V, so no level shifter is needed. Set the module's reference jumper to **1-2 (onboard 2.5 V)**.
+
+## ESP32-32E 2.8" display board
+
+The "2.8inch ESP32-32E Display" (LCDwiki E32R28T / E32N28T, often sold as a "Cheap Yellow Display") has a classic ESP32 (ESP32-D0WD-V3, 4 MB flash), so Bluetooth and the engine run unchanged. Firmware env: **`esp32e_lcd28`** (`cd firmware && pio run -e esp32e_lcd28 -t upload`).
+
+Almost every pin already drives the display, touch, SD card, speaker or RGB LED ([LCDwiki pin table](https://www.lcdwiki.com/2.8inch_ESP32-32E_Display)). Only two connectors are free, so the wiring differs from the DevKit boards:
+
+| Board connector · pin | GPIO | Connects to | Notes |
+|---|---|---|---|
+| SPI header · IO18 (SCK) | 18 | module **CLK** | |
+| SPI header · IO23 (MOSI) | 23 | module **DIN** | |
+| SPI header · IO27 (CS) | 27 | module **SYNC** | |
+| SPI header · IO19 (MISO) | 19 | **arming switch**: 330 Ω → PhotoMOS LED (pin 1), LED pin 2 → GND, **1 kΩ from IO19 to GND** | The AD5328 never sends data, so its MISO pin is free. Use 1 kΩ, not 10 kΩ: the SD-card side of this line may have a pull-up, and 1 kΩ keeps the PhotoMOS off during boot either way |
+| Expansion header · 3.3V | – | module **LDAC** | No pin is left for LDAC: tied high, the firmware updates all 8 outputs at once with the AD5328's software "single update" word instead |
+| Expansion header · IO35 | 35 | **STOP** button to GND, **10 kΩ from IO35 to 3.3V** | IO35 is input only and has no internal pull-up |
+| Expansion header · GND | – | module **GND** | The SPI header has no ground pin: this wire is the common ground |
+| BOOT button (on the board) | 0 | – | Works as a second STOP button |
+| USB-C | – | power bank, 5 V | |
+
+Notes:
+- **Module 5 V.** The board has no documented 5 V output. Feed the module's 5V/GND terminal from the same power bank (a USB splitter or a second USB port), and connect the grounds through the expansion header GND. The board's LiPo connector cannot power the module (no 5 V); use the power bank.
+- **The firmware keeps the board quiet:** backlight off (IO21 low, the screen stays dark during sessions), speaker amplifier off (IO4 high), SD card, LCD and touch deselected. The RGB LED shows the same dim status as the other boards: blue blink idle, steady blue connected, amber session.
+- **Leave the microSD slot empty.** IO18, IO19 and IO23 are shared with it.
+- **SPI wiring stays short** (under about 20 cm) at the 20 MHz clock; twist each signal wire with a ground wire if it must be longer.
+- Logic is 3.3 V, which the module accepts directly, as on the other boards.
 
 ## The AD5328 module ("AD5328模块 V1.2")
 
@@ -102,6 +127,7 @@ Parts:
 | AO1–AO8 without the resistor | Never: ±10 V into 4.2 Ω | limited only by the op-amp's short-circuit current, about 100× the intended field |
 | All 8 outputs together | Same sign, full scale | 36 mA from one ±12 V rail (78L12/79L12: 100 mA) |
 | GPIO4 → 330 Ω → PhotoMOS LED | (3.3 V − 1.2 V) / 330 Ω | about 6 mA: enough to switch the AQY212EH reliably, well under the ESP32's 20 mA default drive |
+| IO19 on the 2.8" display board | the same LED plus the 1 kΩ pull-down (3.3 mA) | about 9.5 mA, still under the 20 mA default drive |
 | CLK, DIN, SYNC, LDAC, STOP | Logic inputs | microamps (STOP: about 0.07 mA through the internal pull-up when pressed) |
 
 - Inductance: τ = L/R = 1.9 µs, so the coil behaves as a resistor at these frequencies and no flyback diode is needed.
