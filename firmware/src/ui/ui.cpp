@@ -30,7 +30,7 @@ namespace {
 
 enum class Screen : uint8_t {
   Calibrate, Safety, Home, Categories, Programs, Program, Details, Coils, Start, Session, Rate, Log,
-  Settings, Editor, Message,
+  Settings, Editor, Message, ModuleCheck,
 };
 
 void go(Screen s);
@@ -103,6 +103,12 @@ int gLogPage = 0, gLogTotal = 0;
 
 int gSetPage = 0;
 Screen gAfterCalibrate = Screen::Home;
+
+// The AD5328 has no data-out pin, so the board cannot see whether it is
+// connected: the user confirms it once per power-on before the first start.
+bool gModuleConfirmed = false;
+Screen gModuleBack = Screen::Settings;
+int gModStep = 0, gModCh = 0;
 
 // Number editor (head size, clock, brightness, limits, coil test)
 struct Field {
@@ -416,7 +422,7 @@ void statusRow(int& y, const char* label, const String& value, uint16_t c) {
   fontSmall();
   text(label, kMargin, y, color::kMuted);
   text(fit(value, kW - 104 - kMargin), 104, y, c);
-  y += 20;
+  y += 19;
 }
 
 void drawHome() {
@@ -434,10 +440,12 @@ void drawHome() {
   else if (envdata::timeValid() && envdata::now() >= gSettings.lastSessionEpoch)
     statusRow(y, "Last session", ago(envdata::now() - gSettings.lastSessionEpoch) + " ago", color::kText);
   else statusRow(y, "Last session", timesync::localString(gSettings.lastSessionEpoch), color::kText);
+  statusRow(y, "Module", gModuleConfirmed ? "confirmed" : "not checked yet",
+            gModuleConfirmed ? color::kText : color::kWarn);
   statusRow(y, "Bluetooth",
             gSettings.bleEnabled ? String(ble::connections() > 0 ? "on, app connected" : "on") : String("off"),
             color::kText);
-  y += 8;
+  y += 4;
   const String hint = envdata::timeValid()
                           ? String("Sit or lie down in a dark, quiet room. STOP: the red button on the screen or "
                                    "the BOOT button on the board.")
@@ -744,24 +752,30 @@ void onCoils(uint8_t id, int16_t x, int16_t y) {
 
 // ---------------------------------------------------------------- start
 
-void openStart() {
+// Loads the selected program into gDoc; false with a message for the user.
+bool loadProgram(String& err) {
   std::string json;
-  String err;
   try {
-    if (!sdcard::readFile(pack::programPath(gProg.num), json, 48 * 1024, err)) {
-      message("Start", err, Screen::Program);
-      return;
-    }
+    if (!sdcard::readFile(pack::programPath(gProg.num), json, 48 * 1024, err)) return false;
     std::unique_ptr<mj::Value> doc(new mj::Value());
     std::string perr;
     if (!mj::parse(json, *doc, &perr)) {
-      message("Start", ("program file unreadable: " + perr).c_str(), Screen::Program);
-      return;
+      err = ("program file unreadable: " + perr).c_str();
+      return false;
     }
     gDoc = std::move(doc);
   } catch (const std::bad_alloc&) {
     gDoc.reset();
-    message("Start", "not enough memory to load this program", Screen::Program);
+    err = "not enough memory to load this program";
+    return false;
+  }
+  return true;
+}
+
+void openStart() {
+  String err;
+  if (!loadProgram(err)) {
+    message("Start", err, Screen::Program);
     return;
   }
   gProgramUT = static_cast<float>((*gDoc)["uT"].num(0));
@@ -819,7 +833,38 @@ void drawStart() {
 
 void beginSessionScreen(bool fromUi, bool test, uint32_t logId, const String& name);
 
+void onModuleGate(int a) {
+  if (a == 0) {
+    gModuleConfirmed = true;
+    go(gMsg.back);
+  } else {
+    gModuleBack = gMsg.back;
+    gModStep = 0;
+    go(Screen::ModuleCheck);
+  }
+}
+
+// True when the module was confirmed since power-on; otherwise asks and returns false.
+bool moduleGate(Screen back) {
+  if (gModuleConfirmed) return true;
+  message("AD5328 module",
+          "The board cannot detect the module, so confirm it once after each power-on:\n"
+          "- module LED on (5 V connected)\n"
+          "- GND from the expansion header to the module\n"
+          "- CLK, DIN and SYNC on the SPI header, LDAC to 3.3V\n"
+          "- reference jumper on 1-2\n"
+          "- coils on AO1 to AO8 through 2.2 kOhm\n\n"
+          "Not sure? Check it step by step with a multimeter.",
+          back, "Connected", "Check it", onModuleGate);
+  return false;
+}
+
 void startProgram() {
+  String err;
+  if (!gDoc && !loadProgram(err)) {  // freed during a module test: load it again
+    message("Not started", err, Screen::Program);
+    return;
+  }
   control::Result r;
   try {
     r = control::startFromDoc(*gDoc, gProg.id, gField, gBlind);
@@ -846,6 +891,7 @@ void onStart(uint8_t id) {
     gBlind = !gBlind;
     drawStart();
   } else if (id == 4) {
+    if (!moduleGate(Screen::Start)) return;
     if (startWarning().length() && !(gConfirmArmed && millis() - gConfirmAt < 5000)) {
       gConfirmArmed = true;
       gConfirmAt = millis();
@@ -1378,6 +1424,7 @@ void coilAction(int a) {
     drawEditorNote();
     return;
   }
+  if (!moduleGate(Screen::Editor)) return;
   control::TestRequest t;
   t.mode = a == 0 ? "dc" : "rotate";
   t.channel = ch;
@@ -1411,6 +1458,79 @@ void openCoilTest() {
   openEditor();
 }
 
+// ---------------------------------------------------------------- module check
+
+// DC test current that puts 5 V on a module output (with or without a coil).
+float fiveVoltMA() { return 5000.0f / (gSettings.drive.seriesOhm + gSettings.drive.coilOhm); }
+
+const char* const kModuleSteps[] = {
+    "Step 1 of 3: power and wiring\n"
+    "Module LED1 is on. Multimeter on DC volts, black probe on a GND screw of the module, red probe on the "
+    "test pads:\n"
+    "5V: about 5 V\n"
+    "12V: about +12 V\n"
+    "-12V: about -12 V\n"
+    "VREF: 2.50 V (0 V: reference jumper not on 1-2)\n"
+    "Wires: CLK to IO18, DIN to IO23, SYNC to IO27, LDAC to 3.3V, GND to the expansion header.",
+    "Step 2 of 3: outputs at rest\n"
+    "The board holds every output at 0 V now. Measure AO1 to AO8 against GND: each within 0.05 V of 0 V.\n\n"
+    "All near -10 V or +10 V: the module has power but gets no data. Check CLK, DIN, SYNC and GND, then "
+    "restart the board.\n\n"
+    "All 0 V with LED1 off: the module has no power.",
+    "Step 3 of 3: each output\n"
+    "Tap +5 V: the output reads about +5 V against GND for 60 s (-5 V: -5 V). STOP ends it early. Opposite "
+    "sign on every output: the module inverts. 0 V: check that output.",
+};
+void drawModuleCheck() {
+  clear();
+  header("Module check", true);
+  fontSmall();
+  drawWrapped(kModuleSteps[gModStep], kMargin, kTop, kW - 2 * kMargin, color::kText,
+              gModStep == 2 ? 168 : kFooterY - 4);
+  if (gModStep == 2) {
+    drawButton(addButton(kMargin, 172, 56, 40, 1, "", Style::Normal, 0, Icon::Left));
+    drawButton(addButton(kW - kMargin - 56, 172, 56, 40, 2, "", Style::Normal, 0, Icon::Right));
+    fontBold();
+    text("AO" + String(gModCh + 1), kW / 2, 192, color::kText, textdatum_t::middle_center);
+    drawButton(addButton(kMargin, 222, 108, 42, 3, "+5 V"));
+    drawButton(addButton(kW - kMargin - 108, 222, 108, 42, 4, "-5 V"));
+  }
+  if (gModStep > 0) drawButton(addButton(kMargin, kFooterY, 108, kFooterH, 31, "Previous"));
+  if (gModStep < 2) drawButton(addButton(kW - kMargin - 108, kFooterY, 108, kFooterH, 30, "Next", Style::Primary));
+  else drawButton(addButton(kW - kMargin - 108, kFooterY, 108, kFooterH, 32, "Module OK", Style::Primary));
+}
+
+void onModuleCheck(uint8_t id) {
+  if (id == kIdBack) {
+    go(gModuleBack);
+  } else if (id == 30 && gModStep < 2) {
+    ++gModStep;
+    drawModuleCheck();
+  } else if (id == 31 && gModStep > 0) {
+    --gModStep;
+    drawModuleCheck();
+  } else if (id == 32) {
+    gModuleConfirmed = true;
+    go(gModuleBack);
+  } else if (id == 1 || id == 2) {
+    gModCh = (gModCh + (id == 2 ? 1 : 7)) % 8;
+    drawModuleCheck();
+  } else if (id == 3 || id == 4) {
+    control::TestRequest t;
+    t.mode = "dc";
+    t.channel = gModCh;
+    t.mA = id == 3 ? fiveVoltMA() : -fiveVoltMA();
+    t.seconds = 60;
+    const control::Result r = control::startTest(t);
+    if (!r.ok) {
+      message("Not started", r.error, Screen::ModuleCheck);
+      return;
+    }
+    gAfterTest = Screen::ModuleCheck;
+    beginSessionScreen(true, true, 0, "AO" + String(gModCh + 1) + (id == 3 ? " +5 V" : " -5 V"));
+  }
+}
+
 // ---------------------------------------------------------------- settings
 
 const char* const kPanelNames[] = {"auto", "ILI9341", "ST7789", "ST7789, not inverted"};
@@ -1433,6 +1553,7 @@ String aboutText() {
   s += "Programs: " + String(gPackPrograms) + "\n";
   s += "Clock: " + (envdata::timeValid() ? timesync::localString(envdata::now()) : String("not set")) + " (" +
        gClockStatus + ")\n";
+  s += "Module: " + String(gModuleConfirmed ? "confirmed" : "not checked since power-on") + "\n";
   s += "Bluetooth: " + String(gSettings.bleEnabled ? "on" : "off") + "\n";
   s += "Calibrated: " + String(gSettings.calibrated ? "yes" : "no (default 1.8 uT/mA)") + "\n";
   s += "Free memory: " + String(ESP.getFreeHeap() / 1024) + " KB\n";
@@ -1440,7 +1561,7 @@ String aboutText() {
   return s;
 }
 
-constexpr int kSetRows = 6, kSetRowH = 39, kSetItems = 11;
+constexpr int kSetRows = 6, kSetRowH = 39, kSetItems = 12;
 
 void settingItem(int i, String& label, String& value) {
   switch (i) {
@@ -1467,11 +1588,12 @@ void settingItem(int i, String& label, String& value) {
     case 2: label = "Brightness"; value = String(gSettings.backlight); break;
     case 3: label = "Screen in session"; value = kSessionScreenNames[gSettings.sessionScreen % 3]; break;
     case 4: label = "Field limits"; value = "max " + String(gSettings.maxFieldUT, 1) + " uT"; break;
-    case 5: label = "Coil test"; value = gSettings.calibrated ? "calibrated" : "not calibrated"; break;
-    case 6: label = "Bluetooth"; value = gSettings.bleEnabled ? "on" : "off"; break;
-    case 7: label = "Touch calibration"; value = ""; break;
-    case 8: label = "Display"; value = kPanelNames[gSettings.panel % 4]; break;
-    case 9: label = "Safety page"; value = ""; break;
+    case 5: label = "Module check"; value = gModuleConfirmed ? "confirmed" : "not checked"; break;
+    case 6: label = "Coil test"; value = gSettings.calibrated ? "calibrated" : "not calibrated"; break;
+    case 7: label = "Bluetooth"; value = gSettings.bleEnabled ? "on" : "off"; break;
+    case 8: label = "Touch calibration"; value = ""; break;
+    case 9: label = "Display"; value = kPanelNames[gSettings.panel % 4]; break;
+    case 10: label = "Safety page"; value = ""; break;
     default: label = "About"; value = kFirmwareVersion; break;
   }
 }
@@ -1518,26 +1640,31 @@ void onSettings(uint8_t id) {
       drawSettings();
       break;
     case 4: openLimits(); break;
-    case 5: openCoilTest(); break;
-    case 6:
+    case 5:
+      gModuleBack = Screen::Settings;
+      gModStep = 0;
+      go(Screen::ModuleCheck);
+      break;
+    case 6: openCoilTest(); break;
+    case 7:
       message("Bluetooth",
               String(gSettings.bleEnabled ? "Bluetooth is on: the web app can connect. "
                                           : "Bluetooth is off. Turn it on to use the web app as well. ") +
                   "Changing it restarts the controller (take the helmet off first).",
               Screen::Settings, gSettings.bleEnabled ? "Turn off" : "Turn on", nullptr, onBleToggle);
       break;
-    case 7:
+    case 8:
       gAfterCalibrate = Screen::Settings;
       go(Screen::Calibrate);
       break;
-    case 8:
+    case 9:
       message("Display",
               "Driver: " + String(kPanelNames[gSettings.panel % 4]) + " (in use: " + gPanelName +
                   "). If colours or the picture look wrong, try the next driver: auto, ILI9341, ST7789, ST7789 not "
                   "inverted. The controller restarts.",
               Screen::Settings, "Next driver", nullptr, onPanel);
       break;
-    case 9:
+    case 10:
       gLinePage = 0;
       go(Screen::Safety);
       break;
@@ -1566,7 +1693,7 @@ void onMessage(uint8_t id) {
 void go(Screen s) {
   cancelPress();
   gScreen = s;
-  if (s != Screen::Start) gDoc.reset();
+  if (s != Screen::Start && s != Screen::Message && s != Screen::ModuleCheck) gDoc.reset();
   if (s != Screen::Details && s != Screen::Safety) std::vector<std::string>().swap(gLines);
   if (s == Screen::Home || s == Screen::Categories || s == Screen::Programs || s == Screen::Log ||
       s == Screen::Settings)
@@ -1588,6 +1715,7 @@ void go(Screen s) {
     case Screen::Settings: drawSettings(); break;
     case Screen::Editor: drawEditor(); break;
     case Screen::Message: drawMessage(); break;
+    case Screen::ModuleCheck: drawModuleCheck(); break;
   }
 }
 
@@ -1607,6 +1735,7 @@ void onButton(uint8_t id, int16_t x, int16_t y) {
     case Screen::Settings: onSettings(id); break;
     case Screen::Editor: onEditor(id); break;
     case Screen::Message: onMessage(id); break;
+    case Screen::ModuleCheck: onModuleCheck(id); break;
     case Screen::Calibrate: break;
   }
 }

@@ -85,6 +85,7 @@ This board has **no arming switch** and **no external STOP button**: the coil re
 
 Notes:
 - **Module 5 V.** The board has no documented 5 V output. Feed the module's 5V/GND terminal from the same power bank (a USB splitter or a second USB port), and connect the grounds through the expansion header GND. The board's LiPo connector cannot power the module (no 5 V).
+- **The board cannot detect the module** (the AD5328 has no data-out pin). The first start after each power-on asks you to confirm it, and **Settings → Module check** tests it with a multimeter ([STANDALONE.md](STANDALONE.md)).
 - **microSD card in the slot:** it holds the program library (FAT32, any size; [STANDALONE.md](STANDALONE.md)). It shares SCK/MOSI/MISO with the module, so the firmware reads it only while no session runs.
 - **The firmware keeps the board quiet:** speaker amplifier off (IO4 high); during a session the screen stays on, dims or goes dark after 10 s (a setting). The RGB LED shows a dim status: blue blink idle, steady blue with the app connected, amber during a session.
 - **SPI wiring stays short** (under about 20 cm): the bus runs at 20 MHz to the module and 10 MHz to the card. Twist each signal wire with a ground wire if it must be longer.

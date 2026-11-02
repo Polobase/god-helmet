@@ -147,9 +147,28 @@ int main(int argc, char** argv) {
   tap(3, "blind");
   shot("start-blind");
   tap(4, "start");
+  // The module cannot be detected: the first start after power-on asks for it.
+  expect(!seq::busy() && ui::button(30) && std::string(ui::button(30)->label) == "Connected",
+         "first start after power-on asks to confirm the AD5328 module");
+  shot("module-gate");
+  tap(31, "check it");
+  shot("module-check-1");
+  tap(30, "next");
+  shot("module-check-2");
+  tap(30, "next");
+  tap(2, "next output");
+  shot("module-check-3");
+  tap(3, "+5 V");
+  run(1000);
+  shot("module-test");
+  run(60000);
+  expect(ui::button(32) != nullptr, "after the output test: back on the module check");
+  tap(32, "module OK");
+  tap(4, "start");
   shot("start-confirm");
   tap(4, "start again");
   run(1000);
+  expect(seq::busy(), "Start after the module check starts the session");
   shot("session");
   run(11000);
   shot("session-dark");
@@ -197,7 +216,9 @@ int main(int argc, char** argv) {
   tap(30, "save");
   tap(3, "screen in session");  // dark after 10 s -> on
   shot("settings-screen-on");
-  tap(5, "coil test");
+  tap(kIdNext, "settings page 2");
+  shot("settings-p2");
+  tap(0, "coil test");
   shot("coil-test");
   tap(11, "coil +");
   tap(30, "dc test");
@@ -206,12 +227,10 @@ int main(int argc, char** argv) {
   run(30000);
   shot("coil-test-after");
   tap(kIdBack, "back");
-  tap(kIdNext, "settings page 2");
-  shot("settings-p2");
-  tap(0, "bluetooth");
+  tap(1, "bluetooth");
   shot("bluetooth");
   tap(kIdBack, "back");
-  tap(4, "about");
+  tap(5, "about");
   shot("about");
   tap(kIdBack, "back");
   tap(kIdBack, "home");
