@@ -3,7 +3,8 @@
 // and a program reference generated from presets/*.json.
 import { computed, ref, watch, nextTick } from 'vue'
 import { marked } from 'marked'
-import { nav, go, TABS } from '../lib/nav.js'
+import { nav, go } from '../lib/nav.js'
+import { isAppHash } from '../lib/routes.js'
 import { presets, CATEGORY_LABELS, sourceEntries } from '../lib/presets.js'
 import { LAYOUTS } from '../lib/layouts.js'
 import { describePattern, describeSpatial, fmtMinutes } from '../lib/format.js'
@@ -83,7 +84,7 @@ const slugify = (text) => text.toLowerCase().replace(/<[^>]+>/g, '').replace(/&[
 
 function resolveHref(href) {
   // in-page anchor: stay in this document (the app uses the hash for its tabs)
-  if (href && href.startsWith('#') && !TABS.some((t) => href === `#${t.key}` || href.startsWith(`#${t.key}/`))) {
+  if (href && href.startsWith('#') && !isAppHash(href)) {
     return { href: `#docs/${current.value.slug}`, anchor: decodeURIComponent(href.slice(1)) }
   }
   if (!href || /^(https?:|mailto:|#)/.test(href)) return { href, external: /^https?:/.test(href ?? '') }

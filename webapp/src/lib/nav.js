@@ -1,36 +1,47 @@
-// Tab navigation synced with location.hash (#programs, #programs/obe, #placement, ...).
+// Tab navigation synced with location.hash (#programs, #programs/obe/brain, ...).
+// The routes themselves are in lib/routes.js.
 import { reactive } from 'vue'
+import { TABS, resolveRoute, routeHash, tabOf, tabTarget, backRoute, HIDDEN } from './routes.js'
+import { lastProgramId } from './lastProgram.js'
 
-export const TABS = [
-  { key: 'programs', label: 'Programs' },
-  { key: 'placement', label: 'Placement' },
-  { key: 'brain', label: 'Brain' },
-  { key: 'guides', label: 'Guides' },
-  { key: 'experiment', label: 'Experiment' },
-  { key: 'targets', label: 'Targets' },
-  { key: 'log', label: 'Log' },
-  { key: 'setup', label: 'Setup' },
-  { key: 'safety', label: 'Safety' },
-  { key: 'docs', label: 'Docs' },
-]
+export { TABS, tabOf }
 
-function parse() {
-  const [tab, arg] = location.hash.replace(/^#/, '').split('/')
-  return { tab: TABS.some((t) => t.key === tab) ? tab : 'programs', arg: arg ? decodeURIComponent(arg) : '' }
+const ctx = { lastProgram: lastProgramId }
+
+// The current route; an old route is rewritten in place (no extra history entry).
+function current() {
+  const r = resolveRoute(location.hash, ctx)
+  if (!r.redirect) return r
+  history.replaceState(null, '', r.redirect)
+  return resolveRoute(r.redirect, ctx)
 }
 
-export const nav = reactive(parse())
+export const nav = reactive(current())
 
-window.addEventListener('hashchange', () => Object.assign(nav, parse()))
+// Each tab's last route, so a tab button brings you back to where you were.
+const memory = {}
+function remember() {
+  if (!(nav.tab in HIDDEN)) memory[nav.tab] = location.hash || `#${nav.tab}`
+}
+remember()
 
-export function go(tab, arg = '') {
-  location.hash = arg ? `${tab}/${encodeURIComponent(arg)}` : tab
+window.addEventListener('hashchange', () => {
+  Object.assign(nav, current())
+  remember()
+})
+
+export function go(tab, arg = '', sub = '') {
+  location.hash = routeHash(tab, arg, sub)
+}
+
+// A tab button: the tab's last route, or its start when it is already open.
+export function openTab(key) {
+  location.hash = tabTarget(key, tabOf(nav.tab), memory)
 }
 
 // Detour to the safety page when the helmet refuses to start. `back` is the
-// route to return to after accepting: 'experiment' or 'programs/<id>'.
+// route to return to after accepting, e.g. 'experiment' or 'programs/<id>'.
 export const goSafety = (back) => go('safety', back)
 export function returnFromSafety() {
-  const [tab, ...rest] = (nav.arg || 'programs').split('/')
-  go(TABS.some((t) => t.key === tab) ? tab : 'programs', rest.join('/'))
+  location.hash = `#${backRoute(nav.arg)}`
 }

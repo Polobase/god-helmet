@@ -1,7 +1,7 @@
 <script setup>
 import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
 import { device, connect, disconnect, call } from './ble/device.js'
-import { nav, TABS, go } from './lib/nav.js'
+import { nav, TABS, openTab, tabOf } from './lib/nav.js'
 import { guideState } from './lib/guideState.js'
 import ProgramsView from './views/ProgramsView.vue'
 import PlacementView from './views/PlacementView.vue'
@@ -72,7 +72,7 @@ window.addEventListener('resize', tabsScrolled)
       </div>
     </div>
     <nav ref="tabsEl" class="tabs bar-inner" :class="{ more: !tabsEnd }" aria-label="Sections" @scroll.passive="tabsScrolled">
-      <button v-for="t in TABS" :key="t.key" :class="{ active: nav.tab === t.key }" :aria-current="nav.tab === t.key ? 'page' : null" @click="go(t.key)">
+      <button v-for="t in TABS" :key="t.key" :class="{ active: tabOf(nav.tab) === t.key }" :aria-current="tabOf(nav.tab) === t.key ? 'page' : null" @click="openTab(t.key)">
         {{ t.label }}<span v-if="t.key === 'guides' && guideState.phase === 'running'" class="live-dot" :class="{ paused: guideState.paused }" role="img" :aria-label="guideState.paused ? 'guide paused' : 'guide running'"></span>
       </button>
     </nav>
