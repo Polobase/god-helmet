@@ -5,6 +5,10 @@ import { reactive, shallowRef } from 'vue'
 import { presetById, presets } from './presets.js'
 import { SessionRunner, render } from '../engine/session.js'
 import { lastProgramId, rememberProgram } from './lastProgram.js'
+import { placementGroups } from './placements.js'
+import { sessionSites } from './brain.js'
+import { placementState } from './placementState.js'
+import { routeHash } from './routes.js'
 
 export const DEFAULT_PROGRAM = 'god-helmet-classic'
 const runnable = (id) => (presetById(id)?.session ? id : null)
@@ -17,6 +21,24 @@ export const program = reactive({
   speed: 10, // preview: times slower than real time, so millisecond steps show
   startOpen: false, // Start panel (stays open across the safety detour)
 })
+
+// The library's filters and browse mode, kept while you look at a program.
+export const library = reactive({ mode: 'category', query: '', evidence: '', category: '', more: {}, lobe: null, allGroups: false, group: null, site: 'T8', y: 0 })
+
+// Programs that share their coil sites (lib/placements.js), most used first.
+export const groups = placementGroups(presets, sessionSites)
+export const groupOf = (id) => groups.find((g) => g.programs.some((p) => p.doc.id === id)) ?? null
+// Coils of a placement ticked as placed (kept until the page reloads).
+export const ticksOf = (g) => (g ? placementState.placed[g.key] ?? [] : [])
+export const usedCoils = (g) => (g ? g.sites.map((s, i) => (s ? i : null)).filter((i) => i !== null) : [])
+export const placedCount = (g) => usedCoils(g).filter((i) => ticksOf(g)[i]).length
+
+// Link to one of a program's sub-tabs ('' = Overview). Placement and Brain
+// still have their own tabs until they move into the program page.
+export function subHref(sub, id = program.id) {
+  if (sub === 'placement' || sub === 'brain') return routeHash(sub, id)
+  return routeHash('programs', id, sub)
+}
 
 // While the preview runs: { drives (8, signed), phase, phaseMs, programMs }.
 export const preview = shallowRef(null)

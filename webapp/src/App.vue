@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue'
 import { device, connect, disconnect, call } from './ble/device.js'
 import { nav, TABS, openTab, tabOf } from './lib/nav.js'
 import { guideState } from './lib/guideState.js'
@@ -48,10 +48,18 @@ watch(() => nav.tab, async (tab, prev) => {
   tabsScrolled()
 }, { immediate: true })
 window.addEventListener('resize', tabsScrolled)
+
+// Its height, for bars that stick under it (--header-h).
+const headerEl = ref(null)
+onMounted(() => {
+  const set = () => document.documentElement.style.setProperty('--header-h', `${headerEl.value.offsetHeight}px`)
+  new ResizeObserver(set).observe(headerEl.value)
+  set()
+})
 </script>
 
 <template>
-  <header class="top">
+  <header ref="headerEl" class="top">
     <div class="bar-inner">
       <div class="brand">
         <svg viewBox="0 0 32 32" class="logo" aria-hidden="true"><circle cx="16" cy="17" r="11" fill="none" stroke="currentColor" stroke-width="2" /><circle v-for="a in 8" :key="a" :cx="16 + 11 * Math.cos((a * Math.PI) / 4)" :cy="17 + 11 * Math.sin((a * Math.PI) / 4)" r="2.6" class="dot" /></svg>
