@@ -8,6 +8,8 @@ import { LAYOUTS } from '../lib/layouts.js'
 import { sessionSites } from '../lib/brain.js'
 import SiteMap from './SiteMap.vue'
 
+// rate: false where another view already asks for the rating (the header's copy).
+const props = defineProps({ rate: { type: Boolean, default: true } })
 const st = computed(() => device.status)
 const running = computed(() => st.value && st.value.state !== 'idle')
 const preset = computed(() => (st.value ? presetById(st.value.sessionId) : null))
@@ -82,7 +84,7 @@ async function rate() {
     </div>
   </section>
 
-  <section v-else-if="rateFor" class="card">
+  <section v-else-if="props.rate && rateFor" class="card">
     <h2>How was it?</h2>
     <p class="muted small">Rate before you look anything up. For blind sessions this reveals whether the field was real.</p>
     <label class="field">0 = nothing … 10 = profound: <b class="num">{{ rating }}</b>

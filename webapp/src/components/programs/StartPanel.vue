@@ -52,7 +52,7 @@ function act(action) {
     program.focus = action
     location.hash = subHref('placement')
   }
-  else if (action === 'calibrate') go('setup')
+  else if (action === 'calibrate') go('helmet')
 }
 
 async function start() {

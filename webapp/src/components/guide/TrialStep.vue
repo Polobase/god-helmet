@@ -58,7 +58,7 @@ async function loadPool() {
 }
 const create = () => act(async () => {
   await loadPool()
-  if (!pool.value.offered.length) throw new Error(props.input.arv ? 'ARV needs at least one set of exactly 2 pictures (Targets tab).' : 'Add at least one set of 2–8 pictures in the Targets tab first.')
+  if (!pool.value.offered.length) throw new Error(props.input.arv ? 'ARV needs at least one set of exactly 2 pictures (Trials → Picture pool).' : 'Add at least one set of 2–8 pictures in Trials → Picture pool first.')
   const t = await call('trial.new', {
     mode: props.input.mode === 'telepathy' ? 'telepathy' : 'rv',
     manifestHash: await manifestHash(pool.value.all),
@@ -266,7 +266,7 @@ onBeforeUnmount(() => {
     <template v-else-if="action === 'create'">
       <template v-if="!state.trialId">
         <p class="small">The helmet will pick a picture set and a target with its hardware RNG and publish a SHA-256 commitment before you begin.<template v-if="input.arv"> ARV: the target picture belongs to outcome A, the other one to B.</template></p>
-        <p v-if="pool" class="small muted">{{ pool.offered.length }} {{ input.arv ? 'two-picture' : 'usable' }} set(s) in your pool. <a href="#targets">Targets tab</a></p>
+        <p v-if="pool" class="small muted">{{ pool.offered.length }} {{ input.arv ? 'two-picture' : 'usable' }} set(s) in your pool. <a href="#trials/pictures">Picture pool</a></p>
         <div class="row"><button type="button" class="btn primary" :disabled="busy" @click="create">Create trial</button></div>
       </template>
       <template v-else>

@@ -92,7 +92,7 @@ async function doImport(e) {
 <template>
   <div class="page">
     <header class="card">
-      <span class="eyebrow">Target pool</span>
+      <span class="eyebrow">Picture pool</span>
       <h2>Pictures for remote-viewing trials</h2>
       <p class="small">A set holds 2–8 clearly different pictures (4–5 is standard; chance = 1/N). During a trial the helmet picks one set and one picture in it. Pictures stay on this phone (resized to 800 px); the helmet only receives their hashes. Ideally a friend builds the pool and sends you the exported file, so you have never seen the pictures.</p>
       <p v-if="hash" class="small"><span class="muted">Pool fingerprint:</span> <span class="mono">{{ hash.slice(0, 16) }}…</span></p>

@@ -56,7 +56,7 @@ const checks = computed(() => {
   }
   if (req.value.pool || usesTrials.value) {
     const n = poolCount.value
-    out.push({ key: 'pool', status: n === null ? 'warn' : n > 0 ? 'ok' : 'bad', text: n === null ? 'Checking the target pool…' : n > 0 ? `${n} usable picture set(s)${arvGuide.value ? ' of 2 pictures' : ''}` : arvGuide.value ? 'ARV needs sets of exactly 2 pictures' : 'No usable picture set (2–8 pictures)', link: n ? '' : '#targets', linkText: 'Open Targets' })
+    out.push({ key: 'pool', status: n === null ? 'warn' : n > 0 ? 'ok' : 'bad', text: n === null ? 'Checking the picture pool…' : n > 0 ? `${n} usable picture set(s)${arvGuide.value ? ' of 2 pictures' : ''}` : arvGuide.value ? 'ARV needs sets of exactly 2 pictures' : 'No usable picture set (2–8 pictures)', link: n ? '' : '#trials/pictures', linkText: 'Open the picture pool' })
   }
   return out
 })

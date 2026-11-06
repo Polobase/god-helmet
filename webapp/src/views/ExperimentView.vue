@@ -107,7 +107,7 @@ async function run(fn) {
 }
 
 async function newTrial() {
-  if (!usable.value.length) throw new Error('Add at least one set of 2–8 pictures in Targets first.')
+  if (!usable.value.length) throw new Error('Add at least one set of 2–8 pictures to the picture pool first.')
   const preset = presetById(presetId.value)
   let t
   try {
@@ -120,7 +120,7 @@ async function newTrial() {
       fieldUT: device.info?.defaultFieldUT ?? 1,
     })
   } catch (e) {
-    if (/safety/.test(e.message)) goSafety('experiment')
+    if (/safety/.test(e.message)) goSafety('trials')
     throw e
   }
   trials.value.unshift(t)
@@ -389,9 +389,9 @@ function hideSender() {
         <input type="checkbox" :checked="blind && !!presetId" :disabled="!presetId" @change="blind = $event.target.checked" />
         <span>Blind real/sham (recommended)<span v-if="!presetId" class="small">: only with stimulation</span></span>
       </label>
-      <p v-if="presetId && device.info && !device.info.safetyAccepted" class="small warn">Stimulation needs the <a href="#safety/experiment">safety page</a> accepted first. Accept it, or choose Stimulation: None.</p>
-      <p v-if="!usable.length" class="small warn">No usable picture sets yet. <a href="#targets">Add a set of 2–8 pictures in Targets</a>, then come back.</p>
-      <p v-else class="small muted">Pool: {{ usable.length }} usable set(s) (<a href="#targets">Targets</a>). Ideally someone else builds it. Decide the number of trials in advance and count every trial.</p>
+      <p v-if="presetId && device.info && !device.info.safetyAccepted" class="small warn">Stimulation needs the <a href="#safety/trials">safety page</a> accepted first. Accept it, or choose Stimulation: None.</p>
+      <p v-if="!usable.length" class="small warn">No usable picture sets yet. <a href="#trials/pictures">Add a set of 2–8 pictures to the picture pool</a>, then come back.</p>
+      <p v-else class="small muted">Pool: {{ usable.length }} usable set(s) (<a href="#trials/pictures">picture pool</a>). Ideally someone else builds it. Decide the number of trials in advance and count every trial.</p>
       <div class="row"><button class="btn primary" :disabled="busy || !device.kind || !usable.length || !!unfinished" @click="run(newTrial)">{{ busy ? 'Creating…' : 'Create trial' }}</button></div>
       <p v-if="error" class="bad small" role="alert">{{ error }}</p>
     </section>

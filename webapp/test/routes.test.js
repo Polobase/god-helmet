@@ -81,3 +81,17 @@ test('old Placement links open the program page on its Placement tab', () => {
   assert.equal(backRoute('placement/obe'), 'placement/obe')
   assert.ok(!TABS.some((t) => t.key === 'placement'))
 })
+
+test('six tabs; old Experiment, Targets and Setup links open their new homes', () => {
+  assert.deepEqual(TABS.map((t) => t.key), ['programs', 'guides', 'trials', 'log', 'helmet', 'docs'])
+  assert.deepEqual(resolveRoute('#experiment'), { redirect: '#trials' })
+  assert.deepEqual(resolveRoute('#targets'), { redirect: '#trials/pictures' })
+  assert.deepEqual(resolveRoute('#setup'), { redirect: '#helmet' })
+  assert.deepEqual(resolveRoute('#trials/pictures'), { tab: 'trials', arg: 'pictures', sub: '' })
+  // the safety page has no tab of its own: Helmet lights up, and old return routes still work
+  assert.deepEqual(resolveRoute('#safety/trials'), { tab: 'safety', arg: 'trials', sub: '' })
+  assert.equal(tabOf('safety'), 'helmet')
+  assert.equal(backRoute('experiment'), 'experiment')
+  assert.equal(backRoute('setup'), 'setup')
+  for (const h of ['#experiment', '#targets', '#setup', '#safety', '#trials', '#helmet']) assert.ok(isAppHash(h), h)
+})

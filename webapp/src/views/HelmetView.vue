@@ -8,7 +8,7 @@ const rot = reactive({ layout: 'temporal', dir: 'ccw', dwellMs: 1000, mA: 2 })
 
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { device, call, refresh, connect } from '../ble/device.js'
+import { device, call, refresh, connect, disconnect } from '../ble/device.js'
 import { fetchKp } from '../lib/noaa.js'
 import { LAYOUTS } from '../lib/layouts.js'
 import { fmtDuration } from '../lib/format.js'
@@ -40,7 +40,7 @@ async function run(fn, ok) {
     if (ok) flash(ok)
   } catch (e) {
     flash(e.message, true)
-    if (/safety/.test(e.message)) goSafety('setup')
+    if (/safety/.test(e.message)) goSafety('helmet')
   }
 }
 
@@ -94,12 +94,30 @@ const setKp = () => run(async () => {
 
 <template>
   <div class="page">
-    <p v-if="!device.kind" class="card row">
-      <span class="warn small">Connect the helmet (or the demo) to change its settings.</span>
-      <button class="btn primary sm" :disabled="!device.bluetooth" @click="connect('ble')">Bluetooth</button>
-      <button v-if="device.serial" class="btn sm" @click="connect('usb')">USB</button>
-      <button class="btn sm" @click="connect('demo')">Try the demo</button>
-    </p>
+    <header class="card helmet-head">
+      <h2>Helmet</h2>
+      <p class="small muted">Connection and safety, calibration, the wiring check, the helmet's settings and its firmware.</p>
+      <div class="status">
+        <div class="status-row">
+          <span class="mark" :class="device.kind ? 'ok' : 'bad'" aria-hidden="true">{{ device.kind ? '✓' : '✕' }}</span>
+          <span v-if="device.kind">{{ device.kind === 'demo' ? 'Demo: no helmet, nothing is switched on' : `Connected: ${device.name} (${device.kind === 'usb' ? 'USB' : 'Bluetooth'})` }}</span>
+          <span v-else>Not connected. Connect the helmet (or the demo) to change its settings.</span>
+          <span class="acts">
+            <template v-if="!device.kind">
+              <button class="btn primary sm" :disabled="!device.bluetooth || device.connecting" @click="connect('ble')">{{ device.connecting ? 'Connecting…' : 'Bluetooth' }}</button>
+              <button v-if="device.serial" class="btn sm" :disabled="device.connecting" @click="connect('usb')">USB</button>
+              <button class="btn ghost sm" @click="connect('demo')">Demo</button>
+            </template>
+            <button v-else-if="!device.status || device.status.state === 'idle'" class="btn ghost sm" @click="disconnect">Disconnect</button>
+          </span>
+        </div>
+        <div class="status-row">
+          <span class="mark" :class="device.info?.safetyAccepted ? 'ok' : 'warn'" aria-hidden="true">{{ device.info?.safetyAccepted ? '✓' : '!' }}</span>
+          <span>{{ !device.info ? 'Safety page: connect to see whether it is accepted on this helmet' : device.info.safetyAccepted ? 'Safety page accepted on this helmet' : 'Safety page not accepted: the helmet will not start a field' }}</span>
+          <span class="acts"><a class="btn sm" :class="{ primary: device.info && !device.info.safetyAccepted }" href="#safety/helmet">{{ device.info?.safetyAccepted ? 'Read it again' : 'Read and accept' }}</a></span>
+        </div>
+      </div>
+    </header>
 
     <template v-if="s">
       <section class="card">
@@ -142,7 +160,7 @@ const setKp = () => run(async () => {
         </div>
         <div class="row"><button class="btn" @click="rotTest">Start rotation test (30 s)</button></div>
         <p v-if="test?.sessionId === 'test-rotate'" class="row small">
-          <span><b>{{ test.sessionName }}</b>, {{ fmtDuration(test.totalMs - test.programMs) }} left. <a href="#programs">Programs</a> shows which coil is on.</span>
+          <span><b>{{ test.sessionName }}</b>, {{ fmtDuration(test.totalMs - test.programMs) }} left. The session bar at the top shows which coil is on.</span>
           <button class="btn sm ghost" :disabled="test.state === 'stopping'" @click="stopTest">Stop test</button>
         </p>
       </section>
@@ -198,4 +216,14 @@ const setKp = () => run(async () => {
 .toasts { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 20; width: max-content; max-width: calc(100vw - 32px); }
 .toasts p { padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, .25); }
 @media (max-width: 520px) { .cal { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.helmet-head { gap: 10px; }
+.status { display: grid; gap: 8px; }
+.status-row { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: 14px; }
+.status-row .mark { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font: 700 12px var(--font-body); border: 1.5px solid currentColor; }
+.mark.ok { color: var(--ok); } .mark.warn { color: var(--warn); } .mark.bad { color: var(--bad); }
+.acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 560px) {
+  .status-row { grid-template-columns: 22px minmax(0, 1fr); }
+  .status-row .acts { grid-column: 2; justify-content: flex-start; }
+}
 </style>

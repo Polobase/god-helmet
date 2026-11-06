@@ -4,21 +4,21 @@ import { DEFAULT_PROGRAM } from './lastProgram.js'
 //   #tab, #tab/arg, #tab/arg/sub   each part URI-encoded on its own
 //   #programs                      program library
 //   #programs/<id>[/<sub>]         one program (sub: placement, brain, sources)
+//   #trials[/pictures]             blinded trials, and the picture pool they draw from
+//   #helmet                        connection, safety, calibration, settings, firmware
 //   #safety/<route>                safety page; <route> (one encoded part) is where Continue returns
 
 export const TABS = [
   { key: 'programs', label: 'Programs' },
   { key: 'guides', label: 'Guides' },
-  { key: 'experiment', label: 'Experiment' },
-  { key: 'targets', label: 'Targets' },
+  { key: 'trials', label: 'Trials' },
   { key: 'log', label: 'Log' },
-  { key: 'setup', label: 'Setup' },
-  { key: 'safety', label: 'Safety' },
+  { key: 'helmet', label: 'Helmet' },
   { key: 'docs', label: 'Docs' },
 ]
 
 // Routes without a tab button of their own: route -> the tab that lights up.
-export const HIDDEN = {}
+export const HIDDEN = { safety: 'helmet' }
 
 // Old routes, rewritten in place: route -> (arg, sub, ctx) -> new hash.
 // ctx.lastProgram(): the program an old link without an id opens.
@@ -26,6 +26,9 @@ const programOf = (arg, ctx) => arg || ctx.lastProgram?.() || DEFAULT_PROGRAM
 export const LEGACY = {
   placement: (arg, sub, ctx) => routeHash('programs', programOf(arg, ctx), 'placement'),
   brain: (arg, sub, ctx) => routeHash('programs', programOf(arg, ctx), 'brain'),
+  experiment: () => '#trials',
+  targets: () => routeHash('trials', 'pictures'),
+  setup: () => '#helmet',
 }
 
 export const DEFAULT_TAB = 'programs'

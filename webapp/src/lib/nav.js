@@ -40,7 +40,7 @@ export function openTab(key) {
 }
 
 // Detour to the safety page when the helmet refuses to start. `back` is the
-// route to return to after accepting, e.g. 'experiment' or 'programs/<id>'.
+// route to return to after accepting, e.g. 'trials' or 'programs/<id>/placement'.
 export const goSafety = (back) => go('safety', back)
 export function returnFromSafety() {
   location.hash = `#${backRoute(nav.arg)}`
