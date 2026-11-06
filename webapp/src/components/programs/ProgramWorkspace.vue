@@ -8,12 +8,14 @@ import { layoutInfo } from '../../lib/layouts.js'
 import { fmtMinutes } from '../../lib/format.js'
 import { sessionSites } from '../../lib/brain.js'
 import { evidenceLabel, evidenceInfo, evidenceClass } from '../../lib/evidence.js'
-import { program, groupOf, usedCoils, placedCount, subHref, stopPreview } from '../../lib/programState.js'
+import { program, preview, groupOf, usedCoils, placedCount, subHref, stopPreview } from '../../lib/programState.js'
 import { device } from '../../ble/device.js'
 import LivePanel from '../LivePanel.vue'
+import CoilGlyph from '../CoilGlyph.vue'
 import ProgramSwitcher from './ProgramSwitcher.vue'
 import ProgramOverview from './ProgramOverview.vue'
 import ProgramSources from './ProgramSources.vue'
+import ProgramPlacement from './ProgramPlacement.vue'
 import StartPanel from './StartPanel.vue'
 
 const preset = computed(() => presetById(program.id))
@@ -23,15 +25,24 @@ const group = computed(() => groupOf(program.id))
 const layout = computed(() => (session.value ? layoutInfo(session.value.layout) : null))
 const coils = computed(() => (session.value ? sessionSites(session.value).filter(Boolean).length : 0))
 const category = computed(() => CATEGORY_LABELS[doc.value.category] ?? doc.value.category ?? '')
+const sites = computed(() => (session.value ? sessionSites(session.value) : []))
+const minutes = computed(() => Math.round((session.value?.totalMs ?? 0) / 60000))
+// The plate lights up with the preview, or with the helmet while it runs this program.
+const running = computed(() => {
+  const st = device.status
+  return st && st.state !== 'idle' && !st.test && !st.blind && st.sessionId === program.id ? st.levels : null
+})
+const levels = computed(() => (preview.value ? preview.value.drives.map(Math.abs) : running.value))
 
-const sub = computed(() => (nav.sub === 'sources' ? 'sources' : ''))
+const SUBS = { placement: ProgramPlacement, sources: ProgramSources }
+const sub = computed(() => (SUBS[nav.sub] ? nav.sub : ''))
 const subs = computed(() => [
   { key: '', label: 'Overview' },
   { key: 'placement', label: 'Placement', badge: group.value ? `${placedCount(group.value)}/${usedCoils(group.value).length}` : '' },
   { key: 'brain', label: 'Brain' },
   { key: 'sources', label: 'Sources', badge: String(sourceEntries(doc.value.source).length) },
 ])
-const view = computed(() => (sub.value === 'sources' ? ProgramSources : ProgramOverview))
+const view = computed(() => SUBS[sub.value] ?? ProgramOverview)
 const openStart = () => (program.startOpen = true)
 const busy = computed(() => !!device.status && device.status.state !== 'idle')
 
@@ -60,17 +71,27 @@ onBeforeUnmount(() => {
         <a class="back" href="#programs">‹ All programs</a>
         <ProgramSwitcher />
       </div>
-      <div class="meta">
-        <span class="eyebrow">{{ category }}</span>
-        <span v-if="doc.evidence" class="chip" :class="evidenceClass(doc.evidence)" :title="evidenceInfo(doc.evidence)">{{ evidenceLabel(doc.evidence) }}</span>
-        <span v-if="session" class="facts small">
-          <span class="num">{{ fmtMinutes(session.totalMs) }}</span> · {{ coils }} coil{{ coils === 1 ? '' : 's' }} ·
-          <span :title="layout.title">{{ layout.key === 'custom' ? '10-10 sites' : `${layout.name} layout` }}</span>
-        </span>
-      </div>
-      <div class="title-row">
-        <h2>{{ doc.name }}</h2>
-        <button v-if="session" type="button" class="btn primary start" :disabled="busy" :title="busy ? 'A session is running' : ''" @click="openStart">{{ busy ? 'Session running' : '▶ Start…' }}</button>
+      <div class="plate">
+        <div class="ident">
+          <p class="kind">
+            <span>{{ category }}</span>
+            <span v-if="doc.evidence" class="chip" :class="evidenceClass(doc.evidence)" :title="evidenceInfo(doc.evidence)">{{ evidenceLabel(doc.evidence) }}</span>
+          </p>
+          <h1 class="title">{{ doc.name }}</h1>
+          <dl v-if="session" class="readouts">
+            <div><dt>Length</dt><dd><b class="num">{{ minutes }}</b> min</dd></div>
+            <div><dt>Coils</dt><dd><b class="num">{{ coils }}</b> of 8</dd></div>
+            <div><dt>Phases</dt><dd><b class="num">{{ session.phases.length }}</b></dd></div>
+            <div><dt>Field at 20 mm</dt><dd><b class="num">{{ program.uT.toFixed(1) }}</b> µT</dd></div>
+          </dl>
+          <div v-if="session" class="cta">
+            <button type="button" class="btn primary start" :disabled="busy" :title="busy ? 'A session is running' : ''" @click="openStart">{{ busy ? 'Session running' : 'Start…' }}</button>
+          </div>
+        </div>
+        <figure v-if="session" class="mark">
+          <CoilGlyph :sites="sites" :levels="levels" rings :label="`${coils} coils seen from above`" />
+          <figcaption :title="layout.title">{{ layout.key === 'custom' ? 'Own 10-10 sites' : `${layout.name} layout` }}</figcaption>
+        </figure>
       </div>
       <nav v-if="session" ref="tabsEl" class="subtabs" aria-label="Program sections">
         <a v-for="t in subs" :key="t.key" :href="subHref(t.key)" :class="{ on: sub === t.key }" :aria-current="sub === t.key ? 'page' : null">{{ t.label }}<span v-if="t.badge" class="badge num">{{ t.badge }}</span></a>
@@ -83,7 +104,7 @@ onBeforeUnmount(() => {
         <nav class="subtabs" aria-label="Program sections">
           <a v-for="t in subs" :key="t.key" :href="subHref(t.key)" :class="{ on: sub === t.key }" :aria-current="sub === t.key ? 'page' : null">{{ t.label }}<span v-if="t.badge" class="badge num">{{ t.badge }}</span></a>
         </nav>
-        <button type="button" class="btn primary sm" :disabled="busy" @click="openStart">▶ Start</button>
+        <button type="button" class="btn primary sm" :disabled="busy" @click="openStart">Start…</button>
       </div>
     </div>
 
@@ -93,23 +114,33 @@ onBeforeUnmount(() => {
     <template v-if="session">
       <StartPanel />
       <div class="start-bar">
-        <button type="button" class="btn primary" :disabled="busy" @click="openStart">{{ busy ? 'Session running' : `▶ Start · ${program.uT.toFixed(1)} µT` }}</button>
+        <button type="button" class="btn primary" :disabled="busy" @click="openStart">{{ busy ? 'Session running' : `Start at ${program.uT.toFixed(1)} µT…` }}</button>
       </div>
     </template>
   </div>
 </template>
 
 <style scoped>
-.ws-head { gap: 8px; padding-bottom: 0; }
+.ws-head { gap: 6px; padding-bottom: 0; overflow: hidden; position: relative;
+  background: radial-gradient(380px 260px at calc(100% - 120px) 46%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 70%), var(--surface); }
 .top-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .back { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px; }
 .back:hover { color: var(--text); }
-.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
-.meta .chip { font-size: 11.5px; }
-.facts { color: var(--muted); }
-.title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-.title-row h2 { font-size: 28px; line-height: 1.15; }
-.start { flex: none; padding-inline: 20px; }
+.plate { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 24px; align-items: center; padding: 6px 0 4px; }
+.ident { display: grid; gap: 12px; min-width: 0; }
+.kind { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font-weight: 600; font-size: 13.5px; }
+.kind .chip { font-size: 11.5px; }
+.title { font: 700 40px/1.04 var(--font-display); letter-spacing: .005em; max-width: 22ch; }
+.readouts { display: flex; flex-wrap: wrap; margin: 0; }
+.readouts > div { padding: 2px 18px 2px 0; margin-right: 18px; border-right: 1px solid var(--line); }
+.readouts > div:last-child { border-right: 0; margin-right: 0; }
+.readouts dt { font-size: 12px; color: var(--muted); }
+.readouts dd { margin: 0; color: var(--muted); font-size: 13px; white-space: nowrap; }
+.readouts b { font-size: 26px; line-height: 1.1; color: var(--text); font-weight: 600; }
+.cta { display: flex; gap: 10px; align-items: center; }
+.start { padding: 12px 28px; font-size: 16px; border-radius: 11px; }
+.mark { margin: 0; display: grid; gap: 4px; justify-items: center; }
+.mark figcaption { font-size: 12px; color: var(--muted); text-align: center; }
 .subtabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-top: 4px; }
 .subtabs a { display: inline-flex; align-items: center; gap: 6px; padding: 10px 12px; border-bottom: 2px solid transparent; color: var(--muted); font-weight: 600; text-decoration: none; white-space: nowrap; }
 .subtabs a:hover { color: var(--text); }
@@ -124,9 +155,16 @@ onBeforeUnmount(() => {
 .slim .subtabs a { padding: 9px 10px; }
 
 .start-bar { display: none; }
+@media (max-width: 760px) {
+  .plate { grid-template-columns: minmax(0, 1fr) 96px; gap: 14px; align-items: start; }
+  .title { font-size: 30px; }
+  .readouts { display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); gap: 8px 0; grid-column: 1 / -1; }
+  .readouts > div:nth-child(2n) { border-right: 0; }
+  .readouts b { font-size: 22px; }
+  .mark figcaption { display: none; }
+}
 @media (max-width: 640px) {
-  .title-row h2 { font-size: 24px; }
-  .title-row .start { display: none; }
+  .cta { display: none; }
   .slim-name, .slim .btn { display: none; }
   .start-bar { display: block; position: fixed; z-index: 9; left: 0; right: 0; bottom: 0; padding: 10px max(16px, env(safe-area-inset-left, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--bg) 92%, transparent); border-top: 1px solid var(--line); backdrop-filter: blur(6px); }
   .start-bar .btn { width: 100%; }

@@ -4,13 +4,13 @@
 import { reactive, shallowRef } from 'vue'
 import { presetById, presets } from './presets.js'
 import { SessionRunner, render } from '../engine/session.js'
-import { lastProgramId, rememberProgram } from './lastProgram.js'
+import { lastProgramId, rememberProgram, DEFAULT_PROGRAM } from './lastProgram.js'
 import { placementGroups } from './placements.js'
 import { sessionSites } from './brain.js'
 import { placementState } from './placementState.js'
 import { routeHash } from './routes.js'
 
-export const DEFAULT_PROGRAM = 'god-helmet-classic'
+export { DEFAULT_PROGRAM }
 const runnable = (id) => (presetById(id)?.session ? id : null)
 const firstId = runnable(lastProgramId()) ?? runnable(DEFAULT_PROGRAM) ?? presets.find((p) => p.session)?.doc.id
 
@@ -20,6 +20,7 @@ export const program = reactive({
   uT: presetById(firstId)?.doc.uT ?? 1, // intensity at 20 mm: Brain estimate and Start
   speed: 10, // preview: times slower than real time, so millisecond steps show
   startOpen: false, // Start panel (stays open across the safety detour)
+  focus: '', // what a sub-tab should show first: 'measure' or 'place' (from the Start panel)
 })
 
 // The library's filters and browse mode, kept while you look at a program.
@@ -33,10 +34,10 @@ export const ticksOf = (g) => (g ? placementState.placed[g.key] ?? [] : [])
 export const usedCoils = (g) => (g ? g.sites.map((s, i) => (s ? i : null)).filter((i) => i !== null) : [])
 export const placedCount = (g) => usedCoils(g).filter((i) => ticksOf(g)[i]).length
 
-// Link to one of a program's sub-tabs ('' = Overview). Placement and Brain
-// still have their own tabs until they move into the program page.
+// Link to one of a program's sub-tabs ('' = Overview). Brain still has its
+// own tab until it moves into the program page.
 export function subHref(sub, id = program.id) {
-  if (sub === 'placement' || sub === 'brain') return routeHash(sub, id)
+  if (sub === 'brain') return routeHash(sub, id)
   return routeHash('programs', id, sub)
 }
 

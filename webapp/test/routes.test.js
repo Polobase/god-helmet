@@ -2,6 +2,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { resolveRoute, routeHash, isAppHash, tabTarget, backRoute, tabOf, TABS, DEFAULT_TAB } from '../src/lib/routes.js'
+import { DEFAULT_PROGRAM } from '../src/lib/lastProgram.js'
 
 test('parses tab, arg and sub', () => {
   assert.deepEqual(resolveRoute('#programs'), { tab: 'programs', arg: '', sub: '' })
@@ -61,4 +62,15 @@ test('a tab button returns to the tab, or to its start when already open', () =>
   assert.equal(tabTarget('guides', 'programs', memory), '#guides/crv-session')
   assert.equal(tabTarget('log', 'programs', memory), '#log')
   assert.equal(tabOf('programs'), 'programs')
+})
+
+test('old Placement links open the program page on its Placement tab', () => {
+  const ctx = { lastProgram: () => 'obe' }
+  assert.deepEqual(resolveRoute('#placement/god-helmet-classic', ctx), { redirect: '#programs/god-helmet-classic/placement' })
+  assert.deepEqual(resolveRoute('#placement', ctx), { redirect: '#programs/obe/placement' })
+  assert.deepEqual(resolveRoute('#placement', { lastProgram: () => '' }), { redirect: `#programs/${DEFAULT_PROGRAM}/placement` })
+  assert.deepEqual(resolveRoute('#placement'), { redirect: `#programs/${DEFAULT_PROGRAM}/placement` })
+  assert.ok(isAppHash('#placement'), 'docs links to #placement stay app links')
+  assert.equal(backRoute('placement/obe'), 'placement/obe')
+  assert.ok(!TABS.some((t) => t.key === 'placement'))
 })

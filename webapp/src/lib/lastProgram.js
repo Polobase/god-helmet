@@ -1,5 +1,6 @@
 // The program the Programs tab showed last, kept on this device. Older
 // versions kept the Placement tab's own choice under 'placement-program'.
+export const DEFAULT_PROGRAM = 'god-helmet-classic'
 const KEY = 'program'
 const OLD_KEY = 'placement-program'
 

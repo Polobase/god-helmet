@@ -1,5 +1,6 @@
-// Placement-tab state that should outlive a detour to another tab (the view
-// remounts on every tab change): coil ticks per placement and the map view.
+// Placement state that should outlive a detour to another tab (views remount
+// on every tab change): coil ticks per placement, the map view, and whether
+// the coil list shows its details.
 import { reactive } from 'vue'
 
-export const placementState = reactive({ placed: {}, view: null })
+export const placementState = reactive({ placed: {}, view: null, details: false })

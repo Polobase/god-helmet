@@ -1,7 +1,9 @@
 <script setup>
-// One row per coil: tick box, site, where it is in plain words, how to find it
-// with a tape (cm for the user's head) and what lies under it.
-import { computed, nextTick, ref } from 'vue'
+// One row per coil: tick box, site, where it is in plain words and how to find
+// it with a tape (cm for the user's head). "More" (or "Show details" for all
+// rows) adds the measuring detail and what lies under the coil.
+import { computed, nextTick, reactive, ref } from 'vue'
+import { placementState } from '../../lib/placementState.js'
 import { siteName, SITES } from '../../lib/brain.js'
 import { describeSite, HEAD_LABELS } from '../../lib/tape.js'
 import { recipeFor, bandText, headInUse } from '../../lib/head.js'
@@ -68,6 +70,10 @@ const offText = computed(() => {
 const EAR_SITES = ['T9h', 'T10h', 'TTP9', 'TTP10', 'TTP9h', 'TTP10h', 'T9', 'T10']
 const onEar = computed(() => used.value.filter((r) => EAR_SITES.includes(r.name)).map((r) => r.name))
 
+const open = reactive({})
+const hasMore = (r) => !!(r.r?.detail || r.under)
+const shows = (r) => placementState.details || open[r.ch]
+
 const listEl = ref(null)
 async function onReset() {
   if (!done.value) return
@@ -90,6 +96,7 @@ async function onReset() {
         <button type="button" class="linkbtn small" :class="{ idle: !done }" :aria-disabled="!done" @click="onReset">Reset</button>
       </div>
     </div>
+    <button type="button" class="linkbtn small all-details" :aria-pressed="placementState.details" @click="placementState.details = !placementState.details">{{ placementState.details ? 'Hide the details' : 'Show the measuring details and what lies under each coil' }}</button>
 
     <ol ref="listEl" class="coils">
       <li v-for="r in used" :id="`coil-row-${r.ch}`" :key="r.ch" class="coil" :class="{ done: ticks[r.ch], focus: focus === r.ch }"
@@ -105,8 +112,11 @@ async function onReset() {
             <span class="band-chip" :class="`band-${r.r?.band}`">{{ r.band }}</span>
           </div>
           <p v-if="r.r" class="find"><span v-if="r.r.estimate" class="approx" title="Scaled from the template head">≈</span>{{ r.r.text }}</p>
-          <p v-if="r.r?.detail" class="detail small muted">{{ r.r.detail }}</p>
-          <p v-if="r.under" class="under small muted">{{ r.under }}</p>
+          <template v-if="shows(r)">
+            <p v-if="r.r?.detail" class="detail small muted">{{ r.r.detail }}</p>
+            <p v-if="r.under" class="under small muted">{{ r.under }}</p>
+          </template>
+          <button v-if="hasMore(r) && !placementState.details" type="button" class="more-btn small" :aria-expanded="!!open[r.ch]" @click="open[r.ch] = !open[r.ch]">{{ open[r.ch] ? 'Less' : 'More' }}</button>
         </div>
       </li>
     </ol>
@@ -150,6 +160,9 @@ async function onReset() {
 .find { font-size: 14.5px; line-height: 1.45; max-width: 70ch; }
 .detail { line-height: 1.4; max-width: 70ch; }
 .linkbtn.idle { opacity: .45; cursor: default; }
+.all-details { justify-self: start; }
+.more-btn { justify-self: start; background: none; border: 0; padding: 2px 0; color: var(--blue); font-weight: 600; cursor: pointer; }
+.more-btn:hover { color: var(--text); }
 .approx { display: inline-block; margin-right: 4px; color: var(--warn); font-weight: 700; }
 .under { line-height: 1.4; overflow-wrap: anywhere; }
 .unused, .note { line-height: 1.45; }

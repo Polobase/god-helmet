@@ -3,9 +3,9 @@
 // scalp site or by the experience it aims at. A card opens the program.
 import { computed, nextTick, ref, shallowRef } from 'vue'
 import { presets, groupedPresets, presetById, CATEGORY_LABELS } from '../../lib/presets.js'
-import { layoutInfo, STATE_MAP } from '../../lib/layouts.js'
+import { STATE_MAP } from '../../lib/layouts.js'
 import { fmtMinutes } from '../../lib/format.js'
-import { EVIDENCE_KEYS, evidenceLabel, evidenceInfo, evidenceClass } from '../../lib/evidence.js'
+import { EVIDENCE_KEYS, evidenceLabel } from '../../lib/evidence.js'
 import { queryWords, score, norm } from '../../lib/search.js'
 import { loadRegions, SITES, siteName } from '../../lib/brain.js'
 import { library, groups, program } from '../../lib/programState.js'
@@ -14,6 +14,7 @@ import { go } from '../../lib/nav.js'
 import LivePanel from '../LivePanel.vue'
 import SiteMap from '../SiteMap.vue'
 import SiteExplorer from '../placement/SiteExplorer.vue'
+import ProgramCard from './ProgramCard.vue'
 
 defineProps({ missing: { type: String, default: '' } })
 
@@ -65,7 +66,6 @@ function clearFilters() {
   library.lobe = null
 }
 const pickCategory = (key) => (library.category = library.category === key ? '' : key)
-const layoutName = (p) => (p.session && layoutInfo(p.session.layout).key !== 'custom' ? layoutInfo(p.session.layout).name : '')
 
 // ---------------------------------------------------------------- by placement
 const LOBES = ['temporal', 'frontal', 'central', 'parietal', 'occipital', 'inion']
@@ -115,11 +115,10 @@ if (needRegions.value) ensureRegions()
     <LivePanel />
 
     <header class="card head">
-      <div class="row between">
-        <span class="eyebrow">Program library</span>
-        <span class="small muted">{{ presets.length }} programs · {{ groups.length }} placements</span>
+      <div class="title-row">
+        <h2>Programs</h2>
+        <span class="small muted">{{ presets.length }} programs, {{ groups.length }} placements</span>
       </div>
-      <h2>Programs</h2>
       <p class="small muted intro">Each program sets the coils' signals, timing and sites. Open one to see its phases, where the coils go and where the field reaches, and to start it.</p>
       <p v-if="missing" class="small warn" role="status">No program called “{{ missing }}”.</p>
       <div class="seg" role="group" aria-label="Browse by">
@@ -155,27 +154,16 @@ if (needRegions.value) ensureRegions()
         <div><button type="button" class="btn sm" @click="clearFilters">Clear filters</button></div>
       </div>
       <div v-else-if="ranked" class="cards">
-        <a v-for="p in ranked" :key="p.doc.id" class="pcard" :class="{ on: p.doc.id === program.id }" :href="href(p.doc.id)">
-          <span class="cat">{{ catLabel(p) }}</span>
-          <span class="name">{{ p.doc.name }}</span>
-          <span v-if="p.doc.summary" class="sum">{{ p.doc.summary }}</span>
-          <span v-if="p.session" class="meta"><span class="num">{{ fmtMinutes(p.session.totalMs) }}</span><span v-if="p.doc.evidence" class="chip" :class="evidenceClass(p.doc.evidence)" :title="evidenceInfo(p.doc.evidence)">{{ evidenceLabel(p.doc.evidence) }}</span><span v-if="layoutName(p)">{{ layoutName(p) }}</span></span>
-          <span v-else class="small bad">Invalid program file: {{ p.error }}</span>
-        </a>
+        <ProgramCard v-for="p in ranked" :key="p.doc.id" :p="p" :current="p.doc.id === program.id" show-category />
       </div>
       <template v-else>
       <section v-for="g in sections" :key="g.key" class="group" :aria-label="g.label">
         <div class="group-head">
-          <h3 class="eyebrow">{{ g.label }} · {{ g.items.length }}</h3>
+          <h3 class="group-title">{{ g.label }} <span class="n num">{{ g.items.length }}</span></h3>
           <button v-if="g.items.length > FIRST && !library.category" type="button" class="linkbtn small" :aria-expanded="!!library.more[g.key]" @click="library.more[g.key] = !library.more[g.key]">{{ library.more[g.key] ? 'Show fewer' : `Show all ${g.items.length}` }}</button>
         </div>
         <div class="cards">
-          <a v-for="p in g.shown" :key="p.doc.id" class="pcard" :class="{ on: p.doc.id === program.id }" :href="href(p.doc.id)">
-            <span class="name">{{ p.doc.name }}</span>
-            <span v-if="p.doc.summary" class="sum">{{ p.doc.summary }}</span>
-            <span v-if="p.session" class="meta"><span class="num">{{ fmtMinutes(p.session.totalMs) }}</span><span v-if="p.doc.evidence" class="chip" :class="evidenceClass(p.doc.evidence)" :title="evidenceInfo(p.doc.evidence)">{{ evidenceLabel(p.doc.evidence) }}</span><span v-if="layoutName(p)">{{ layoutName(p) }}</span></span>
-            <span v-else class="small bad">Invalid program file: {{ p.error }}</span>
-          </a>
+          <ProgramCard v-for="p in g.shown" :key="p.doc.id" :p="p" :current="p.doc.id === program.id" />
         </div>
       </section>
       </template>
@@ -189,7 +177,7 @@ if (needRegions.value) ensureRegions()
           <button type="button" class="g-card" :class="{ on: library.group === g.key }" :aria-expanded="library.group === g.key" @click="toggleGroup(g)">
             <SiteMap class="thumb" :sites="g.sites" :view="bestView(g)" compact />
             <span class="g-text">
-              <span class="g-kind">{{ g.layout ? `Layout ${g.layout}` : `${g.coils} coil${g.coils === 1 ? '' : 's'}` }} · {{ g.programs.length }} program{{ g.programs.length === 1 ? '' : 's' }}</span>
+              <span class="g-kind">{{ g.layout ? `Layout ${g.layout}` : `${g.coils} coil${g.coils === 1 ? '' : 's'}` }}, {{ g.programs.length }} program{{ g.programs.length === 1 ? '' : 's' }}</span>
               <span class="g-name">{{ g.name }}</span>
               <span class="g-sites num">{{ sitesLine(g) }}</span>
             </span>
@@ -199,7 +187,7 @@ if (needRegions.value) ensureRegions()
             <div class="g-progs">
               <a v-for="p in g.programs" :key="p.doc.id" class="prog" :class="{ on: p.doc.id === program.id }" :href="href(p.doc.id)">
                 <span class="prog-name">{{ p.doc.name }}</span>
-                <span class="muted small">{{ catLabel(p) }} · {{ fmtMinutes(p.session.totalMs) }}</span>
+                <span class="muted small">{{ catLabel(p) }}, {{ fmtMinutes(p.session.totalMs) }}</span>
               </a>
             </div>
           </div>
@@ -252,15 +240,12 @@ if (needRegions.value) ensureRegions()
 </template>
 
 <style scoped>
-.between { justify-content: space-between; }
-.head { gap: 10px; }
+.head { gap: 12px; }
+.title-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .intro { max-width: 75ch; }
 .search-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
 .search-row select { width: auto; }
 .chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 2px; }
-.chip.pick { cursor: pointer; background: none; min-height: 30px; padding: 4px 11px; font-size: 13px; }
-.chip.pick:hover { border-color: var(--accent); color: var(--text); }
-.chip.pick.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .chip.pick .n { opacity: .7; font-variant-numeric: tabular-nums; }
 .cap { text-transform: capitalize; }
 .count { min-height: 32px; }
@@ -268,14 +253,8 @@ if (needRegions.value) ensureRegions()
 .group { display: grid; gap: 8px; }
 .group-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 10px; }
-.pcard { display: grid; align-content: start; gap: 6px; padding: 14px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); color: var(--text); text-decoration: none; min-width: 0; }
-.pcard:hover { border-color: var(--accent); }
-.pcard.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
-.pcard .cat { font: 600 10.5px var(--font-body); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-.pcard .name { font: 600 18px/1.25 var(--font-display); letter-spacing: .02em; overflow-wrap: anywhere; }
-.pcard .sum { font-size: 13px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.pcard .meta { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; font-size: 12.5px; color: var(--muted); margin-top: auto; }
-.pcard .meta .chip { font-size: 11px; padding: 0 7px; }
+.group-title { font-size: 20px; }
+.group-title .n { font-size: 15px; color: var(--muted); font-weight: 600; margin-left: 4px; }
 
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 10px; }
 .g-card { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; text-align: left; padding: 8px 12px 8px 8px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); color: var(--text); cursor: pointer; min-width: 0; }
@@ -283,7 +262,7 @@ if (needRegions.value) ensureRegions()
 .g-card.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
 .thumb { width: 96px; }
 .g-text { display: grid; gap: 2px; min-width: 0; }
-.g-kind { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.g-kind { font-size: 12px; font-weight: 600; color: var(--muted); }
 .g-name { font-weight: 600; font-size: 14.5px; line-height: 1.3; overflow-wrap: anywhere; }
 .g-sites { font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; line-height: 1.35; }
 .g-open { grid-column: 1 / -1; display: grid; gap: 8px; padding: 12px; border: 1px solid var(--accent); border-radius: 10px; background: var(--accent-soft); }
@@ -299,11 +278,9 @@ if (needRegions.value) ensureRegions()
 .cell-btn, .cell-link { text-align: left; font-weight: 600; }
 
 @media (max-width: 520px) {
-  .head > .row.between { display: none; }
+  .title-row .small { display: none; }
   .head .seg { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; }
   .head .seg button { padding: 6px 9px; white-space: nowrap; }
   .search-row select { max-width: 138px; }
-  .pcard { padding: 12px; gap: 4px; }
-  .pcard .sum { -webkit-line-clamp: 1; line-clamp: 1; }
 }
 </style>

@@ -1,3 +1,5 @@
+import { DEFAULT_PROGRAM } from './lastProgram.js'
+
 // Hash routes without the DOM (lib/nav.js applies them to the page):
 //   #tab, #tab/arg, #tab/arg/sub   each part URI-encoded on its own
 //   #programs                      program library
@@ -6,7 +8,6 @@
 
 export const TABS = [
   { key: 'programs', label: 'Programs' },
-  { key: 'placement', label: 'Placement' },
   { key: 'brain', label: 'Brain' },
   { key: 'guides', label: 'Guides' },
   { key: 'experiment', label: 'Experiment' },
@@ -21,7 +22,11 @@ export const TABS = [
 export const HIDDEN = {}
 
 // Old routes, rewritten in place: route -> (arg, sub, ctx) -> new hash.
-export const LEGACY = {}
+// ctx.lastProgram(): the program an old link without an id opens.
+const programOf = (arg, ctx) => arg || ctx.lastProgram?.() || DEFAULT_PROGRAM
+export const LEGACY = {
+  placement: (arg, sub, ctx) => routeHash('programs', programOf(arg, ctx), 'placement'),
+}
 
 export const DEFAULT_TAB = 'programs'
 

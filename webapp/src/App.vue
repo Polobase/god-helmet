@@ -4,7 +4,6 @@ import { device, connect, disconnect, call } from './ble/device.js'
 import { nav, TABS, openTab, tabOf } from './lib/nav.js'
 import { guideState } from './lib/guideState.js'
 import ProgramsView from './views/ProgramsView.vue'
-import PlacementView from './views/PlacementView.vue'
 import ExperimentView from './views/ExperimentView.vue'
 import TargetsView from './views/TargetsView.vue'
 import LogView from './views/LogView.vue'
@@ -16,7 +15,7 @@ import DocsView from './views/DocsView.vue'
 const GuidesView = defineAsyncComponent(() => import('./views/GuidesView.vue'))
 // The brain view loads three.js and the meshes on demand.
 const BrainView = defineAsyncComponent(() => import('./views/BrainView.vue'))
-const views = { programs: ProgramsView, placement: PlacementView, brain: BrainView, guides: GuidesView, experiment: ExperimentView, targets: TargetsView, log: LogView, setup: SetupView, safety: SafetyView, docs: DocsView }
+const views = { programs: ProgramsView, brain: BrainView, guides: GuidesView, experiment: ExperimentView, targets: TargetsView, log: LogView, setup: SetupView, safety: SafetyView, docs: DocsView }
 const view = computed(() => views[nav.tab])
 const running = computed(() => device.status && device.status.state !== 'idle')
 

@@ -4,8 +4,8 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { SITES, siteName } from '../../lib/brain.js'
 import { describeSite, parseSite } from '../../lib/tape.js'
-import { recipeFor, bandText } from '../../lib/head.js'
 import SiteMap from '../SiteMap.vue'
+import SiteCard from './SiteCard.vue'
 
 const props = defineProps({
   data: { type: Object, default: null }, // loadRegions()
@@ -42,42 +42,18 @@ const matches = computed(() => {
 })
 const highlight = computed(() => [...new Set([...(zone.value?.sites ?? []), ...matches.value])])
 
-const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2])
-const entry = computed(() => charted.value[props.site] ?? null)
-const nearest = computed(() => {
-  if (entry.value || !SITES[props.site]) return null
-  let best = null
-  for (const r of Object.values(charted.value)) {
-    const d = dist(SITES[props.site], SITES[r.site])
-    if (!best || d < best.d) best = { r, d }
-  }
-  return best
-})
-const recipe = computed(() => recipeFor(props.site))
-const studies = computed(() => (entry.value?.anatomy ?? '').split(' | ').filter(Boolean))
-const stim = computed(() => (props.data?.siteGroups ?? []).filter((g) => g.sites.includes(props.site)))
-const inZones = computed(() => zones.value.filter((z) => z.sites.includes(props.site)))
-const programs = computed(() => {
-  const out = []
-  for (const g of props.groups) {
-    const chs = g.sites.map((s, i) => (s === props.site ? i + 1 : null)).filter(Boolean)
-    if (chs.length) for (const p of g.programs) out.push({ p, chs })
-  }
-  return out
-})
-const showAll = ref(false)
-watch(() => props.site, () => (showAll.value = false))
 // On narrow screens the card sits under the map: bring it into view after a tap.
 const cardEl = ref(null)
 function pick(n) {
   emit('update:site', n)
   if (!matchMedia('(max-width: 820px)').matches) return
   nextTick(() => {
-    const h = cardEl.value?.querySelector('header')
-    if (h && h.getBoundingClientRect().bottom > innerHeight - 24) cardEl.value.scrollIntoView({ block: 'start', behavior: 'smooth' })
+    const el = cardEl.value?.$el
+    const h = el?.querySelector('header')
+    if (h && h.getBoundingClientRect().bottom > innerHeight - 24) el.scrollIntoView({ block: 'start', behavior: 'smooth' })
   })
 }
-defineExpose({ show: () => cardEl.value?.scrollIntoView({ block: 'start', behavior: 'smooth' }) })
+defineExpose({ show: () => cardEl.value?.$el?.scrollIntoView({ block: 'start', behavior: 'smooth' }) })
 </script>
 
 <template>
@@ -110,105 +86,26 @@ defineExpose({ show: () => cardEl.value?.scrollIntoView({ block: 'start', behavi
     </div>
 
     <p class="sr-only" role="status">{{ site }}: {{ describeSite(site) }}</p>
-    <article ref="cardEl" class="site-card">
-      <header>
-        <span class="eyebrow">Site</span>
-        <h3><span class="num big">{{ site }}</span> <span class="where">{{ describeSite(site) }}</span></h3>
-      </header>
-      <dl class="facts">
-        <template v-if="recipe">
-          <dt>Find it</dt>
-          <dd>
-            <span v-if="recipe.estimate" class="approx" title="Scaled from the template head">≈</span>{{ recipe.text }} <span class="chip band" :class="`band-${recipe.band}`">{{ bandText(recipe) }}</span>
-            <span v-if="recipe.detail" class="small muted detail">{{ recipe.detail }}</span>
-          </dd>
-        </template>
-        <template v-if="entry">
-          <dt>Under it</dt>
-          <dd>{{ entry.function }}</dd>
-          <dt>Depth</dt>
-          <dd><span class="num">{{ entry.depthMm.toFixed(1) }} mm</span> from the scalp to the brain (template head)</dd>
-        </template>
-        <template v-else-if="nearest">
-          <dt>Under it</dt>
-          <dd>Not in the MRI site tables. Nearest charted site: <button type="button" class="linkbtn" @click="pick(nearest.r.site)">{{ nearest.r.site }}</button> ({{ Math.round(nearest.d) }} mm): {{ nearest.r.function }}</dd>
-        </template>
-      </dl>
-      <details v-if="studies.length" class="more">
-        <summary>MRI and cap studies ({{ studies.length }})</summary>
-        <ul class="small"><li v-for="(s, i) in studies" :key="i">{{ s }}</li></ul>
-      </details>
-      <section v-if="stim.length" class="block">
-        <h4>Direct stimulation of this area</h4>
-        <div v-for="g in stim" :key="g.area" class="small stim">
-          <b>{{ g.area }}.</b> {{ g.driven }}
-          <div class="muted src"><template v-for="(s, i) in g.sources" :key="i"><a v-if="s.url" :href="s.url" target="_blank" rel="noopener">{{ s.title }}</a><span v-else>{{ s.title }}</span><span v-if="i < g.sources.length - 1"> · </span></template></div>
-        </div>
-        <p class="small muted">Electrodes on the brain use milliamps and TMS about 100 V/m; these coils induce microvolts to millivolts per metre.</p>
-      </section>
-      <section v-if="inZones.length" class="block">
-        <h4>Murphy's zones with this site</h4>
-        <div v-for="z in inZones" :key="z.name" class="small"><b>{{ z.name }}</b><div><span class="tag claim">claim</span> {{ z.claimed }}</div></div>
-      </section>
-      <section class="block">
-        <h4>Programs with a coil here <span class="muted">({{ programs.length }})</span></h4>
-        <p v-if="!programs.length" class="small muted">No program uses this site.</p>
-        <div v-else class="progs">
-          <button v-for="x in (showAll ? programs : programs.slice(0, 6))" :key="x.p.doc.id" type="button" class="prog" @click="emit('program', x.p)">
-            <span>{{ x.p.doc.name }}</span><span class="muted small">CH{{ x.chs.join(', CH') }}</span>
-          </button>
-          <button v-if="programs.length > 6" type="button" class="linkbtn small" @click="showAll = !showAll">{{ showAll ? 'Show fewer' : `Show all ${programs.length}` }}</button>
-        </div>
-      </section>
-    </article>
+    <SiteCard ref="cardEl" class="card-slot" :site="site" :data="data" :groups="groups" @site="pick" @program="emit('program', $event)" />
   </div>
 </template>
 
 <style scoped>
 .explorer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
-.map-col { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; min-width: 0; position: sticky; top: 112px; }
+.map-col { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; min-width: 0; position: sticky; top: calc(var(--header-h, 100px) + 12px); }
 .tools { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .find { flex: 1 1 180px; min-width: 0; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 9px 10px; color: var(--text); }
 .matches { gap: 6px; }
-.chip.pick { cursor: pointer; background: none; min-height: 28px; }
-.chip.pick:hover { border-color: var(--accent); color: var(--text); }
-.chip.pick.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .zones { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; }
 .zones .chip.pick { white-space: normal; text-align: left; max-width: 100%; border-radius: 14px; }
-.detail { display: block; margin-top: 4px; line-height: 1.4; }
 .zones .row { gap: 6px; }
 .zone-card { display: grid; gap: 4px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
-.site-card { display: grid; gap: 12px; min-width: 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); scroll-margin-top: 110px; }
-.site-card h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
-.big { font-size: 34px; line-height: 1; }
-.where { font: 400 15px var(--font-body); color: var(--muted); letter-spacing: 0; }
-.facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 14px; margin: 0; font-size: 14px; }
-.facts dt { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; padding-top: 2px; }
-.facts dd { margin: 0; line-height: 1.45; }
-.approx { color: var(--warn); font-weight: 700; margin-right: 4px; }
-.chip.band { margin-left: 4px; }
-.chip.band.band-on { border-color: var(--blue); color: var(--blue); }
-.chip.band.band-above, .chip.band.band-below { border-color: var(--warn); color: var(--warn); }
-.more summary { cursor: pointer; font-size: 13px; color: var(--muted); }
-.more ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; overflow-wrap: anywhere; }
-.block { display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px; }
-.block h4 { margin: 0; font: 600 13px var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.stim { line-height: 1.45; }
-.src { overflow-wrap: anywhere; }
-.tag { display: inline-block; font-size: 11px; padding: 0 7px; border-radius: 99px; border: 1px solid; margin-right: 4px; }
-.tag.claim { color: var(--warn); border-color: var(--warn); }
-.progs { display: grid; gap: 4px; }
-.prog { display: flex; justify-content: space-between; gap: 10px; text-align: left; background: none; border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; color: var(--text); cursor: pointer; font-size: 13.5px; }
-.prog:hover { border-color: var(--accent); }
-.prog span:first-child { min-width: 0; overflow-wrap: anywhere; }
-.prog span:last-child { white-space: nowrap; }
-.linkbtn { justify-self: start; }
 @media (max-width: 820px) {
   /* card right under the map, zone chips after it */
   .explorer { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .map-col { display: contents; }
   .tools, .matches { order: 0; }
-  .site-card { order: 1; }
+  .card-slot { order: 1; }
   .zones { order: 2; }
 }
 </style>

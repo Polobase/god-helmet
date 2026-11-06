@@ -48,7 +48,10 @@ const here = () => location.hash.replace(/^#/, '')
 function act(action) {
   if (action === 'safety') return goSafety(here())
   dlg.value?.close()
-  if (action === 'measure' || action === 'place') location.hash = subHref('placement')
+  if (action === 'measure' || action === 'place') {
+    program.focus = action
+    location.hash = subHref('placement')
+  }
   else if (action === 'calibrate') go('setup')
 }
 
