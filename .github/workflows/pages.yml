@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Firmware images and manifests for the web app's installer (Setup page).
+  # Firmware images and manifests for the web app's installer (Helmet tab).
   firmware:
     runs-on: ubuntu-latest
     steps:
