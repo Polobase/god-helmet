@@ -22,7 +22,7 @@ export function sessionSites(session) {
 // ---------------------------------------------------------------- assets
 let assets = null
 let regionAssets = null
-// Regions, Murphy zones and site groups only (no meshes): for the Placement tab.
+// Regions, Murphy zones and site groups only (no meshes): for placement and the site explorer.
 export function loadRegions() {
   regionAssets ??= import('../assets/brain/regions.json').then((r) => ({
     regions: r.default.regions,

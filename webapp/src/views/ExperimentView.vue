@@ -303,7 +303,7 @@ function hideSender() {
       <div class="small muted">Commitment</div>
       <div class="mono">{{ current.commitment }}</div>
       <p v-if="current.mode === 'telepathy' && current.state === 'open'" class="small warn">
-        Sender: on a second phone with the same pool imported, open this app, connect to the helmet, Experiment → Sender, trial {{ current.id }}. The receiver must not see that screen.
+        Sender: on a second phone with the same pool imported, open this app, connect to the helmet, Trials → Sender, trial {{ current.id }}. The receiver must not see that screen.
       </p>
 
       <template v-if="current.state === 'open'">

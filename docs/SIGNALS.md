@@ -37,7 +37,7 @@ Nearly every signal on this page is single-lab or claim. Numbers about this helm
 
 Each coil is a commodity 19 × 12 mm magnetic-levitation coil: 495 turns, 4.2 Ω, 4.1 mH ±10 %. One seller lists a ferrite core, another a solid iron core; the ferrite listing's title also says "Full Copper Core". No manufacturer datasheet was found ([AliExpress listing 1005009753954000](https://www.aliexpress.com/item/1005009753954000.html); [AliExpress listing 1005012712588156](https://www.aliexpress.com/item/1005012712588156.html)). These are claims.
 
-The app's coil model is in `webapp/src/engine/field.js` and drives the Brain tab. It works like this:
+The app's coil model is in `webapp/src/engine/field.js` and drives the Brain tab of each program. It works like this:
 - **Winding.** The winding is split into 16 current loops, each computed with the exact loop formulas ([Simpson et al. 2013](https://ntrs.nasa.gov/citations/20140002333)).
 - **Core.** The core is a uniformly magnetised cylinder. Its demagnetising factor ([Chen et al. 1991](https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=905398)) limits its apparent susceptibility to about 5 for any material with χ ≥ 100. So ferrite and iron give nearly the same low-frequency field.
 - **Check.** The inductance the model implies (4.1–4.6 mH) matches the seller's 4.1 mH. That supports the model, but it is still a calculation (unverified).
@@ -61,8 +61,8 @@ Values from `field.js` (calculated). How to read them:
 - **Air core.** `AIR_COIL` is the older air-core estimate (winding 3.0–9.5 mm, 12 mm long, as in `tools/coil_field.py`), not exactly the cored model's winding.
 - **Shape.** Normalised to the 20 mm value, the cored and air-core shapes differ by only about 3–5 % at 30–50 mm, but by +47 % at 3 mm and +79 % at the face. So the Brain tab's maps are robust at depth, and absolute values depend on calibration.
 - **Spacer accuracy.** The field falls about 12 % per mm at 20 mm. A calibration spacer must be accurate to ±0.3 mm for ±4 % ([CALIBRATION.md](CALIBRATION.md)).
-- **Deep targets.** The centres of the amygdala and hippocampus lie about 55–57 mm below the nearest placeable scalp, their closest edges 40–47 mm ([PLACEMENT.md](PLACEMENT.md)); the Placement tab puts them about 5.7–6 cm below the nearest temporal sites. At 45–60 mm the field is about 8–17× weaker than at 20 mm.
-- **Intensity.** A program's intensity is the peak on the coil axis at 20 mm. Most presets use 1 µT. The Setup ceiling defaults to 5 µT and the firmware accepts at most 10 µT. The reachable maximum is 4.54 mA × the weakest coil's µT/mA, about 8 µT with the model.
+- **Deep targets.** The centres of the amygdala and hippocampus lie about 55–57 mm below the nearest placeable scalp, their closest edges 40–47 mm ([PLACEMENT.md](PLACEMENT.md)); the program's Placement tab puts them about 5.7–6 cm below the nearest temporal sites. At 45–60 mm the field is about 8–17× weaker than at 20 mm.
+- **Intensity.** A program's intensity is the peak on the coil axis at 20 mm. Most presets use 1 µT. The helmet's ceiling (Helmet → Settings → Max field) defaults to 5 µT and the firmware accepts at most 10 µT. The reachable maximum is 4.54 mA × the weakest coil's µT/mA, about 8 µT with the model.
 
 ### 1.2 Why tissue does not change B
 
@@ -521,7 +521,7 @@ At the usual 1 µT intensity, divide the field by 8.
 | Alpha, tACS (`sine`, 10 Hz) | 10 Hz or individual-alpha current over parieto-occipital cortex ([Zaehle et al. 2010](https://pmc.ncbi.nlm.nih.gov/articles/PMC2967471/)) | electrical; about 0.8 V/m in cortex at 2 mA ([Huang et al. 2017](https://pubmed.ncbi.nlm.nih.gov/28169833/)) | E about 10⁵ times lower | single-lab EEG effects; the magnetic version is a project construct |
 | Schumann (`sine`, 7.83 Hz) | fundamental about 7.8 Hz, varying 7.2–8.2 Hz over the day in the east–west component ([Ouyang 2013](https://html.rhhz.net/Geophy_en/html/20130304.htm)) | natural amplitude about 1 pT ([arXiv 2110.14730](https://arxiv.org/pdf/2110.14730)) | about 10⁶ times *stronger* than the natural field at 1 µT | claim: the one RCT of a "Schumann" sleep device found no between-group sleep difference ([Huang et al. 2022](https://pubmed.ncbi.nlm.nih.gov/35707548/)) |
 
-None of these programs is a replica of a tested treatment. They are pattern replicas or research probes. To test one honestly, run it blind against sham in the Experiment tab ([EXPERIMENTS.md](EXPERIMENTS.md)).
+None of these programs is a replica of a tested treatment. They are pattern replicas or research probes. To test one honestly, run it blind against sham in the Trials tab ([EXPERIMENTS.md](EXPERIMENTS.md)).
 
 ---
 

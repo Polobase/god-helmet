@@ -2,7 +2,7 @@
   "id": "shapes-colors",
   "name": "Shapes and colours telepathy test (two people)",
   "category": "self-test",
-  "summary": "A blinded version of the PsiPog 'Shapes and Colors' game. A sender in another room looks at a hidden target picture of a coloured shape while you, the receiver, describe it and then rank the pictures. The helmet draws and commits to the target as a telepathy trial; the sender sees it on a second phone in the Experiment tab's sender view. One committed trial per run (our adaptation; the original game guesses 1 of 16 shape-colour pairs). The game's claims have never been tested under blinding, so this is a test, not training.",
+  "summary": "A blinded version of the PsiPog 'Shapes and Colors' game. A sender in another room looks at a hidden target picture of a coloured shape while you, the receiver, describe it and then rank the pictures. The helmet draws and commits to the target as a telepathy trial; the sender sees it on a second phone in the Trials tab's sender view. One committed trial per run (our adaptation; the original game guesses 1 of 16 shape-colour pairs). The game's claims have never been tested under blinding, so this is a test, not training.",
   "evidence": "unverified",
   "minutes": 23,
   "requires": { "headphones": true, "helmet": "required", "pool": true },
@@ -55,7 +55,7 @@
       "id": "sender",
       "title": "Sender looks at the target",
       "minutes": 1,
-      "instructions": "**Sender:** on your phone, open Experiment → telepathy sender, enter the trial number and look at the picture. Keep looking at it calmly for the next 10 minutes; think of its shape and its colour. Make no sound or signal.\n\n**Receiver:** stay in your room and put on headphones.",
+      "instructions": "**Sender:** on your phone, open Trials → Sender, enter the trial number and look at the picture. Keep looking at it calmly for the next 10 minutes; think of its shape and its colour. Make no sound or signal.\n\n**Receiver:** stay in your room and put on headphones.",
       "audio": null,
       "advance": "manual"
     },

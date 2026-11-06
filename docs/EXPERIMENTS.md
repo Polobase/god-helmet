@@ -202,11 +202,11 @@ A cautionary case: van Elk reported that the data of an unpublished student thes
 ### The trial flow in the app
 
 **Before you start:**
-- Ask someone else to build the **target pool** (see below). The builder exports it, and you import the file on your phone (Targets → Import pool file). The Targets tab hides the pictures until someone presses **Show pictures**; never press it yourself.
+- Ask someone else to build the **target pool** (see below). The builder exports it, and you import the file on your phone (Trials → Picture pool → Import pool file). The picture pool hides the pictures until someone presses **Show pictures**; never press it yourself.
 - **Decide the number of trials in advance** (see *How many trials you need* below) and write it down. Analyse only when done.
 
 **A trial:**
-1. **Experiment → New trial.** Mode "Remote viewing", stimulation e.g. `remote-viewing`, **Blind** ticked, then **Create trial**. Or choose "None" for a psi-only series.
+1. **Trials → New trial.** Mode "Remote viewing", stimulation e.g. `remote-viewing`, **Blind** ticked, then **Create trial**. Or choose "None" for a psi-only series.
 2. The helmet:
    - picks a set, a target in it and real/sham, all with its hardware random generator;
    - shows a **SHA-256 commitment** of those choices plus a secret nonce. Screenshot it if you like.
@@ -235,13 +235,13 @@ Nothing gets deleted. Aborted trials stay in the list as *aborted*, so you can't
 
 SAIC also reported that response quality tracked the "Shannon entropy gradient" of the target pictures ([May, Spottiswoode & James 1994](https://documents.theblackvault.com/documents/remoteviewing/stargate/STARGATE%20%231%20173/Part0003/CIA-RDP96-00791R000200100004-2.TXT)). Many of its analyses were post hoc, and the static-picture correlation fell to non-significance after the pictures were re-digitised (single-lab). Don't build a pool around it.
 
-Note the **pool fingerprint** shown in the Targets tab in your plan. The reveal checks it.
+Note the **pool fingerprint** shown in Trials → Picture pool in your plan. The reveal checks it.
 
 ### SRI/SAIC free-response design
 
 **What it is.** A viewer describes a target picture that they will see later as feedback (for 15 min in one SAIC experiment). A judge who doesn't know the target ranks it against decoys from the same pack ([Utts 1995](https://www.ics.uci.edu/~jutts/air)). In SAIC's Experiment 1, five viewers each did 40 trials ([Lantz, Luke & May 1994](https://documents.theblackvault.com/documents/remoteviewing/stargate/STARGATE%20%231%20173/Part0003/CIA-RDP96-00791R000200100002-4.TXT)).
 
-**In the app.** Use the Experiment tab with sets of 5, or **Guides → Photo-target trial (free response)**. That guide has a "plan the series" step, a cool-down, 20 min to describe, a sketch, lock, blind ranking and the reveal. **Outbound beacon (live target, two people)** adapts SRI's real-time protocol, in which a beacon person visits a randomly drawn local site.
+**In the app.** Use the Trials tab with sets of 5, or **Guides → Photo-target trial (free response)**. That guide has a "plan the series" step, a cool-down, 20 min to describe, a sketch, lock, blind ranking and the reveal. **Outbound beacon (live target, two people)** adapts SRI's real-time protocol, in which a beacon person visits a randomly drawn local site.
 
 **The evidence.**
 - Utts gives effect sizes of .209 for 770 SRI sessions and .230 for 455 SAIC sessions ([Utts 1995](https://www.ics.uci.edu/~jutts/air); single-lab).
@@ -283,7 +283,7 @@ Analytic overlay, aesthetic impact and confusion are declared as "breaks" and wr
 - It needs a set of exactly two pictures. The helmet commits to the picture-to-outcome mapping before you start.
 - Equal ratings, or a margin under 2 points on the 0–7 scale, count as a pass.
 - You enter the real outcome later in the run summary, which then reveals and scores the trial.
-- ARV trials are left out of the Experiment tab's statistics, because their rank means "predicted A", not a hit ([GUIDES.md](GUIDES.md)).
+- ARV trials are left out of the Trials tab's statistics, because their rank means "predicted A", not a hit ([GUIDES.md](GUIDES.md)).
 - Score with the exact binomial test against 50 % on the non-pass predictions. Never use ARV for money or for decisions about people.
 
 ## Telepathy trials
@@ -295,7 +295,7 @@ Analytic overlay, aesthetic impact and confusion are declared as "breaks" and wr
 
 **In the app:**
 - Mode **Telepathy**. The `telepathy-sender` program plays the rotating-field configurations of the paired-person studies for the partner who wears the helmet. Putting the helmet on the sender is this project's trial design; putting it on the receiver is another choice. Neither is a published sender/receiver protocol.
-- The sender uses a second phone in another room, with the same pool imported (Targets → Import pool file). That phone connects to the helmet as a second app (the helmet accepts two), then **Experiment → Sender** → trial number. It shows the target only while the trial is open, that is, until the receiver locks the response.
+- The sender uses a second phone in another room, with the same pool imported (Trials → Picture pool → Import pool file). That phone connects to the helmet as a second app (the helmet accepts two), then **Trials → Sender** → trial number. It shows the target only while the trial is open, that is, until the receiver locks the response.
 - The receiver writes and sketches in the main UI, then locks, judges and reveals as above.
 - **Guides → Shapes and colours telepathy test (two people)** runs a simpler blinded version.
 
@@ -343,7 +343,7 @@ The setting alone changes experience. In 19 people, 25 min of eye shields and wh
 
 ### What the app reports
 
-The Experiment tab (and `tools/trial_stats.py`) report, for all revealed trials and separately for active, sham and no stimulation:
+The Trials tab (and `tools/trial_stats.py`) report, for all revealed trials and separately for active, sham and no stimulation:
 
 | Measure | Meaning | Chance level |
 |---|---|---|
@@ -393,7 +393,7 @@ A 30-trial series at a true 32 % hit rate with 4 pictures reaches p < .05 only a
 
 ### Bayes factors and stopping rules
 
-- The Experiment tab reports one-sided p-values only (`tools/trial_stats.py` adds the two-sided active − sham test). Choose one-sided or two-sided before you start.
+- The Trials tab reports one-sided p-values only (`tools/trial_stats.py` adds the two-sided active − sham test). Choose one-sided or two-sided before you start.
 - If you pre-register a Bayes factor, compute it yourself and state the prior. Different defaults turned Bem's "significant" results into weak evidence ([Wagenmakers et al. 2011](https://doi.org/10.1037/a0022790); [Rouder & Morey 2011](https://doi.org/10.3758/s13423-011-0088-7)).
 - Stopping early is valid only under a pre-registered sequential rule. The Transparent Psi Project stopped when the Bayes factor passed 25 in either direction under three priors ([Kekecs et al. 2023](https://doi.org/10.1098/rsos.191375)).
 
@@ -447,7 +447,7 @@ Rules:
 
 ## Optional context logging
 
-- **Kp / ap.** The app fetches them from NOAA SWPC when it connects and passes them to the helmet. Offline, enter Kp by hand in **Setup**. The helmet records them with every session and with every trial at lock.
+- **Kp / ap.** The app fetches them from NOAA SWPC when it connects and passes them to the helmet. Offline, enter Kp by hand in **Helmet → Environment**. The helmet records them with every session and with every trial at lock.
 - **Local sidereal time.** Computed from the clock and the longitude in Setup.
 
 Both are **exploratory**. Persinger and Krippner reported the best Maimonides dream sessions on geomagnetically quiet nights ([Psi Encyclopedia: Michael Persinger](https://psi-encyclopedia.spr.ac.uk/articles/michael-persinger/); single-lab). Spottiswoode reported a larger effect near 13 h local sidereal time, but a later sample of 3,678 trials did not reproduce the 13.5 h peak ([Psi Encyclopedia: James Spottiswoode](https://psi-encyclopedia.spr.ac.uk/articles/james-spottiswoode/)). Don't choose session times based on them, and don't hunt for the "best" split after the fact. If you want to test them, pre-register the split as a secondary hypothesis.

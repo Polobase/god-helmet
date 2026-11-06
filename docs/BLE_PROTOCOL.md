@@ -17,7 +17,7 @@ The web app (webapp/, served from GitHub Pages) talks to the helmet with **Web B
 | `a3c87502-…` | response | notify | helmet → app |
 | `a3c87503-…` | status | notify | helmet → app, every 0.5 s while running, every 2 s idle |
 
-- The helmet advertises the service UUID; the name is `GodHelmet-XXXX`, changeable in Setup.
+- The helmet advertises the service UUID; the name is `GodHelmet-XXXX`, changeable in Helmet → Settings.
 - Up to **two apps** can be connected at once, e.g. the receiver and a telepathy sender.
 
 ## Framing

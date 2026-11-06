@@ -17,7 +17,7 @@
       "id": "arm",
       "title": "Arm the target",
       "minutes": 3,
-      "instructions": "Before bed, the helmet picks a hidden picture and commits to it. On the spare device, open Experiment → telepathy sender and type the trial number; turn the screen away from you (or ask someone else) before you show the picture. Lay the device face-up on the high shelf and don't look at it until the reveal.",
+      "instructions": "Before bed, the helmet picks a hidden picture and commits to it. On the spare device, open Trials → Sender and type the trial number; turn the screen away from you (or ask someone else) before you show the picture. Lay the device face-up on the high shelf and don't look at it until the reveal.",
       "audio": null,
       "input": { "type": "trial", "action": "create", "mode": "telepathy" },
       "advance": "manual"

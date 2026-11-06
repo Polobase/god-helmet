@@ -1,15 +1,15 @@
 # Brain view: how the field map is made
 
-The **Brain** tab of the app shows, for any program, how strong the coils' magnetic field is across a standard brain, which target regions get how much, and what each region is known (or claimed) to do. It answers "where does the field go?". It does not answer "what does the field do?": no study has shown that fields of a few microtesla switch any of these regions on.
+The **Brain** tab of each program's page (Programs → a program → Brain) shows how strong the coils' magnetic field is across a standard brain, which target regions get how much, and what each region is known (or claimed) to do. It answers "where does the field go?". It does not answer "what does the field do?": no study has shown that fields of a few microtesla switch any of these regions on.
 
 ## What you see
 
 - **Glass or solid brain** coloured by field strength in µT on a logarithmic scale from 0.05 µT (dark) to 10 µT (bright). Peak = the largest field during the phase; RMS = the root-mean-square over time, which counts how long a coil is on.
 - **Deep structures** (amygdala, hippocampus, basal ganglia, thalamus) as separate surfaces inside the glass brain.
 - **Coils** at their 10-05 sites, face 3 mm off the scalp, axis toward the centre of the head. Coils not used in the selected phase are dimmed.
-- **Live**: runs the program in the browser (real time, 10× or 50× slower) and shows the instantaneous field and coil drive.
+- **Live**: runs the program in the browser (real time, 10× or 50× slower) and shows the instantaneous field and coil drive. It is the same preview as on the program's Overview, and the intensity is the one Start uses.
 - **What this program aims at**: the program's `targets`, with the estimated field at each.
-- **Targets ranked by estimated field**: every curated region with its depth, mainstream function, and the Persinger-lab or Murphy claims about it.
+- **Regions by field**: every curated region ranked by its estimated field. Tap one for its depth, mainstream function, what electrode or TMS stimulation of it did, and the Persinger-lab or Murphy claims about it; it is marked on the brain.
 - Tap any point on the brain for its value and the nearest named region.
 
 ## Method

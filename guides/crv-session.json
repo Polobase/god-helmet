@@ -67,7 +67,7 @@
       "id": "fit",
       "title": "Helmet (optional)",
       "minutes": 1,
-      "instructions": "If you use the helmet, put it on now in the **ring layout** (see the Placement tab), not the temporal fit. It runs blinded during the cool-down only, real or sham. Without the helmet, press Next.\n\nPut on the headphones for the cool-down.",
+      "instructions": "If you use the helmet, put it on now in the **ring layout** (see the program's Placement tab), not the temporal fit. It runs blinded during the cool-down only, real or sham. Without the helmet, press Next.\n\nPut on the headphones for the cool-down.",
       "audio": null,
       "advance": "manual"
     },

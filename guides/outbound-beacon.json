@@ -2,7 +2,7 @@
   "id": "outbound-beacon",
   "name": "Outbound beacon (live target, two people)",
   "category": "remote-viewing",
-  "summary": "The classic SRI real-time protocol, adapted: a beacon person goes to a randomly chosen local site while you, the viewer, describe where they are. The helmet draws and commits to the site as a telepathy trial; the beacon sees it on a second phone in the Experiment tab's sender view and leaves before you start. Afterwards you lock, rank the site pictures, see the reveal and visit the site together for feedback.",
+  "summary": "The classic SRI real-time protocol, adapted: a beacon person goes to a randomly chosen local site while you, the viewer, describe where they are. The helmet draws and commits to the site as a telepathy trial; the beacon sees it on a second phone in the Trials tab's sender view and leaves before you start. Afterwards you lock, rank the site pictures, see the reveal and visit the site together for feedback.",
   "evidence": "single-lab",
   "minutes": 89,
   "requires": { "headphones": false, "helmet": "required", "pool": true },
@@ -42,7 +42,7 @@
       "id": "beacon-leaves",
       "title": "The beacon leaves",
       "minutes": 2,
-      "instructions": "**Beacon:** in another room, open Experiment → telepathy sender on your phone, enter the trial number and look at the site. Leave at once. Arrive at the start time, stay 15 minutes and do the task on the card, attentively.\n\n**Viewer:** stay here and don't watch the beacon leave.",
+      "instructions": "**Beacon:** in another room, open Trials → Sender on your phone, enter the trial number and look at the site. Leave at once. Arrive at the start time, stay 15 minutes and do the task on the card, attentively.\n\n**Viewer:** stay here and don't watch the beacon leave.",
       "audio": null,
       "advance": "manual"
     },

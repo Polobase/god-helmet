@@ -65,7 +65,7 @@ None of them reproduce copyrighted scripts (Gateway Experience tapes, TMI affirm
 | `category` | `gateway` · `remote-viewing` · `esp-training` · `self-test` · `questionnaire` · `sleep` |
 | `evidence` | `established` · `single-lab` · `claim` · `anecdote` · `unverified` (same scale as the research docs) |
 | `requires.helmet` | `none` · `optional` · `required` |
-| `requires.pool` | true if the guide uses the target pool (Targets tab) |
+| `requires.pool` | true if the guide uses the picture pool (Trials → Picture pool) |
 | `helmetArm` | optional blinded helmet program for named steps (see below) |
 | step `minutes` / `seconds` | duration; omit for open-ended input steps (then `advance` must be `manual`) |
 | step `advance` | `timer` (next step when time is up) or `manual` (user presses Next; timer shows elapsed) |
@@ -121,7 +121,7 @@ In monaural mode each oscillator has its own gain: both at −3 dB while beating
 | `questionnaire` | `instrument` (id in `webapp/src/lib/instruments.js`) | item answers + scale scores |
 | `choice` | `key`, `prompt`, `options: [..]`, `trials`, `feedback` (forced-choice training; target from a hardware/crypto RNG with commitment) | per-trial records |
 | `crv` | `stage` 1–6, `fields: [{key, label, kind}]` | structured stage data |
-| `trial` | `action`: `create` · `lock` · `judge` · `reveal` (drives the Experiment trial flow from inside a guide); `create` may set `mode` (`rv` or `telepathy`) and `arv: true` (only 2-picture sets are offered) | trial id |
+| `trial` | `action`: `create` · `lock` · `judge` · `reveal` (drives the Trials tab's trial flow from inside a guide); `create` may set `mode` (`rv` or `telepathy`) and `arv: true` (only 2-picture sets are offered) | trial id |
 | `outcome` | `key`, `prompt`, `options: ["A","B"]` (ARV: the real-world outcome, entered when it is known) | chosen option |
 | `rng` | `key`, `prompt`, `trials`, `bits`, `aim` (`high`/`low`/`alternate`, or `none` for a control block with no aim and no feedback) (micro-PK intention task; bits come from the helmet's hardware RNG via `rng.bytes`, or WebCrypto in demo mode) | per-trial bit counts + z score |
 
@@ -135,7 +135,7 @@ Associative remote viewing reuses the blinded trial:
 5. The reveal shows the mapping. A hit means the prediction matched the outcome; the viewer is then shown only the picture for the actual outcome as feedback.
 6. Equal ratings of the two pictures (or a margin under 2 points on a 0–7 rating) count as a pass: no prediction, not scored.
 
-ARV trials are marked on the device (IndexedDB `kv` / `arv-trials`) and left out of the Experiment tab's hit statistics, because their rank means "predicted A", not a hit.
+ARV trials are marked on the device (IndexedDB `kv` / `arv-trials`) and left out of the Trials tab's hit statistics, because their rank means "predicted A", not a hit.
 
 ### Validation rules
 

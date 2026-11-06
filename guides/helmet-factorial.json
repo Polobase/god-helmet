@@ -6,7 +6,7 @@
   "evidence": "unverified",
   "minutes": 37,
   "requires": { "headphones": false, "helmet": "required", "pool": false },
-  "setting": "Quiet, dim room, seated or reclined. Helmet fitted in the ring layout (see Placement) and connected; safety screening done in the Safety tab.",
+  "setting": "Quiet, dim room, seated or reclined. Helmet fitted in the ring layout (see Placement) and connected; safety screening done on the safety page.",
   "cautions": "Use only the project's field limits and safety screening. If your real/sham guesses beat chance across sessions, blinding has failed and the comparison can't be trusted. Don't expect or advertise any psi benefit. Decide the number of trials or sessions before you start, keep every result, and report them all.",
   "sources": [
     {
@@ -34,7 +34,7 @@
       "id": "fit",
       "title": "Fit the helmet",
       "minutes": 2,
-      "instructions": "Put on the helmet in the ring layout (see the Placement tab). The field will be real or sham, and you won't know which until the end. Use the same program for every session in a series.",
+      "instructions": "Put on the helmet in the ring layout (see the program's Placement tab). The field will be real or sham, and you won't know which until the end. Use the same program for every session in a series.",
       "audio": null,
       "advance": "manual"
     },

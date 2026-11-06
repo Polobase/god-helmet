@@ -166,7 +166,7 @@ const setKp = () => run(async () => {
       </section>
 
       <section class="card">
-        <h2>Helmet</h2>
+        <h2>Settings</h2>
         <div class="grid2">
           <label class="field">Series resistor (Ω)<input v-model.number="s.seriesOhm" type="number" /></label>
           <label class="field">Coil resistance (Ω)<input v-model.number="s.coilOhm" type="number" step="0.1" /></label>

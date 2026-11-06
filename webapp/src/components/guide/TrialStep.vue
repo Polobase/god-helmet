@@ -1,6 +1,6 @@
 <script setup>
 // Drives the helmet's blinded trial (trial.new / lock / judge / ranks / reveal)
-// from inside a guide; same commitments and checks as the Experiment tab.
+// from inside a guide; same commitments and checks as the Trials tab.
 // ARV (docs/GUIDES.md): 2-picture sets, the helmet's target is outcome A. The
 // reveal waits for the outcome; if it is not known during the run, it is done
 // later from the run summary. Stored as { action, trialId, ... }.
@@ -73,7 +73,7 @@ const create = () => act(async () => {
 
 // ---------------------------------------------------------------- lock
 // The response is everything written since the create step (text, CRV data)
-// and every sketch. It is hashed exactly as in the Experiment tab, which keeps
+// and every sketch. It is hashed exactly as in the Trials tab, which keeps
 // one sketch: with several, each sketch's SHA-256 is added to the text.
 function crvText(v, inp) {
   const lines = [`CRV stage ${v.stage}`]
@@ -272,7 +272,7 @@ onBeforeUnmount(() => {
       <template v-else>
         <p><b>Trial #{{ state.trialId }}</b> created<template v-if="state.arv"> (ARV)</template>. Commitment:</p>
         <div class="mono">{{ state.commitment }}</div>
-        <p v-if="state.mode === 'telepathy'" class="small warn">Sender: on a second phone with the same pool, open Experiment → Sender, trial {{ state.trialId }}. The receiver must not see that screen.</p>
+        <p v-if="state.mode === 'telepathy'" class="small warn">Sender: on a second phone with the same pool, open Trials → Sender, trial {{ state.trialId }}. The receiver must not see that screen.</p>
       </template>
     </template>
 

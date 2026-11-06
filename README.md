@@ -7,7 +7,7 @@ A DIY recreation of the Persinger/Koren "God Helmet", the 8-coil Shakti and the 
 - a **Vue web app on GitHub Pages** that connects over **Bluetooth LE** or a **USB cable**, and installs the firmware;
 - or, without phone or computer, a **2.8" touchscreen board** that runs the programs from its microSD card ([docs/STANDALONE.md](docs/STANDALONE.md)).
 
-It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva and Shakti sessions on their exact 10-10 sites (with reversed-polarity coils where the Shakti wiring needs them), 38 Persinger-lab protocols (sensed presence, Thomas pulse, circumcerebral rotations, Swann remote viewing, telepathy), the timing of clinical low-field methods (LFMS, T-PEMF, Cnp, theta-burst, BHFS), and replications of the independent tests. Each program states the evidence for the original protocol and what it approximates. The app also has a **Brain tab** that shows where each program's field goes on a 3D brain, **30 guided sessions** with beat audio and questionnaires, and the means to **test it all honestly**:
+It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva and Shakti sessions on their exact 10-10 sites (with reversed-polarity coils where the Shakti wiring needs them), 38 Persinger-lab protocols (sensed presence, Thomas pulse, circumcerebral rotations, Swann remote viewing, telepathy), the timing of clinical low-field methods (LFMS, T-PEMF, Cnp, theta-burst, BHFS), and replications of the independent tests. Each program states the evidence for the original protocol and what it approximates. Each program's page also has a **Brain** tab that shows where each program's field goes on a 3D brain, **30 guided sessions** with beat audio and questionnaires, and the means to **test it all honestly**:
 - blinded real/sham sessions;
 - hash-committed, blind-judged remote-viewing and telepathy trials with exact statistics.
 
@@ -28,12 +28,16 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
  └──────────────────────┘                └──────────────┘  STOP button └──────────┘
 ```
 
-- **The app** (tabs: Programs, Placement, Brain, Guides, Experiment, Targets, Log, Setup, Safety, Docs) holds:
-  - the program library, searchable, with placement maps, waveforms, an in-browser preview of the coil activity, evidence levels and sources;
-  - a placement guide: each program's coils on a head map from above and from both sides, a coil-by-coil checklist with tape-measure directions in centimetres for your head, all 54 placements in use, and a site explorer for every 10-10 site;
-  - the Brain view: estimated field per brain region (cored-coil model on the Brainnetome and CerebrA atlases), what electrode or TMS stimulation of each region produced, and the claims made for it;
+- **The app** (tabs: Programs, Guides, Trials, Log, Helmet, Docs) holds:
+  - the program library, searchable, browsed by category, by placement (all 54 placements in use), by scalp site (a site explorer for every 10-10 site) or by the experience a program aims at;
+  - a page for each program with tabs:
+    - **Overview:** phases, waveforms and an in-browser preview of the coil activity;
+    - **Placement:** the coils on a head map from above and from both sides, and a coil-by-coil checklist with tape-measure directions in centimetres for your head;
+    - **Brain:** estimated field per brain region (cored-coil model on the Brainnetome and CerebrA atlases), what electrode or TMS stimulation of each region produced, and the claims made for it;
+    - **Sources:** the evidence level and the sources;
+  - a Start panel on each program page that lists what is ready (connection, safety page, head measured, coils placed, calibration, time since the last session);
   - guided sessions (Gateway-style, remote viewing, ESP training, sleep) with binaural, monaural or isochronic audio, a blinded helmet arm and questionnaires;
-  - the remote-viewing target pool, calibration and settings;
+  - blinded remote-viewing and telepathy trials with their picture pool (Trials), and calibration, the wiring check, settings and firmware install (Helmet);
   - all documentation (the Docs tab renders `docs/*.md` and a reference of every program).
 
   It has a **demo mode** that runs the same engine in the browser, so everything can be explored without hardware.
@@ -83,7 +87,7 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
 
 Pins for each board: [docs/WIRING.md](docs/WIRING.md).
 
-**Install from the app** (no other software): Setup → **Install the firmware**, in Chrome or Edge on a computer, with the board on USB. It recognises the chip and asks before erasing.
+**Install from the app** (no other software): Helmet → **Install the firmware**, in Chrome or Edge on a computer, with the board on USB. It recognises the chip and asks before erasing.
 
 **Firmware** ([PlatformIO](https://platformio.org/)):
 

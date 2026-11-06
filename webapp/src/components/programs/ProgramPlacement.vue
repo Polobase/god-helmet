@@ -190,7 +190,7 @@ function browseInLibrary() {
         <div class="prep-card"><b>Leads</b><p class="small">Scrape the enamel off the last 5 mm of both leads; the meter should read about 4.2 Ω. The inner lead leaves the top face next to the core: mark it, it is the signal lead.</p></div>
         <div class="prep-card"><b>Mount</b><p class="small">Nylon M3 screw into the core through a Velcro-backed clip (hardware/coil_clip.scad). Steel screws change the core.</p></div>
         <div class="prep-card"><b>Orientation</b><p class="small">Coil axis toward the centre of the head, clean face (no leads) on the scalp. Hair, a cap or a thick band add distance: about 12 % less field per extra mm.</p></div>
-        <div class="prep-card"><b>Polarity</b><p class="small">Setup → DC test with a compass in front of each coil. Mount every coil with the same pole toward the head; programs that need a reversed coil do it in software.</p></div>
+        <div class="prep-card"><b>Polarity</b><p class="small">Helmet → Calibration: a DC test with a compass in front of each coil. Mount every coil with the same pole toward the head; programs that need a reversed coil do it in software.</p></div>
       </div>
     </details>
 

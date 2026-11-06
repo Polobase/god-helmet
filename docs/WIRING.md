@@ -46,7 +46,7 @@ The diagram shows the ESP32-S3; the other chips use the pins in the table below.
 
 ## Pin table
 
-The firmware runs on four ESP32 chips, each with its own fixed pins (firmware env in brackets). The default board is the **ESP32-S3-DevKitC-1** (N8R8/N16R8, `esp32s3`). A classic **ESP32 DevKitC** (`esp32dev`), an **ESP32-C3** board (DevKitM-1 or a "C3 Super Mini", `esp32c3`) and an **ESP32-C6** board (DevKitC-1, `esp32c6`) work the same way. Install from the web app (Setup → Install the firmware; it recognises the chip) or with PlatformIO. For the **2.8" ESP32-32E display board** see [its own section](#esp32-32e-28-display-board) below.
+The firmware runs on four ESP32 chips, each with its own fixed pins (firmware env in brackets). The default board is the **ESP32-S3-DevKitC-1** (N8R8/N16R8, `esp32s3`). A classic **ESP32 DevKitC** (`esp32dev`), an **ESP32-C3** board (DevKitM-1 or a "C3 Super Mini", `esp32c3`) and an **ESP32-C6** board (DevKitC-1, `esp32c6`) work the same way. Install from the web app (Helmet → Install the firmware; it recognises the chip) or with PlatformIO. For the **2.8" ESP32-32E display board** see [its own section](#esp32-32e-28-display-board) below.
 
 | Function | ESP32-S3 | ESP32 classic | ESP32-C3 | ESP32-C6 | Direction | Connects to |
 |---|---|---|---|---|---|---|
@@ -211,5 +211,5 @@ A 5 V / 2 A power bank is plenty. Some banks switch off at low load; if yours do
 3. Wire the PhotoMOS in the common return. Check with a meter that the return is open when the ESP32 is unpowered.
 4. Fit the STOP button where you can reach it blind (on the cable or a hand-held puck).
 5. Prepare the coils (docs/PLACEMENT.md) and mark each inner (signal) lead.
-6. Power up and run the "slow rotation test" (Setup tab). Measure ~2.2 V across each resistor per mA, one channel at a time, in CCW order.
+6. Power up and run the "slow rotation test" (Helmet tab). Measure ~2.2 V across each resistor per mA, one channel at a time, in CCW order.
 7. Polarity: run the DC test on each coil with a compass in front of it. All coils must show the **same** pole toward the head.

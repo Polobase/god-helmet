@@ -22,7 +22,7 @@ Evidence words used below: **established** (independent replication), **single-l
 | Koren-box pairs | T7, TP7, –, –, T8, TP8, –, – | about 20 | "4 solenoids" through the temporal lobes (single-lab); sites are an inference |
 | Other program-specific sets | see "Program-specific placements" below | about 85 | Papers, vendor pages, clinical devices |
 
-Most programs (186 of 198) list their own sites with `"layout": "custom"` ([PRESET_FORMAT.md](PRESET_FORMAT.md)). The Placement tab groups all programs by their eight sites (54 placements), and the program page shows the same map. The app takes each coil's side from its site name: odd number = left, even number = right, `z` = midline. Midline coils take part in the `bilateral`, `rotate` and `single` modes, not in `left`, `right`, `cycle` or `alternate`.
+Most programs (186 of 198) list their own sites with `"layout": "custom"` ([PRESET_FORMAT.md](PRESET_FORMAT.md)). The program library (browse by placement) groups all programs by their eight sites (54 placements), and the program page shows the same map. The app takes each coil's side from its site name: odd number = left, even number = right, `z` = midline. Midline coils take part in the `bilateral`, `rotate` and `single` modes, not in `left`, `right`, `cycle` or `alternate`.
 
 ## Preparing and mounting the coils
 
@@ -33,7 +33,7 @@ All eight coils mount on one 6–8 cm neoprene or elastic headband with Velcro, 
 - **Mount.** Use a **nylon M3 screw** into the core, through the 3D-printed clip (`hardware/coil_clip.scad`) with Velcro on the back. Steel screws change the core's magnetic behaviour.
 - **Orientation.** The coil axis points to the centre of the head. The clean face (no leads) goes toward the scalp; the leads exit away from the head.
 - **Distance.** The app's field model puts the coil face 3 mm off the scalp. Hair, a cap or a thick band add to that. At cortical range the field falls about 12 % per mm ([CALIBRATION.md](CALIBRATION.md)), so 2 mm of extra padding costs about 20 % (derived from the coil model in `webapp/src/engine/field.js`).
-- **Polarity.** Mount all coils the same way round. In **Setup**, run the DC test on one channel and hold a compass in front of the coil face. Mark the face the compass's south end points to as N; that is the coil's north pole. Mount every coil N-face inward ([CALIBRATION.md](CALIBRATION.md)). Programs that need an opposite coil (the Shakti +/− pairs) reverse its current in software with a negative weight. Never flip a coil by hand.
+- **Polarity.** Mount all coils the same way round. In **Helmet → Calibration**, run the DC test on one channel and hold a compass in front of the coil face. Mark the face the compass's south end points to as N; that is the coil's north pole. Mount every coil N-face inward ([CALIBRATION.md](CALIBRATION.md)). Programs that need an opposite coil (the Shakti +/− pairs) reverse its current in software with a negative weight. Never flip a coil by hand.
 - **Low sites.** T9/T10, the inion row (Iz, I1, I2) and the mastoid sites sit below the band line. Use a second strap or a cap, and check that the coil face lies flat.
 
 ## The 10-20, 10-10 and 10-5 systems
@@ -64,7 +64,7 @@ Templates are also not real caps. In 20 people wearing MR-visible caps, the late
 - The app's 10-5 positions are MNE's fsaverage set, translated by [0, −1, −5.5] mm onto the MNI152 brain. The shift was fitted so that scalp-to-brain distances match published values (34 sites, 1.6 mm RMS error; [BRAIN_VIEW.md](BRAIN_VIEW.md)).
 - Against Colin27, frontal and lateral sites agree within 1–6 mm: FT7 (−81, 10, −7) vs (−81, 14, −11); T7 (−84, −20, −8) vs (−84, −16, −9). C5 and CP5 differ by 8–9 mm, O1/O2 by 17–18 mm. Oz is 20 mm lower in the app (3, −123, −6 vs 0, −115, 15), Iz 22 mm lower, Pz 15 mm lower and 11 mm further back, Cz 14 mm further back. (Comparison by the project research, fact-checked.)
 - So the frame hardly matters for the temporal programs. It decides the result for occipital, cerebellar and septal programs.
-- The site explorer and site table in the Placement tab take their anatomy and depths from Colin27-based projections and cap studies. The Brain tab draws the coils at the aligned positions. Keep this in mind at Oz, Iz, Pz and Cz.
+- The site explorer and site table (program library, browse by site) take their anatomy and depths from Colin27-based projections and cap studies. The Brain tab draws the coils at the aligned positions. Keep this in mind at Oz, Iz, Pz and Cz.
 
 All coordinates on this page are in the app's aligned frame (MNI mm, x = right, y = front, z = up) unless stated.
 
@@ -95,7 +95,7 @@ The band follows the 10 % line. At the front and back it crosses Fpz and Oz, 10 
 
 ### Distances in the app
 
-The Placement tab asks for three tape measurements and turns the rules above into centimetres for each coil:
+The Placement tab of each program asks for three tape measurements and turns the rules above into centimetres for each coil:
 1. **Nasion to inion** over the top of the head.
 2. **Ear to ear**, from one pre-auricular point to the other over Cz.
 3. **The band line**, all the way round through Fpz, just above the ear tops and through Oz (the 10 % line).
@@ -169,7 +169,7 @@ How to read the columns:
 
 **Not evenly spaced.** Layout A uses the named 10-10 sites, which sit at 0, 15, 25, 35 and 50 % of the head circumference, counted from Fpz. The gaps between neighbouring coils are 60–87 mm. The lab's 45° steps (12.5 % each) would fall on AFF7 and PPO7, about 15 mm from F7 and P7 (project research, fact-checked). Programs that need an even ring use the offset rings described under "Shiva ring and the lab ring at 45 degrees" below.
 
-**Programs.** `circumcerebral-gamma`, `circumcerebral-theta`, `remote-viewing` and `telepathy-sender` use the layout. About a dozen more list the same eight sites, for example `persinger-scott-2015-transatlantic`, `military-p06-persinger-swann-1998` and several `lowfield-*` programs. The Placement tab lists them all.
+**Programs.** `circumcerebral-gamma`, `circumcerebral-theta`, `remote-viewing` and `telepathy-sender` use the layout. About a dozen more list the same eight sites, for example `persinger-scott-2015-transatlantic`, `military-p06-persinger-swann-1998` and several `lowfield-*` programs. The program library lists them all (browse by placement).
 
 ## Layout B: temporal 4 + 4
 
@@ -208,7 +208,7 @@ Corrections to older descriptions of this layout:
 
 ## Program-specific placements
 
-Each program in this section lists its own sites. Move the coils to those sites before starting; the Placement tab and the program page show the map. Unless a row says otherwise, the site names are an inference from the vendor's or paper's wording.
+Each program in this section lists its own sites. Move the coils to those sites before starting; the program's Placement tab shows the map. Unless a row says otherwise, the site names are an inference from the vendor's or paper's wording.
 
 ### Shiva God Helmet cross
 
@@ -446,29 +446,32 @@ Keep two lines of evidence apart:
 
 ## Seeing it in the app
 
-- **Placement tab.** It holds:
-  - **Set-up.** Choose a program or a placement. The coils appear on a head map from above, from the left and from the right. The checklist gives each coil:
+- **A program's Placement tab** (Programs → a program → Placement):
+  - **The coils** on a head map from above, from the left and from the right, and a checklist that gives each coil:
     - its site, and where that is in plain words;
     - tape directions for your head;
-    - whether it sits on, above or below the band;
-    - what lies under it.
+    - whether it sits on, above or below the band.
 
-    Tick the coils off as they go on. The program page's "How to place the coils" button opens this view for that program.
-  - **Head measurements:** the three tape lines above, stored on the device.
-  - **All placements:** the 54 site sets in use, with the programs that share each one, filterable by region.
-  - **Site explorer.** Tap any 10-10 site to see:
+    "More" on a row, or "Show the measuring details", adds the measuring detail and what lies under the coil. Tick the coils off as they go on: the tab shows how many are placed, and so does the Start panel. Tapping a site name opens its site card.
+  - **Measure your head:** the three tape lines above, stored on the device, with the whole 10-10 grid step by step.
+  - **Programs with this placement:** the others with the same sites, to switch without moving a coil.
+  - **Preparing and mounting the coils.**
+- **The program library** (Programs), browsed:
+  - **by placement:** the 54 site sets in use, with the programs that share each one, filterable by region;
+  - **by site:** the site explorer. Tap any 10-10 site to see:
     - its tape directions and depth;
     - the anatomy under it;
     - what direct stimulation of that area did;
     - Murphy's zones that include it (claims);
     - the programs with a coil there.
-  - **Reference tables:** the site table and the experience-to-region table.
-  - **Coil preparation.**
-- **Brain tab.** Pick a program to see:
+
+    The table of all charted sites is under it.
+  - **by experience:** the experience-to-region table.
+- **A program's Brain tab:**
   - its coils at their aligned 10-5 positions, face 3 mm off the scalp;
   - the peak and RMS field on a glass brain, the deep structures and the cerebellum;
   - the field at the cortex straight under each coil;
-  - its targets ranked by estimated field.
+  - the regions ranked by estimated field, each with its details and marked on the brain.
 
   [BRAIN_VIEW.md](BRAIN_VIEW.md) explains the method and its limits.
 - **Limits of the maps.**
