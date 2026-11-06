@@ -1,7 +1,7 @@
 <script setup>
 // One program (#programs/<id>[/<sub>]): a header with Start and sub-tabs for
 // the overview, the coil placement, the field on the brain and the sources.
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { nav } from '../../lib/nav.js'
 import { presetById, sourceEntries, CATEGORY_LABELS } from '../../lib/presets.js'
 import { layoutInfo } from '../../lib/layouts.js'
@@ -34,7 +34,9 @@ const running = computed(() => {
 })
 const levels = computed(() => (preview.value ? preview.value.drives.map(Math.abs) : running.value))
 
-const SUBS = { placement: ProgramPlacement, sources: ProgramSources }
+// The Brain sub-tab loads three.js and the meshes on demand.
+const ProgramBrain = defineAsyncComponent(() => import('./ProgramBrain.vue'))
+const SUBS = { placement: ProgramPlacement, brain: ProgramBrain, sources: ProgramSources }
 const sub = computed(() => (SUBS[nav.sub] ? nav.sub : ''))
 const subs = computed(() => [
   { key: '', label: 'Overview' },
@@ -166,7 +168,7 @@ onBeforeUnmount(() => {
 @media (max-width: 640px) {
   .cta { display: none; }
   .slim-name, .slim .btn { display: none; }
-  .start-bar { display: block; position: fixed; z-index: 9; left: 0; right: 0; bottom: 0; padding: 10px max(16px, env(safe-area-inset-left, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--bg) 92%, transparent); border-top: 1px solid var(--line); backdrop-filter: blur(6px); }
+  .start-bar { display: block; position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; padding: 10px max(16px, env(safe-area-inset-left, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--bg) 92%, transparent); border-top: 1px solid var(--line); backdrop-filter: blur(6px); }
   .start-bar .btn { width: 100%; }
   .subtabs a { padding: 10px 8px; }
 }

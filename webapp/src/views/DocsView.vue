@@ -60,7 +60,7 @@ function programsMarkdown() {
     s.phases.forEach((ph, i) => out.push(`| ${i + 1} | ${ph.name.replace(/\|/g, '/')} | ${+(ph.durationMs / 60000).toFixed(2)} | ${describePattern(ph.pattern)}${ph.track2 ? ` + ${describePattern(ph.track2.pattern)}` : ''} | ${describeSpatial(ph.spatial)}${ph.track2 ? ` + ${describeSpatial(ph.track2.spatial)}` : ''}${ph.level < 1 ? ` · level ${ph.level}` : ''} |`))
     out.push('')
     if (d.notes) out.push(d.notes, '')
-    if (d.targets?.length) out.push(`**Aims at:** ${d.targets.join(', ')} ([brain view](#brain/${d.id}))`, '')
+    if (d.targets?.length) out.push(`**Aims at:** ${d.targets.join(', ')} ([field on the brain](#programs/${d.id}/brain))`, '')
     const src = sourceEntries(d.source).map((e) => (e.url ? `[${e.text || e.url}](${e.url})` : e.text) + (e.extra ?? []).map((u, j) => ` [[${j + 2}]](${u})`).join(''))
     if (src.length) out.push(`**Sources:** ${src.join(' · ')}`, '')
   }

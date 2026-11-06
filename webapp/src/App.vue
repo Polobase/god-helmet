@@ -13,9 +13,7 @@ import DocsView from './views/DocsView.vue'
 
 // Guides load on demand (audio engine + content).
 const GuidesView = defineAsyncComponent(() => import('./views/GuidesView.vue'))
-// The brain view loads three.js and the meshes on demand.
-const BrainView = defineAsyncComponent(() => import('./views/BrainView.vue'))
-const views = { programs: ProgramsView, brain: BrainView, guides: GuidesView, experiment: ExperimentView, targets: TargetsView, log: LogView, setup: SetupView, safety: SafetyView, docs: DocsView }
+const views = { programs: ProgramsView, guides: GuidesView, experiment: ExperimentView, targets: TargetsView, log: LogView, setup: SetupView, safety: SafetyView, docs: DocsView }
 const view = computed(() => views[nav.tab])
 const running = computed(() => device.status && device.status.state !== 'idle')
 

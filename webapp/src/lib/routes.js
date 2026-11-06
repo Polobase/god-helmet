@@ -8,7 +8,6 @@ import { DEFAULT_PROGRAM } from './lastProgram.js'
 
 export const TABS = [
   { key: 'programs', label: 'Programs' },
-  { key: 'brain', label: 'Brain' },
   { key: 'guides', label: 'Guides' },
   { key: 'experiment', label: 'Experiment' },
   { key: 'targets', label: 'Targets' },
@@ -26,6 +25,7 @@ export const HIDDEN = {}
 const programOf = (arg, ctx) => arg || ctx.lastProgram?.() || DEFAULT_PROGRAM
 export const LEGACY = {
   placement: (arg, sub, ctx) => routeHash('programs', programOf(arg, ctx), 'placement'),
+  brain: (arg, sub, ctx) => routeHash('programs', programOf(arg, ctx), 'brain'),
 }
 
 export const DEFAULT_TAB = 'programs'

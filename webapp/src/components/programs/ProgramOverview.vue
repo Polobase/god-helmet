@@ -76,7 +76,7 @@ const targetName = (id) => id.replace(/-/g, ' ').replace(/\b(tpj|dlpfc|vmpfc|stg
       </dl>
       <div v-if="doc.targets?.length" class="row small aims">
         <span class="muted">Aims at:</span>
-        <a v-for="t in doc.targets" :key="t" class="chip link" :href="subHref('brain')" :title="`Field at ${targetName(t)}, on the brain`">{{ targetName(t) }}</a>
+        <a v-for="t in doc.targets" :key="t" class="chip link" :href="subHref('brain')" :title="`Field at ${targetName(t)}, on the brain`" @click="program.region = t">{{ targetName(t) }}</a>
       </div>
       <details v-if="doc.notes" :key="doc.id" class="notes small">
         <summary>Notes, caveats and how this program was derived</summary>

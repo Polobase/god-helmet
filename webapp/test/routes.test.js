@@ -64,6 +64,13 @@ test('a tab button returns to the tab, or to its start when already open', () =>
   assert.equal(tabOf('programs'), 'programs')
 })
 
+test('old Brain links open the program page on its Brain tab', () => {
+  assert.deepEqual(resolveRoute('#brain/obe', { lastProgram: () => 'x' }), { redirect: '#programs/obe/brain' })
+  assert.deepEqual(resolveRoute('#brain', { lastProgram: () => 'obe' }), { redirect: '#programs/obe/brain' })
+  assert.ok(isAppHash('#brain/god-helmet-classic'))
+  assert.ok(!TABS.some((t) => t.key === 'brain'))
+})
+
 test('old Placement links open the program page on its Placement tab', () => {
   const ctx = { lastProgram: () => 'obe' }
   assert.deepEqual(resolveRoute('#placement/god-helmet-classic', ctx), { redirect: '#programs/god-helmet-classic/placement' })

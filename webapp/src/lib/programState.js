@@ -21,6 +21,7 @@ export const program = reactive({
   speed: 10, // preview: times slower than real time, so millisecond steps show
   startOpen: false, // Start panel (stays open across the safety detour)
   focus: '', // what a sub-tab should show first: 'measure' or 'place' (from the Start panel)
+  region: '', // a target region for the Brain sub-tab to open (from Overview's "Aims at")
 })
 
 // The library's filters and browse mode, kept while you look at a program.
@@ -34,12 +35,8 @@ export const ticksOf = (g) => (g ? placementState.placed[g.key] ?? [] : [])
 export const usedCoils = (g) => (g ? g.sites.map((s, i) => (s ? i : null)).filter((i) => i !== null) : [])
 export const placedCount = (g) => usedCoils(g).filter((i) => ticksOf(g)[i]).length
 
-// Link to one of a program's sub-tabs ('' = Overview). Brain still has its
-// own tab until it moves into the program page.
-export function subHref(sub, id = program.id) {
-  if (sub === 'brain') return routeHash(sub, id)
-  return routeHash('programs', id, sub)
-}
+// Link to one of a program's sub-tabs ('' = Overview).
+export const subHref = (sub, id = program.id) => routeHash('programs', id, sub)
 
 // While the preview runs: { drives (8, signed), phase, phaseMs, programMs }.
 export const preview = shallowRef(null)
