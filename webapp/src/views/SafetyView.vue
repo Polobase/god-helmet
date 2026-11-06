@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { device, call, refresh, connect } from '../ble/device.js'
 import { nav, returnFromSafety, TABS } from '../lib/nav.js'
 import { presetById } from '../lib/presets.js'
+import { fmtRange } from '../lib/units.js'
 
 const accepted = ref(Boolean(device.info?.safetyAccepted))
 watch(() => device.info?.safetyAccepted, (v) => { if (v) accepted.value = true })
@@ -36,7 +37,7 @@ async function accept() {
       <span class="eyebrow">Read before the first session</span>
       <h2>Safety</h2>
       <p v-if="back && !device.info?.safetyAccepted" class="notice warn">The helmet will not start a field until you accept this page. Continue takes you back to {{ back }}.</p>
-      <p>This is an experimental, non-medical device. The fields are about 1–5 µT at the cortex, about a million times weaker than TMS and below the ICNIRP public reference level. The published evidence that such fields cause any experience is weak: double-blind studies attribute most effects to expectation and setting. The blind mode lets you find out for yourself.</p>
+      <p>This is an experimental, non-medical device. The fields are about {{ fmtRange(1, 5) }} at the cortex, about a million times weaker than TMS and below the ICNIRP public reference level. The published evidence that such fields cause any experience is weak: double-blind studies attribute most effects to expectation and setting. The blind mode lets you find out for yourself.</p>
       <h3>Do not use it if you</h3>
       <ul class="list contra">
         <li>have epilepsy, a seizure history, or a first-degree relative with epilepsy. The burst-firing patterns were derived from seizure EEG, and Murphy reports his own 8–10 days of distress after the bilateral amygdala signal.</li>

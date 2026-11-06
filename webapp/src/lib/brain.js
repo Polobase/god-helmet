@@ -151,4 +151,3 @@ export function fieldColor(uT) {
 }
 export const cssColor = (uT) => `rgb(${fieldColor(uT).map((c) => Math.round(c * 255)).join(' ')})`
 
-export const fmtUT = (v) => (v >= 10 ? v.toFixed(0) : v >= 1 ? v.toFixed(1) : v >= 0.1 ? v.toFixed(2) : v >= 0.01 ? v.toFixed(3) : '<0.01')

@@ -11,6 +11,7 @@ import { readiness, hoursSinceLast, minGapHours } from '../../lib/readiness.js'
 import { program, groupOf, usedCoils, placedCount, subHref } from '../../lib/programState.js'
 import { nav, go, goSafety } from '../../lib/nav.js'
 import IntensitySlider from '../IntensitySlider.vue'
+import { fmtSetting } from '../../lib/units.js'
 
 const dlg = ref(null)
 const preset = computed(() => presetById(program.id))
@@ -101,7 +102,7 @@ const ICON = { ok: '✓', warn: '!', bad: '✕' }
       </ul>
 
       <IntensitySlider v-model="field" />
-      <p v-if="capped" class="small muted">The Brain view was set to {{ program.uT.toFixed(1) }} µT; this helmet allows up to {{ maxField.toFixed(1) }} µT.</p>
+      <p v-if="capped" class="small muted">The Brain view was set to {{ fmtSetting(program.uT) }}; this helmet allows up to {{ fmtSetting(maxField) }}.</p>
       <label class="check"><input v-model="blind" type="checkbox" /> Blind: the helmet picks real or sham at random (revealed after you rate)</label>
       <p v-if="confirmRecent" class="warn small" role="alert">Last session was {{ recentH.toFixed(0) }} h ago; {{ minGapHours(device.info) }} h between sessions is recommended. Press Start again to continue anyway.</p>
 

@@ -11,6 +11,7 @@ import SafetyView from './views/SafetyView.vue'
 import DocsView from './views/DocsView.vue'
 import SessionPill from './components/SessionPill.vue'
 import LivePanel from './components/LivePanel.vue'
+import { units, setFieldUnit, UNIT_LABEL, UNIT_NAME } from './lib/units.js'
 
 // Guides load on demand (audio engine + content).
 const GuidesView = defineAsyncComponent(() => import('./views/GuidesView.vue'))
@@ -106,6 +107,9 @@ onMounted(() => {
             <button v-if="device.serial" type="button" class="btn sm" :disabled="device.connecting" title="Connect over a USB cable (Chrome or Edge on a computer)" @click="connect('usb')">USB</button>
             <button type="button" class="btn ghost sm" @click="connect('demo')">Demo</button>
           </template>
+          <div class="seg unit-seg" role="group" aria-label="Field unit" title="Show fields in tesla (µT) or gauss (mG): 1 µT = 10 mG">
+            <button v-for="u in ['T', 'G']" :key="u" type="button" :class="{ on: units.field === u }" :aria-pressed="units.field === u" :aria-label="`${UNIT_LABEL[u]} (${UNIT_NAME[u]})`" @click="setFieldUnit(u)">{{ UNIT_LABEL[u] }}</button>
+          </div>
           <button type="button" class="btn ghost sm" :title="`Theme: ${theme} (click to change)`" :aria-label="`Theme: ${theme}. Change theme`" @click="nextTheme">{{ THEME_LABEL[theme] }}</button>
         </div>
         <div ref="menuEl" class="narrow-only menu-wrap">
@@ -122,6 +126,12 @@ onMounted(() => {
               <button v-if="device.serial" type="button" class="btn sm" role="menuitem" :disabled="device.connecting" @click="connectFrom('usb')">USB cable</button>
               <button type="button" class="btn ghost sm" role="menuitem" @click="connectFrom('demo')">Demo (no helmet)</button>
             </template>
+            <div class="theme-pick">
+              <span class="small muted">Field unit (1 µT = 10 mG)</span>
+              <div class="seg" role="group" aria-label="Field unit">
+                <button v-for="u in ['T', 'G']" :key="u" type="button" :class="{ on: units.field === u }" :aria-pressed="units.field === u" @click="setFieldUnit(u)">{{ UNIT_LABEL[u] }} ({{ UNIT_NAME[u] }})</button>
+              </div>
+            </div>
             <div class="theme-pick">
               <span class="small muted">Theme</span>
               <div class="seg" role="group" aria-label="Theme">
@@ -175,6 +185,8 @@ onMounted(() => {
 .menu-btn .conn-dot { margin-right: 2px; }
 .menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 30; width: min(280px, calc(100vw - 32px)); display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: 0 18px 40px rgb(0 0 0 / .35); }
 .theme-pick { display: grid; gap: 4px; border-top: 1px solid var(--line); padding-top: 8px; }
+.unit-seg { align-self: center; padding: 2px; }
+.unit-seg button { min-height: 26px; padding: 3px 9px; font-size: 12.5px; }
 .pill-row { padding-block: 0 8px; display: flex; }
 .pill-row .pill { width: 100%; justify-content: space-between; }
 .live-drop { position: absolute; left: 0; right: 0; top: 100%; max-height: calc(100dvh - var(--header-h, 60px) - 12px); overflow: auto; padding-block: 10px; background: color-mix(in srgb, var(--bg) 70%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }

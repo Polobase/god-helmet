@@ -1,8 +1,9 @@
 <script setup>
-// The intensity control: µT at 20 mm depth, capped by what this helmet allows
+// The intensity control: field at 20 mm depth (shown in µT or mG), capped by what this helmet allows
 // (or by `max`, e.g. the Brain view's what-if range).
 import { computed } from 'vue'
 import { maxFieldUT } from '../ble/device.js'
+import { fmtSetting } from '../lib/units.js'
 
 const props = defineProps({
   modelValue: { type: Number, required: true },
@@ -15,7 +16,7 @@ const top = computed(() => props.max ?? maxFieldUT())
 
 <template>
   <label class="field">
-    <span>{{ label }}: <b class="num">{{ Number(modelValue).toFixed(1) }} µT</b></span>
+    <span>{{ label }}: <b class="num">{{ fmtSetting(modelValue) }}</b></span>
     <input :value="modelValue" type="range" min="0.1" :max="top.toFixed(1)" step="0.1"
       @input="emit('update:modelValue', Number($event.target.value))" @change="emit('change', Number($event.target.value))" />
     <slot />

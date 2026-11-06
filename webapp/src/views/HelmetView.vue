@@ -13,6 +13,7 @@ import { fetchKp } from '../lib/noaa.js'
 import { LAYOUTS } from '../lib/layouts.js'
 import { fmtDuration } from '../lib/format.js'
 import { goSafety } from '../lib/nav.js'
+import { unitLabel, toDisplay, fromDisplay } from '../lib/units.js'
 import FirmwareInstall from '../components/FirmwareInstall.vue'
 
 const s = ref(null)  // editable copy of the settings
@@ -56,12 +57,17 @@ const rotTest = () => run(() => {
 })
 const stopTest = () => run(() => call('session.stop'))
 
+// Field inputs show the chosen unit (µT or mG); the helmet stores µT.
+const disp = (uT) => (uT === '' || uT == null ? '' : Number(toDisplay(Number(uT)).toPrecision(6)))
+const fromInput = (v) => (v === '' ? '' : Number(Number(fromDisplay(Number(v))).toPrecision(6)))
+const step = (uTStep) => toDisplay(uTStep)
+
 function applyMeasured() {
   const { ch, mA } = target.value
-  const b = Number(cal.measured)
+  const b = fromDisplay(Number(cal.measured))
   if (!(mA > 0 && b > 0)) return flash('Enter the test current and the measured field.', true)
   s.value.uTperMA[ch] = Number((b / mA).toFixed(3))
-  flash(`CH${ch + 1}: ${s.value.uTperMA[ch]} µT/mA. Save to keep it.`)
+  flash(`CH${ch + 1}: ${disp(s.value.uTperMA[ch])} ${unitLabel()}/mA. Save to keep it.`)
 }
 
 const saveSettings = () => run(async () => {
@@ -139,11 +145,11 @@ const setKp = () => run(async () => {
           <button class="btn sm ghost" :disabled="test.state === 'stopping'" @click="stopTest">Stop test</button>
         </p>
         <div class="grid2">
-          <label class="field">Measured field, on minus off (µT)<input v-model="cal.measured" type="number" step="0.01" /></label>
+          <label class="field">Measured field, on minus off ({{ unitLabel() }})<input v-model="cal.measured" type="number" :step="step(0.01)" /></label>
           <div class="row" style="align-items: end"><button class="btn" @click="applyMeasured">Use for CH{{ target.ch + 1 }} ({{ target.mA }} mA)</button></div>
         </div>
         <div class="cal">
-          <label v-for="i in 8" :key="i" class="field">CH{{ i }} µT/mA<input v-model.number="s.uTperMA[i - 1]" type="number" step="0.01" /></label>
+          <label v-for="i in 8" :key="i" class="field">CH{{ i }} {{ unitLabel() }}/mA<input :value="disp(s.uTperMA[i - 1])" type="number" :step="step(0.01)" @change="s.uTperMA[i - 1] = fromInput($event.target.value)" /></label>
         </div>
         <label class="check"><input v-model="s.calibrated" type="checkbox" /> These values are measured</label>
         <div class="row"><button class="btn primary" @click="saveSettings">Save calibration</button></div>
@@ -171,8 +177,8 @@ const setKp = () => run(async () => {
           <label class="field">Series resistor (Ω)<input v-model.number="s.seriesOhm" type="number" /></label>
           <label class="field">Coil resistance (Ω)<input v-model.number="s.coilOhm" type="number" step="0.1" /></label>
           <label class="field">Module full scale (V)<input v-model.number="s.vFullScale" type="number" step="0.1" /></label>
-          <label class="field">Max field at 20 mm (µT, ≤ 10)<input v-model.number="s.maxFieldUT" type="number" step="0.1" /></label>
-          <label class="field">Default field (µT)<input v-model.number="s.defaultFieldUT" type="number" step="0.1" /></label>
+          <label class="field">Max field at 20 mm ({{ unitLabel() }}, at most {{ disp(10) }})<input :value="disp(s.maxFieldUT)" type="number" :step="step(0.1)" @change="s.maxFieldUT = fromInput($event.target.value)" /></label>
+          <label class="field">Default field ({{ unitLabel() }})<input :value="disp(s.defaultFieldUT)" type="number" :step="step(0.1)" @change="s.defaultFieldUT = fromInput($event.target.value)" /></label>
           <label class="field">Stop if no app for (s, 0 = off)<input v-model.number="s.keepaliveS" type="number" /></label>
           <label class="field">Bluetooth name (empty = GodHelmet-XXXX)<input v-model="s.bleName" type="text" maxlength="20" /></label>
           <label class="field">Longitude (° east, for sidereal time)

@@ -8,6 +8,7 @@ import { listSets, manifestHash, getSet } from '../../lib/pool.js'
 import { idb } from '../../lib/idb.js'
 import { saveRun, inputSummary, plain, pendingArv, trialChecks, arvPrediction, arvPictureFor } from '../../lib/runs.js'
 import { fmtDuration } from '../../lib/format.js'
+import { fmtSetting } from '../../lib/units.js'
 import RatingInput from './RatingInput.vue'
 
 const props = defineProps({ record: { type: Object, required: true }, guide: { type: Object, default: null } })
@@ -172,7 +173,7 @@ const helmetLabel = computed(() => {
   if (!h?.enabled) return 'not used'
   if (!h.logId) return h.error || 'not started'
   const cond = h.blind ? (rec.value.reveal?.helmet ? `blind → ${rec.value.reveal.helmet}` : 'blind (not revealed yet)') : 'active'
-  const field = h.fieldUT ? `, ${h.fieldUT} µT` : ''
+  const field = h.fieldUT ? `, ${fmtSetting(h.fieldUT)}` : ''
   return `${h.presetId}${field}, log #${h.logId}${h.device?.name ? ` on ${h.device.name}` : ''}, ${cond}${h.error ? ` · ${h.error}` : ''}`
 })
 const env = computed(() => rec.value.env)

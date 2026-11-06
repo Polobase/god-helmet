@@ -5,13 +5,14 @@
 // view while the list beside it scrolls.
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
 import BrainScene from '../BrainScene.vue'
-import { loadBrain, exposure, liveField, underCoil, coilPoses, fmtUT, cssColor, SCALE, sessionSites } from '../../lib/brain.js'
+import { loadBrain, exposure, liveField, underCoil, coilPoses, cssColor, SCALE, sessionSites } from '../../lib/brain.js'
 import { presetById } from '../../lib/presets.js'
 import { coilsUsed } from '../../engine/spatial.js'
 import { describePattern, describeSpatial, fmtMinutes } from '../../lib/format.js'
 import { evidenceLabel } from '../../lib/evidence.js'
 import { device, maxFieldUT } from '../../ble/device.js'
 import IntensitySlider from '../IntensitySlider.vue'
+import { fmtField, fmtSetting, fmtRef, toDisplay, unitLabel } from '../../lib/units.js'
 import { program, preview, setPhase, startPreview, stopPreview } from '../../lib/programState.js'
 
 const preset = computed(() => presetById(program.id))
@@ -184,7 +185,7 @@ const measureText = computed(() => (live.value ? 'instantaneous field' : metric.
       </div>
       <div class="controls">
         <IntensitySlider v-model="program.uT" :max="10" label="Intensity at 20 mm">
-          <span v-if="maxField" class="small muted">This helmet goes up to {{ maxField.toFixed(1) }} µT; Start uses the same value.</span>
+          <span v-if="maxField" class="small muted">This helmet goes up to {{ fmtSetting(maxField) }}; Start uses the same value.</span>
         </IntensitySlider>
         <div class="live-ctl">
           <button type="button" class="btn sm" :class="{ on: !!live }" @click="toggleLive">{{ live ? '■ Stop live' : '▶ Live' }}</button>
@@ -200,7 +201,7 @@ const measureText = computed(() => (live.value ? 'instantaneous field' : metric.
         <div v-if="live && preview" class="overlay small">Live, {{ program.speed }}× slower · phase {{ preview.phase + 1 }} · {{ (preview.phaseMs / 1000).toFixed(1) }} s</div>
         <div v-if="picked" class="overlay pick-card small" role="status">
           <span class="muted">{{ picked.mesh }}</span>
-          <b class="num big">{{ fmtUT(picked.uT) }} µT</b>
+          <b class="num big">{{ fmtField(picked.uT) }}</b>
           <span class="muted">MNI {{ picked.point.join(', ') }}</span>
           <button v-if="picked.near" type="button" class="linkbtn" @click="pickNear">Nearest target: {{ picked.near.r.name }} ({{ picked.near.d.toFixed(0) }} mm)</button>
           <button type="button" class="btn ghost sm close" aria-label="Close" @click="picked = null">✕</button>
@@ -214,10 +215,10 @@ const measureText = computed(() => (live.value ? 'instantaneous field' : metric.
       </div>
       <div class="legend">
         <div class="bar-scale" :style="{ background: legendGradient }"></div>
-        <div class="ticks"><span v-for="t in TICKS" :key="t" :style="{ left: tickPos(t) }">{{ t }}</span></div>
+        <div class="ticks"><span v-for="t in TICKS" :key="t" :style="{ left: tickPos(t) }">{{ Number(toDisplay(t).toPrecision(3)) }}</span></div>
         <details class="scale small">
-          <summary>µT, log scale: {{ measureText }}; light contour lines at 0.1 and 1 µT</summary>
-          <p class="muted">For scale: the Earth's field is about 48 µT (static); the ICNIRP reference level for uniform 25–400 Hz fields is 200 µT.</p>
+          <summary>{{ unitLabel() }}, log scale: {{ measureText }}; light contour lines at {{ fmtRef(0.1) }} and {{ fmtRef(1) }}</summary>
+          <p class="muted">For scale: the Earth's field is about {{ fmtRef(48) }} (static); the ICNIRP reference level for uniform 25–400 Hz fields is {{ fmtRef(200) }}.</p>
         </details>
       </div>
       <p class="small muted">Estimated magnetic field of this program's coils on a standard brain (template MNI152, coil model). This is physics, not a map of brain activity: no study has shown that fields this weak switch on any region.</p>
@@ -230,16 +231,16 @@ const measureText = computed(() => (live.value ? 'instantaneous field' : metric.
         <div class="target-list">
           <button v-for="r in targets" :key="r.region.id" type="button" class="target" :class="{ sel: selectedRegion === r.region }" :aria-pressed="selectedRegion === r.region" @click="selectRegion(r.region, { reveal: true })">
             <span class="dot" :style="{ background: cssColor(r[metric]) }"></span>
-            <span class="t-text"><b>{{ r.region.name }}</b><span class="muted small">{{ fmtUT(r[metric]) }} µT {{ metric === 'peak' ? 'peak' : 'RMS' }}, {{ Math.round(r.region.depthMm ?? 0) }} mm deep</span></span>
+            <span class="t-text"><b>{{ r.region.name }}</b><span class="muted small">{{ fmtField(r[metric]) }} {{ metric === 'peak' ? 'peak' : 'RMS' }}, {{ Math.round(r.region.depthMm ?? 0) }} mm deep</span></span>
           </button>
         </div>
-        <p class="muted small">Estimated field at each target's centre. The cortex right under a coil gets {{ fmtUT(underMax) }} µT. Evidence for the original protocol: {{ preset.doc.evidence ? evidenceLabel(preset.doc.evidence).toLowerCase() : 'not rated' }}.</p>
+        <p class="muted small">Estimated field at each target's centre. The cortex right under a coil gets {{ fmtField(underMax) }}. Evidence for the original protocol: {{ preset.doc.evidence ? evidenceLabel(preset.doc.evidence).toLowerCase() : 'not rated' }}.</p>
       </section>
 
       <section class="card">
         <div class="list-head">
           <h3>Regions by field</h3>
-          <span class="muted small">{{ metric === 'peak' ? 'Peak' : 'RMS' }} µT at the centre</span>
+          <span class="muted small">{{ metric === 'peak' ? 'Peak' : 'RMS' }} {{ unitLabel() }} at the centre</span>
         </div>
         <p v-if="!ranked.length" class="small muted">{{ loadError || 'Computing…' }}</p>
         <ol class="regions">
@@ -250,7 +251,7 @@ const measureText = computed(() => (live.value ? 'instantaneous field' : metric.
                 <span class="muted small">{{ KIND[r.region.kind] }}<span v-if="targetIds.has(r.region.id)" class="chip tgt">target</span></span>
               </span>
               <span class="rfield">
-                <span class="num">{{ fmtUT(r[metric]) }}</span>
+                <span class="num">{{ fmtField(r[metric], false) }}</span>
                 <span class="bar"><i :style="{ width: `${(r[metric] / maxRegion) * 100}%`, background: cssColor(r[metric]) }"></i></span>
               </span>
               <span class="rdepth num muted">{{ r.region.depthMm != null ? `${Math.round(r.region.depthMm)} mm` : '–' }}</span>
@@ -283,7 +284,7 @@ const measureText = computed(() => (live.value ? 'instantaneous field' : metric.
               <tr v-for="(c, ch) in coils" :key="ch" :class="{ off: !c || !c.weight }">
                 <td class="num">CH{{ ch + 1 }}</td>
                 <td class="num" :title="c ? siteInfo[c.site]?.function : ''">{{ c?.site ?? '–' }}</td>
-                <td class="num">{{ under[ch] ? fmtUT(under[ch].uT) + ' µT' : '–' }}</td>
+                <td class="num">{{ under[ch] ? fmtField(under[ch].uT) : '–' }}</td>
                 <td><div class="bar"><i :style="{ width: `${(c?.weight ?? 0) * 100}%` }"></i></div></td>
               </tr>
             </tbody>

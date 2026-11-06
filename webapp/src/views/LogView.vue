@@ -3,6 +3,7 @@ import { onMounted, ref, watch } from 'vue'
 import { device, call, connect } from '../ble/device.js'
 import { fmtDate, downloadBlob } from '../lib/format.js'
 import RatingForm from '../components/RatingForm.vue'
+import { fmtSetting, unitLabel } from '../lib/units.js'
 
 const items = ref([])
 const total = ref(0)
@@ -89,16 +90,16 @@ async function exportAll() {
     <section v-if="items.length" class="card">
       <div class="table-wrap">
         <table>
-          <thead><tr><th>When</th><th>Program</th><th>Condition</th><th class="keep-case" title="Field at 20 mm">µT</th><th title="Minutes">Min</th><th class="keep-case" title="Geomagnetic Kp index">Kp</th><th>Rating</th></tr></thead>
+          <thead><tr><th>When</th><th>Program</th><th>Condition</th><th class="keep-case" title="Field at 20 mm">{{ unitLabel() }}</th><th title="Minutes">Min</th><th class="keep-case" title="Geomagnetic Kp index">Kp</th><th>Rating</th></tr></thead>
           <tbody>
             <template v-for="e in items" :key="e.id">
               <tr>
                 <td class="when">{{ fmtDate(e.start) }}</td>
                 <td>{{ e.presetName }}<span v-if="!e.completed" class="muted small"> ({{ e.reason || 'running' }})</span>
-                  <div class="muted small phone-only">{{ e.fieldUT.toFixed(1) }} µT · {{ Math.round(e.elapsedMs / 60000) }} min · Kp {{ e.kpValid ? e.kp.toFixed(1) : '–' }}</div>
+                  <div class="muted small phone-only">{{ fmtSetting(e.fieldUT) }} · {{ Math.round(e.elapsedMs / 60000) }} min · Kp {{ e.kpValid ? e.kp.toFixed(1) : '–' }}</div>
                   <div v-if="e.notes" class="muted small note">{{ e.notes }}</div></td>
                 <td>{{ e.blind ? '🔒 ' : '' }}{{ e.condition }}</td>
-                <td class="num">{{ e.fieldUT.toFixed(1) }}</td>
+                <td class="num">{{ fmtSetting(e.fieldUT, false) }}</td>
                 <td class="num">{{ Math.round(e.elapsedMs / 60000) }}</td>
                 <td class="num">{{ e.kpValid ? e.kp.toFixed(1) : '–' }}</td>
                 <td>

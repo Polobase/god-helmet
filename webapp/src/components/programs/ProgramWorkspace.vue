@@ -12,6 +12,7 @@ import { program, preview, groupOf, usedCoils, placedCount, subHref, stopPreview
 import { device } from '../../ble/device.js'
 import LivePanel from '../LivePanel.vue'
 import CoilGlyph from '../CoilGlyph.vue'
+import { fmtSetting, unitLabel } from '../../lib/units.js'
 import ProgramSwitcher from './ProgramSwitcher.vue'
 import ProgramOverview from './ProgramOverview.vue'
 import ProgramSources from './ProgramSources.vue'
@@ -84,7 +85,7 @@ onBeforeUnmount(() => {
             <div><dt>Length</dt><dd><b class="num">{{ minutes }}</b> min</dd></div>
             <div><dt>Coils</dt><dd><b class="num">{{ coils }}</b> of 8</dd></div>
             <div><dt>Phases</dt><dd><b class="num">{{ session.phases.length }}</b></dd></div>
-            <div><dt>Field at 20 mm</dt><dd><b class="num">{{ program.uT.toFixed(1) }}</b> µT</dd></div>
+            <div><dt>Field at 20 mm</dt><dd><b class="num">{{ fmtSetting(program.uT, false) }}</b> {{ unitLabel() }}</dd></div>
           </dl>
           <div v-if="session" class="cta">
             <button type="button" class="btn primary start" :disabled="busy" :title="busy ? 'A session is running' : ''" @click="openStart">{{ busy ? 'Session running' : 'Start…' }}</button>
@@ -116,7 +117,7 @@ onBeforeUnmount(() => {
     <template v-if="session">
       <StartPanel />
       <div class="start-bar">
-        <button type="button" class="btn primary" :disabled="busy" @click="openStart">{{ busy ? 'Session running' : `Start at ${program.uT.toFixed(1)} µT…` }}</button>
+        <button type="button" class="btn primary" :disabled="busy" @click="openStart">{{ busy ? 'Session running' : `Start at ${fmtSetting(program.uT)}…` }}</button>
       </div>
     </template>
   </div>

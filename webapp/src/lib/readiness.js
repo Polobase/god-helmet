@@ -46,7 +46,7 @@ export function readiness({ device = {}, head = null, placed = 0, used = 0, nowS
 
   if (info) {
     if (info.calibrated) rows.push({ key: 'calibrated', status: 'ok', text: 'Coils calibrated' })
-    else rows.push({ key: 'calibrated', status: 'warn', text: 'Not calibrated: µT values are estimates', action: 'calibrate' })
+    else rows.push({ key: 'calibrated', status: 'warn', text: 'Not calibrated: field values are estimates', action: 'calibrate' })
     const h = hoursSinceLast(info, nowS)
     const gap = minGapHours(info)
     if (h !== null) {

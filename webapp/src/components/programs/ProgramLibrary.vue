@@ -15,6 +15,7 @@ import LivePanel from '../LivePanel.vue'
 import SiteMap from '../SiteMap.vue'
 import SiteExplorer from '../placement/SiteExplorer.vue'
 import ProgramCard from './ProgramCard.vue'
+import { fmtRange } from '../../lib/units.js'
 
 defineProps({ missing: { type: String, default: '' } })
 
@@ -222,7 +223,7 @@ if (needRegions.value) ensureRegions()
 
     <!-- by experience: which brain region, and the program for it -->
     <section v-else class="card">
-      <p class="muted small">"Claim" = Persinger lab or Todd Murphy. Every mainstream induction of out-of-body or presence experiences used milliamp currents through electrodes on the brain, not µT fields from outside the skull. The fields reach the cortex at about 1–5 µT and deep structures at 10–20× less.</p>
+      <p class="muted small">"Claim" = Persinger lab or Todd Murphy. Every mainstream induction of out-of-body or presence experiences used milliamp currents through electrodes on the brain, not µT fields from outside the skull. The fields reach the cortex at about {{ fmtRange(1, 5) }} and deep structures at 10–20× less.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Experience</th><th>Brain region</th><th>Program</th></tr></thead>
