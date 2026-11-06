@@ -2,6 +2,8 @@
 // Live view of the running session, plus the rating prompt afterwards.
 import { computed, ref, watch } from 'vue'
 import { device, call } from '../ble/device.js'
+import IntensitySlider from './IntensitySlider.vue'
+import RatingForm from './RatingForm.vue'
 import { presetById } from '../lib/presets.js'
 import { fmtDuration } from '../lib/format.js'
 import { LAYOUTS } from '../lib/layouts.js'
@@ -14,7 +16,6 @@ const st = computed(() => device.status)
 const running = computed(() => st.value && st.value.state !== 'idle')
 const preset = computed(() => (st.value ? presetById(st.value.sessionId) : null))
 const sites = computed(() => (preset.value?.session ? sessionSites(preset.value.session) : LAYOUTS[st.value?.sessionId === 'test-rotate' ? device.testLayout : 'temporal'].channels.map((c) => c.site)))
-const maxField = computed(() => Math.min(device.info?.maxFieldUT ?? 5, device.info?.maxReachableUT ?? 5))
 const field = ref(1)
 const editingField = ref(false)
 
@@ -71,10 +72,7 @@ async function rate() {
       <div class="muted small">Session</div>
       <div class="bar"><i :style="{ width: (100 * st.programMs) / Math.max(1, st.totalMs) + '%' }"></i></div>
     </div>
-    <label v-if="!st.test" class="field">Intensity at 20 mm: <b class="num">{{ Number(field).toFixed(1) }} µT</b>
-      <input v-model="field" type="range" min="0.1" :max="maxField.toFixed(1)" step="0.1"
-        @input="editingField = true" @change="setField" />
-    </label>
+    <IntensitySlider v-if="!st.test" :model-value="Number(field)" label="Intensity at 20 mm" @update:model-value="(v) => ((field = v), (editingField = true))" @change="setField" />
     <p v-if="st.blind" class="muted small">Blind session: coil activity is hidden. The log reveals real or sham after you rate it.</p>
     <div class="row">
       <!-- On the last phase, skipping is the same as Stop, so only offer it while a next phase exists. -->
@@ -87,14 +85,7 @@ async function rate() {
   <section v-else-if="props.rate && rateFor" class="card">
     <h2>How was it?</h2>
     <p class="muted small">Rate before you look anything up. For blind sessions this reveals whether the field was real.</p>
-    <label class="field">0 = nothing … 10 = profound: <b class="num">{{ rating }}</b>
-      <input v-model="rating" type="range" min="0" max="10" step="1" />
-    </label>
-    <label class="field">What you noticed, and when<textarea v-model="notes"></textarea></label>
-    <div class="row">
-      <button class="btn primary" @click="rate">Save rating</button>
-      <button class="btn ghost" @click="rateFor = 0">Later (Log tab)</button>
-    </div>
+    <RatingForm v-model:rating="rating" v-model:notes="notes" cancel-label="Later (in the Log)" @save="rate" @cancel="rateFor = 0" />
     <p v-if="revealed" class="ok">{{ revealed }}</p>
   </section>
 </template>

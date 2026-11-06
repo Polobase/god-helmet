@@ -3,13 +3,14 @@
 // and Start. Opened from the program header; it stays open across the detour
 // to the safety page.
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { device, call, connect } from '../../ble/device.js'
+import { device, call, connect, maxFieldUT } from '../../ble/device.js'
 import { presetById } from '../../lib/presets.js'
 import { fmtMinutes } from '../../lib/format.js'
 import { headInUse } from '../../lib/head.js'
 import { readiness, hoursSinceLast, minGapHours } from '../../lib/readiness.js'
 import { program, groupOf, usedCoils, placedCount, subHref } from '../../lib/programState.js'
 import { nav, go, goSafety } from '../../lib/nav.js'
+import IntensitySlider from '../IntensitySlider.vue'
 
 const dlg = ref(null)
 const preset = computed(() => presetById(program.id))
@@ -17,7 +18,7 @@ const group = computed(() => groupOf(program.id))
 const nowS = ref(Date.now() / 1000)
 const rows = computed(() => readiness({ device, head: headInUse(), placed: placedCount(group.value), used: usedCoils(group.value).length, nowS: nowS.value }))
 
-const maxField = computed(() => Math.min(device.info?.maxFieldUT ?? 5, device.info?.maxReachableUT ?? 5))
+const maxField = computed(() => maxFieldUT())
 const field = computed({
   get: () => Math.min(program.uT, maxField.value),
   set: (v) => (program.uT = Number(v)),
@@ -99,9 +100,7 @@ const ICON = { ok: '✓', warn: '!', bad: '✕' }
         </li>
       </ul>
 
-      <label class="field">Intensity at 20 mm depth: <b class="num">{{ Number(field).toFixed(1) }} µT</b>
-        <input v-model="field" type="range" min="0.1" :max="maxField.toFixed(1)" step="0.1" />
-      </label>
+      <IntensitySlider v-model="field" />
       <p v-if="capped" class="small muted">The Brain view was set to {{ program.uT.toFixed(1) }} µT; this helmet allows up to {{ maxField.toFixed(1) }} µT.</p>
       <label class="check"><input v-model="blind" type="checkbox" /> Blind: the helmet picks real or sham at random (revealed after you rate)</label>
       <p v-if="confirmRecent" class="warn small" role="alert">Last session was {{ recentH.toFixed(0) }} h ago; {{ minGapHours(device.info) }} h between sessions is recommended. Press Start again to continue anyway.</p>

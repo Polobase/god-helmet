@@ -84,4 +84,6 @@ export async function refresh() {
 }
 
 export const connected = () => !!device.kind
+// The highest intensity (µT at 20 mm) this helmet allows: its setting, and what its coils can reach.
+export const maxFieldUT = () => Math.min(device.info?.maxFieldUT ?? 5, device.info?.maxReachableUT ?? 5)
 export const running = () => !!device.status && device.status.state !== 'idle'

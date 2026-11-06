@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { device, call, connect } from '../ble/device.js'
 import { fmtDate, downloadBlob } from '../lib/format.js'
+import RatingForm from '../components/RatingForm.vue'
 
 const items = ref([])
 const total = ref(0)
@@ -110,17 +111,7 @@ async function exportAll() {
               </tr>
               <tr v-if="rating[e.id]">
                 <td colspan="7">
-                  <div class="stack">
-                    <label class="field"><span>Rating: <b class="num">{{ rating[e.id].value }}</b> / 10</span>
-                      <input v-model="rating[e.id].value" type="range" min="0" max="10" step="1" />
-                      <span class="row ends"><span>0 = nothing</span><span>10 = profound</span></span></label>
-                    <label class="field">Notes<textarea v-model="rating[e.id].notes"></textarea></label>
-                    <p v-if="rating[e.id].err" class="small bad">{{ rating[e.id].err }}</p>
-                    <div class="row">
-                      <button class="btn primary sm" @click="rate(e)">Save rating</button>
-                      <button class="btn ghost sm" @click="delete rating[e.id]">Cancel</button>
-                    </div>
-                  </div>
+                  <RatingForm v-model:rating="rating[e.id].value" v-model:notes="rating[e.id].notes" :error="rating[e.id].err" @save="rate(e)" @cancel="delete rating[e.id]" />
                 </td>
               </tr>
             </template>
@@ -136,7 +127,6 @@ async function exportAll() {
 </template>
 
 <style scoped>
-.ends { justify-content: space-between; }
 .note { max-width: 48ch; }
 .phone-only { display: none; }
 @media (min-width: 601px) { .when { white-space: nowrap; } }

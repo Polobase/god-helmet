@@ -8,7 +8,8 @@ import { listSets, usableSets } from '../../lib/pool.js'
 import { stepDurationMs, plannedMs, armRange } from '../../lib/runs.js'
 import { fmtMinutes } from '../../lib/format.js'
 import { CATEGORY_LABELS } from '../../lib/guides.js'
-import EvidenceChip, { EVIDENCE } from './EvidenceChip.vue'
+import EvidenceChip from './EvidenceChip.vue'
+import { evidenceInfo } from '../../lib/evidence.js'
 import ReqIcons from './ReqIcons.vue'
 
 const props = defineProps({ entry: { type: Object, required: true } })
@@ -73,7 +74,7 @@ const minutesOf = (s) => {
   const ms = stepDurationMs(s)
   return ms === null ? 'open' : ms < 60000 ? `${Math.round(ms / 1000)} s` : `${Math.round((ms / 60000) * 10) / 10} min`
 }
-const ev = computed(() => EVIDENCE[doc.value.evidence] ?? { text: '' })
+const ev = computed(() => ({ text: evidenceInfo(doc.value.evidence) }))
 </script>
 
 <template>

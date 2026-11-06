@@ -10,7 +10,8 @@ import { presetById } from '../../lib/presets.js'
 import { coilsUsed } from '../../engine/spatial.js'
 import { describePattern, describeSpatial, fmtMinutes } from '../../lib/format.js'
 import { evidenceLabel } from '../../lib/evidence.js'
-import { device } from '../../ble/device.js'
+import { device, maxFieldUT } from '../../ble/device.js'
+import IntensitySlider from '../IntensitySlider.vue'
 import { program, preview, setPhase, startPreview, stopPreview } from '../../lib/programState.js'
 
 const preset = computed(() => presetById(program.id))
@@ -35,7 +36,7 @@ const showSites = ref(false)
 const view = ref('iso')
 const scene = ref(null)
 const uT = computed(() => Number(program.uT))
-const maxField = computed(() => (device.info ? Math.min(device.info.maxFieldUT ?? 5, device.info.maxReachableUT ?? 5) : null))
+const maxField = computed(() => (device.info ? maxFieldUT() : null))
 
 // ---- data
 const brain = shallowRef(null)
@@ -182,10 +183,9 @@ const measureText = computed(() => (live.value ? 'instantaneous field' : metric.
         <button v-for="(ph, i) in session.phases" :key="i" type="button" class="chip pick" :class="{ on: phaseSel === i }" :aria-pressed="phaseSel === i" @click="pickPhase(i)">{{ i + 1 }}. {{ ph.name }}, {{ fmtMinutes(ph.durationMs) }}</button>
       </div>
       <div class="controls">
-        <label class="field">Intensity at 20 mm: <b class="num">{{ uT.toFixed(1) }} µT</b>
-          <input v-model="program.uT" type="range" min="0.1" max="10" step="0.1" />
+        <IntensitySlider v-model="program.uT" :max="10" label="Intensity at 20 mm">
           <span v-if="maxField" class="small muted">This helmet goes up to {{ maxField.toFixed(1) }} µT; Start uses the same value.</span>
-        </label>
+        </IntensitySlider>
         <div class="live-ctl">
           <button type="button" class="btn sm" :class="{ on: !!live }" @click="toggleLive">{{ live ? '■ Stop live' : '▶ Live' }}</button>
           <select v-model.number="program.speed" aria-label="Live speed">

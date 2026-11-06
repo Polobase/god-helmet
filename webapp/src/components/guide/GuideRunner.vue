@@ -4,7 +4,8 @@
 import { reactive, watch } from 'vue'
 import { AudioEngine } from '../../audio/engine.js'
 import { MODES } from '../../audio/schedule.js'
-import { device, call } from '../../ble/device.js'
+import { device, call, maxFieldUT } from '../../ble/device.js'
+import IntensitySlider from '../IntensitySlider.vue'
 import { presetById } from '../../lib/presets.js'
 import { guideHash } from '../../lib/guides.js'
 import { guideState } from '../../lib/guideState.js'
@@ -488,7 +489,7 @@ const audioModel = computed({
   set: (v) => setAudio(Object.fromEntries(Object.entries(v).filter(([k, x]) => live.audio[k] !== x))),
 })
 // Field strength of the arm (as in the Programs tab: the preset's value, capped by the helmet).
-const maxField = computed(() => Math.min(device.info?.maxFieldUT ?? 5, device.info?.maxReachableUT ?? 5))
+const maxField = computed(() => maxFieldUT())
 const fieldPick = ref(null)
 const fieldUT = computed({
   get: () => Math.min(maxField.value, fieldPick.value ?? armPreset.value?.doc.uT ?? device.info?.defaultFieldUT ?? 1),
@@ -549,9 +550,7 @@ function done() {
         </template>
         <template v-else-if="device.kind">
           <label class="check"><input v-model="useHelmet" type="checkbox" :disabled="helmetMode === 'required'" /> Run “{{ armPreset.doc.name }}” during: {{ armSteps }}</label>
-          <label v-if="useHelmet" class="field"><span>Intensity at 20 mm depth: <b class="num">{{ Number(fieldUT).toFixed(1) }} µT</b></span>
-            <input v-model="fieldUT" type="range" min="0.1" :max="maxField.toFixed(1)" step="0.1" />
-          </label>
+          <IntensitySlider v-if="useHelmet" v-model="fieldUT" />
           <p class="small muted">{{ guide.helmetArm.blind ? 'Blind: the helmet’s hardware RNG picks real or sham. It is revealed after your final rating.' : 'Not blind: the field is real.' }}</p>
         </template>
         <template v-else>

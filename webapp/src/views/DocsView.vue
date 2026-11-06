@@ -5,6 +5,7 @@ import { computed, ref, watch, nextTick } from 'vue'
 import { marked } from 'marked'
 import { nav, go } from '../lib/nav.js'
 import { isAppHash } from '../lib/routes.js'
+import { EVIDENCE, evidenceLabel } from '../lib/evidence.js'
 import { presets, CATEGORY_LABELS, sourceEntries } from '../lib/presets.js'
 import { LAYOUTS } from '../lib/layouts.js'
 import { describePattern, describeSpatial, fmtMinutes } from '../lib/format.js'
@@ -38,7 +39,7 @@ const current = computed(() => docs.value.find((d) => d.slug === (nav.arg || 're
 // ---- program reference generated from the presets
 function programsMarkdown() {
   const out = ['# Program reference', '',
-    'Generated from `presets/*.json`, the same files the helmet runs. Evidence levels: **established** (independent replication), **single-lab**, **claim** (author/vendor statement), **anecdote**, **unverified**. Field values are peak µT at 20 mm depth (calibrate your coils).', '']
+    `Generated from \`presets/*.json\`, the same files the helmet runs. Evidence levels: ${Object.values(EVIDENCE).map((e) => `**${e.label}** (${e.info.charAt(0).toLowerCase()}${e.info.slice(1)})`).join(', ')}. Field values are peak µT at 20 mm depth (calibrate your coils).`, '']
   let lastCat = ''
   for (const p of presets) {
     if (!p.session) continue
@@ -50,7 +51,7 @@ function programsMarkdown() {
       lastCat = cat
     }
     out.push(`### ${d.name}`, '')
-    out.push(`\`${d.id}\` · ${fmtMinutes(s.totalMs)} · ${d.uT ?? 1} µT · layout: ${s.layout === 'custom' ? 'custom' : LAYOUTS[s.layout].title}${d.evidence ? ` · evidence: **${d.evidence}**` : ''}${d.origin ? ` · ${d.origin}` : ''}`, '')
+    out.push(`\`${d.id}\` · ${fmtMinutes(s.totalMs)} · ${d.uT ?? 1} µT · layout: ${s.layout === 'custom' ? 'custom' : LAYOUTS[s.layout].title}${d.evidence ? ` · evidence: **${evidenceLabel(d.evidence)}**` : ''}${d.origin ? ` · ${d.origin}` : ''}`, '')
     if (d.summary) out.push(d.summary, '')
     if (d.setting) out.push(`**Setting:** ${d.setting}`, '')
     if (d.schedule) out.push(`**Schedule:** ${d.schedule}`, '')
