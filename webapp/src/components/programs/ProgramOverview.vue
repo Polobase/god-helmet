@@ -59,7 +59,7 @@ const targetName = (id) => id.replace(/-/g, ' ').replace(/\b(tpj|dlpfc|vmpfc|stg
           <div class="row">
             <button v-if="!preview" type="button" class="btn sm" @click="startPreview()">▶ Preview coil activity ({{ program.speed }}× slower)</button>
             <button v-else type="button" class="btn sm" @click="stopPreview">■ Stop preview</button>
-            <a class="btn ghost sm" :href="subHref('placement')">Place the coils →</a>
+            <a class="btn ghost sm" :href="subHref('placement')">Place the coils</a>
           </div>
         </div>
       </div>

@@ -96,7 +96,7 @@ const ICON = { ok: '✓', warn: '!', bad: '✕' }
             <button v-if="device.serial" type="button" class="btn sm" :disabled="device.connecting" @click="connect('usb')">USB</button>
             <button type="button" class="btn ghost sm" @click="connect('demo')">Demo</button>
           </span>
-          <button v-else-if="r.action" type="button" class="linkbtn small act" @click="act(r.action)">{{ { safety: 'Read the safety page', measure: 'Measure', place: 'Place the coils', calibrate: 'Calibrate' }[r.action] }} →</button>
+          <button v-else-if="r.action" type="button" class="linkbtn small act" @click="act(r.action)">{{ { safety: 'Read the safety page', measure: 'Measure', place: 'Place the coils', calibrate: 'Calibrate' }[r.action] }}</button>
         </li>
       </ul>
 

@@ -160,8 +160,9 @@ function exitRunner() {
 .between { justify-content: space-between; }
 .filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .filters .chip { cursor: pointer; padding: 6px 12px; font-size: 13px; background: transparent; }
-.filters .chip.on { background: var(--accent); }
-.filters .chip.toggle.on { background: transparent; border-color: var(--accent); color: var(--accent); }
+.filters .chip:hover { border-color: color-mix(in srgb, var(--text) 35%, var(--line)); color: var(--text); }
+.filters .chip.on { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }
+.filters .chip.toggle.on { background: transparent; border-color: var(--accent); color: var(--text); }
 .group { display: grid; gap: 8px; }
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
 .gcard { display: grid; grid-template-rows: 1fr auto; align-items: start; gap: 8px; padding: 14px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); color: var(--text); text-decoration: none; min-width: 0; }

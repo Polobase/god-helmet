@@ -1,6 +1,6 @@
 # Coil placement
 
-This page explains where the eight coils go, how to find each site on a real head, what lies underneath, and how much field reaches each target. The **Placement** tab turns this into a set-up checklist: choose a program, see its coils on a head map from above and from each side, and follow tape-measure directions in centimetres for your own head. The **Brain** tab shows the estimated field of any program on a standard brain ([BRAIN_VIEW.md](BRAIN_VIEW.md)).
+This page explains where the eight coils go, how to find each site on a real head, what lies underneath, and how much field reaches each target. In the app, each program's **Placement** tab turns this into a set-up checklist: its coils on a head map from above and from each side, with tape-measure directions in centimetres for your own head. Its **Brain** tab shows the estimated field on a standard brain ([BRAIN_VIEW.md](BRAIN_VIEW.md)).
 
 Placement decides where the field goes. It does not show that the field does anything there.
 - A double-blind, sham-controlled test of God Helmet-type fields (N = 89) found no field effect; suggestibility predicted the reports ([Granqvist 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/)).
