@@ -207,9 +207,12 @@ export function openDemo({ onStatus }) {
       if (!mA || Math.abs(mA) > 4.6) throw new Error('mA must be non-zero, |mA| <= 4.6')
       const spatial = { ...spatialDefaults() }
       if (mode === 'dc') Object.assign(spatial, { mode: 'single', channel })
+      else if (mode === 'dcall') Object.assign(spatial, { mode: 'bilateral' })
       else Object.assign(spatial, { mode: 'rotate', ccw: dir !== 'cw', dwellStartMs: dwellMs, dwellEndMs: dwellMs })
-      const session = { id: `test-${mode}`, name: mode === 'dc' ? `DC test CH${channel + 1} ${mA} mA` : `Slow rotation test ${mA} mA`, layout,
-        fadeInMs: 500, fadeOutMs: 500, phases: [{ name: mode === 'dc' ? `DC CH${channel + 1}` : 'Rotate', durationMs: seconds * 1000, level: 1, crossfade: false, pattern: patternDefaults('dc'), spatial }], totalMs: seconds * 1000 }
+      const NAME = { dc: [`DC test CH${channel + 1} ${mA} mA`, `DC CH${channel + 1}`], dcall: [`DC test all 8 outputs ${mA} mA`, 'DC all'] }
+      const [name, phaseName] = NAME[mode] ?? [`Slow rotation test ${mA} mA`, 'Rotate']
+      const session = { id: mode === 'dcall' ? 'test-dc-all' : `test-${mode}`, name, layout,
+        fadeInMs: 500, fadeOutMs: 500, phases: [{ name: phaseName, durationMs: seconds * 1000, level: 1, crossfade: false, pattern: patternDefaults('dc'), spatial }], totalMs: seconds * 1000 }
       begin(session, { fieldUT: 0, blind: false, sham: false, testMA: mA, presetId: session.id })
       return { logId: 0 }
     },

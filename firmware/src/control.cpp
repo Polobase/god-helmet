@@ -146,6 +146,13 @@ Result startTest(const TestRequest& t) {
     std::snprintf(s->id, sizeof s->id, "test-dc");
     std::snprintf(s->name, sizeof s->name, "DC test CH%d %.2f mA", t.channel + 1, t.mA);
     std::snprintf(ph.name, sizeof ph.name, "DC CH%d", t.channel + 1);
+  } else if (t.mode == "dcall") {
+    // All eight outputs at the same current and sign: the module's full load
+    // (supply current, both ±12 V rails, every resistor at once).
+    ph.spatial.mode = engine::SpatialMode::Bilateral;
+    std::snprintf(s->id, sizeof s->id, "test-dc-all");
+    std::snprintf(s->name, sizeof s->name, "DC test all 8 outputs %.2f mA", t.mA);
+    std::snprintf(ph.name, sizeof ph.name, "DC all");
   } else if (t.mode == "rotate") {
     ph.spatial.mode = engine::SpatialMode::Rotate;
     ph.spatial.ccw = t.ccw;
@@ -160,7 +167,7 @@ Result startTest(const TestRequest& t) {
     if (!engine::ledTestSession(*s, t.mode == "led" ? t.channel : -1, t.blinkHz, t.seconds, &err))
       return fail(err.c_str());
   } else {
-    return fail("mode must be dc, rotate, led or leds");
+    return fail("mode must be dc, dcall, rotate, led or leds");
   }
   const String id = s->id;
   return startSession(s.release(), 0.0f, false, false, t.mA, id);

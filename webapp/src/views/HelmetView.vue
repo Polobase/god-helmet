@@ -4,6 +4,7 @@
 import { reactive } from 'vue'
 const cal = reactive({ ch: 0, mA: 2, sec: 30, measured: '', last: null })  // last = { ch, mA } of the last DC test
 const rot = reactive({ layout: 'temporal', dir: 'ccw', dwellMs: 1000, mA: 2 })
+const load = reactive({ mA: 4.5, sec: 60 })  // full-load test: all 8 outputs at once
 </script>
 
 <script setup>
@@ -51,6 +52,8 @@ const dcTest = (sign) => run(async () => {
   await call('test', { mode: 'dc', channel: ch, mA: sign * mA, seconds: Number(cal.sec) })
   cal.last = { ch, mA }
 })
+// All eight outputs at the same current: the module's full load (supply current, ±12 V rails).
+const loadTest = (sign) => run(() => call('test', { mode: 'dcall', mA: sign * Math.abs(Number(load.mA)), seconds: Number(load.sec) }))
 const rotTest = () => run(() => {
   device.testLayout = rot.layout
   return call('test', { mode: 'rotate', ...rot, mA: Number(rot.mA), dwellMs: Number(rot.dwellMs), seconds: 30 })
@@ -169,6 +172,22 @@ const setKp = () => run(async () => {
           <span><b>{{ test.sessionName }}</b>, {{ fmtDuration(test.totalMs - test.programMs) }} left. The session bar at the top shows which coil is on.</span>
           <button class="btn sm ghost" :disabled="test.state === 'stopping'" @click="stopTest">Stop test</button>
         </p>
+        <div class="load">
+          <h3>Full load: all 8 outputs at once</h3>
+          <p class="small muted">Every output at the same DC current, for measuring the module's supply current and checking both ±12 V rails. Each output carries the current through its resistor ({{ (Number(load.mA) * (s.seriesOhm + s.coilOhm) / 1000).toFixed(1) }} V at {{ load.mA }} mA with {{ s.seriesOhm }} Ω + {{ s.coilOhm }} Ω). Not with the helmet on.</p>
+          <div class="grid2">
+            <label class="field">Current per output (mA, max 4.6)<input v-model="load.mA" type="number" step="0.1" min="0.1" max="4.6" /></label>
+            <label class="field">Seconds<input v-model="load.sec" type="number" min="5" max="120" /></label>
+          </div>
+          <div class="row">
+            <button class="btn" @click="loadTest(1)">All 8 positive</button>
+            <button class="btn ghost" @click="loadTest(-1)">All 8 negative</button>
+          </div>
+          <p v-if="test?.sessionId === 'test-dc-all'" class="row small">
+            <span><b>{{ test.sessionName }}</b>, {{ fmtDuration(test.totalMs - test.programMs) }} left. Measure now.</span>
+            <button class="btn sm ghost" :disabled="test.state === 'stopping'" @click="stopTest">Stop test</button>
+          </p>
+        </div>
       </section>
 
       <section class="card">
@@ -232,4 +251,5 @@ const setKp = () => run(async () => {
   .status-row { grid-template-columns: 22px minmax(0, 1fr); }
   .status-row .acts { grid-column: 2; justify-content: flex-start; }
 }
+.load { display: grid; gap: 10px; border-top: 1px solid var(--line); padding-top: 14px; }
 </style>
