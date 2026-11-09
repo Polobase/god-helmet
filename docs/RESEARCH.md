@@ -10,6 +10,7 @@ Updated 27 October 2026.
 
 Related documents:
 - [HISTORY.md](HISTORY.md): people, institutions, and the military and intelligence background.
+- [Sensed presence](EFFECT_SENSED_PRESENCE.md), [Out-of-body experiences](EFFECT_OUT_OF_BODY.md) and [Remote viewing](EFFECT_REMOTE_VIEWING.md): one article per effect, with videos and reading lists.
 - [SIGNALS.md](SIGNALS.md): the published signal definitions and how the app approximates them.
 - [PLACEMENT.md](PLACEMENT.md): coil layouts and 10-20 sites.
 - [BRAIN_VIEW.md](BRAIN_VIEW.md): how the field map in the **Brain** tab is computed.

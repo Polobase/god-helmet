@@ -55,6 +55,7 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
 |---|---|
 | [docs/RESEARCH.md](docs/RESEARCH.md) | The evidence review: Persinger lab, independent tests, Murphy's claims, mainstream low-field science, psi evidence, **states → brain regions → helmet protocols**, lecture notes |
 | [docs/HISTORY.md](docs/HISTORY.md) | Military, intelligence and health-agency history: ELF research, remote-viewing programmes, Gateway, the replication controversy, WHO/IARC/ICNIRP |
+| [docs/EFFECT_SENSED_PRESENCE.md](docs/EFFECT_SENSED_PRESENCE.md), [docs/EFFECT_OUT_OF_BODY.md](docs/EFFECT_OUT_OF_BODY.md), [docs/EFFECT_REMOTE_VIEWING.md](docs/EFFECT_REMOTE_VIEWING.md) | Articles on the three most reported effects: what people report, the lab record and independent tests, the science without a helmet, checked YouTube videos, reading lists and how to test each with this helmet |
 | [docs/SIGNALS.md](docs/SIGNALS.md) | What the coils play: coil physics and ICNIRP compliance, the Persinger-lab signals rebuilt from primary sources, Murphy's signal families, clinical timings |
 | [docs/PRESET_FORMAT.md](docs/PRESET_FORMAT.md) | The program file format, every signal and coil mode, the pulse-table generators, the preset checker |
 | [docs/BRAIN_VIEW.md](docs/BRAIN_VIEW.md) | How the brain view's field map is computed, its accuracy, data and licences |

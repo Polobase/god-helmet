@@ -20,7 +20,7 @@ const files = {
 const images = import.meta.glob('../../../docs/*.svg', { eager: true, query: '?url', import: 'default' })
 
 // Reading order; files not listed here appear at the end.
-const ORDER = ['readme', 'research', 'history', 'signals', 'programs', 'preset_format', 'brain_view', 'placement', 'guides',
+const ORDER = ['readme', 'research', 'history', 'effect_sensed_presence', 'effect_out_of_body', 'effect_remote_viewing', 'signals', 'programs', 'preset_format', 'brain_view', 'placement', 'guides',
   'questionnaires', 'experiments', 'wiring', 'standalone', 'calibration', 'safety', 'ble_protocol']
 
 const slugOf = (path) => path.split('/').pop().replace(/\.md$/i, '').toLowerCase()
