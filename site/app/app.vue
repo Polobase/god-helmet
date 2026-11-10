@@ -2,7 +2,7 @@
 const route = useRoute()
 const siteUrl = String(useRuntimeConfig().public.siteUrl ?? '').replace(/\/$/, '')
 useHead({
-  titleTemplate: (title) => (title ? `${title} · God Helmet` : 'God Helmet: a weak-field helmet you can build, and test blind'),
+  titleTemplate: (title) => (title ? `${title} · God Helmet` : 'God Helmet: don’t believe it, don’t dismiss it, test it blind'),
   link: () => (siteUrl && !route.path.startsWith('/app') ? [{ rel: 'canonical', href: siteUrl + (route.path === '/' ? '/' : route.path.replace(/\/$/, '')) }] : []),
 })
 useSeoMeta({ ogSiteName: 'God Helmet', twitterCard: 'summary_large_image', ogImage: `${siteUrl}/og.png` })

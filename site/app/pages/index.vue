@@ -10,9 +10,42 @@ const background = computed(() => (articles.value ?? []).filter((a) => a.group !
 const { data: lib } = await useFetch<{ programs: number, guides: number, names: string[] }>('/library.json')
 
 useSeoMeta({
-  description: 'An open, DIY recreation of the Persinger and Koren God Helmet: eight weak-field coils, an ESP32, programs rebuilt from the literature, and blinded sham sessions to test what they do.',
-  ogTitle: 'God Helmet: a weak-field helmet you can build, and test blind',
+  description: 'What the God Helmet was said to do, from a sensed presence to telepathy and remote viewing, the evidence for and against, and an app to test the claims yourself: targets sealed in advance, blind real-or-sham sessions, and a demo that needs no hardware.',
+  ogTitle: 'God Helmet: don’t believe it, don’t dismiss it, test it blind',
 })
+
+// Tests anyone can run today in the demo, without a helmet.
+const tests: { scene: SceneId, title: string, text: string, needs: string, to: string }[] = [
+  {
+    scene: 'micro-pk',
+    title: 'Mind over random numbers',
+    text: 'Aim a random generator high, then low, in blocks of a thousand bits. A control block comes first, and the high and low blocks are compared, so a biased generator cannot fake a result.',
+    needs: 'Alone, about 25 minutes, nothing to prepare',
+    to: '/app/guides/rng-pk',
+  },
+  {
+    scene: 'remote-viewing',
+    title: 'A picture sealed in advance',
+    text: 'The app picks a picture from your own pool and seals the choice before you start. You describe and sketch it, lock your answer, rank the pictures blind, and only then see the target.',
+    needs: 'Alone, about 40 minutes; add a few sets of pictures first',
+    to: '/app/guides/photo-target-trial',
+  },
+  {
+    scene: 'ganzfeld',
+    title: 'The ganzfeld',
+    text: 'The classic psi test: eyes covered, steady noise in the headphones, half an hour of saying what comes to mind, then a blind ranking of the pictures. Questions on belief and mood before and after.',
+    needs: 'Alone, about an hour, headphones; add pictures first',
+    to: '/app/guides/psi-trial-flow',
+  },
+]
+
+// What turns a session into a test. A sequence: the order matters.
+const rules: { title: string, text: string }[] = [
+  { title: 'Decide first', text: 'How many trials, and what counts as a hit. Write it down before the first one.' },
+  { title: 'Let the app hide the answer', text: 'The target is chosen and sealed before you start, and the seal can be checked afterwards.' },
+  { title: 'Answer, then look', text: 'Lock your response or rate the session before anything is revealed.' },
+  { title: 'Compare with chance', text: 'One hit proves nothing. The app shows how often chance alone would do as well, and keeps the misses too.' },
+]
 
 // The method behind every article: what the record says in a sentence or two,
 // and where the site goes into it.
@@ -26,8 +59,6 @@ const claims: { scene: SceneId, kind: string, title: string, text: string, to: s
     more: 'How to run a blinded series',
   },
 ]
-
-const EXPECT = 'The fields are about 1–8 µT at the cortex, about a million times weaker than TMS, and the induced electric field is microvolts to millivolts per metre. The best double-blind test (Granqvist 2005, N = 89) found no effect of the field; suggestibility predicted the experiences.'
 
 const verified = ['All five firmware targets build', 'Host unit tests pass', 'The JavaScript engine reproduces the C++ engine’s output for every program', 'Protocol, blind reveal and trial commitment logic are tested against the demo helmet']
 const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer function', 'SPI and LDAC timing', 'The coils’ real µT per mA']
@@ -62,21 +93,40 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
       <HomeMarquee v-if="lib?.names.length" :names="lib.names" class="mt-12" />
     </section>
 
-    <!-- Honest expectations: said early, in the project's own words. -->
-    <UContainer as="section" class="py-24 lg:py-40" aria-labelledby="expect">
-      <h2 id="expect" class="font-sans text-base font-semibold tracking-normal text-primary [font-stretch:100%]">Honest expectations</h2>
-      <HomeScrubText :text="EXPECT" class="mt-6 max-w-[26ch] font-display text-[clamp(1.9rem,4.6vw,4rem)] font-[620] leading-[1.08] text-highlighted sm:max-w-[30ch] lg:max-w-[34ch]" />
-      <div v-reveal class="mt-10 grid gap-6 border-t border-(--hairline) pt-8 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)]">
-        <p class="text-lg text-toned measure">That is why the blinding is built into the helmet and not left to the person wearing it: so that what you find out is about the field, and not about what you hoped for.</p>
-        <p class="lg:justify-self-end"><UButton to="/articles/research" size="lg" trailing-icon="i-lucide-arrow-right">Read the evidence review</UButton></p>
-      </div>
-    </UContainer>
+    <!-- An invitation: tests that need no hardware, and what makes them count. -->
+    <section id="test" class="scroll-mt-20 border-b border-(--hairline)" aria-labelledby="test-now">
+      <UContainer class="py-24 lg:py-36">
+        <div class="max-w-3xl">
+          <h2 id="test-now" class="text-4xl sm:text-5xl">Test a claim yourself</h2>
+          <p class="mt-5 text-lg text-toned measure">Three tests you can run in the demo today, without any hardware. Whether you expect a hit or are sure there is nothing to find, the result is the same kind of number, and it is yours.</p>
+        </div>
+        <div v-reveal class="mt-10 grid gap-4 lg:grid-cols-3" data-test="tests">
+          <NuxtLink v-for="t in tests" :key="t.to" v-spotlight data-reveal-item :to="t.to" class="panel group flex flex-col gap-4 p-7 sm:p-8">
+            <ArtScene :name="t.scene" class="mx-auto mb-1 max-w-88 text-highlighted" />
+            <h3 class="text-[1.9rem] transition-colors group-hover:text-primary">{{ t.title }}</h3>
+            <p class="text-toned">{{ t.text }}</p>
+            <p class="mt-auto pt-2 text-sm text-muted">{{ t.needs }}</p>
+            <p class="flex items-center gap-1.5 text-sm font-semibold text-primary">Start this test<UIcon name="i-lucide-arrow-right" class="size-4 transition-transform group-hover:translate-x-0.5" /></p>
+          </NuxtLink>
+        </div>
+        <p class="mt-5 text-toned">Or start with the <NuxtLink to="/app/guides/forced-choice-trainer" class="text-primary underline underline-offset-4">ten-choice trainer</NuxtLink>: 25 guesses with feedback after each one, in under 20 minutes. With a helmet, two people can run the telepathy test, and the same app runs real against sham.</p>
+
+        <h3 class="mt-16 text-3xl">What makes it a test</h3>
+        <ol class="mt-6 grid gap-x-8 gap-y-6 border-t border-(--hairline) pt-6 sm:grid-cols-2 lg:grid-cols-4">
+          <li v-for="(r, i) in rules" :key="r.title">
+            <p class="num text-sm text-muted">{{ i + 1 }}</p>
+            <h4 class="mt-1 font-sans text-lg font-semibold text-highlighted">{{ r.title }}</h4>
+            <p class="mt-2 text-toned">{{ r.text }}</p>
+          </li>
+        </ol>
+      </UContainer>
+    </section>
 
     <!-- What you can do with it: each tile runs the real thing, small. -->
-    <UContainer as="section" class="pb-24 lg:pb-36" aria-labelledby="uses">
+    <UContainer as="section" class="py-24 lg:py-36" aria-labelledby="uses">
       <div class="max-w-3xl">
-        <h2 id="uses" class="text-4xl sm:text-5xl">What you can do with it</h2>
-        <p class="mt-5 text-lg text-toned measure">Everything here runs in the demo too, with the helmet’s engine in your browser and nothing switched on.</p>
+        <h2 id="uses" class="text-4xl sm:text-5xl">The tools for a fair test</h2>
+        <p class="mt-5 text-lg text-toned measure">Everything here also runs in the demo, with the helmet’s engine in your browser and nothing switched on.</p>
       </div>
 
       <div v-reveal class="mt-10 grid gap-4 lg:grid-cols-12">
@@ -135,8 +185,8 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
       <UContainer class="py-20 lg:py-32">
         <div class="flex flex-wrap items-end justify-between gap-6">
           <div class="max-w-2xl">
-            <h2 id="read" class="text-4xl sm:text-5xl">The effects people ask about</h2>
-            <p class="mt-5 text-lg text-toned measure">What is reported, what the laboratory record says, what happened when others tried, and how to test each one with this helmet.</p>
+            <h2 id="read" class="text-4xl sm:text-5xl">What is claimed</h2>
+            <p class="mt-5 text-lg text-toned measure">What people report, what the laboratory record says, what happened when others tried, and a test you can run for each one.</p>
           </div>
           <UButton to="/articles" size="lg" variant="ghost" trailing-icon="i-lucide-arrow-right">All articles</UButton>
         </div>
@@ -146,7 +196,7 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
         <!-- The claims that go further, one research article each. -->
         <div class="mt-16 max-w-2xl">
           <h3 id="claims" class="text-3xl sm:text-4xl">Six claims that go further</h3>
-          <p class="mt-4 text-lg text-toned measure">Each is one laboratory’s report, or an effect that gets smaller as the controls get tighter. Every article sets out the record, the best case for and against, and what a fair test would need.</p>
+          <p class="mt-4 text-lg text-toned measure">Each rests on one laboratory’s report, or on an effect that shrinks as the controls get tighter. Every article gives the best case for and against, and ends with a test you can run.</p>
         </div>
         <div v-reveal class="mt-8 grid gap-4 lg:grid-cols-3" data-test="claim-articles">
           <ArticleCard v-for="a in claimed" :key="a.path" data-reveal-item :article="a" large />
@@ -182,9 +232,9 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
     <UContainer as="section" class="py-20 lg:py-28" aria-labelledby="build">
       <div class="max-w-3xl">
         <h2 id="build" class="text-4xl sm:text-5xl">The hardware comes later</h2>
-        <p class="mt-5 text-lg text-toned measure">The control box and the headband are still being tested. The schematic, the parts list and the build guide will be published here once a complete helmet has been built and measured. Until then the app, every program and the blind tests can be tried in Demo mode, without any hardware.</p>
+        <p class="mt-5 text-lg text-toned measure">The control box and the headband are still being tested. The schematic, the parts list and the build guide will be published here once a complete helmet has been built and measured. Until then the trials, the guides and the random-number test all run in the demo, without any hardware.</p>
         <div class="mt-7 flex flex-wrap gap-2">
-          <UButton to="/app/programs">Open the app in Demo mode</UButton>
+          <UButton to="#test">Test a claim</UButton>
           <UButton to="/docs/safety" variant="ghost">Read the safety page</UButton>
         </div>
       </div>
@@ -225,9 +275,9 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
     <section class="closing" aria-labelledby="closing">
       <UContainer class="relative py-28 text-center lg:py-44">
         <h2 id="closing" v-reveal class="mx-auto max-w-[12ch] text-[clamp(3rem,9vw,8rem)] font-[660] leading-[0.92] tracking-[-0.04em] [font-stretch:78%]">Find out for yourself.</h2>
-        <p class="mx-auto mt-8 max-w-xl text-lg text-toned">Open the demo, pick a program, and run it blind. It takes two minutes and no hardware.</p>
+        <p class="mx-auto mt-8 max-w-xl text-lg text-toned">Pick a claim, decide what would convince you, and test it blind. Nothing to install, no hardware.</p>
         <div class="mt-9 flex flex-wrap justify-center gap-3">
-          <UButton to="/app/programs" color="primary" variant="solid" size="xl" trailing-icon="i-lucide-arrow-right" class="px-7">Try it in the demo</UButton>
+          <UButton to="/app/guides" color="primary" variant="solid" size="xl" trailing-icon="i-lucide-arrow-right" class="px-7">Choose a test</UButton>
           <UButton to="https://github.com/Polobase/god-helmet" target="_blank" size="xl" variant="ghost" class="px-5">Get the source</UButton>
         </div>
       </UContainer>

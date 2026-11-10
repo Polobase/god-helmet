@@ -68,21 +68,22 @@ onBeforeUnmount(stop)
 
     <UContainer class="relative flex min-h-[inherit] flex-col justify-center pb-[31rem] pt-16 lg:pb-36 lg:pt-20">
       <div class="max-w-[44rem]">
-        <p class="kicker"><span class="live-dot" aria-hidden="true" />Open hardware, open evidence</p>
+        <p class="kicker"><span class="live-dot" aria-hidden="true" />Open evidence, blind tests</p>
         <h1 class="headline">
-          <span class="line" style="--i: 0"><span>A God Helmet</span></span>
-          <span class="line" style="--i: 1"><span>you can build,</span></span>
-          <span class="line" style="--i: 2"><span>and test blind.</span></span>
+          <span class="line" style="--i: 0"><span>Don’t believe it.</span></span>
+          <span class="line" style="--i: 1"><span>Don’t dismiss it.</span></span>
+          <span class="line" style="--i: 2"><span>Test it blind.</span></span>
         </h1>
         <p class="lede">
-          Eight weak-field coils on a headband, an ESP32, and this app. It plays the signals Persinger’s laboratory and its imitators used,
-          and gives you sham sessions you cannot tell apart from real ones, so you can find out whether the field does anything to you.
+          Persinger’s laboratory reported a sense of presence, out-of-body experiences, even telepathy under a weak magnetic field.
+          The best independent test found that suggestibility, not the field, predicted the presence.
+          Check the claims yourself: targets sealed before you answer, sham sessions you cannot tell from real ones.
         </p>
         <div class="mt-9 flex flex-wrap items-center gap-x-4 gap-y-3">
-          <UButton to="/app/programs" color="primary" variant="solid" size="xl" trailing-icon="i-lucide-arrow-right" class="px-6">Try it in the demo</UButton>
-          <UButton to="/docs/overview" size="xl" variant="ghost" class="px-5">How to build one</UButton>
+          <UButton to="#test" color="primary" variant="solid" size="xl" trailing-icon="i-lucide-arrow-down" class="px-6">Test a claim</UButton>
+          <UButton to="/articles" size="xl" variant="ghost" class="px-5">Read the claims</UButton>
         </div>
-        <p class="mt-4 text-sm text-muted">The demo runs the helmet’s engine in your browser. No hardware, nothing to install.</p>
+        <p class="mt-4 text-sm text-muted">No hardware needed: the demo runs the helmet’s engine in your browser.</p>
       </div>
     </UContainer>
 
