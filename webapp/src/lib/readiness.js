@@ -15,11 +15,13 @@ export const minGapHours = (info) => (info?.minIntervalS > 0 ? Math.round(info.m
 const ago = (h) => (h < 48 ? `${Math.max(0, Math.round(h))} h` : `${Math.round(h / 24)} days`)
 const TRANSPORT = { ble: 'Bluetooth', usb: 'USB' }
 
-// device: { kind, name, info }; head: headInUse(); placed/used: coil counts.
+// device: { kind, name, info, link }; head: headInUse(); placed/used: coil counts.
+// (`link` other than 'connected': the helmet is known but cannot be reached now.)
 export function readiness({ device = {}, head = null, placed = 0, used = 0, nowS = Date.now() / 1000 } = {}) {
   const rows = []
   const info = device.kind ? device.info : null
   if (!device.kind) rows.push({ key: 'connect', status: 'bad', text: 'Not connected', action: 'connect' })
+  else if (device.link && device.link !== 'connected') rows.push({ key: 'connect', status: 'bad', text: `Connection to ${device.kind === 'demo' ? 'the demo helmet' : device.name || 'the helmet'} lost` })
   else if (device.kind === 'demo') rows.push({ key: 'connect', status: 'ok', text: 'Demo: no helmet, nothing is switched on' })
   else rows.push({ key: 'connect', status: 'ok', text: `Connected: ${device.name} (${TRANSPORT[device.kind] ?? device.kind})` })
   if (device.kind === 'usb') rows.push({ key: 'usb', status: 'warn', text: 'USB cable: wear the helmet only with a laptop on battery, charger unplugged' })

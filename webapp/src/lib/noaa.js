@@ -2,7 +2,8 @@
 const URL = 'https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json'
 
 export async function fetchKp() {
-  const res = await fetch(URL, { cache: 'no-store' })
+  // (Given up after 10 s: connecting to the helmet must not wait on a network that never answers.)
+  const res = await fetch(URL, { cache: 'no-store', signal: AbortSignal.timeout?.(10000) })
   if (!res.ok) throw new Error(`NOAA: HTTP ${res.status}`)
   const rows = await res.json()
   const last = rows[rows.length - 1]

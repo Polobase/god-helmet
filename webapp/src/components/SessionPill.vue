@@ -18,7 +18,7 @@ const running = computed(() => !!st.value && st.value.state !== 'idle')
       <span class="name">{{ st.test ? `Test: ${st.sessionName}` : st.sessionName }}</span>
       <span class="left num">{{ st.state === 'stopping' ? 'stopping' : fmtDuration(st.totalMs - st.programMs) }}</span>
     </button>
-    <button type="button" class="btn danger sm stop" :disabled="st.state === 'stopping'" @click="call('session.stop')">Stop</button>
+    <button type="button" class="btn danger sm stop" :disabled="st.state === 'stopping' || device.link !== 'connected'" :title="device.link !== 'connected' ? 'No connection: only the STOP button on the helmet works now' : ''" @click="call('session.stop')">Stop</button>
   </div>
 </template>
 

@@ -48,6 +48,12 @@ test('warnings: USB, safety, calibration, partly measured head, recent session',
   assert.equal(r.recent.text, 'Last session 20 h ago; 72 h between sessions is recommended')
 })
 
+test('a lost connection is not "connected"', () => {
+  const r = byKey(readiness({ device: { kind: 'ble', name: 'GodHelmet-B084', link: 'lost', info: info() }, nowS: NOW }))
+  assert.deepEqual([r.connect.status, r.connect.text, r.connect.action], ['bad', 'Connection to GodHelmet-B084 lost', undefined])
+  assert.equal(byKey(readiness({ device: { kind: 'ble', name: 'GodHelmet-B084', link: 'connected', info: info() }, nowS: NOW })).connect.status, 'ok')
+})
+
 test('the demo says that nothing is switched on', () => {
   const r = byKey(readiness({ device: { kind: 'demo', name: 'Demo', info: info() }, nowS: NOW }))
   assert.match(r.connect.text, /^Demo/)

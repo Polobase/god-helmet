@@ -1,6 +1,6 @@
 <script setup>
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { device, connect, disconnect } from './ble/device.js'
+import { device, connect, disconnect, reconnect, linkNote } from './ble/device.js'
 import { nav, TABS, openTab, tabOf } from './lib/nav.js'
 import { guideState } from './lib/guideState.js'
 import ProgramsView from './views/ProgramsView.vue'
@@ -18,6 +18,9 @@ const GuidesView = defineAsyncComponent(() => import('./views/GuidesView.vue'))
 const views = { programs: ProgramsView, guides: GuidesView, trials: TrialsView, log: LogView, helmet: HelmetView, safety: SafetyView, docs: DocsView }
 const view = computed(() => views[nav.tab])
 const running = computed(() => !!device.status && device.status.state !== 'idle')
+// The link dropped: the helmet and its session stay on screen while the app reconnects (ble/device.js).
+const lost = computed(() => !!device.kind && device.link !== 'connected')
+const linkLine = computed(() => linkNote())
 
 // Theme: auto (system), dark, light, night (red).
 const THEMES = ['auto', 'dark', 'light', 'night']
@@ -100,7 +103,8 @@ onMounted(() => {
         <div class="wide-only conn">
           <template v-if="device.kind">
             <span class="chip conn-chip"><span class="conn-dot" aria-hidden="true"></span>{{ deviceLabel }}</span>
-            <button v-if="!running" type="button" class="btn ghost sm" @click="disconnect">Disconnect</button>
+            <button v-if="lost" type="button" class="btn sm" :disabled="device.link === 'reconnecting'" @click="reconnect">Reconnect</button>
+            <button v-if="!running || lost" type="button" class="btn ghost sm" @click="disconnect">Disconnect</button>
           </template>
           <template v-else>
             <button type="button" class="btn primary sm" :disabled="!device.bluetooth || device.connecting" title="Connect over Bluetooth" @click="connect('ble')">{{ device.connecting ? 'Connecting…' : 'Bluetooth' }}</button>
@@ -118,8 +122,9 @@ onMounted(() => {
           </button>
           <div v-if="menuOpen" class="menu" role="menu">
             <template v-if="device.kind">
-              <p class="small muted">{{ device.kind === 'demo' ? 'Demo: no helmet, nothing is switched on.' : `Connected to ${device.name} over ${device.kind === 'usb' ? 'USB' : 'Bluetooth'}.` }}</p>
-              <button v-if="!running" type="button" class="btn sm" role="menuitem" @click="disconnectFrom">Disconnect</button>
+              <p class="small muted">{{ lost ? 'Connection lost.' : device.kind === 'demo' ? 'Demo: no helmet, nothing is switched on.' : `Connected to ${device.name} over ${device.kind === 'usb' ? 'USB' : 'Bluetooth'}.` }}</p>
+              <button v-if="lost" type="button" class="btn sm" role="menuitem" :disabled="device.link === 'reconnecting'" @click="reconnect">Reconnect</button>
+              <button v-if="!running || lost" type="button" class="btn sm" role="menuitem" @click="disconnectFrom">Disconnect</button>
             </template>
             <template v-else>
               <button type="button" class="btn primary sm" role="menuitem" :disabled="!device.bluetooth || device.connecting" @click="connectFrom('ble')">Bluetooth</button>
@@ -150,8 +155,9 @@ onMounted(() => {
     </div>
   </header>
 
-  <div v-if="device.error || device.kind === 'usb' || (!device.bluetooth && !device.serial) || (device.kind && device.info && !device.info.safetyAccepted && !['safety', 'helmet'].includes(nav.tab))" class="notices">
+  <div v-if="device.error || linkLine || device.kind === 'usb' || (!device.bluetooth && !device.serial) || (device.kind && device.info && !device.info.safetyAccepted && !['safety', 'helmet'].includes(nav.tab))" class="notices">
     <p v-if="device.error" class="notice bad">{{ device.error }}</p>
+    <p v-if="linkLine" class="notice" :class="{ warn: linkLine.tone === 'warning' }">{{ linkLine.text }}</p>
     <p v-if="!device.bluetooth && !device.serial" class="notice">This browser can't reach the helmet: no Web Bluetooth and no USB (Web Serial). Use Chrome or Edge on a computer (Bluetooth or USB) or on Android (Bluetooth), or the free Bluefy browser on iPhone. The demo works everywhere.</p>
     <p v-if="device.kind === 'usb'" class="notice warn">Connected over USB: the cable joins the helmet to this computer. Wear the helmet only with a laptop on battery, charger unplugged, never with a desktop computer. Connect before putting it on.</p>
     <p v-if="device.kind && device.info && !device.info.safetyAccepted && !['safety', 'helmet'].includes(nav.tab)" class="notice warn">Read and accept the <a href="#safety">safety page</a> before the first session.</p>

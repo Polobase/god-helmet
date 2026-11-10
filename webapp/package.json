@@ -1,7 +1,7 @@
 {
   "name": "god-helmet-app",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "description": "Web Bluetooth / USB control app for the 8-coil weak-field helmet (ESP32 + AD5328)",
   "scripts": {

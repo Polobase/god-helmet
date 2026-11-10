@@ -76,8 +76,8 @@ async function rate() {
     <p v-if="st.blind" class="muted small">Blind session: coil activity is hidden. The log reveals real or sham after you rate it.</p>
     <div class="row">
       <!-- On the last phase, skipping is the same as Stop, so only offer it while a next phase exists. -->
-      <button v-if="st.phase + 1 < st.phaseCount" class="btn" :disabled="st.state === 'stopping'" @click="call('session.skip')">Skip to next phase</button>
-      <button class="btn danger" @click="call('session.stop')">Stop session</button>
+      <button v-if="st.phase + 1 < st.phaseCount" class="btn" :disabled="st.state === 'stopping' || device.link !== 'connected'" @click="call('session.skip')">Skip to next phase</button>
+      <button class="btn danger" :disabled="device.link !== 'connected'" :title="device.link !== 'connected' ? 'No connection: only the STOP button on the helmet works now' : ''" @click="call('session.stop')">Stop session</button>
       <span class="muted small">Stop fades the field out over 2 s{{ st.test ? '' : ' and keeps the session in the Log' }}.</span>
     </div>
   </section>
