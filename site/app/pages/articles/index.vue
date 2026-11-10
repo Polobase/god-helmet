@@ -7,7 +7,8 @@ useSeoMeta({
 })
 
 const effects = computed(() => (articles.value ?? []).filter((a) => a.group === 'Effect'))
-const background = computed(() => (articles.value ?? []).filter((a) => a.group !== 'Effect'))
+const claimed = computed(() => (articles.value ?? []).filter((a) => a.group === 'Claim'))
+const background = computed(() => (articles.value ?? []).filter((a) => a.group !== 'Effect' && a.group !== 'Claim'))
 </script>
 
 <template>
@@ -24,6 +25,14 @@ const background = computed(() => (articles.value ?? []).filter((a) => a.group !
       <h2 id="effects" class="text-2xl">The three effects people ask about</h2>
       <div class="mt-6 grid gap-4 lg:grid-cols-3">
         <ArticleCard v-for="a in effects" :key="a.path" :article="a" large />
+      </div>
+    </section>
+
+    <section class="mt-16" aria-labelledby="claims">
+      <h2 id="claims" class="text-2xl">Six claims that go further</h2>
+      <p class="mt-3 text-toned measure">Each is one laboratory’s report, or an effect that gets smaller as the controls get tighter.</p>
+      <div class="mt-6 grid gap-4 lg:grid-cols-3">
+        <ArticleCard v-for="a in claimed" :key="a.path" :article="a" large />
       </div>
     </section>
 

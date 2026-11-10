@@ -1,7 +1,7 @@
 import { readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { appPathFromHash, resolveDocHref, REPO } from '../shared/links'
-import { DOCS, pathFor, pathForOldSlug } from '../shared/content-meta'
+import { DOCS, HIDDEN_FIGURES, KNOWN_DOCS, pathFor, pathForOldSlug } from '../shared/content-meta'
 
 describe('old hash routes', () => {
   it('maps the app tabs', () => {
@@ -51,19 +51,29 @@ describe('links in the Markdown', () => {
   it('other documents become site pages', () => {
     expect(resolveDocHref('RESEARCH.md', from)).toEqual({ href: '/articles/research', external: false })
     expect(resolveDocHref('SAFETY.md', from)).toEqual({ href: '/docs/safety', external: false })
-    expect(resolveDocHref('docs/WIRING.md', 'README.md').href).toBe('/docs/wiring')
+    expect(resolveDocHref('docs/EXPERIMENTS.md', 'README.md').href).toBe('/docs/experiments')
     expect(resolveDocHref('../README.md', from).href).toBe('/docs/overview')
-    expect(resolveDocHref('../hardware/BOM.md', from).href).toBe('/docs/parts')
+  })
+
+  it('a page that is not published gets no link, wherever it is named', () => {
+    // The hardware build is held back until a complete helmet has been tested.
+    for (const [href, file] of [['docs/WIRING.md', 'README.md'], ['../hardware/BOM.md', from], ['CALIBRATION', from], ['WIRING.md#esp32-32e-28-display-board', 'docs/SAFETY.md'], ['STANDALONE.md', 'docs/SAFETY.md']] as const) {
+      expect(resolveDocHref(href, file), href).toEqual({ href: '', external: false, hidden: true })
+    }
+    for (const slug of ['wiring', 'calibration', 'standalone']) expect(pathForOldSlug(slug), slug).toBeNull()
+    const published = new Set(DOCS.map((d) => d.file))
+    for (const file of ['hardware/BOM.md', 'docs/WIRING.md', 'docs/CALIBRATION.md', 'docs/STANDALONE.md']) expect(published.has(file), file).toBe(false)
+    expect([...HIDDEN_FIGURES].sort()).toEqual(['coil-leads.svg', 'schematic.svg'])
   })
 
   it('also when the parser has already dropped ".md"', () => {
     expect(resolveDocHref('RESEARCH', from).href).toBe('/articles/research')
     expect(resolveDocHref('docs/SAFETY', 'README.md').href).toBe('/docs/safety')
-    expect(resolveDocHref('WIRING#esp32-32e-28-display-board', 'docs/STANDALONE.md').href).toBe('/docs/wiring#esp32-32e-28-display-board')
+    expect(resolveDocHref('EXPERIMENTS#telepathy-trials', 'docs/EFFECT_TELEPATHY.md').href).toBe('/docs/experiments#telepathy-trials')
   })
 
   it('keeps the heading', () => {
-    expect(resolveDocHref('WIRING.md#esp32-32e-28-display-board', 'docs/STANDALONE.md').href).toBe('/docs/wiring#esp32-32e-28-display-board')
+    expect(resolveDocHref('EXPERIMENTS.md#telepathy-trials', 'docs/EFFECT_TELEPATHY.md').href).toBe('/docs/experiments#telepathy-trials')
     expect(resolveDocHref('#requests-and-responses', 'docs/BLE_PROTOCOL.md')).toEqual({ href: '#requests-and-responses', external: false })
   })
 
@@ -92,7 +102,7 @@ describe('the list of documents', () => {
       ...readdirSync(new URL('docs/', repo)).filter((f) => f.endsWith('.md')).map((f) => `docs/${f}`),
       ...readdirSync(new URL('hardware/', repo)).filter((f) => f.endsWith('.md')).map((f) => `hardware/${f}`),
     ]
-    expect(DOCS.map((d) => d.file).sort()).toEqual(found.sort())
+    expect(KNOWN_DOCS.map((d) => d.file).sort()).toEqual(found.sort())
   })
 
   it('has unique slugs per section and unique files', () => {
@@ -104,7 +114,10 @@ describe('the list of documents', () => {
 
   it('still answers every slug of the old Docs tab', () => {
     const old = ['readme', 'research', 'history', 'effect_sensed_presence', 'effect_out_of_body', 'effect_remote_viewing', 'signals', 'programs',
-      'preset_format', 'brain_view', 'placement', 'guides', 'questionnaires', 'experiments', 'wiring', 'standalone', 'calibration', 'safety', 'ble_protocol', 'bom']
+      'preset_format', 'brain_view', 'placement', 'guides', 'questionnaires', 'experiments', 'safety', 'ble_protocol']
     for (const slug of old) expect(pathForOldSlug(slug), slug).toBeTruthy()
+    // The hardware pages are held back: their old links land on the docs' front page (appPathFromHash).
+    for (const slug of ['wiring', 'standalone', 'calibration', 'bom']) expect(pathForOldSlug(slug), slug).toBeNull()
+    expect(appPathFromHash('#docs/wiring')).toBe('/docs')
   })
 })

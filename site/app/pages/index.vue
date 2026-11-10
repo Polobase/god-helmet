@@ -3,7 +3,9 @@ import type { SceneId } from '~/lib/art'
 
 const { data: articles } = await usePageList('articles')
 const effects = computed(() => (articles.value ?? []).filter((a) => a.group === 'Effect'))
-const background = computed(() => (articles.value ?? []).filter((a) => a.group !== 'Effect'))
+// Claims that go beyond a reported experience: one research article each.
+const claimed = computed(() => (articles.value ?? []).filter((a) => a.group === 'Claim'))
+const background = computed(() => (articles.value ?? []).filter((a) => a.group !== 'Effect' && a.group !== 'Claim'))
 // Counted from the program and guide files when the site is built.
 const { data: lib } = await useFetch<{ programs: number, guides: number, names: string[] }>('/library.json')
 
@@ -12,25 +14,9 @@ useSeoMeta({
   ogTitle: 'God Helmet: a weak-field helmet you can build, and test blind',
 })
 
-// Three things people ask about that have no article of their own: what the
-// record says in a sentence or two, and where the site goes into it.
+// The method behind every article: what the record says in a sentence or two,
+// and where the site goes into it.
 const claims: { scene: SceneId, kind: string, title: string, text: string, to: string, more: string }[] = [
-  {
-    scene: 'telepathy',
-    kind: 'Single-lab claim',
-    title: 'Telepathy',
-    text: 'The lab reported that a person in another room could describe what a partner was shown, in studies of four to seven pairs that nobody has repeated. The app runs it as a committed trial: the helmet fixes the picture before the receiver answers.',
-    to: '/docs/experiments#telepathy-trials',
-    more: 'How a telepathy trial works',
-  },
-  {
-    scene: 'ring',
-    kind: 'Single-lab claim',
-    title: 'The ring, or “Octopus”',
-    text: 'Eight coils around the head, the field stepping from one to the next counter-clockwise, each step a little shorter or longer than the last. The lab’s remote-viewing, telepathy and linked-brains reports all used it. Each comes from that one lab, some from a single subject.',
-    to: '/articles/research#circumcerebral-octopus-protocols',
-    more: 'The ring protocols in the evidence review',
-  },
   {
     scene: 'blind',
     kind: 'Method',
@@ -42,14 +28,6 @@ const claims: { scene: SceneId, kind: string, title: string, text: string, to: s
 ]
 
 const EXPECT = 'The fields are about 1–8 µT at the cortex, about a million times weaker than TMS, and the induced electric field is microvolts to millivolts per metre. The best double-blind test (Granqvist 2005, N = 89) found no effect of the field; suggestibility predicted the experiences.'
-
-const parts = [
-  ['Controller', 'ESP32-S3, classic ESP32, C3 or C6. Updates all eight coils together at 2 kHz and keeps a session running if the phone disconnects.'],
-  ['Output', 'AD5328 8-channel ±10 V DAC, a 2.2 kΩ series resistor per coil, and a PhotoMOS arming switch.'],
-  ['Coils', 'Eight small coils on a Velcro headband, placed on 10-10 sites with a tape measure.'],
-  ['Power', 'A USB power bank. Never mains while the helmet is worn.'],
-  ['Control', 'This app over Bluetooth LE or a USB cable, or a 2.8" touchscreen board with a microSD card.'],
-]
 
 const verified = ['All five firmware targets build', 'Host unit tests pass', 'The JavaScript engine reproduces the C++ engine’s output for every program', 'Protocol, blind reveal and trial commitment logic are tested against the demo helmet']
 const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer function', 'SPI and LDAC timing', 'The coils’ real µT per mA']
@@ -165,17 +143,27 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
         <div v-reveal class="mt-10 grid gap-4 lg:grid-cols-3">
           <ArticleCard v-for="a in effects" :key="a.path" data-reveal-item :article="a" large />
         </div>
-        <!-- Claims and the method, without an article of their own. -->
-        <div v-reveal class="mt-4 grid gap-4 lg:grid-cols-3" data-test="claims">
-          <NuxtLink v-for="c in claims" :key="c.scene" v-spotlight data-reveal-item :to="c.to" class="panel group flex flex-col gap-4 p-7 sm:p-8">
-            <ArtScene :name="c.scene" class="mx-auto mb-1 max-w-88 text-highlighted" />
-            <p class="flex items-center justify-between text-sm text-muted">
-              <span>{{ c.kind }}</span>
-              <UIcon name="i-lucide-arrow-up-right" class="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-            </p>
-            <h3 class="text-[2rem] transition-colors group-hover:text-primary lg:text-[2.3rem]">{{ c.title }}</h3>
-            <p class="text-toned">{{ c.text }}</p>
-            <p class="mt-auto pt-2 text-sm font-semibold text-primary">{{ c.more }}</p>
+        <!-- The claims that go further, one research article each. -->
+        <div class="mt-16 max-w-2xl">
+          <h3 id="claims" class="text-3xl sm:text-4xl">Six claims that go further</h3>
+          <p class="mt-4 text-lg text-toned measure">Each is one laboratory’s report, or an effect that gets smaller as the controls get tighter. Every article sets out the record, the best case for and against, and what a fair test would need.</p>
+        </div>
+        <div v-reveal class="mt-8 grid gap-4 lg:grid-cols-3" data-test="claim-articles">
+          <ArticleCard v-for="a in claimed" :key="a.path" data-reveal-item :article="a" large />
+        </div>
+        <!-- The method that goes with all of them. -->
+        <div v-reveal class="mt-4 grid gap-4" data-test="claims">
+          <NuxtLink v-for="c in claims" :key="c.scene" v-spotlight data-reveal-item :to="c.to" class="panel group grid items-center gap-x-10 gap-y-4 p-7 sm:p-8 md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+            <ArtScene :name="c.scene" class="mx-auto max-w-88 text-highlighted" />
+            <div class="flex flex-col gap-4">
+              <p class="flex items-center justify-between text-sm text-muted">
+                <span>{{ c.kind }}</span>
+                <UIcon name="i-lucide-arrow-up-right" class="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+              </p>
+              <h3 class="text-[2rem] transition-colors group-hover:text-primary lg:text-[2.3rem]">{{ c.title }}</h3>
+              <p class="text-toned measure">{{ c.text }}</p>
+              <p class="pt-2 text-sm font-semibold text-primary">{{ c.more }}</p>
+            </div>
           </NuxtLink>
         </div>
         <ul class="mt-4 grid gap-4 sm:grid-cols-2">
@@ -190,30 +178,14 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
       </UContainer>
     </section>
 
-    <!-- How it is built. -->
-    <UContainer as="section" class="py-20 lg:py-32" aria-labelledby="build">
-      <div class="grid gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-        <div>
-          <h2 id="build" class="text-4xl sm:text-5xl">How it is built</h2>
-          <p class="mt-5 text-lg text-toned measure">A control box, two network cables and a headband. Everything is in the repository: firmware for five boards, the schematic, the parts list and a printable coil clip.</p>
-          <dl class="mt-8 border-t border-(--hairline) text-sm">
-            <div v-for="[k, v] in parts" :key="k" class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4 border-b border-(--hairline) py-3.5">
-              <dt class="font-semibold text-highlighted">{{ k }}</dt>
-              <dd class="m-0 text-toned">{{ v }}</dd>
-            </div>
-          </dl>
-          <div class="mt-7 flex flex-wrap gap-2">
-            <UButton to="/docs/parts">Parts list</UButton>
-            <UButton to="/docs/wiring">Wiring</UButton>
-            <UButton to="/docs/calibration">Calibration</UButton>
-            <UButton to="/app/helmet">Install the firmware</UButton>
-          </div>
-        </div>
-        <div v-reveal class="min-w-0 self-start">
-          <div class="panel p-3">
-            <ProseImg src="schematic.svg" alt="Wiring schematic: power bank, ESP32, AD5328 module, eight coil outputs with series resistors, arming switch and STOP button" class="my-0!" />
-          </div>
-          <p class="mt-3 text-sm text-muted">The whole circuit. <NuxtLink to="/docs/wiring" class="underline underline-offset-4 hover:text-highlighted">Pin tables for every supported board</NuxtLink></p>
+    <!-- The hardware: not published until a complete helmet has been built and measured. -->
+    <UContainer as="section" class="py-20 lg:py-28" aria-labelledby="build">
+      <div class="max-w-3xl">
+        <h2 id="build" class="text-4xl sm:text-5xl">The hardware comes later</h2>
+        <p class="mt-5 text-lg text-toned measure">The control box and the headband are still being tested. The schematic, the parts list and the build guide will be published here once a complete helmet has been built and measured. Until then the app, every program and the blind tests can be tried in Demo mode, without any hardware.</p>
+        <div class="mt-7 flex flex-wrap gap-2">
+          <UButton to="/app/programs">Open the app in Demo mode</UButton>
+          <UButton to="/docs/safety" variant="ghost">Read the safety page</UButton>
         </div>
       </div>
     </UContainer>
@@ -243,7 +215,6 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
               <ul class="mt-3 grid gap-2.5 text-toned">
                 <li v-for="v in unverified" :key="v" class="flex gap-2.5"><UIcon name="i-lucide-circle-dashed" class="mt-0.5 size-4 shrink-0 text-muted" />{{ v }}</li>
               </ul>
-              <p class="mt-4 text-muted"><NuxtLink to="/docs/calibration" class="underline underline-offset-4 hover:text-highlighted">Calibration</NuxtLink> walks through them.</p>
             </div>
           </div>
         </div>

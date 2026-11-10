@@ -45,6 +45,8 @@ export function repoPath(href: string, fromFile: string): string {
 export interface ResolvedLink {
   href: string
   external: boolean
+  /** The target is a page the site does not publish: show the words, not a link. */
+  hidden?: boolean
 }
 
 /** Where a Markdown link in `fromFile` (a repository path) leads on this site. */
@@ -59,6 +61,7 @@ export function resolveDocHref(href: string, fromFile: string): ResolvedLink {
   const path = repoPath(target, fromFile)
   // The Markdown parser drops ".md" from relative links before we see them.
   const doc = docByFile(path) ?? docByFile(`${path}.md`)
+  if (doc?.hidden) return { href: '', external: false, hidden: true }
   if (doc) return { href: pathFor(doc) + (frag ? `#${frag}` : ''), external: false }
   const kind = /\.[a-z0-9]+$/i.test(path) ? 'blob' : 'tree'
   return { href: `${REPO}/${kind}/main/${path}${frag ? `#${frag}` : ''}`, external: true }

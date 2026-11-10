@@ -37,12 +37,14 @@ test('the effects section: a drawing for each effect, moving only while it is on
   await page.goto('/')
   const section = page.locator('section[aria-labelledby="read"]')
   await section.getByRole('heading', { name: 'The effects people ask about' }).scrollIntoViewIfNeeded()
-  for (const name of ['presence', 'obe', 'remote-viewing', 'telepathy', 'ring', 'blind']) await expect(section.locator(`svg[data-scene="${name}"]`), name).toHaveCount(1)
-  // The three without an article of their own lead to where the site covers them.
-  const claims = section.locator('[data-test="claims"]')
-  await expect(claims.getByRole('link', { name: /Telepathy/ })).toHaveAttribute('href', '/docs/experiments#telepathy-trials')
-  await expect(claims.getByRole('link', { name: /Octopus/ })).toHaveAttribute('href', '/articles/research#circumcerebral-octopus-protocols')
-  await expect(claims.getByRole('link', { name: /Real or sham/ })).toHaveAttribute('href', '/docs/experiments#blinded-realsham-sessions')
+  for (const name of ['presence', 'obe', 'remote-viewing', 'telepathy', 'ring', 'linked', 'reach', 'geomagnetic', 'micro-pk', 'blind']) await expect(section.locator(`svg[data-scene="${name}"]`), name).toHaveCount(1)
+  // Six claims with a research article each, and the method that goes with all of them.
+  const articles = section.locator('[data-test="claim-articles"]')
+  await expect(articles.getByRole('link')).toHaveCount(6)
+  await expect(articles.getByRole('link', { name: /Telepathy/ })).toHaveAttribute('href', '/articles/telepathy')
+  await expect(articles.getByRole('link', { name: /Octopus/ })).toHaveAttribute('href', '/articles/the-ring')
+  await expect(articles.getByRole('link', { name: /Influence at a distance/ })).toHaveAttribute('href', '/articles/influence-at-a-distance')
+  await expect(section.locator('[data-test="claims"]').getByRole('link', { name: /Real or sham/ })).toHaveAttribute('href', '/docs/experiments#blinded-realsham-sessions')
 
   const ring = section.locator('svg[data-scene="ring"]')
   const running = () => ring.evaluate((el) => el.getAnimations({ subtree: true }).filter((a) => a.playState === 'running').length)
@@ -58,7 +60,7 @@ test('the effects section: a drawing for each effect, moving only while it is on
 
 test('with less motion asked for, a drawing stands still and is complete', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.goto('/articles/research')
+  await page.goto('/articles/the-ring')
   // An article opens with its drawing, which says in words what it shows.
   const ring = page.locator('article header svg[data-scene="ring"]')
   await expect(ring).toBeVisible()
@@ -86,11 +88,17 @@ test('articles: index, an article with its contents, links into the app', async 
   await expect(page.locator('.doc-body a[href="/articles/research"]').first()).toBeAttached()
 })
 
-test('docs: figures load, the program reference lists every program', async ({ page }) => {
-  await page.goto('/docs/wiring')
-  const figure = page.locator('.doc-body figure img').first()
-  await expect(figure).toBeVisible()
-  expect(await figure.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true)
+test('docs: the hardware build is not published yet, the program reference lists every program', async ({ page, request }) => {
+  // Parts list, wiring, calibration and the touchscreen board wait until a complete helmet has been tested.
+  for (const path of ['/docs/parts', '/docs/wiring', '/docs/calibration', '/docs/standalone']) expect((await request.get(path)).status(), path).toBe(404)
+  await page.goto('/docs/overview')
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+  // The schematic is gone from the overview, and nothing links to the pages that are held back.
+  await expect(page.locator('.doc-body figure')).toHaveCount(0)
+  await expect(page.locator('a[href^="/docs/wiring"], a[href^="/docs/parts"], a[href^="/docs/calibration"], a[href^="/docs/standalone"]')).toHaveCount(0)
+  await page.goto('/')
+  await expect(page.getByRole('heading', { name: 'The hardware comes later' })).toBeVisible()
+  await expect(page.locator('img[alt*="schematic" i]')).toHaveCount(0)
 
   await page.goto(`${pathFor(PROGRAM_REFERENCE)}#god-helmet-classic`)
   expect(await page.locator('details').count()).toBe(PROGRAMS.size)
@@ -124,8 +132,11 @@ test('a heading link on a page stays on the page', async ({ page }) => {
 test('links to the old hash-routed app still arrive', async ({ page }) => {
   await page.goto('/#programs/god-helmet-classic/brain')
   await expect(page).toHaveURL('/app/programs/god-helmet-classic/brain')
+  await page.goto('/#docs/safety')
+  await expect(page).toHaveURL('/docs/safety')
+  // A page that is not published: the docs' front page instead.
   await page.goto('/#docs/wiring')
-  await expect(page).toHaveURL('/docs/wiring')
+  await expect(page).toHaveURL('/docs')
   await page.goto('/#docs/effect_remote_viewing')
   await expect(page).toHaveURL('/articles/remote-viewing')
   // The old safety detour carried its way back as one encoded part.
@@ -144,7 +155,7 @@ test('an unknown address answers 404, with a way on', async ({ page, request }) 
 
 test('pages ask for nothing of the app in advance', async ({ request }) => {
   // The app's program library is 1.9 MB; a reader of an article must not pay for it.
-  for (const path of ['/', '/articles/sensed-presence', '/docs/wiring']) expect(await (await request.get(path)).text(), path).not.toContain('rel="prefetch"')
+  for (const path of ['/', '/articles/sensed-presence', '/docs/safety']) expect(await (await request.get(path)).text(), path).not.toContain('rel="prefetch"')
 })
 
 test('once visited, the site opens without a network', async ({ page, context, baseURL }) => {
@@ -153,7 +164,7 @@ test('once visited, the site opens without a network', async ({ page, context, b
   await page.evaluate(() => navigator.serviceWorker.ready)
   // A second visit goes through the service worker; opening the app makes it
   // fetch the rest of the app in the background.
-  await page.goto('/docs/wiring')
+  await page.goto('/docs/safety')
   await page.goto('/app/programs/god-helmet-classic')
   await expect(page.getByRole('heading', { level: 1 })).toContainText('God Helmet classic')
   await expect.poll(() => page.evaluate(async () => !!(await caches.match('/__app-ready'))), { timeout: 30_000 }).toBe(true)
@@ -163,8 +174,8 @@ test('once visited, the site opens without a network', async ({ page, context, b
   await expect(page.getByRole('heading', { level: 1, name: 'Session log' })).toBeVisible()
   await page.goto(`${baseURL}/app/guides/gateway-prep`)
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Gateway 1')
-  await page.goto(`${baseURL}/docs/wiring`)
-  await expect(page.getByRole('heading', { level: 1, name: 'Wiring' })).toBeVisible()
+  await page.goto(`${baseURL}/docs/safety`)
+  await expect(page.getByRole('heading', { level: 1, name: 'Safety' })).toBeVisible()
   // Firmware files are never kept: offline, the installer must not find a stale copy.
   const cached = await page.evaluate(async () => (await Promise.all((await caches.keys()).map(async (k) => (await (await caches.open(k)).keys()).map((r) => new URL(r.url).pathname)))).flat())
   expect(cached.some((p) => p.startsWith('/firmware/'))).toBe(false)

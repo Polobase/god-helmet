@@ -22,5 +22,6 @@ export function docGroups(pages: PageSummary[]): { title: string, links: DocLink
       links.splice(1, 0, { label: PROGRAM_REFERENCE.label, to: pathFor(PROGRAM_REFERENCE), description: PROGRAM_REFERENCE.description })
     }
     return { title, links }
-  })
+  // A group whose pages are all held back (the hardware build, for now) is not shown.
+  }).filter((g) => g.links.length > 0)
 }

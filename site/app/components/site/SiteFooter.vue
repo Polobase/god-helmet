@@ -7,17 +7,20 @@ const columns = [
     { label: 'The evidence', to: '/articles/research' },
     { label: 'History', to: '/articles/history' },
   ] },
-  { title: 'Build', links: [
-    { label: 'Parts list', to: '/docs/parts' },
-    { label: 'Wiring', to: '/docs/wiring' },
-    { label: 'Calibration', to: '/docs/calibration' },
-    { label: 'Install the firmware', to: '/app/helmet' },
+  { title: 'Claims', links: [
+    { label: 'Telepathy', to: '/articles/telepathy' },
+    { label: 'The ring, or “Octopus”', to: '/articles/the-ring' },
+    { label: 'Linked brains', to: '/articles/linked-brains' },
+    { label: 'Influence at a distance', to: '/articles/influence-at-a-distance' },
+    { label: 'Geomagnetic activity', to: '/articles/geomagnetic-activity' },
+    { label: 'Mind over random numbers', to: '/articles/random-numbers' },
   ] },
   { title: 'Use', links: [
     { label: 'Programs', to: '/app/programs' },
     { label: 'Guided sessions', to: '/app/guides' },
     { label: 'Blinded trials', to: '/app/trials' },
     { label: 'Program reference', to: '/docs/programs' },
+    { label: 'Install the firmware', to: '/app/helmet' },
   ] },
 ]
 </script>

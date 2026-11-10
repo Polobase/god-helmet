@@ -2,7 +2,7 @@
 // (shared/content-meta.ts), rewrites links written for GitHub and the old app,
 // and marks evidence words.
 import { defineNuxtModule } from '@nuxt/kit'
-import { DOCS, pathFor } from '../shared/content-meta'
+import { DOCS, HIDDEN_FIGURES, pathFor } from '../shared/content-meta'
 import { resolveDocHref } from '../shared/links'
 
 type Node = string | [string, Record<string, unknown>, ...Node[]]
@@ -12,29 +12,34 @@ const EVIDENCE_WORDS = new Set(['established', 'single-lab', 'claim', 'anecdote'
 const textOf = (node: Node): string => (typeof node === 'string' ? node : node.slice(2).map((c) => textOf(c as Node)).join(''))
 
 function walk(nodes: Node[], file: string): Node[] {
-  return nodes.map((node) => {
-    if (typeof node === 'string') return node
+  // (flatMap: a figure of an unpublished page leaves nothing behind.)
+  return nodes.flatMap((node): Node[] => {
+    if (typeof node === 'string') return [node]
     const [tag, props, ...children] = node
     if (tag === 'a' && typeof props.href === 'string') {
       const r = resolveDocHref(props.href, file)
+      // A page that is not published: its name stays, as plain words.
+      if (r.hidden) return [['span', {}, ...walk(children as Node[], file)]]
       const next: Record<string, unknown> = { ...props, href: r.href }
       if (r.external) Object.assign(next, { target: '_blank', rel: 'noopener' })
-      return [tag, next, ...walk(children as Node[], file)]
+      return [[tag, next, ...walk(children as Node[], file)]]
     }
     if (tag === 'img' && typeof props.src === 'string' && !/^(https?:)?\/\//.test(props.src)) {
+      const name = props.src.split('/').pop() ?? ''
+      if (HIDDEN_FIGURES.includes(name)) return []
       // The file name is enough: ProseImg serves the figure from the bundle.
-      return [tag, { ...props, src: props.src.split('/').pop() }]
+      return [[tag, { ...props, src: name }]]
     }
     // A picture on its own line: Markdown wraps it in a paragraph, but it is
     // drawn as a figure, which may not sit inside one.
     if (tag === 'p' && children.length === 1 && typeof children[0] !== 'string' && children[0]![0] === 'img') {
-      return walk(children as Node[], file)[0]!
+      return walk(children as Node[], file)
     }
     // **claim** -> an evidence badge (the five words of the evidence scale only).
     if (tag === 'strong' && children.length === 1 && typeof children[0] === 'string' && EVIDENCE_WORDS.has(children[0])) {
-      return ['evidence-word', { level: children[0] }]
+      return [['evidence-word', { level: children[0] }]]
     }
-    return [tag, props, ...walk(children as Node[], file)]
+    return [[tag, props, ...walk(children as Node[], file)]]
   })
 }
 

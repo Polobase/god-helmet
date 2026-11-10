@@ -9,7 +9,7 @@ export const ART_QUIET: InjectionKey<Ref<boolean>> = Symbol('art-quiet')
 
 export const SCENES = [
   'presence', 'obe', 'remote-viewing', 'telepathy', 'ring', 'linked', 'geomagnetic',
-  'blind', 'micro-pk', 'sleep', 'meditation', 'ganzfeld', 'history', 'helmet',
+  'blind', 'micro-pk', 'sleep', 'meditation', 'ganzfeld', 'history', 'helmet', 'reach',
 ] as const
 export type SceneId = (typeof SCENES)[number]
 
@@ -72,7 +72,13 @@ export const PAGE_SCENES: Record<string, SceneId> = {
   '/articles/sensed-presence': 'presence',
   '/articles/out-of-body': 'obe',
   '/articles/remote-viewing': 'remote-viewing',
-  '/articles/research': 'ring',
+  '/articles/telepathy': 'telepathy',
+  '/articles/the-ring': 'ring',
+  '/articles/linked-brains': 'linked',
+  '/articles/influence-at-a-distance': 'reach',
+  '/articles/geomagnetic-activity': 'geomagnetic',
+  '/articles/random-numbers': 'micro-pk',
+  '/articles/research': 'helmet',
   '/articles/history': 'history',
   '/docs/overview': 'helmet',
   '/docs/experiments': 'blind',
@@ -141,6 +147,7 @@ export const SCENE_LABELS: Record<SceneId, string> = {
   ganzfeld: 'A reclined person with half-spheres over the eyes and headphones on, surrounded by soft noise',
   history: 'A filing folder with papers in it and an emblem of eight coils in a ring on its cover',
   helmet: 'The helmet: a band with eight coils and a cable to a small control board',
+  reach: 'A person wearing the coil band; the dotted field around the head fades within a hand’s width and does not reach a second person across the room',
 }
 
 /**

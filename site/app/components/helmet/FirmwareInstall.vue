@@ -58,7 +58,7 @@ async function install() {
   <section class="panel grid grid-cols-1 gap-5 p-5 sm:p-7" aria-labelledby="helmet-firmware">
     <div class="grid grid-cols-1 gap-2">
       <h2 id="helmet-firmware" class="text-2xl">Install the firmware</h2>
-      <p class="measure text-sm text-muted">Puts the helmet firmware on a board over a USB cable, with nothing else to install. Pins for each chip: <NuxtLink to="/docs/wiring" class="text-primary underline underline-offset-4">wiring</NuxtLink>.</p>
+      <p class="measure text-sm text-muted">Puts the helmet firmware on a board over a USB cable, with nothing else to install.</p>
     </div>
 
     <UAlert v-if="!supported" color="warning" variant="subtle" icon="i-lucide-triangle-alert" title="Installing needs Chrome or Edge on a computer (Web Serial), on this website or on localhost." />

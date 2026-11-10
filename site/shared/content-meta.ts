@@ -18,11 +18,17 @@ export interface DocMeta {
   group: string
   /** ISO date of the last substantial revision, where the file states one. */
   updated?: string
+  /**
+   * Not published on the site: the file stays in the repository, gets no page,
+   * and links to it are shown as plain text. Set while what it describes has
+   * not been checked (the hardware build, until a complete helmet is tested).
+   */
+  hidden?: boolean
 }
 
 export const DOC_GROUPS = ['Start here', 'Build it', 'Use it', 'Reference'] as const
 
-export const DOCS: DocMeta[] = [
+const ALL_DOCS: DocMeta[] = [
   // ---- articles
   {
     file: 'docs/EFFECT_SENSED_PRESENCE.md',
@@ -47,6 +53,55 @@ export const DOCS: DocMeta[] = [
     label: 'Remote viewing',
     group: 'Effect',
     description: 'What remote viewing is, why it is tied to the God Helmet, and how to test it with committed targets and blind judging.',
+  },
+  // Claims that go beyond a reported experience: one research article each.
+  {
+    file: 'docs/EFFECT_TELEPATHY.md',
+    section: 'articles',
+    slug: 'telepathy',
+    label: 'Telepathy',
+    group: 'Claim',
+    description: 'What telepathy research found from crisis apparitions to the ganzfeld, what Persinger’s partner and sibling studies report against what Murphy says of them, and how two people can run a committed, blinded trial.',
+  },
+  {
+    file: 'docs/EFFECT_RING.md',
+    section: 'articles',
+    slug: 'the-ring',
+    label: 'The ring, or “Octopus”',
+    group: 'Claim',
+    description: 'The eight-coil ring that steps a field around the head: the device, the 40 Hz “binding” idea behind it, every published study, and a stopwatch test anyone can run blind.',
+  },
+  {
+    file: 'docs/EFFECT_LINKED_BRAINS.md',
+    section: 'articles',
+    slug: 'linked-brains',
+    label: 'Linked brains',
+    group: 'Claim',
+    description: 'The claim that two people in the same rotating field become linked: the lab’s record, what entanglement can and cannot do, the older EEG studies, and what a fair test would need.',
+  },
+  {
+    file: 'docs/EFFECT_REMOTE_INFLUENCE.md',
+    section: 'articles',
+    slug: 'influence-at-a-distance',
+    label: 'Influence at a distance',
+    group: 'Claim',
+    description: 'The claim that intention or a device can change someone from afar: the laboratory and prayer-trial record, MKULTRA and microwave hearing in the documents, and why a helmet’s field does not reach beyond the head it sits on.',
+  },
+  {
+    file: 'docs/EFFECT_GEOMAGNETIC.md',
+    section: 'articles',
+    slug: 'geomagnetic-activity',
+    label: 'Geomagnetic activity',
+    group: 'Claim',
+    description: 'Quiet days for telepathy, stormy days for apparitions, and a peak at 13.5 h sidereal time: what Persinger, Murphy and Spottiswoode claimed, what Kp and ap measure, what later data showed, and how many sessions a fair test needs.',
+  },
+  {
+    file: 'docs/EFFECT_MICRO_PK.md',
+    section: 'articles',
+    slug: 'random-numbers',
+    label: 'Mind over random numbers',
+    group: 'Claim',
+    description: 'Can intention shift a random number generator? The record from Schmidt and PEAR to the pre-registered nulls, the Laurentian field studies, how the helmet’s hardware generator works, and why the claimed effect is too small for one person to test.',
   },
   {
     file: 'docs/RESEARCH.md',
@@ -85,6 +140,7 @@ export const DOCS: DocMeta[] = [
   },
   {
     file: 'hardware/BOM.md',
+    hidden: true,
     section: 'docs',
     slug: 'parts',
     label: 'Parts list',
@@ -93,6 +149,7 @@ export const DOCS: DocMeta[] = [
   },
   {
     file: 'docs/WIRING.md',
+    hidden: true,
     section: 'docs',
     slug: 'wiring',
     label: 'Wiring',
@@ -101,6 +158,7 @@ export const DOCS: DocMeta[] = [
   },
   {
     file: 'docs/CALIBRATION.md',
+    hidden: true,
     section: 'docs',
     slug: 'calibration',
     label: 'Calibration',
@@ -109,6 +167,7 @@ export const DOCS: DocMeta[] = [
   },
   {
     file: 'docs/STANDALONE.md',
+    hidden: true,
     section: 'docs',
     slug: 'standalone',
     label: 'Touchscreen board',
@@ -181,6 +240,13 @@ export const DOCS: DocMeta[] = [
   },
 ]
 
+/** Every Markdown file the site knows, published or not. */
+export const KNOWN_DOCS: readonly DocMeta[] = ALL_DOCS
+/** The pages the site publishes. */
+export const DOCS: DocMeta[] = ALL_DOCS.filter((d) => !d.hidden)
+/** Figures that belong to unpublished pages: not shown anywhere, not put in the bundle. */
+export const HIDDEN_FIGURES: readonly string[] = ['schematic.svg', 'coil-leads.svg']
+
 /** The program reference is generated from presets/*.json, not from a Markdown file. */
 export const PROGRAM_REFERENCE = {
   section: 'docs' as const,
@@ -194,7 +260,7 @@ export const pathFor = (m: { section: Section, slug: string }) => `/${m.section}
 
 const stem = (file: string) => file.split('/').pop()!.replace(/\.md$/i, '').toLowerCase()
 
-const byFile = new Map(DOCS.map((m) => [m.file.toLowerCase(), m]))
+const byFile = new Map(KNOWN_DOCS.map((m) => [m.file.toLowerCase(), m]))
 // The old app's Docs tab named pages by lowercased file name: #docs/effect_sensed_presence.
 const byOldSlug = new Map(DOCS.map((m) => [stem(m.file), m]))
 
