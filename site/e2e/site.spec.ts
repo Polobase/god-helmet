@@ -90,7 +90,12 @@ test('articles: index, an article with its contents, links into the app', async 
 
 test('docs: the hardware build is not published yet, the program reference lists every program', async ({ page, request }) => {
   // Parts list, wiring, calibration and the touchscreen board wait until a complete helmet has been tested.
-  for (const path of ['/docs/parts', '/docs/wiring', '/docs/calibration', '/docs/standalone']) expect((await request.get(path)).status(), path).toBe(404)
+  // Their old addresses lead to the docs' front page (public/_redirects): Cloudflare would otherwise
+  // go on serving the pages of earlier versions for a week.
+  for (const path of ['/docs/parts', '/docs/wiring', '/docs/calibration', '/docs/standalone', '/docs/wiring/_payload.json']) {
+    const r = await request.get(path, { maxRedirects: 0 })
+    expect([r.status(), r.headers().location], path).toEqual([302, '/docs'])
+  }
   await page.goto('/docs/overview')
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
   // The schematic is gone from the overview, and nothing links to the pages that are held back.

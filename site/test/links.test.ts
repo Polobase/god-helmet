@@ -1,6 +1,6 @@
 import { readdirSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { appPathFromHash, resolveDocHref, REPO } from '../shared/links'
+import { appPathFromHash, docLabelFor, resolveDocHref, REPO } from '../shared/links'
 import { DOCS, HIDDEN_FIGURES, KNOWN_DOCS, pathFor, pathForOldSlug } from '../shared/content-meta'
 
 describe('old hash routes', () => {
@@ -53,6 +53,19 @@ describe('links in the Markdown', () => {
     expect(resolveDocHref('SAFETY.md', from)).toEqual({ href: '/docs/safety', external: false })
     expect(resolveDocHref('docs/EXPERIMENTS.md', 'README.md').href).toBe('/docs/experiments')
     expect(resolveDocHref('../README.md', from).href).toBe('/docs/overview')
+  })
+
+  it('a link that only names a file shows the page\'s name instead', () => {
+    expect(docLabelFor('RESEARCH.md', 'RESEARCH.md', from)).toBe('The evidence')
+    expect(docLabelFor('HISTORY.md', 'HISTORY.md', from)).toBe('History')
+    expect(docLabelFor('docs/SAFETY.md', 'docs/SAFETY.md', 'README.md')).toBe('Safety')
+    expect(docLabelFor('EXPERIMENTS.md', 'EXPERIMENTS.md#telepathy-trials', from)).toBe('Experiments')
+    expect(docLabelFor('WIRING.md', 'WIRING.md', from)).toBe('Wiring') // not published: still its name, as plain words
+    // Anything that says more than a file name stays as written.
+    expect(docLabelFor('the evidence review', 'RESEARCH.md', from)).toBeNull()
+    expect(docLabelFor('Telepathy', 'EFFECT_TELEPATHY.md', from)).toBeNull()
+    expect(docLabelFor('firmware/README.md', 'https://example.org/firmware/README.md', from)).toBeNull()
+    expect(docLabelFor('notes.md', 'notes.md', from)).toBeNull() // no such document
   })
 
   it('a page that is not published gets no link, wherever it is named', () => {

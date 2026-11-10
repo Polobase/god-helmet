@@ -3,7 +3,7 @@
 // and marks evidence words.
 import { defineNuxtModule } from '@nuxt/kit'
 import { DOCS, HIDDEN_FIGURES, pathFor } from '../shared/content-meta'
-import { resolveDocHref } from '../shared/links'
+import { docLabelFor, resolveDocHref } from '../shared/links'
 
 type Node = string | [string, Record<string, unknown>, ...Node[]]
 
@@ -18,11 +18,15 @@ function walk(nodes: Node[], file: string): Node[] {
     const [tag, props, ...children] = node
     if (tag === 'a' && typeof props.href === 'string') {
       const r = resolveDocHref(props.href, file)
+      // "RESEARCH.md" as the words of a link: the page's name instead of its file's.
+      const only = children.length === 1 && typeof children[0] === 'string' ? children[0] : null
+      const label = only === null ? null : docLabelFor(only, props.href, file)
+      const inside = label === null ? walk(children as Node[], file) : [label]
       // A page that is not published: its name stays, as plain words.
-      if (r.hidden) return [['span', {}, ...walk(children as Node[], file)]]
+      if (r.hidden) return [['span', {}, ...inside]]
       const next: Record<string, unknown> = { ...props, href: r.href }
       if (r.external) Object.assign(next, { target: '_blank', rel: 'noopener' })
-      return [[tag, next, ...walk(children as Node[], file)]]
+      return [[tag, next, ...inside]]
     }
     if (tag === 'img' && typeof props.src === 'string' && !/^(https?:)?\/\//.test(props.src)) {
       const name = props.src.split('/').pop() ?? ''

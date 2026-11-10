@@ -3,3 +3,19 @@
 # serves 200.html under the name /200.
 /app    /200  200
 /app/*  /200  200
+
+# The hardware build is not published yet (shared/content-meta.ts, `hidden`).
+# Cloudflare Pages goes on serving the files of earlier versions for a week
+# after a newer version drops them, so the old pages and their two figures
+# would stay reachable. These lines send those addresses to the docs' front
+# page instead, at once and for good; they also catch old links from elsewhere.
+/docs/parts          /docs  302
+/docs/parts/*        /docs  302
+/docs/wiring         /docs  302
+/docs/wiring/*       /docs  302
+/docs/calibration    /docs  302
+/docs/calibration/*  /docs  302
+/docs/standalone     /docs  302
+/docs/standalone/*   /docs  302
+/_nuxt/schematic.BCHnMlO3.svg   /docs  302
+/_nuxt/coil-leads.DiE-Bc4f.svg  /docs  302

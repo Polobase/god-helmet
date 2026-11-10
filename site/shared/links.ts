@@ -67,5 +67,17 @@ export function resolveDocHref(href: string, fromFile: string): ResolvedLink {
   return { href: `${REPO}/${kind}/main/${path}${frag ? `#${frag}` : ''}`, external: true }
 }
 
+/**
+ * The name to show for a link whose text is only a file name ("RESEARCH.md",
+ * "docs/SAFETY.md"): the page's own name. On GitHub the file name is the right
+ * thing to read; on the site it is noise. Null when the text says more than
+ * that, or the link does not lead to one of the documents.
+ */
+export function docLabelFor(text: string, href: string, fromFile: string): string | null {
+  if (!/^[\w./-]+\.md$/i.test(text.trim()) || /^(https?:)?\/\//.test(href) || href.startsWith('#')) return null
+  const path = repoPath(href.split('#')[0] ?? '', fromFile)
+  return (docByFile(path) ?? docByFile(`${path}.md`))?.label ?? null
+}
+
 /** GitHub link to a file or folder of the repository. */
 export const repoUrl = (path: string) => `${REPO}/${/\.[a-z0-9]+$/i.test(path) ? 'blob' : 'tree'}/main/${path}`
