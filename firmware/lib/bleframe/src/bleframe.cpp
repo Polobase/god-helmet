@@ -15,13 +15,21 @@ bool Reassembler::push(const uint8_t* data, size_t len) {
     active_ = true;
     dropped_ = false;
   } else if (!active_ || seq != seq_) {
-    dropped_ = true;  // continuation without a start: ignore
+    // Continuation without a start: ignore. One report per lost message (its
+    // packets share a seq), none for the tail of a message already dropped.
+    if (!dropped_ || seq != dropSeq_) {
+      drop_ = Drop::NoStart;
+      dropSeq_ = seq;
+    }
+    dropped_ = true;
     return false;
   }
   if (buf_.size() + n > max_) {
     active_ = false;
     dropped_ = true;
-    buf_.clear();
+    drop_ = Drop::TooLarge;
+    dropSeq_ = seq_;
+    std::string().swap(buf_);  // give the memory back, not only the contents
     return false;
   }
   buf_.append(payload, n);
@@ -32,6 +40,13 @@ bool Reassembler::push(const uint8_t* data, size_t len) {
     return true;
   }
   return false;
+}
+
+void Reassembler::abandon() {
+  std::string().swap(buf_);
+  if (active_) dropSeq_ = seq_;
+  active_ = false;
+  dropped_ = true;
 }
 
 std::vector<std::string> split(const std::string& message, uint8_t seq, size_t packetSize) {

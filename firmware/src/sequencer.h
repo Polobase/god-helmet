@@ -20,6 +20,10 @@ struct StartRequest {
   bool sham = false;        // zero output, everything else identical
   bool blind = false;       // UI hides what is running
   uint32_t logId = 0;
+  uint32_t trialId = 0;     // the trial this session belongs to, 0 = none
+  uint32_t startEpoch = 0;  // unix seconds at the start, 0 = clock not set
+  char token[25] = {0};     // the app's start token (lib/resume/start.h), "" = none
+  char presetId[64] = {0};
 };
 
 struct Status {
@@ -42,8 +46,14 @@ struct Status {
   float fieldUT = 0;
   float testMA = 0;
   float levels[8] = {0};    // |v| per channel, for the live view
-  uint32_t overruns = 0;    // ticks that ran late
+  uint32_t overruns = 0;    // output periods that were late or lost (a stall of 5 ms counts 10)
   char lastStopReason[40] = {0};
+  // The session that runs, or the last one: kept until the next start, so an
+  // app that reconnects can tell whether it is the one it started.
+  uint32_t trialId = 0;
+  uint32_t startEpoch = 0;
+  char token[25] = {0};
+  char presetId[64] = {0};
 };
 
 struct Finished {
@@ -52,6 +62,9 @@ struct Finished {
   bool completed = false;   // ran to the planned end
   bool sham = false;
   char reason[40] = {0};
+  float finalFieldUT = 0;     // the intensity it ended with
+  uint16_t fieldChanges = 0;  // how often the intensity was changed
+  uint16_t skips = 0;         // phases skipped
 };
 
 void begin();
@@ -59,7 +72,7 @@ bool start(const StartRequest& request);  // false if the queue is full
 void stop(const char* reason);            // soft stop (2 s fade)
 void skipPhase();
 void setField(float uT);                  // live intensity change
-void keepalive();                         // UI heartbeat (see Settings::keepaliveS)
+void keepalive();                         // an app is present (see Settings::keepaliveS)
 void reconfigureDac();                    // re-apply DAC gain/reference settings
 Status status();
 // True from the moment start() queues a session until it has ended, so two
@@ -70,6 +83,9 @@ void emergencyStop(const char* reason);
 // Returns true once per finished session (consumed by the logbook).
 bool popFinished(Finished& out);
 // Wired to the STOP button: cuts the coil return immediately (ISR-safe).
+// The BOOT button is not an interrupt: the sequencer task samples it and
+// stops when it has been held for 40 ms (lib/resume/hold.h), because a
+// computer opening the USB port pulses that pin for a few milliseconds.
 void emergencyStopFromIsr();
 
 }  // namespace seq

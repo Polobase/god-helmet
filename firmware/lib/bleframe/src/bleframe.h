@@ -17,6 +17,9 @@ constexpr uint8_t kFirst = 0x01;
 constexpr uint8_t kLast = 0x02;
 constexpr size_t kHeader = 2;
 
+// Why a message was thrown away.
+enum class Drop : uint8_t { None, NoStart, TooLarge };
+
 class Reassembler {
  public:
   explicit Reassembler(size_t maxBytes) : max_(maxBytes) {}
@@ -27,6 +30,16 @@ class Reassembler {
   // True if the last message was dropped for exceeding maxBytes or for a
   // missing FIRST packet.
   bool dropped() const { return dropped_; }
+  // The reason, reported once per dropped message (then None until the next
+  // drop), so the sender can be told once.
+  Drop takeDrop() {
+    const Drop d = drop_;
+    drop_ = Drop::None;
+    return d;
+  }
+  // Gives up the message being received (its memory too) without a report:
+  // the caller has told the sender already. Its remaining packets are ignored.
+  void abandon();
 
  private:
   size_t max_;
@@ -35,6 +48,8 @@ class Reassembler {
   int seq_ = -1;
   bool active_ = false;
   bool dropped_ = false;
+  Drop drop_ = Drop::None;
+  int dropSeq_ = -1;  // seq of the message whose drop was last reported
 };
 
 // Splits `message` into packets of at most `packetSize` bytes (header included).

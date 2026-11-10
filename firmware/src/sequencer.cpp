@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include <esp_task_wdt.h>
+#include <esp_timer.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
 #include <freertos/task.h>
@@ -15,7 +16,11 @@
 #include "dac.h"
 #include "drive.h"
 #include "fastio.h"
+#include "hold.h"
+#include "journal.h"
+#include "keepalive.h"
 #include "settings.h"
+#include "ticks.h"
 
 namespace seq {
 namespace {
@@ -30,6 +35,7 @@ struct Command {
 };
 
 constexpr double kTickMs = limits::kTickUs / 1000.0;
+constexpr uint32_t kProgressTicks = 250000 / limits::kTickUs;  // progress record every 250 ms
 
 TaskHandle_t gTask = nullptr;
 QueueHandle_t gQueue = nullptr;
@@ -47,6 +53,10 @@ StartRequest gActive;
 float gSwing[8] = {0};
 uint16_t gCodes[8];
 Status gStatusLocal;
+uint16_t gFieldChanges = 0;
+uint16_t gSkips = 0;
+uint32_t gProgressTicks = 0;
+resume::HoldDetector gBootHold;
 
 // Shared with other tasks under gMux.
 Status gStatusShared;
@@ -86,6 +96,26 @@ void publish() {
   portEXIT_CRITICAL(&gMux);
 }
 
+// Where the session stands, into RTC memory: after a crash or a watchdog
+// restart the log entry is closed from it (journal.h). No flash access.
+// Tests have no log entry and leave no record.
+void saveProgress(resume::RunState state, bool completed = false, const char* reason = "") {
+  if (gActive.logId == 0) return;
+  resume::Progress p;
+  p.bootId = journal::bootId();
+  p.logId = gActive.logId;
+  p.elapsedMs = static_cast<uint32_t>(gRunner.frame().elapsedMs);
+  p.startEpoch = gActive.startEpoch;
+  p.fieldUT = gActive.fieldUT;
+  p.fieldChanges = gFieldChanges;
+  p.skips = gSkips;
+  p.state = static_cast<uint8_t>(state);
+  p.completed = completed ? 1 : 0;
+  std::snprintf(p.reason, sizeof p.reason, "%s", reason);
+  journal::save(p);
+  gProgressTicks = 0;
+}
+
 void finish(bool completed, const char* reasonIn) {
   dac::writeMidscale();
   arm(false);
@@ -96,7 +126,11 @@ void finish(bool completed, const char* reasonIn) {
   f.elapsedMs = static_cast<uint32_t>(gRunner.frame().elapsedMs);
   f.completed = completed;
   f.sham = gActive.sham;
+  f.finalFieldUT = gActive.fieldUT;
+  f.fieldChanges = gFieldChanges;
+  f.skips = gSkips;
   std::snprintf(f.reason, sizeof f.reason, "%s", reason);
+  saveProgress(resume::RunState::Ended, completed, reason);  // until the log entry is written
   gRunner.abort();
   delete gSession;
   gSession = nullptr;
@@ -119,6 +153,8 @@ void beginSession(const StartRequest& req) {
   if (gSession != nullptr) finish(false, "replaced");
   gSession = req.session;
   gActive = req;
+  gFieldChanges = 0;
+  gSkips = 0;
   gSession->bindTable();
   computeSwing();
   gRunner.start(gSession);
@@ -136,9 +172,20 @@ void beginSession(const StartRequest& req) {
   gStatusLocal.testMA = req.testMA;
   gStatusLocal.fieldUT = req.fieldUT;
   gStatusLocal.logId = req.logId;
+  gStatusLocal.trialId = req.trialId;
+  gStatusLocal.startEpoch = req.startEpoch;
+  std::memset(gStatusLocal.token, 0, sizeof gStatusLocal.token);
+  std::snprintf(gStatusLocal.token, sizeof gStatusLocal.token, "%s", req.token);
+  std::memset(gStatusLocal.presetId, 0, sizeof gStatusLocal.presetId);
+  std::snprintf(gStatusLocal.presetId, sizeof gStatusLocal.presetId, "%s", req.presetId);
+  gStatusLocal.phase = 0;
+  gStatusLocal.elapsedMs = 0;
+  gStatusLocal.programMs = 0;
+  gStatusLocal.phaseMs = 0;
   gStatusLocal.phaseCount = gSession->phaseCount;
   gStatusLocal.totalMs = gSession->totalMs();
   gStatusLocal.lastStopReason[0] = '\0';
+  saveProgress(resume::RunState::Running);
   dac::writeMidscale();
   arm(true);  // identical for sham and active sessions
 }
@@ -158,6 +205,7 @@ void handleCommand(const Command& c) {
       }
       break;
     case CommandType::Skip:
+      if (gRunner.running() && gSkips < 0xFFFF) ++gSkips;
       gRunner.skipPhase();
       if (gRunner.stopping() && gStatusLocal.state != State::Stopping) {
         gStatusLocal.state = State::Stopping;
@@ -169,6 +217,7 @@ void handleCommand(const Command& c) {
       if (gRunner.running() && gActive.testMA == 0.0f) {
         gActive.fieldUT = c.value;
         gStatusLocal.fieldUT = c.value;
+        if (gFieldChanges < 0xFFFF) ++gFieldChanges;
         computeSwing();
       }
       break;
@@ -207,9 +256,29 @@ void renderTick(double dtMs) {
 void task(void*) {
   esp_task_wdt_add(nullptr);
   uint32_t publishCounter = 0;
+  uint64_t periodUs = static_cast<uint64_t>(esp_timer_get_time());  // start of the current output period
   for (;;) {
-    const uint32_t ticks = ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(100));
+    ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(100));
     esp_task_wdt_reset();
+
+    // The periods that have passed come from the clock, not from the number
+    // of wake-ups: while the processor is held up (a flash write) wake-ups
+    // are lost, and the session would fall behind unseen. While idle the
+    // period boundary is kept half a period behind the wake-up, so a
+    // session's ticks sit mid-period and ordinary jitter reads as exactly one.
+    const uint64_t nowUs = static_cast<uint64_t>(esp_timer_get_time());
+    uint32_t ticks = 0;
+    if (gRunner.running()) ticks = resume::periodsSince(nowUs, periodUs, limits::kTickUs);
+    else periodUs = nowUs - limits::kTickUs / 2;
+
+    // BOOT is a STOP button, but only when held: a USB port being opened
+    // pulses the pin for a few milliseconds.
+    if constexpr (pins::kBoot >= 0) {
+      if (gBootHold.sample(digitalRead(pins::kBoot) == LOW, static_cast<uint32_t>(nowUs / 1000))) {
+        gEmergencyReason = "STOP button (BOOT)";
+        gEmergency = true;
+      }
+    }
 
     bool emergency = false;
     if (gEmergency) {
@@ -228,13 +297,15 @@ void task(void*) {
 
     if (gRunner.running()) {
       if (ticks > 1 && !emergency) gStatusLocal.overruns += ticks - 1;
-      if (gSettings.keepaliveS > 0 && gStatusLocal.state == State::Running &&
-          millis() - gKeepaliveMs > gSettings.keepaliveS * 1000u) {
+      if (gStatusLocal.state == State::Running &&
+          hlink::keepaliveExpired(millis(), gKeepaliveMs, gSettings.keepaliveS)) {
         gRunner.requestStop();
         gStatusLocal.state = State::Stopping;
         std::snprintf(gStatusLocal.lastStopReason, sizeof gStatusLocal.lastStopReason, "UI keepalive lost");
       }
       if (ticks > 0) renderTick(kTickMs * ticks);
+      gProgressTicks += ticks;
+      if (gRunner.running() && gProgressTicks >= kProgressTicks) saveProgress(resume::RunState::Running);
     }
 
     if (++publishCounter >= 20) {  // every ~10 ms

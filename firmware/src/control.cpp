@@ -18,9 +18,19 @@
 #include "preset_json.h"
 #include "sequencer.h"
 #include "settings.h"
+#include "start.h"
 
 namespace control {
 namespace {
+
+// The last starts since boot, by token. Loop task only (as every start is).
+struct Started {
+  char token[resume::kTokenMax + 1] = {0};
+  uint32_t logId = 0;
+  uint32_t trialId = 0;
+};
+Started gStarted[4];
+size_t gStartedNext = 0;
 
 float minUTperMA() {
   float m = gSettings.uTperMA[0];
@@ -64,51 +74,118 @@ void markSessionTime() {
   }
 }
 
-bool coinFlip() {
-  uint8_t b = 0;
+void fillRandom(void* buffer, size_t bytes) {
   // The ADC noise source must not run while the radio uses the RF/ADC hardware.
   const bool radio = btStarted();
   if (!radio) bootloader_random_enable();
-  esp_fill_random(&b, 1);
+  esp_fill_random(buffer, bytes);
   if (!radio) bootloader_random_disable();
+}
+
+bool coinFlip() {
+  uint8_t b = 0;
+  fillRandom(&b, 1);
   return b & 1;
 }
 
-Result startSession(engine::Session* session, float fieldUT, bool blind, bool sham, float testMA,
-                    const String& presetId) {
+TokenCheck checkToken(const String& token, Result& prior) {
+  if (token.length() == 0) return TokenCheck::Fresh;
+  if (!resume::validToken(token.c_str())) {
+    prior = fail("token: 1 to 24 characters from A-Z a-z 0-9 _ -");
+    return TokenCheck::Invalid;
+  }
+  const bool busy = seq::busy();
+  for (const Started& s : gStarted) {
+    if (resume::decideStart(busy, s.token, token.c_str()) != resume::StartDecision::Already) continue;
+    prior = Result();
+    prior.logId = s.logId;
+    prior.trialId = s.trialId;
+    prior.already = true;
+    return TokenCheck::Already;
+  }
+  return TokenCheck::Fresh;
+}
+
+void rememberStart(const String& token, uint32_t logId, uint32_t trialId) {
+  if (!resume::validToken(token.c_str())) return;
+  Started& s = gStarted[gStartedNext];
+  gStartedNext = (gStartedNext + 1) % (sizeof gStarted / sizeof gStarted[0]);
+  std::snprintf(s.token, sizeof s.token, "%s", token.c_str());
+  s.logId = logId;
+  s.trialId = trialId;
+}
+
+bool openLog(const Launch& l, uint32_t& logId, String& error) {
+  logId = 0;
+  if (l.testMA != 0.0f) return true;  // calibration and wiring tests are not logged
   logbook::Entry e;
-  e.presetId = presetId;
-  e.presetName = session->name;
-  e.blind = blind;
-  e.sham = sham;
-  e.test = testMA != 0.0f;
-  e.fieldUT = fieldUT;
-  e.plannedMs = session->totalMs();
+  e.presetId = l.presetId;
+  e.presetName = l.session->name;
+  e.blind = l.blind;
+  e.sham = l.sham;
+  e.fieldUT = l.fieldUT;
+  e.plannedMs = l.session->totalMs();
+  e.trialId = l.trialId;
+  e.token = l.token;
+  logId = logbook::open(e);
+  if (logId != 0) return true;
+  error = "cannot write the session log (storage full or failing): not started";
+  return false;
+}
+
+bool launch(const Launch& l, uint32_t logId, String& error) {
+  const bool test = l.testMA != 0.0f;
   // Flash writes (log file, NVS) happen before the start, so none stalls the
   // first seconds of the session.
   const uint32_t previous = gSettings.lastSessionEpoch;
-  if (!e.test) markSessionTime();
+  if (!test) markSessionTime();
   seq::StartRequest r;
-  r.session = session;
-  r.fieldUT = fieldUT;
-  r.blind = blind;
-  r.sham = sham;
-  r.testMA = testMA;
-  r.logId = e.test ? 0 : logbook::open(e);
-  if (!seq::start(r)) {
-    delete session;
-    if (!e.test && gSettings.lastSessionEpoch != previous) {
-      gSettings.lastSessionEpoch = previous;
-      gSettings.saveLastSession();
-    }
-    return fail("sequencer queue full");
+  r.session = l.session;
+  r.fieldUT = l.fieldUT;
+  r.blind = l.blind;
+  r.sham = l.sham;
+  r.testMA = l.testMA;
+  r.logId = logId;
+  r.trialId = l.trialId;
+  r.startEpoch = envdata::now();
+  std::snprintf(r.token, sizeof r.token, "%s", resume::validToken(l.token.c_str()) ? l.token.c_str() : "");
+  std::snprintf(r.presetId, sizeof r.presetId, "%s", l.presetId.c_str());
+  if (seq::start(r)) return true;
+  if (!test && gSettings.lastSessionEpoch != previous) {
+    gSettings.lastSessionEpoch = previous;
+    gSettings.saveLastSession();
   }
+  logbook::discard(logId);  // no session: no entry
+  error = "sequencer queue full";
+  return false;
+}
+
+Result startSession(engine::Session* session, float fieldUT, bool blind, bool sham, float testMA,
+                    const String& presetId, const String& token) {
+  Launch l;
+  l.session = session;
+  l.fieldUT = fieldUT;
+  l.blind = blind;
+  l.sham = sham;
+  l.testMA = testMA;
+  l.presetId = presetId;
+  l.token = token;
+  uint32_t logId = 0;
+  String error;
+  if (!openLog(l, logId, error) || !launch(l, logId, error)) {
+    delete session;
+    return fail(error);
+  }
+  rememberStart(token, logId, 0);
   Result ok;
-  ok.logId = r.logId;
+  ok.logId = logId;
   return ok;
 }
 
-Result startFromDoc(const mj::Value& doc, const String& presetId, double fieldUT, bool blind) {
+Result startFromDoc(const mj::Value& doc, const String& presetId, double fieldUT, bool blind,
+                    const String& token) {
+  Result prior;
+  if (checkToken(token, prior) != TokenCheck::Fresh) return prior;
   String error;
   if (!startAllowed(error)) return fail(error);
   if (!doc.isObject()) return fail("session missing");
@@ -120,10 +197,12 @@ Result startFromDoc(const mj::Value& doc, const String& presetId, double fieldUT
   const bool sham = blind ? coinFlip() : (std::string(s->id) == "sham");
   const String id = presetId.length() ? presetId : String(s->id);
   const float field = clampField(fieldUT < 0 ? info.uT : fieldUT);
-  return startSession(s.release(), field, blind, sham, 0.0f, id);
+  return startSession(s.release(), field, blind, sham, 0.0f, id, token);
 }
 
 Result startTest(const TestRequest& t) {
+  Result prior;
+  if (checkToken(t.token, prior) != TokenCheck::Fresh) return prior;
   String error;
   if (!startAllowed(error)) return fail(error);
   if (std::fabs(t.mA) > limits::kMaxTestMA || t.mA == 0) return fail("mA must be non-zero, |mA| <= 4.6");
@@ -170,7 +249,7 @@ Result startTest(const TestRequest& t) {
     return fail("mode must be dc, dcall, rotate, led or leds");
   }
   const String id = s->id;
-  return startSession(s.release(), 0.0f, false, false, t.mA, id);
+  return startSession(s.release(), 0.0f, false, false, t.mA, id, t.token);
 }
 
 bool rate(uint32_t logId, int rating, const String& notes, String& json, String& error) {

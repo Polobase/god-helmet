@@ -272,7 +272,7 @@ int main(int argc, char** argv) {
   run(500);
   expect(seq::busy(), "session running");
   sim::bootDown = true;
-  seq::emergencyStop("STOP button");  // what the BOOT interrupt does
+  seq::emergencyStop("STOP button (BOOT)");  // what the sequencer does once BOOT has been held for 40 ms
   run(4500);
   expect(ui::button(17) != nullptr, "BOOT held as STOP: the Rate screen stays (no touch calibration)");
   sim::bootDown = false;

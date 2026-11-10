@@ -29,6 +29,7 @@ struct CreateRequest {
   String presetId;
   bool blind = true;
   float fieldUT = 1.0f;
+  String token;                       // the app's start token (control::checkToken), "" = none
 };
 
 bool create(CreateRequest& req, String& json, String& error);

@@ -1,5 +1,6 @@
 #!/bin/sh
-# Builds and runs the host unit tests for lib/engine + lib/minijson and
+# Builds and runs the host unit tests for lib/engine, lib/minijson, lib/bleframe,
+# lib/link and lib/resume, and
 # validates every preset in ../presets. Run from anywhere.
 set -e
 cd "$(dirname "$0")/.."
@@ -19,7 +20,8 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 ${CXX:-c++} -std=c++17 -O1 -Wall -Wextra -Wno-unused-parameter $SYSROOT \
-  -Ilib/engine/src -Ilib/minijson/src -Ilib/bleframe/src \
+  -Ilib/engine/src -Ilib/minijson/src -Ilib/bleframe/src -Ilib/link/src -Ilib/resume/src \
   test/host/test_main.cpp lib/engine/src/*.cpp lib/minijson/src/*.cpp lib/bleframe/src/*.cpp \
+  lib/link/src/*.cpp lib/resume/src/*.cpp \
   -o .pio/host/engine_tests
 ./.pio/host/engine_tests ../presets

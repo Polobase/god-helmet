@@ -1,8 +1,11 @@
 #include "rpc.h"
 
 #include <Arduino.h>
+#include <esp_task_wdt.h>
+#ifdef GH_TEST_OPS
 #include <LittleFS.h>
-#include <esp_random.h>
+#include <Preferences.h>
+#endif
 
 #include <cmath>
 #include <cstdio>
@@ -10,15 +13,20 @@
 #include <new>
 #include <vector>
 
+#include "ble.h"
 #include "config.h"
 #include "control.h"
 #include "envdata.h"
 #include "experiment.h"
+#include "journal.h"
 #include "logbook.h"
 #include "minijson.h"
 #include "preset_json.h"
 #include "sequencer.h"
 #include "settings.h"
+#include "storage.h"
+#include "usblink.h"
+#include "wire.h"
 
 namespace rpc {
 namespace {
@@ -57,13 +65,14 @@ const char* stateName(seq::State s) {
 }
 
 using control::clampField;
-using control::markSessionTime;
 using control::startAllowed;
 
 Reply toReply(const control::Result& r) {
   if (!r.ok) return Reply::fail(r.error);
   mj::Writer w;
-  w.beginObject().key("logId").integer(r.logId).endObject();
+  w.beginObject().key("logId").integer(r.logId);
+  if (r.already) w.key("already").boolean(true);  // a repeated start: this is the session it made the first time
+  w.endObject();
   return Reply::json(w.str());
 }
 
@@ -76,6 +85,13 @@ Reply hello() {
   w.key("protocol").integer(kProtocolVersion);
   w.key("board").string(BOARD_NAME);
   w.key("chip").string(ESP.getChipModel());
+  // Which helmet, and which start of it: an app that reconnects compares
+  // these to see whether the helmet restarted in between.
+  w.key("helmetId").string(journal::helmetId());
+  w.key("bootId").integer(journal::bootId());
+  w.key("uptimeS").integer(journal::uptimeS());
+  w.key("resetReason").string(journal::resetReason());
+  w.key("recoveredLogId").integer(journal::recoveredLogId());
   w.key("transports").beginArray();
   if (gSettings.bleEnabled) w.string("ble");
   w.string("usb");
@@ -88,8 +104,14 @@ Reply hello() {
   w.key("lastSessionEpoch").integer(gSettings.lastSessionEpoch);
   w.key("minIntervalS").integer(limits::kMinIntervalS);
   w.key("freeHeap").integer(ESP.getFreeHeap());
-  w.key("fsUsed").integer(LittleFS.usedBytes());
-  w.key("fsTotal").integer(LittleFS.totalBytes());
+  // Measured while idle (storage.h): asking the filesystem here would hold up a running session.
+  w.key("fsUsed").integer(storage::usedBytes());
+  w.key("fsTotal").integer(storage::totalBytes());
+  w.key("links").beginObject();
+  w.key("ble").integer(ble::connections());
+  w.key("bleStatus").integer(ble::statusSubscribers());
+  w.key("usb").integer(usblink::connections());
+  w.endObject();
   w.key("env");
   envdata::writeJson(w);
   w.endObject();
@@ -125,7 +147,8 @@ Reply settingsSet(const std::string& raw) {
 
 Reply sessionStart(const mj::Value& v) {
   const double field = v["fieldUT"].isNumber() ? v["fieldUT"].num(0) : -1;  // -1: the program's own uT
-  return toReply(control::startFromDoc(v["session"], v["presetId"].str(""), field, v["blind"].boolean(false)));
+  return toReply(control::startFromDoc(v["session"], v["presetId"].str(""), field, v["blind"].boolean(false),
+                                       v["token"].str("")));
 }
 
 // Calibration and wiring checks: DC on one coil, or a slow DC rotation.
@@ -139,6 +162,7 @@ Reply test(const mj::Value& v) {
   t.ccw = std::string(v["dir"].str("ccw")) != "cw";
   t.dwellMs = static_cast<float>(v["dwellMs"].num(1000));
   t.blinkHz = static_cast<float>(v["blinkHz"].num(1.0));
+  t.token = v["token"].str("");
   return toReply(control::startTest(t));
 }
 
@@ -160,9 +184,24 @@ Reply logRate(const mj::Value& v) {
 }
 
 Reply trialNew(const mj::Value& v) {
+  // A repeated request (its first reply got lost) gets the trial it made the first time.
+  const String token = v["token"].str("");
+  control::Result prior;
+  switch (control::checkToken(token, prior)) {
+    case control::TokenCheck::Invalid: return Reply::fail(prior.error);
+    case control::TokenCheck::Already: {
+      String json = prior.trialId ? experiment::get(prior.trialId) : String();
+      if (json.length() < 2) return Reply::fail("this token was used for another start");
+      json.remove(json.length() - 1);
+      json += ",\"already\":true}";
+      return Reply::json(json);
+    }
+    case control::TokenCheck::Fresh: break;
+  }
   experiment::CreateRequest req;
   req.mode = v["mode"].str("rv");
   req.manifestHash = v["manifestHash"].str("");
+  req.token = token;
   const mj::Value& sets = v["sets"];
   for (size_t i = 0; i < sets.size(); ++i) {
     experiment::SetRef ref;
@@ -185,10 +224,7 @@ Reply trialNew(const mj::Value& v) {
   String json, error;
   const bool hadSession = req.session != nullptr;
   const bool ok = experiment::create(req, json, error);
-  if (hadSession && req.session == nullptr) {
-    session.release();  // ownership passed to the sequencer
-    markSessionTime();
-  }
+  if (hadSession && req.session == nullptr) session.release();  // ownership passed to the sequencer
   if (!ok) return Reply::fail(error);
   return Reply::json(json);
 }
@@ -201,13 +237,13 @@ Reply trialRanks(const mj::Value& v) {
   return Reply::json(json);
 }
 
-// Hardware random bytes for micro-PK tasks. esp_fill_random() is a true RNG
-// while the radio (BLE) is running.
+// Hardware random bytes for micro-PK tasks: a true RNG with the radio running
+// and, through control::fillRandom, also with Bluetooth switched off.
 Reply rngBytes(const mj::Value& v) {
   const int n = static_cast<int>(v["n"].num(32));
   if (n < 1 || n > 256) return Reply::fail("n must be 1..256");
   uint8_t buf[256];
-  esp_fill_random(buf, n);
+  control::fillRandom(buf, n);
   static const char* kHex = "0123456789abcdef";
   std::string hex;
   hex.reserve(n * 2);
@@ -228,6 +264,55 @@ Reply trialList(const mj::Value& v) {
   w.endObject();
   return Reply::json(w.str());
 }
+
+#ifdef GH_TEST_OPS
+// Test builds only (-DGH_TEST_OPS): takes the helmet down on purpose, to
+// check what the next start makes of a session that was running.
+Reply debugCrash(const mj::Value& v) {
+  const std::string how = v["how"].str("panic");
+  if (how == "restart") ESP.restart();
+  if (how == "panic") abort();
+  if (how == "hang") {  // this task stops answering: the task watchdog restarts the board after 5 s
+    esp_task_wdt_add(nullptr);
+    for (;;) {
+    }
+  }
+  return Reply::fail("how must be restart, panic or hang");
+}
+
+// Test builds only: removes the log entries and trials a test run added
+// (ids from logFrom / trialFrom on), so the helmet is left as it was found.
+Reply debugCleanup(const mj::Value& v) {
+  if (seq::busy()) return Reply::fail("stop the session first");
+  struct Kind {
+    const char* dir;
+    const char* ns;
+    uint32_t from;
+  };
+  const Kind kinds[] = {{"/log/", "logbook", static_cast<uint32_t>(v["logFrom"].num(0))},
+                        {"/trials/", "trials", static_cast<uint32_t>(v["trialFrom"].num(0))}};
+  mj::Writer w;
+  w.beginObject();
+  for (const Kind& k : kinds) {
+    if (k.from == 0) continue;
+    Preferences p;
+    p.begin(k.ns, false);
+    const uint32_t next = p.getUInt("next", 1);
+    uint32_t removed = 0;
+    for (uint32_t id = k.from; id < next; ++id) removed += LittleFS.remove(String(k.dir) + String(id) + ".json") ? 1 : 0;
+    if (next > k.from) p.putUInt("next", k.from);
+    p.end();
+    w.key(k.ns).integer(removed);
+  }
+  if (v.has("lastSessionEpoch")) {
+    gSettings.lastSessionEpoch = static_cast<uint32_t>(v["lastSessionEpoch"].num(0));
+    gSettings.saveLastSession();
+  }
+  storage::changed();
+  w.endObject();
+  return Reply::json(w.str());
+}
+#endif
 
 using TrialStep = bool (*)(uint32_t, String&, String&);
 Reply trialStep(const mj::Value& v, TrialStep fn) {
@@ -282,36 +367,51 @@ Reply dispatch(const std::string& op, const mj::Value& v, const std::string& raw
   }
   if (op == "trial.list") return trialList(v);
   if (op == "rng.bytes") return rngBytes(v);
+#ifdef GH_TEST_OPS
+  if (op == "debug.crash") return debugCrash(v);
+  if (op == "debug.cleanup") return debugCleanup(v);
+#endif
   return Reply::fail(String("unknown op: ") + op.c_str());
 }
 
 }  // namespace
 
-std::string handle(const std::string& request) {
-  mj::Value v;
-  std::string err;
-  Reply reply;
+std::string handle(const std::string& request, bool* valid) {
+  if (valid != nullptr) *valid = false;
+  // Read from the text itself, so that even a request that cannot be parsed
+  // (or that runs the board out of memory) is answered to the right caller.
   long long clientTag = 0, id = 0;
-  if (!mj::parse(request, v, &err) || !v.isObject()) {
-    reply = Reply::fail(String("invalid JSON: ") + err.c_str());
-  } else {
-    clientTag = static_cast<long long>(v["c"].num(0));
-    id = static_cast<long long>(v["id"].num(0));
-    try {
-      reply = dispatch(v["op"].str(""), v, request);
-    } catch (const std::bad_alloc&) {
-      reply = Reply::fail("out of memory (program too large for this board)");
+  hlink::peekTag(request.data(), request.size(), clientTag, id);
+  try {
+    mj::Value v;
+    std::string err;
+    Reply reply;
+    if (!mj::parse(request, v, &err) || !v.isObject()) {
+      reply = Reply::fail(String("invalid JSON: ") + err.c_str());
+    } else {
+      clientTag = static_cast<long long>(v["c"].num(0));
+      id = static_cast<long long>(v["id"].num(0));
+      const std::string op = v["op"].str("");
+      if (valid != nullptr) *valid = !op.empty();
+      reply = dispatch(op, v, request);
     }
+    mj::Writer w;
+    w.beginObject();
+    w.key("c").integer(clientTag);
+    w.key("id").integer(id);
+    w.key("ok").boolean(reply.ok);
+    if (reply.ok) w.key("data").raw(reply.data.c_str());
+    else w.key("error").string(reply.error.c_str());
+    w.endObject();
+    return w.take();
+  } catch (const std::bad_alloc&) {
   }
-  mj::Writer w;
-  w.beginObject();
-  w.key("c").integer(clientTag);
-  w.key("id").integer(id);
-  w.key("ok").boolean(reply.ok);
-  if (reply.ok) w.key("data").raw(reply.data.c_str());
-  else w.key("error").string(reply.error.c_str());
-  w.endObject();
-  return w.take();
+  // Everything the request had allocated is released by now.
+  try {
+    return hlink::errorReply(clientTag, id, "out of memory (program too large for this board)");
+  } catch (const std::bad_alloc&) {
+    return std::string();  // not even that: the app runs into its own timeout
+  }
 }
 
 std::string statusJson() {
@@ -338,6 +438,13 @@ std::string statusJson() {
   w.key("testMA").number(st.testMA, 3);
   w.key("overruns").integer(st.overruns);
   w.key("lastStopReason").string(st.lastStopReason);
+  // Which session this is (kept after it ends, until the next start) and
+  // which start of the helmet: what a reconnecting app needs to pick it up.
+  w.key("bootId").integer(journal::bootId());
+  w.key("token").string(st.token);
+  w.key("presetId").string(st.presetId);
+  w.key("startEpoch").integer(st.startEpoch);
+  w.key("trialId").integer(st.trialId);
   // Live coil levels would reveal sham sessions, so they are withheld when blind.
   if (!st.blind) {
     w.key("levels").beginArray();

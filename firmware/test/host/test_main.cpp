@@ -12,6 +12,16 @@
 #include "astro.h"
 #include "bench.h"
 #include "bleframe.h"
+#include "conn.h"
+#include "hold.h"
+#include "ident.h"
+#include "keepalive.h"
+#include "outbox.h"
+#include "progress.h"
+#include "recover.h"
+#include "start.h"
+#include "ticks.h"
+#include "wire.h"
 #include "drive.h"
 #include "minijson.h"
 #include "patterns.h"
@@ -702,6 +712,371 @@ static void testBleFrame() {
   bleframe::Reassembler small(100);
   for (const auto& p : packets) CHECK(!small.push(reinterpret_cast<const uint8_t*>(p.data()), p.size()));
   CHECK(small.dropped());
+
+  // Each dropped message is reported once, with its reason.
+  CHECK(small.takeDrop() == bleframe::Drop::TooLarge);  // six packets, one report
+  CHECK(small.takeDrop() == bleframe::Drop::None);
+  bleframe::Reassembler lost(4096);
+  CHECK(lost.takeDrop() == bleframe::Drop::None);
+  for (size_t i = 1; i < packets.size(); ++i) lost.push(reinterpret_cast<const uint8_t*>(packets[i].data()), packets[i].size());
+  CHECK(lost.takeDrop() == bleframe::Drop::NoStart);    // the start was lost: five packets, one report
+  CHECK(lost.takeDrop() == bleframe::Drop::None);
+  const auto other = bleframe::split(msg, 9, 182);
+  lost.push(reinterpret_cast<const uint8_t*>(other[3].data()), other[3].size());
+  CHECK(lost.takeDrop() == bleframe::Drop::NoStart);    // another message, also without its start
+  CHECK(lost.push(reinterpret_cast<const uint8_t*>(one[0].data()), one[0].size()) && lost.takeDrop() == bleframe::Drop::None);
+
+  // Given up half way (no memory): the rest of it is ignored without a second report.
+  bleframe::Reassembler gone(4096);
+  gone.push(reinterpret_cast<const uint8_t*>(packets[0].data()), packets[0].size());
+  gone.push(reinterpret_cast<const uint8_t*>(packets[1].data()), packets[1].size());
+  gone.abandon();
+  bool completed = false;
+  for (size_t i = 2; i < packets.size(); ++i) completed |= gone.push(reinterpret_cast<const uint8_t*>(packets[i].data()), packets[i].size());
+  CHECK(!completed && gone.dropped() && gone.takeDrop() == bleframe::Drop::None);
+  CHECK(gone.push(reinterpret_cast<const uint8_t*>(one[0].data()), one[0].size()) && gone.take() == "{}");
+}
+
+// ---------------------------------------------------------------- lib/link
+
+static void testConn() {
+  std::printf("link: connection state\n");
+  using namespace hlink;
+  Conn c;
+  c.connected = true;
+  c.subStatus = true;
+  c.generation = 200;
+  c.mtu = 185;
+  const Conn back = unpack(pack(c));
+  CHECK(back.connected && back.subStatus && !back.subResponse && !back.congested && back.generation == 200 && back.mtu == 185);
+
+  uint32_t w = 0;
+  CHECK(!unpack(w).connected && payloadSize(w) == 20);
+  w = onConnect(w);
+  CHECK(unpack(w).connected && unpack(w).generation == 1 && unpack(w).mtu == 23 && payloadSize(w) == 20);
+  w = onMtu(w, 185);
+  CHECK(payloadSize(w) == 182);
+  w = onMtu(w, 515);
+  CHECK(payloadSize(w) == 512);
+  w = onMtu(w, 517);
+  CHECK(payloadSize(w) == 512);  // never more than the stack's 512-byte buffer, whatever the link allows
+  CHECK(unpack(onMtu(w, 9000)).mtu == 517 && unpack(onMtu(w, 5)).mtu == 23);
+  w = onSubscribe(w, Channel::Status, 0x0001);
+  CHECK(wantsStatus(w) && !unpack(w).subResponse);
+  w = onSubscribe(w, Channel::Response, 0x0001);
+  CHECK(unpack(w).subResponse);
+  CHECK(!wantsStatus(onSubscribe(w, Channel::Status, 0x0000)));
+  CHECK(!wantsStatus(onSubscribe(w, Channel::Status, 0x0002)));  // indications only: not what we send
+  CHECK(unpack(onCongest(w, true)).congested && !unpack(onCongest(onCongest(w, true), false)).congested);
+  CHECK(canReply(w, 1) && !canReply(w, 2));
+
+  // A drop, then another app on the same id: nothing of the first one is left.
+  const uint32_t gone = onDisconnect(w);
+  CHECK(!unpack(gone).connected && !wantsStatus(gone) && !canReply(gone, 1));
+  CHECK(onDisconnect(gone) == gone);  // a second disconnect event changes nothing
+  const uint32_t again = onConnect(gone);
+  CHECK(unpack(again).generation == 2 && !wantsStatus(again) && unpack(again).mtu == 23);
+  CHECK(!canReply(again, 1) && canReply(again, 2));  // a reply for the first app is not sent to the second
+  // Events for a slot that is not connected are ignored.
+  CHECK(onMtu(gone, 200) == gone && onSubscribe(gone, Channel::Status, 1) == gone && onCongest(gone, true) == gone);
+  // A request from a slot we thought gone brings it back (a missed connect event).
+  CHECK(unpack(onTraffic(gone)).connected && onTraffic(again) == again);
+  // The generation wraps.
+  Conn last;
+  last.generation = 255;
+  CHECK(unpack(onConnect(pack(last))).generation == 0);
+
+  // Two apps; one leaves; a stray disconnect for a free slot.
+  uint32_t slots[kSlots] = {0, 0, 0, 0};
+  slots[0] = onConnect(slots[0]);
+  slots[1] = onSubscribe(onConnect(slots[1]), Channel::Status, 1);
+  CHECK(connectedCount(slots) == 2 && statusSubscribers(slots) == 1);
+  slots[0] = onDisconnect(slots[0]);
+  slots[3] = onDisconnect(slots[3]);
+  slots[0] = onDisconnect(slots[0]);
+  CHECK(connectedCount(slots) == 1 && statusSubscribers(slots) == 1);
+}
+
+static void testOutbox() {
+  std::printf("link: outbox\n");
+  using hlink::Outbox;
+  std::string msg;
+  for (int i = 0; i < 500; ++i) msg += static_cast<char>('a' + i % 26);
+
+  Outbox box;
+  CHECK(box.empty() && box.next(0, 20) == nullptr);
+  box.push("{}");
+  const std::string* p = box.next(100, 182);
+  CHECK(p != nullptr && p->size() == 4 && static_cast<uint8_t>((*p)[1]) == (bleframe::kFirst | bleframe::kLast));
+  box.sent(100);
+  CHECK(box.empty());
+
+  // A long message at the smallest packet size: all of it arrives, paced.
+  box.push(msg);
+  bleframe::Reassembler r(4096);
+  uint32_t now = 1000;
+  int packets = 0;
+  bool done = false;
+  while (!box.empty() && packets < 100) {
+    p = box.next(now, 20);
+    if (p == nullptr) {
+      ++now;
+      continue;
+    }
+    if (packets > 0) CHECK(now - 1000 >= static_cast<uint32_t>(packets) * Outbox::kGapMs);
+    done = r.push(reinterpret_cast<const uint8_t*>(p->data()), p->size());
+    box.sent(now);
+    ++packets;
+  }
+  CHECK(packets == 28 && done && r.take() == msg);  // 18 payload bytes per packet
+
+  // Congested: the same packet again, later; nothing is skipped.
+  box.push(msg);
+  p = box.next(5000, 182);
+  const std::string first = *p;
+  box.congested(5000);
+  CHECK(box.next(5000 + Outbox::kRetryMs - 1, 182) == nullptr);
+  p = box.next(5000 + Outbox::kRetryMs, 182);
+  CHECK(p != nullptr && *p == first);
+  box.sent(5020);
+  p = box.next(5020 + Outbox::kGapMs, 182);
+  CHECK(p != nullptr && *p != first && !(static_cast<uint8_t>((*p)[1]) & bleframe::kFirst));
+
+  // No progress for five seconds: the message is given up, the next one starts.
+  box.push("{\"next\":1}");
+  box.congested(5028);
+  CHECK(box.next(5028 + Outbox::kStallMs + 100, 182) != nullptr);
+  CHECK(box.size() == 1);
+  box.clear();
+  CHECK(box.empty());
+
+  // Status: only the newest waits; one that has started is finished first.
+  box.push("status-1", true);
+  box.push("status-2", true);
+  CHECK(box.size() == 1);
+  p = box.next(9000, 182);
+  CHECK(p != nullptr && p->substr(2) == "status-2");
+  box.push("status-3", true);
+  box.push("reply", false);
+  box.push("status-4", true);
+  CHECK(box.size() == 3);  // the started one, status-4 in status-3's place, the reply
+  box.sent(9000);
+  p = box.next(9008, 182);
+  CHECK(p != nullptr && p->substr(2) == "status-4");
+  // Each message has its own sequence number.
+  const uint8_t seqA = static_cast<uint8_t>((*p)[0]);
+  box.sent(9008);
+  p = box.next(9016, 182);
+  CHECK(p != nullptr && p->substr(2) == "reply" && static_cast<uint8_t>((*p)[0]) != seqA);
+}
+
+static void testWire() {
+  std::printf("link: error replies\n");
+  long long c = -1, id = -1;
+  const char* req = "{\"c\":1234567,\"id\":42,\"op\":\"session.start\",\"session\":{\"id\":\"x\"}}";
+  hlink::peekTag(req, std::strlen(req), c, id);
+  CHECK(c == 1234567 && id == 42);
+  hlink::peekTag(req, 16, c, id);  // a first packet that ends inside "id"
+  CHECK(c == 1234567 && id == 0);
+  hlink::peekTag("{\"c\": 7, \"id\": 8}", 18, c, id);
+  CHECK(c == 7 && id == 8);
+  hlink::peekTag("garbage without members", 23, c, id);
+  CHECK(c == 0 && id == 0);
+  hlink::peekTag("", 0, c, id);
+  CHECK(c == 0 && id == 0);
+  // "id" inside the program, far from the start, is not taken for the request's id.
+  std::string late = "{\"op\":\"x\",\"pad\":\"" + std::string(120, 'p') + "\",\"id\":9}";
+  hlink::peekTag(late.data(), late.size(), c, id);
+  CHECK(id == 0);
+
+  mj::Value v;
+  CHECK(mj::parse(hlink::errorReply(1234567, 42, "busy: request dropped"), v));
+  CHECK(v["c"].num(0) == 1234567 && v["id"].num(0) == 42 && !v["ok"].boolean(true));
+  CHECK(std::string(v["error"].str("")) == "busy: request dropped");
+  CHECK(mj::parse(hlink::errorReply(0, 0, "a \"quoted\" \\ text"), v));
+  CHECK(std::string(v["error"].str("")) == "a \"quoted\" \\ text");
+}
+
+static void testKeepalive() {
+  std::printf("link: keepalive\n");
+  using namespace hlink;
+  CHECK(clampKeepaliveS(0) == 0 && clampKeepaliveS(-5) == 0 && clampKeepaliveS(0.4) == 0);
+  CHECK(clampKeepaliveS(std::nan("")) == 0);
+  CHECK(clampKeepaliveS(1) == 5 && clampKeepaliveS(4.9) == 5 && clampKeepaliveS(5) == 5 && clampKeepaliveS(30) == 30);
+  CHECK(clampKeepaliveS(3600) == 3600 && clampKeepaliveS(86400) == 3600 && clampKeepaliveS(4.3e9) == 3600);
+  CHECK(!keepaliveExpired(1000000, 0, 0));           // off: never
+  CHECK(!keepaliveExpired(10000, 0, 10));            // exactly ten seconds: not yet
+  CHECK(keepaliveExpired(10001, 0, 10));
+  CHECK(!keepaliveExpired(5, 0xFFFFFFF0u, 10));      // across the 49-day wrap of millis()
+  CHECK(keepaliveExpired(10100, 0xFFFFFFF0u, 10));
+  CHECK(!keepaliveExpired(3600000, 0, 3600) && keepaliveExpired(3600001, 0, 3600));  // no overflow at the maximum
+}
+
+// ---------------------------------------------------------------- lib/resume
+
+static void testHold() {
+  std::printf("resume: BOOT must be held\n");
+  using resume::HoldDetector;
+  // The pulse a USB port produces when it opens: a few ms, sampled every 0.5 ms.
+  HoldDetector usb;
+  bool fired = false;
+  for (uint32_t us = 0; us < 5000; us += 500) fired |= usb.sample(true, us / 1000);
+  for (uint32_t ms = 5; ms < 100; ++ms) fired |= usb.sample(false, ms);
+  CHECK(!fired);
+  HoldDetector almost;
+  for (uint32_t ms = 0; ms <= 39; ++ms) fired |= almost.sample(true, ms);
+  CHECK(!fired);
+  CHECK(almost.sample(true, 40));    // 40 ms: a press
+  int count = 1;
+  for (uint32_t ms = 41; ms < 2000; ++ms) count += almost.sample(true, ms) ? 1 : 0;
+  CHECK(count == 1);                 // held on: still one press
+  almost.sample(false, 2000);
+  for (uint32_t ms = 2001; ms < 2100; ++ms) count += almost.sample(true, ms) ? 1 : 0;
+  CHECK(count == 2);                 // released and pressed again
+  // A bounce starts the count again.
+  HoldDetector bounce;
+  for (uint32_t ms = 0; ms < 30; ++ms) fired |= bounce.sample(true, ms);
+  fired |= bounce.sample(false, 30);
+  for (uint32_t ms = 31; ms < 60; ++ms) fired |= bounce.sample(true, ms);
+  CHECK(!fired);
+  // Two samples far apart are not a hold (the task was held up in between).
+  HoldDetector sparse;
+  CHECK(!sparse.sample(true, 0) && !sparse.sample(true, 60));
+  CHECK(sparse.sample(true, 61));
+}
+
+static void testTicks() {
+  std::printf("resume: periods from the clock\n");
+  uint64_t last = 1000;
+  CHECK(resume::periodsSince(1000, last, 500) == 0 && last == 1000);
+  CHECK(resume::periodsSince(1499, last, 500) == 0 && last == 1000);
+  CHECK(resume::periodsSince(1500, last, 500) == 1 && last == 1500);
+  CHECK(resume::periodsSince(2750, last, 500) == 2 && last == 2500);  // the half period is kept
+  CHECK(resume::periodsSince(3000, last, 500) == 1 && last == 3000);
+  CHECK(resume::periodsSince(53000, last, 500) == 100 && last == 53000);  // a 50 ms stall: 100 periods, none lost
+  CHECK(resume::periodsSince(52000, last, 500) == 0 && last == 53000);    // a clock going back counts nothing
+}
+
+static void testStart() {
+  std::printf("resume: repeated start\n");
+  using namespace resume;
+  CHECK(validToken("a") && validToken("Abc-123_xyz") && validToken("123456789012345678901234"));
+  CHECK(!validToken("") && !validToken(nullptr) && !validToken("1234567890123456789012345"));
+  CHECK(!validToken("with space") && !validToken("quote\"") && !validToken("\xc3\xa4"));
+  CHECK(decideStart(false, "", "") == StartDecision::Start);
+  CHECK(decideStart(false, "", "tok1") == StartDecision::Start);
+  CHECK(decideStart(true, "tok1", "") == StartDecision::Busy);
+  CHECK(decideStart(true, "tok1", "tok2") == StartDecision::Busy);
+  CHECK(decideStart(true, "tok1", "tok1") == StartDecision::Already);   // the reply was lost: the same session again
+  CHECK(decideStart(false, "tok1", "tok1") == StartDecision::Already);  // it has ended meanwhile: still not started twice
+  CHECK(decideStart(false, "tok1", "tok2") == StartDecision::Start);
+  CHECK(decideStart(true, "", "") == StartDecision::Busy);              // no token never matches "no token"
+  CHECK(decideStart(false, nullptr, nullptr) == StartDecision::Start);
+}
+
+static void testIdent() {
+  std::printf("resume: identity\n");
+  char id[13];
+  // ESP.getEfuseMac() for the MAC 24:6F:28:AB:CD:EF.
+  resume::helmetId(0x0000EFCDAB286F24ull, id);
+  CHECK(std::string(id) == "246F28ABCDEF");
+  CHECK(std::string(id).substr(8) == "CDEF");  // the suffix of the default name GodHelmet-CDEF
+  for (int r = 0; r <= static_cast<int>(resume::Reset::Unknown); ++r) {
+    const char* name = resume::resetName(static_cast<resume::Reset>(r));
+    CHECK(name != nullptr && std::strlen(name) > 0 && std::strlen(name) < 30);
+  }
+  CHECK(std::string(resume::resetName(resume::Reset::TaskWatchdog)) == "task watchdog");
+}
+
+static void testProgress() {
+  std::printf("resume: progress record\n");
+  using namespace resume;
+  Progress slots[2];
+  std::memset(slots, 0xFF, sizeof slots);  // RTC memory after power-on is arbitrary
+  CHECK(!valid(slots[0]) && newest(slots) == -1);
+  std::memset(slots, 0, sizeof slots);
+  CHECK(!valid(slots[0]) && newest(slots) == -1);
+
+  Progress p;
+  p.bootId = 77;
+  p.logId = 12;
+  p.elapsedMs = 1000;
+  p.state = static_cast<uint8_t>(RunState::Running);
+  commit(slots, p);
+  CHECK(newest(slots) == 0 && slots[0].generation == 1 && valid(slots[0]));
+  p.elapsedMs = 1250;
+  commit(slots, p);
+  CHECK(newest(slots) == 1 && slots[1].elapsedMs == 1250 && slots[0].elapsedMs == 1000);
+  p.elapsedMs = 1500;
+  commit(slots, p);
+  CHECK(newest(slots) == 0 && slots[0].elapsedMs == 1500 && slots[0].generation == 3);
+
+  // Any flipped bit makes a copy invalid; the other one is then used.
+  for (size_t bit = 0; bit < sizeof(Progress) * 8; bit += 7) {
+    Progress damaged = slots[0];
+    reinterpret_cast<uint8_t*>(&damaged)[bit / 8] ^= static_cast<uint8_t>(1u << (bit % 8));
+    CHECK(!valid(damaged));
+  }
+  Progress half[2] = {slots[0], slots[1]};
+  std::memset(&half[0], 0xA5, sizeof(Progress) / 2);  // a restart in the middle of writing copy 0
+  CHECK(newest(half) == 1 && half[1].elapsedMs == 1250);
+  // A copy from another layout version is not read.
+  Progress old = slots[0];
+  old.magic = kProgressMagic + 1;
+  old.crc = crcOf(old);
+  CHECK(!valid(old));
+  // The counter wraps.
+  Progress wrap[2];
+  std::memset(wrap, 0, sizeof wrap);
+  Progress w;
+  w.state = static_cast<uint8_t>(RunState::Running);
+  w.generation = 0xFFFFFFFEu;
+  seal(w);
+  wrap[0] = w;
+  commit(wrap, w);
+  CHECK(newest(wrap) == 1 && wrap[1].generation == 0xFFFFFFFFu);
+  commit(wrap, w);
+  CHECK(newest(wrap) == 0 && wrap[0].generation == 0);
+  clear(slots);
+  CHECK(newest(slots) == -1);
+}
+
+static void testRecover() {
+  std::printf("resume: closing a session after a restart\n");
+  using namespace resume;
+  CHECK(!decide(nullptr, Reset::PowerOn).close);  // nothing survived: the open entries become "power lost"
+  Progress p;
+  p.logId = 12;
+  p.elapsedMs = 61250;
+  p.fieldUT = 1.5f;
+  p.fieldChanges = 2;
+  p.skips = 1;
+  p.state = static_cast<uint8_t>(RunState::Running);
+  Closure c = decide(&p, Reset::Panic);
+  CHECK(c.close && c.logId == 12 && c.elapsedMs == 61250 && !c.completed);
+  CHECK(std::string(c.reason) == "restart: panic" && c.fieldChanges == 2 && c.skips == 1);
+  CHECK_NEAR(c.fieldUT, 1.5, 1e-6);
+  CHECK(std::string(decide(&p, Reset::TaskWatchdog).reason) == "restart: task watchdog");
+  for (int r = 0; r <= static_cast<int>(Reset::Unknown); ++r) {
+    c = decide(&p, static_cast<Reset>(r));
+    CHECK(c.close && std::strlen(c.reason) < sizeof c.reason && std::strncmp(c.reason, "restart: ", 9) == 0);
+  }
+  // The session had ended; only the write to the log was still to come.
+  p.state = static_cast<uint8_t>(RunState::Ended);
+  p.completed = 1;
+  std::snprintf(p.reason, sizeof p.reason, "completed");
+  c = decide(&p, Reset::Software);
+  CHECK(c.close && c.completed && std::string(c.reason) == "completed");
+  p.completed = 0;
+  std::snprintf(p.reason, sizeof p.reason, "stopped from app");
+  c = decide(&p, Reset::Brownout);
+  CHECK(c.close && !c.completed && std::string(c.reason) == "stopped from app");
+  // A test has no log entry; an empty record closes nothing.
+  p.logId = 0;
+  CHECK(!decide(&p, Reset::Panic).close);
+  p.logId = 12;
+  p.state = static_cast<uint8_t>(RunState::None);
+  CHECK(!decide(&p, Reset::Panic).close);
 }
 
 static void testTableData() {
@@ -913,6 +1288,16 @@ int main(int argc, char** argv) {
   testAstro();
   testJson();
   testBleFrame();
+  testConn();
+  testOutbox();
+  testWire();
+  testKeepalive();
+  testHold();
+  testTicks();
+  testStart();
+  testIdent();
+  testProgress();
+  testRecover();
   testTableData();
   testCustomPlacement();
   testEngineV2();

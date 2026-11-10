@@ -17,7 +17,7 @@ struct Settings {
   float maxFieldUT = 5.0f;      // user ceiling at reference depth
   float defaultFieldUT = 1.0f;
   double longitudeDeg = 0.0;    // east positive; used for local sidereal time (set in the app)
-  uint32_t keepaliveS = 0;      // stop if no app is connected this long while running (0 = off)
+  uint32_t keepaliveS = 0;      // stop a session when no app has been present this long: 0 = off, else 5..3600
   String bleName;               // empty -> "GodHelmet-XXXX"
   uint32_t lastSessionEpoch = 0;
   bool safetyAccepted = false;

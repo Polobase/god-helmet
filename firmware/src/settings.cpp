@@ -3,6 +3,7 @@
 #include <Preferences.h>
 
 #include "config.h"
+#include "keepalive.h"
 #include "minijson.h"
 
 Settings gSettings;
@@ -24,7 +25,7 @@ void Settings::load() {
   maxFieldUT = p.getFloat("maxUT", maxFieldUT);
   defaultFieldUT = p.getFloat("defUT", defaultFieldUT);
   longitudeDeg = p.getDouble("lon", longitudeDeg);
-  keepaliveS = p.getUInt("keepalive", keepaliveS);
+  keepaliveS = hlink::clampKeepaliveS(p.getUInt("keepalive", keepaliveS));
   bleName = p.getString("bleName", bleName);
   lastSessionEpoch = p.getUInt("lastSess", lastSessionEpoch);
   safetyAccepted = p.getBool("safetyOk", safetyAccepted);
@@ -146,7 +147,8 @@ bool Settings::applyJson(const String& body, String& error) {
   if (v.has("defaultFieldUT"))
     defaultFieldUT = static_cast<float>(v["defaultFieldUT"].num(defaultFieldUT));
   if (v.has("longitudeDeg")) longitudeDeg = v["longitudeDeg"].num(longitudeDeg);
-  if (v.has("keepaliveS")) keepaliveS = static_cast<uint32_t>(v["keepaliveS"].num(0));
+  // 0 = off, else 5..3600 s (lib/link/keepalive.h): no value can stop a session on a hiccup or overflow.
+  if (v.has("keepaliveS")) keepaliveS = hlink::clampKeepaliveS(v["keepaliveS"].num(0));
   if (v.has("bleName")) {
     const String name = v["bleName"].str("");
     if (name.length() > 20) {

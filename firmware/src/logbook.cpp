@@ -8,6 +8,7 @@
 
 #include "envdata.h"
 #include "minijson.h"
+#include "storage.h"
 
 namespace logbook {
 namespace {
@@ -34,6 +35,10 @@ struct Record {
   int rating = -1;
   String notes;
   uint32_t trialId = 0;
+  String token;
+  float finalFieldUT = -1;  // < 0: not recorded
+  uint16_t fieldChanges = 0;
+  uint16_t skips = 0;
 
   // reveal=false hides the condition of an unrated blind session.
   void write(mj::Writer& w, bool reveal) const {
@@ -61,6 +66,12 @@ struct Record {
     w.key("rating").integer(rating);
     w.key("notes").string(notes.c_str());
     w.key("trialId").integer(trialId);
+    w.key("token").string(token.c_str());
+    if (finalFieldUT >= 0) {
+      w.key("finalFieldUT").number(finalFieldUT, 3);
+      w.key("fieldChanges").integer(fieldChanges);
+      w.key("skips").integer(skips);
+    }
     w.endObject();
   }
 
@@ -86,6 +97,10 @@ struct Record {
     rating = static_cast<int>(v["rating"].num(-1));
     notes = v["notes"].str("");
     trialId = static_cast<uint32_t>(v["trialId"].num(0));
+    token = v["token"].str("");
+    finalFieldUT = static_cast<float>(v["finalFieldUT"].num(-1));
+    fieldChanges = static_cast<uint16_t>(v["fieldChanges"].num(0));
+    skips = static_cast<uint16_t>(v["skips"].num(0));
   }
 };
 
@@ -97,9 +112,10 @@ bool store(const Record& r) {
   r.write(w, true);
   File f = LittleFS.open(path(r.id), "w");
   if (!f) return false;
-  f.print(w.str().c_str());
+  const size_t written = f.print(w.str().c_str());
   f.close();
-  return true;
+  storage::changed();
+  return written == w.str().size();  // a full filesystem writes less
 }
 
 bool fetch(uint32_t id, Record& r) {
@@ -118,6 +134,14 @@ uint32_t nextId() {
   p.begin("logbook", false);
   const uint32_t id = p.getUInt("next", 1);
   p.putUInt("next", id + 1);
+  p.end();
+  return id;
+}
+
+uint32_t peekNextId() {
+  Preferences p;
+  if (!p.begin("logbook", true)) return 1;  // never written: no entries yet
+  const uint32_t id = p.getUInt("next", 1);
   p.end();
   return id;
 }
@@ -148,24 +172,51 @@ uint32_t open(const Entry& e) {
   r.fieldUT = e.fieldUT;
   r.plannedMs = e.plannedMs;
   r.trialId = e.trialId;
+  r.token = e.token;
   const envdata::SpaceWeather sw = envdata::spaceWeather();
   r.kpValid = sw.valid;
   r.kp = sw.kp;
   r.ap = sw.ap;
   r.kpSource = sw.source;
   r.lst = envdata::lstHours();
-  store(r);
-  return r.id;
+  // Read back: only an entry that is really on file may be followed by a session.
+  Record check;
+  if (store(r) && fetch(r.id, check) && check.id == r.id && check.sham == r.sham && check.blind == r.blind &&
+      check.presetId == r.presetId)
+    return r.id;
+  discard(r.id);
+  return 0;
 }
 
-void close(const seq::Finished& fin) {
+void discard(uint32_t id) {
+  if (id == 0) return;
+  LittleFS.remove(path(id));
+  storage::changed();
+}
+
+bool close(const Closing& c) {
   Record r;
-  if (!fetch(fin.logId, r)) return;
+  if (!fetch(c.logId, r)) return false;
+  if (r.finished) return true;
   r.finished = true;
-  r.completed = fin.completed;
-  r.elapsedMs = fin.elapsedMs;
-  r.reason = fin.reason;
-  store(r);
+  r.completed = c.completed;
+  r.elapsedMs = c.elapsedMs;
+  r.reason = c.reason;
+  r.finalFieldUT = c.finalFieldUT;
+  r.fieldChanges = c.fieldChanges;
+  r.skips = c.skips;
+  return store(r);
+}
+
+size_t unfinished(uint32_t* ids, size_t max) {
+  constexpr uint32_t kLookBack = 3;
+  const uint32_t next = peekNextId();
+  size_t n = 0;
+  for (uint32_t back = 1; back <= kLookBack && back < next && n < max; ++back) {
+    Record r;
+    if (fetch(next - back, r) && !r.finished && !r.test) ids[n++] = r.id;
+  }
+  return n;
 }
 
 bool rate(uint32_t id, int rating, const String& notes, String& json, String& error) {

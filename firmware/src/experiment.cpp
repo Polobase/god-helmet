@@ -8,9 +8,11 @@
 #include <algorithm>
 #include <functional>
 
+#include "control.h"
 #include "envdata.h"
 #include "logbook.h"
 #include "sequencer.h"
+#include "storage.h"
 
 namespace experiment {
 namespace {
@@ -144,8 +146,13 @@ bool store(const Trial& t, String& error) {
     error = "cannot write trial";
     return false;
   }
-  f.print(w.str().c_str());
+  const size_t written = f.print(w.str().c_str());
   f.close();
+  storage::changed();
+  if (written != w.str().size()) {  // a full filesystem writes less
+    error = "cannot write trial (storage full)";
+    return false;
+  }
   return true;
 }
 
@@ -173,12 +180,13 @@ String publicJson(const Trial& t) {
 }
 
 // Uniform integer in [0, n) from the hardware RNG (rejection sampling, no modulo bias).
+// control::fillRandom: true random numbers also when Bluetooth is off.
 uint32_t randomBelow(uint32_t n) {
   if (n <= 1) return 0;
   const uint32_t limit = UINT32_MAX - (UINT32_MAX % n);
   uint32_t r;
   do {
-    r = esp_random();
+    control::fillRandom(&r, sizeof r);
   } while (r >= limit);
   return r % n;
 }
@@ -196,7 +204,7 @@ String toHex(const uint8_t* data, size_t n) {
 
 String randomHex(size_t bytes) {
   uint8_t buf[32];
-  esp_fill_random(buf, bytes);
+  control::fillRandom(buf, bytes);
   return toHex(buf, bytes);
 }
 
@@ -283,29 +291,34 @@ bool create(CreateRequest& req, String& json, String& error) {
   }
   t.commitment = sha256Hex(t.preimage());
 
+  // Order: log entry, trial file, then the session. Whatever happens in
+  // between, there is never stimulation without its trial on file, and a
+  // start that fails leaves neither a trial nor a log entry behind.
+  control::Launch launch;
   if (req.session != nullptr) {
-    logbook::Entry e;
-    e.presetId = t.presetId;
-    e.presetName = t.presetName;
-    e.blind = t.blind;
-    e.sham = t.condition == "sham";
-    e.fieldUT = req.fieldUT;
-    e.plannedMs = req.session->totalMs();
-    e.trialId = t.id;
-    t.logId = logbook::open(e);
-    seq::StartRequest sr;
-    sr.session = req.session;
-    sr.fieldUT = req.fieldUT;
-    sr.sham = e.sham;
-    sr.blind = t.blind;
-    sr.logId = t.logId;
-    if (!seq::start(sr)) {
-      error = "sequencer busy";
-      return false;  // caller still owns the session
+    launch.session = req.session;
+    launch.fieldUT = req.fieldUT;
+    launch.blind = t.blind;
+    launch.sham = t.condition == "sham";
+    launch.presetId = t.presetId;
+    launch.token = req.token;
+    launch.trialId = t.id;
+    if (!control::openLog(launch, t.logId, error)) return false;
+  }
+  if (!store(t, error)) {
+    LittleFS.remove(trialPath(t.id));
+    logbook::discard(t.logId);
+    return false;
+  }
+  if (req.session != nullptr) {
+    if (!control::launch(launch, t.logId, error)) {  // removes the log entry itself
+      LittleFS.remove(trialPath(t.id));
+      storage::changed();
+      return false;  // the caller still owns the session
     }
     req.session = nullptr;  // owned by the sequencer now
   }
-  if (!store(t, error)) return false;
+  control::rememberStart(req.token, t.logId, t.id);
   json = publicJson(t);
   return true;
 }

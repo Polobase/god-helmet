@@ -17,10 +17,12 @@
 #include "config.h"
 #include "dac.h"
 #include "envdata.h"
+#include "journal.h"
 #include "logbook.h"
 #include "sdcard.h"
 #include "sequencer.h"
 #include "settings.h"
+#include "storage.h"
 #include "timesync.h"
 #include "usblink.h"
 #ifdef STANDALONE_UI
@@ -31,7 +33,7 @@ namespace {
 
 void IRAM_ATTR onStopButton() { seq::emergencyStopFromIsr(); }
 
-void attachStop(int pin) {
+void buttonInput(int pin) {
   if (pin < 0) return;
 #if CONFIG_IDF_TARGET_ESP32
   // GPIO 34-39 are input only, without internal pull-ups (a button there needs an external one).
@@ -39,6 +41,12 @@ void attachStop(int pin) {
 #else
   pinMode(pin, INPUT_PULLUP);
 #endif
+}
+
+// The dedicated STOP button: an interrupt, at once.
+void attachStop(int pin) {
+  if (pin < 0) return;
+  buttonInput(pin);
   attachInterrupt(digitalPinToInterrupt(pin), onStopButton, FALLING);
 }
 
@@ -113,19 +121,26 @@ void setup() {
 #endif
   gSettings.load();
   dac::begin(gSettings.dacGain2x, gSettings.dacBufferedRef);
+  journal::begin();  // why this start, and what the last run left behind
 
   usblink::begin();
   usblink::logf("\nGod helmet controller %s (%s, %s)\n", kFirmwareVersion, BOARD_NAME, ESP.getChipModel());
+  usblink::logf("Helmet %s, start %lu (%s)\n", journal::helmetId(), static_cast<unsigned long>(journal::bootId()),
+                journal::resetReason());
 
-  // 2. Real-time engine and the STOP buttons (external and BOOT).
+  // 2. Real-time engine and the STOP buttons. The external button is an
+  // interrupt. BOOT is sampled by the sequencer and must be held for 40 ms:
+  // a computer opening the USB port pulses that pin (sequencer.h).
+  buttonInput(pins::kBoot);
   seq::begin();
-  attachStop(pins::kStop);
-  if (pins::kBoot != pins::kStop) attachStop(pins::kBoot);
+  if (pins::kStop != pins::kBoot) attachStop(pins::kStop);
   if (pins::kStatusLed >= 0) pinMode(pins::kStatusLed, OUTPUT);
 
   // 3. Storage and clock. The SD card is read only now and between sessions.
   if (!LittleFS.begin(true)) usblink::logf("LittleFS mount failed\n");
   ensureDirs();
+  journal::recover();  // closes the log entry of a session the restart cut short
+  storage::begin();
   envdata::begin();
   timesync::applyTimezone();
 #ifdef STANDALONE_UI
@@ -166,7 +181,19 @@ void loop() {
   usblink::loop();
 
   seq::Finished finished;
-  if (seq::popFinished(finished)) logbook::close(finished);
+  if (seq::popFinished(finished)) {
+    logbook::Closing c;
+    c.logId = finished.logId;
+    c.elapsedMs = finished.elapsedMs;
+    c.completed = finished.completed;
+    c.reason = finished.reason;
+    c.finalFieldUT = finished.finalFieldUT;
+    c.fieldChanges = finished.fieldChanges;
+    c.skips = finished.skips;
+    if (!logbook::close(c))
+      usblink::logf("Log entry %lu could not be closed\n", static_cast<unsigned long>(finished.logId));
+  }
+  storage::loop();
 
 #ifdef STANDALONE_UI
   ui::loop();

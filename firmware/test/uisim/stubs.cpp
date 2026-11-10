@@ -250,7 +250,7 @@ bool startAllowed(String& error) {
   }
   return true;
 }
-Result startFromDoc(const mj::Value& doc, const String& presetId, double fieldUT, bool blind) {
+Result startFromDoc(const mj::Value& doc, const String& presetId, double fieldUT, bool blind, const String&) {
   Result r;
   if (!startAllowed(r.error)) {
     r.ok = false;

@@ -110,5 +110,5 @@ constexpr uint32_t kMaxTestSeconds = 120;
 constexpr uint32_t kMinIntervalS = 72u * 3600u;  // Shakti guidance: >= 72 h between sessions
 }  // namespace limits
 
-constexpr const char* kFirmwareVersion = "0.3.0";
+constexpr const char* kFirmwareVersion = "0.4.0";
 constexpr int kProtocolVersion = 1;
