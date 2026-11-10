@@ -287,7 +287,10 @@ onBeforeUnmount(() => {
       <p class="text-sm font-semibold text-muted">Blinded trials</p>
       <h2 class="text-2xl">Remote viewing &amp; telepathy</h2>
       <p class="measure text-sm text-muted">The helmet picks the picture set, the target and real/sham with its hardware random generator, and publishes a SHA-256 commitment before you answer. Your response is hashed when you lock it. After you rank all pictures, the reveal shows everything, and the app checks that nothing was changed.</p>
-      <AppConnect v-if="!device.kind" class="mt-1" />
+      <div v-if="!device.kind" class="mt-1 flex flex-wrap items-center gap-3">
+        <ArtMark name="unplugged" animate class="w-11 shrink-0 text-toned" />
+        <AppConnect />
+      </div>
     </header>
 
     <div v-if="current" ref="cardEl" class="scroll-mt-[calc(var(--header-h,3.75rem)+1rem)]">

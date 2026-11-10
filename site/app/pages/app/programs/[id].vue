@@ -4,6 +4,7 @@
 import { useIntersectionObserver } from '@vueuse/core'
 import { fmtSetting, unitLabel } from '#core/lib/units.js'
 import { device } from '~/lib/device'
+import { programMark } from '~/lib/art'
 import { presetById, sourceEntries, categoryLabel, layoutInfo, sessionSites, program, preview, groupOf, usedCoils, placedCount, stopPreview, selectProgram } from '~/lib/programs'
 
 // Moving between a program's own sub-pages keeps the scroll position (the
@@ -31,6 +32,7 @@ const layout = computed(() => (session.value ? layoutInfo(session.value.layout) 
 const sites = computed(() => (session.value ? sessionSites(session.value) : []))
 const coils = computed(() => sites.value.filter(Boolean).length)
 const category = computed(() => categoryLabel(doc.value.category))
+const mark = computed(() => programMark(doc.value.category, doc.value.id))
 const minutes = computed(() => Math.round((session.value?.totalMs ?? 0) / 60000))
 // The mark lights up with the preview, or with the helmet while it runs this program.
 const running = computed(() => {
@@ -73,6 +75,7 @@ onBeforeUnmount(stopPreview)
       <div class="relative grid grid-cols-[minmax(0,1fr)_6rem] items-center gap-x-5 gap-y-5 sm:grid-cols-[minmax(0,1fr)_13rem] sm:gap-x-8">
         <div class="grid min-w-0 gap-4">
           <p class="flex flex-wrap items-center gap-2 text-sm font-semibold text-muted">
+            <ArtMark v-if="mark" :name="mark" class="w-9 shrink-0 text-toned" />
             <span>{{ category }}</span>
             <EvidenceBadge :level="doc.evidence" />
           </p>

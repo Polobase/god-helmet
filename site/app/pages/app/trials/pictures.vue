@@ -112,7 +112,7 @@ async function doImport(e: Event) {
 
     <section class="panel grid grid-cols-1 gap-4 p-5 sm:p-7" aria-labelledby="pool-sets">
       <h3 id="pool-sets" class="text-xl">Sets <span v-if="sets.length" class="num font-sans text-sm font-normal text-muted">{{ sets.length }}</span></h3>
-      <p v-if="!sets.length" class="text-sm text-muted">No sets yet.</p>
+      <p v-if="!sets.length" class="flex items-center gap-3 text-sm text-muted"><ArtMark name="photos" class="w-11 shrink-0 text-toned" />No sets yet.</p>
       <UAlert v-else color="warning" variant="subtle" icon="i-lucide-eye-off" description="If you will be the viewer, do not show the pictures: seeing them spoils your trials." />
       <TrialPoolSet v-for="s in sets" :key="s.id" :set="s" :busy="busy" :message="addMsg.at === s.id ? addMsg : null" @add="addToSet(s.id)" @remove="remove(s)" />
     </section>

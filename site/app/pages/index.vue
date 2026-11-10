@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { SceneId } from '~/lib/art'
+
 const { data: articles } = await usePageList('articles')
 const effects = computed(() => (articles.value ?? []).filter((a) => a.group === 'Effect'))
 const background = computed(() => (articles.value ?? []).filter((a) => a.group !== 'Effect'))
@@ -9,6 +11,35 @@ useSeoMeta({
   description: 'An open, DIY recreation of the Persinger and Koren God Helmet: eight weak-field coils, an ESP32, programs rebuilt from the literature, and blinded sham sessions to test what they do.',
   ogTitle: 'God Helmet: a weak-field helmet you can build, and test blind',
 })
+
+// Three things people ask about that have no article of their own: what the
+// record says in a sentence or two, and where the site goes into it.
+const claims: { scene: SceneId, kind: string, title: string, text: string, to: string, more: string }[] = [
+  {
+    scene: 'telepathy',
+    kind: 'Single-lab claim',
+    title: 'Telepathy',
+    text: 'The lab reported that a person in another room could describe what a partner was shown, in studies of four to seven pairs that nobody has repeated. The app runs it as a committed trial: the helmet fixes the picture before the receiver answers.',
+    to: '/docs/experiments#telepathy-trials',
+    more: 'How a telepathy trial works',
+  },
+  {
+    scene: 'ring',
+    kind: 'Single-lab claim',
+    title: 'The ring, or “Octopus”',
+    text: 'Eight coils around the head, the field stepping from one to the next counter-clockwise, each step a little shorter or longer than the last. The lab’s remote-viewing, telepathy and linked-brains reports all used it. Each comes from that one lab, some from a single subject.',
+    to: '/articles/research#circumcerebral-octopus-protocols',
+    more: 'The ring protocols in the evidence review',
+  },
+  {
+    scene: 'blind',
+    kind: 'Method',
+    title: 'Real or sham',
+    text: 'In the best independent test, suggestibility predicted the experiences and the field did not. So every effect here can be run blind: the helmet picks real or sham, and says which only after you have rated the session.',
+    to: '/docs/experiments#blinded-realsham-sessions',
+    more: 'How to run a blinded series',
+  },
+]
 
 const EXPECT = 'The fields are about 1–8 µT at the cortex, about a million times weaker than TMS, and the induced electric field is microvolts to millivolts per metre. The best double-blind test (Granqvist 2005, N = 89) found no effect of the field; suggestibility predicted the experiences.'
 
@@ -126,13 +157,26 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
       <UContainer class="py-20 lg:py-32">
         <div class="flex flex-wrap items-end justify-between gap-6">
           <div class="max-w-2xl">
-            <h2 id="read" class="text-4xl sm:text-5xl">The three effects people ask about</h2>
+            <h2 id="read" class="text-4xl sm:text-5xl">The effects people ask about</h2>
             <p class="mt-5 text-lg text-toned measure">What is reported, what the laboratory record says, what happened when others tried, and how to test each one with this helmet.</p>
           </div>
           <UButton to="/articles" size="lg" variant="ghost" trailing-icon="i-lucide-arrow-right">All articles</UButton>
         </div>
         <div v-reveal class="mt-10 grid gap-4 lg:grid-cols-3">
           <ArticleCard v-for="a in effects" :key="a.path" data-reveal-item :article="a" large />
+        </div>
+        <!-- Claims and the method, without an article of their own. -->
+        <div v-reveal class="mt-4 grid gap-4 lg:grid-cols-3" data-test="claims">
+          <NuxtLink v-for="c in claims" :key="c.scene" v-spotlight data-reveal-item :to="c.to" class="panel group flex flex-col gap-4 p-7 sm:p-8">
+            <ArtScene :name="c.scene" class="mx-auto mb-1 max-w-88 text-highlighted" />
+            <p class="flex items-center justify-between text-sm text-muted">
+              <span>{{ c.kind }}</span>
+              <UIcon name="i-lucide-arrow-up-right" class="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
+            </p>
+            <h3 class="text-[2rem] transition-colors group-hover:text-primary lg:text-[2.3rem]">{{ c.title }}</h3>
+            <p class="text-toned">{{ c.text }}</p>
+            <p class="mt-auto pt-2 text-sm font-semibold text-primary">{{ c.more }}</p>
+          </NuxtLink>
         </div>
         <ul class="mt-4 grid gap-4 sm:grid-cols-2">
           <li v-for="a in background" :key="a.path">

@@ -19,9 +19,13 @@ watch(() => helmetKey(), loadDraft)
 <template>
   <div class="grid grid-cols-1 gap-5">
     <header class="panel grid grid-cols-1 gap-5 p-5 sm:p-7">
-      <div class="grid grid-cols-1 gap-2">
-        <h1 class="text-4xl">Helmet</h1>
-        <p class="measure text-sm text-muted">Connection and safety, calibration, the wiring check, the helmet's settings and its firmware.</p>
+      <div class="flex items-start justify-between gap-5">
+        <div class="grid grid-cols-1 gap-2">
+          <h1 class="text-4xl">Helmet</h1>
+          <p class="measure text-sm text-muted">Connection and safety, calibration, the wiring check, the helmet's settings and its firmware.</p>
+        </div>
+        <!-- Nothing connected: the band with its cable loose. Connected: the band on a head, the field on. -->
+        <ArtMark :name="device.kind ? 'helmet' : 'unplugged'" animate class="w-16 shrink-0 text-toned sm:w-24" />
       </div>
       <HelmetStatus />
     </header>

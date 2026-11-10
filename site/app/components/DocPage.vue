@@ -4,6 +4,7 @@
 import type { PagesCollectionItem } from '@nuxt/content'
 import type { PageSummary } from '~/composables/usePages'
 import { repoUrl } from '~~/shared/links'
+import { pageScene, SCENE_LABELS } from '~/lib/art'
 
 const props = defineProps<{ page: PagesCollectionItem, siblings: PageSummary[] }>()
 
@@ -12,6 +13,8 @@ const surround = computed(() => [props.siblings[index.value - 1], props.siblings
 const updated = computed(() => (props.page.updated ? new Date(props.page.updated).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : ''))
 const toc = computed(() => props.page.body?.toc?.links ?? [])
 // Sub-headings count: a page with two sections of three parts each has plenty to list.
+// The drawing the page opens with, where one fits what it is about.
+const scene = computed(() => pageScene(props.page.path))
 const tocSize = computed(() => toc.value.reduce((n, l) => n + 1 + (l.children?.length ?? 0), 0))
 </script>
 
@@ -19,15 +22,18 @@ const tocSize = computed(() => toc.value.reduce((n, l) => n + 1 + (l.children?.l
   <article>
     <!-- How far through the page you are (browsers with scroll-driven animations). -->
     <div class="read-bar" aria-hidden="true" />
-    <header class="pb-8 border-b border-(--hairline)">
-      <slot name="kicker" />
-      <h1 class="max-w-[20ch] text-[clamp(2.4rem,5.4vw,4.2rem)] font-[650] leading-[1.02] tracking-[-0.028em] [font-stretch:80%]">{{ page.title }}</h1>
-      <p class="mt-5 text-lg text-toned measure">{{ page.description }}</p>
-      <p class="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted">
-        <span>{{ page.minutes }} min read</span>
-        <span v-if="updated">Updated {{ updated }}</span>
-        <a :href="repoUrl(page.file)" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-highlighted">Source on GitHub</a>
-      </p>
+    <header class="grid gap-x-12 gap-y-8 border-b border-(--hairline) pb-8" :class="{ 'md:grid-cols-[minmax(0,1fr)_minmax(0,15rem)] md:items-end xl:grid-cols-[minmax(0,1fr)_minmax(0,24rem)]': scene }">
+      <div>
+        <slot name="kicker" />
+        <h1 class="max-w-[20ch] text-[clamp(2.4rem,5.4vw,4.2rem)] font-[650] leading-[1.02] tracking-[-0.028em] [font-stretch:80%]">{{ page.title }}</h1>
+        <p class="mt-5 text-lg text-toned measure">{{ page.description }}</p>
+        <p class="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted">
+          <span>{{ page.minutes }} min read</span>
+          <span v-if="updated">Updated {{ updated }}</span>
+          <a :href="repoUrl(page.file)" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-highlighted">Source on GitHub</a>
+        </p>
+      </div>
+      <ArtScene v-if="scene" :name="scene" :label="SCENE_LABELS[scene]" class="max-w-80 text-highlighted md:max-w-none" />
     </header>
 
     <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-12">

@@ -33,6 +33,47 @@ test('landing page on a phone @phone', async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
 })
 
+test('the effects section: a drawing for each effect, moving only while it is on screen', async ({ page }) => {
+  await page.goto('/')
+  const section = page.locator('section[aria-labelledby="read"]')
+  await section.getByRole('heading', { name: 'The effects people ask about' }).scrollIntoViewIfNeeded()
+  for (const name of ['presence', 'obe', 'remote-viewing', 'telepathy', 'ring', 'blind']) await expect(section.locator(`svg[data-scene="${name}"]`), name).toHaveCount(1)
+  // The three without an article of their own lead to where the site covers them.
+  const claims = section.locator('[data-test="claims"]')
+  await expect(claims.getByRole('link', { name: /Telepathy/ })).toHaveAttribute('href', '/docs/experiments#telepathy-trials')
+  await expect(claims.getByRole('link', { name: /Octopus/ })).toHaveAttribute('href', '/articles/research#circumcerebral-octopus-protocols')
+  await expect(claims.getByRole('link', { name: /Real or sham/ })).toHaveAttribute('href', '/docs/experiments#blinded-realsham-sessions')
+
+  const ring = section.locator('svg[data-scene="ring"]')
+  const running = () => ring.evaluate((el) => el.getAnimations({ subtree: true }).filter((a) => a.playState === 'running').length)
+  await ring.scrollIntoViewIfNeeded()
+  await expect(ring).toHaveAttribute('data-art', 'run')
+  // The field steps round the eight coils twice in one loop, and a dot follows it along the row of ticks.
+  // (Asked until it is so: the animations start a frame or two after the attribute changes.)
+  await expect.poll(running).toBeGreaterThanOrEqual(17)
+  await page.evaluate(() => scrollTo(0, 0))
+  await expect(ring).toHaveAttribute('data-art', 'pause')
+  await expect.poll(running).toBe(0)
+})
+
+test('with less motion asked for, a drawing stands still and is complete', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/articles/research')
+  // An article opens with its drawing, which says in words what it shows.
+  const ring = page.locator('article header svg[data-scene="ring"]')
+  await expect(ring).toBeVisible()
+  await expect(ring).toHaveAttribute('role', 'img')
+  await expect(ring).toHaveAttribute('aria-label', /eight coils/)
+  // Past the moment it would have started to move.
+  await page.getByRole('heading', { level: 1 }).click()
+  await page.waitForTimeout(400)
+  expect(await ring.getAttribute('data-art')).toBeNull()
+  expect(await ring.evaluate((el) => el.getAnimations({ subtree: true }).length)).toBe(0)
+  const shown = (part: string) => ring.locator(part).first().evaluate((el) => getComputedStyle(el).display !== 'none')
+  expect(await shown('.art-still')).toBe(true)
+  expect(await shown('.art-live')).toBe(false)
+})
+
 test('articles: index, an article with its contents, links into the app', async ({ page }) => {
   await page.goto('/articles')
   for (const d of DOCS.filter((d) => d.section === 'articles')) await expect(page.getByRole('link', { name: new RegExp(d.label) }).first()).toBeVisible()

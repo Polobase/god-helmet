@@ -61,7 +61,7 @@ const overview = computed(() => {
         </tbody>
       </table>
     </div>
-    <p v-else class="text-sm text-muted">No revealed trials yet.</p>
+    <p v-else class="flex items-center gap-3 text-sm text-muted"><ArtMark name="envelope" class="w-11 shrink-0 text-toned" />No revealed trials yet.</p>
 
     <p v-if="arvCount" class="measure text-sm text-muted">{{ arvCount }} associative remote-viewing trial(s) from Guides are left out: their result is scored in the guide's run summary.</p>
     <p class="measure text-sm text-muted">One-sided p-values against chance. With 30 trials at 5 pictures, chance gives about 6 hits; about 11 are needed for p &lt; 0.05. A real effect of the field shows as active better than sham.</p>

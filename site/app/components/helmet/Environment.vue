@@ -36,16 +36,20 @@ const setKp = () => run(async () => {
   <section class="panel grid grid-cols-1 gap-5 p-5 sm:p-7" aria-labelledby="helmet-environment">
     <h2 id="helmet-environment" class="text-2xl">Environment</h2>
 
-    <dl class="grid grid-cols-[auto_minmax(0,1fr)] gap-x-5 gap-y-1.5 text-sm">
-      <dt class="text-muted">Helmet</dt>
-      <dd>{{ info?.board }}, firmware {{ info?.firmware }}</dd>
-      <dt class="text-muted">Clock</dt>
-      <dd class="num">{{ clock }}</dd>
-      <dt class="text-muted">Local sidereal time</dt>
-      <dd class="num">{{ lst }}</dd>
-      <dt class="text-muted">Kp / ap</dt>
-      <dd class="num">{{ kp }}</dd>
-    </dl>
+    <div class="grid items-center gap-x-8 md:grid-cols-[minmax(0,1fr)_14rem]">
+      <dl class="grid grid-cols-[auto_minmax(0,1fr)] gap-x-5 gap-y-1.5 text-sm">
+        <dt class="text-muted">Helmet</dt>
+        <dd>{{ info?.board }}, firmware {{ info?.firmware }}</dd>
+        <dt class="text-muted">Clock</dt>
+        <dd class="num">{{ clock }}</dd>
+        <dt class="text-muted">Local sidereal time</dt>
+        <dd class="num">{{ lst }}</dd>
+        <dt class="text-muted">Kp / ap</dt>
+        <dd class="num">{{ kp }}</dd>
+      </dl>
+      <!-- Kp says how disturbed the earth's field is. -->
+      <ArtScene name="geomagnetic" class="-my-6 text-toned max-md:hidden" />
+    </div>
 
     <div class="flex flex-wrap items-center gap-2">
       <UButton icon="i-lucide-cloud-download" @click="updateKp">Update Kp from NOAA</UButton>

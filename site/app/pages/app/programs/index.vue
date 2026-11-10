@@ -5,6 +5,7 @@ import { EVIDENCE_KEYS, evidenceLabel } from '#core/lib/evidence.js'
 import { queryWords, score } from '#core/lib/search.js'
 import { presets, groupedPresets, categoryLabel, library, groups, program, type Preset } from '~/lib/programs'
 import { LOBES, filterGroups } from '~/lib/placement'
+import { programMark } from '~/lib/art'
 
 // Back from a program, the library is where you left it: the router leaves the
 // scroll position alone then, and it is put back below.
@@ -129,8 +130,11 @@ const shownGroups = computed(() => filterGroups(groups, library.lobe, library.qu
       </div>
       <template v-else>
         <section v-for="g in sections" :key="g.key" class="grid gap-3" :aria-label="g.label">
-          <div class="flex items-baseline justify-between gap-3 border-b border-default pb-2">
-            <h2 class="text-xl">{{ g.label }} <span class="num font-sans text-sm font-normal text-muted">{{ g.items.length }}</span></h2>
+          <div class="flex items-end justify-between gap-3 border-b border-default pb-2">
+            <h2 class="flex items-center gap-3 text-xl">
+              <ArtMark v-if="programMark(g.key)" :name="programMark(g.key)!" class="w-10 shrink-0 text-toned" />
+              <span>{{ g.label }} <span class="num font-sans text-sm font-normal text-muted">{{ g.items.length }}</span></span>
+            </h2>
             <UButton v-if="g.items.length > FIRST && !library.category" size="xs" variant="link" color="primary" :aria-expanded="!!more[g.key]" @click="more[g.key] = !more[g.key]">
               {{ more[g.key] ? 'Show fewer' : `Show all ${g.items.length}` }}
             </UButton>

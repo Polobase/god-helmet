@@ -6,6 +6,7 @@ import { device } from '~/lib/device'
 import { EVIDENCE } from '~/lib/model'
 import { presetById } from '~/lib/programs'
 import { live } from '~/lib/guideRun'
+import { guideMark, guideScene } from '~/lib/art'
 import { CATEGORY_LABELS, guidePath, listSets, usableSets, stepDurationMs, plannedMs, armRange, type GuideEntry, type GuideStep, type PictureSet, type StepInput } from '~/lib/guides'
 
 const props = defineProps<{ entry: GuideEntry }>()
@@ -13,6 +14,8 @@ const emit = defineEmits<{ start: [options: { headphones: boolean }] }>()
 const { safetyPath } = useAppNav()
 
 const doc = computed(() => props.entry.doc)
+const mark = computed(() => guideMark(doc.value.category))
+const scene = computed(() => guideScene(doc.value.id, doc.value.category))
 const errors = computed(() => props.entry.errors ?? [])
 const req = computed(() => doc.value.requires ?? {})
 const steps = computed(() => doc.value.steps ?? [])
@@ -89,16 +92,21 @@ const MARK = {
 
 <template>
   <div class="grid gap-5">
-    <header class="panel grid gap-4 px-5 pb-5 pt-4 sm:px-7 sm:pb-7 sm:pt-5">
-      <div><UButton to="/app/guides" variant="link" color="neutral" icon="i-lucide-arrow-left" class="px-0">All guides</UButton></div>
-      <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-muted">
-        <span>{{ CATEGORY_LABELS[doc.category] ?? doc.category }}, <span class="num">{{ doc.minutes ?? Math.round(plannedMs(doc) / 60000) }}</span> min</span>
-        <EvidenceBadge :level="doc.evidence" />
-      </p>
-      <h1 class="max-w-[24ch] text-3xl sm:text-[2.6rem]">{{ doc.name }}</h1>
-      <GuideReqIcons :requires="req" labelled />
-      <p class="measure text-[1.05rem] text-highlighted">{{ doc.summary }}</p>
-      <p v-if="evidenceText" class="text-sm text-muted">Evidence: {{ evidenceText }}</p>
+    <header class="panel grid items-center gap-x-10 px-5 pb-5 pt-4 sm:px-7 sm:pb-7 sm:pt-5" :class="{ 'lg:grid-cols-[minmax(0,1fr)_minmax(0,19rem)]': scene }">
+      <div class="grid gap-4">
+        <div><UButton to="/app/guides" variant="link" color="neutral" icon="i-lucide-arrow-left" class="px-0">All guides</UButton></div>
+        <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-muted">
+          <ArtMark v-if="mark" :name="mark" class="w-9 shrink-0 text-toned" :class="{ 'lg:hidden': scene }" />
+          <span>{{ CATEGORY_LABELS[doc.category] ?? doc.category }}, <span class="num">{{ doc.minutes ?? Math.round(plannedMs(doc) / 60000) }}</span> min</span>
+          <EvidenceBadge :level="doc.evidence" />
+        </p>
+        <h1 class="max-w-[24ch] text-3xl sm:text-[2.6rem]">{{ doc.name }}</h1>
+        <GuideReqIcons :requires="req" labelled />
+        <p class="measure text-[1.05rem] text-highlighted">{{ doc.summary }}</p>
+        <p v-if="evidenceText" class="text-sm text-muted">Evidence: {{ evidenceText }}</p>
+      </div>
+      <!-- What the guide is about, where there is room for it; a phone shows the small mark above instead. -->
+      <ArtScene v-if="scene" :name="scene" class="text-toned max-lg:hidden" />
     </header>
 
     <UAlert v-if="errors.length" color="error" variant="subtle" icon="i-lucide-file-x" title="This guide file has errors and cannot run" :description="errors.join('; ')" />

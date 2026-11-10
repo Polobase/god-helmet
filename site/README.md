@@ -36,6 +36,7 @@ To see what the app does when the connection fails, connect the demo and use its
 | `app/pages/app/`, `app/components/{app,program,placement,brain,guide,trial,helmet,log}/` | the control app (client-only) |
 | `app/lib/` | typed front doors to the shared JavaScript core, and the state that outlives a page change |
 | `app/assets/css/main.css`, `app/app.config.ts` | the design: colours, type, the four themes |
+| `app/components/art/`, `app/lib/art.ts` | the illustrations: large scenes (`<ArtScene name="obe" />`) and small marks (`<ArtMark name="sleep" />`) drawn from one kit of parts, and which one stands for which page, category or guide |
 | `public/_redirects`, `public/_headers` | Cloudflare Pages: `/app/*` is one client-only shell |
 | `server/routes/` | files written at build time: search index, library counts, service worker, sitemap |
 | `PARITY.md` | every element of the old app and where it is now |

@@ -4,6 +4,7 @@
 import { fmtRange } from '#core/lib/units.js'
 import { norm } from '#core/lib/search.js'
 import { STATE_MAP, presetById, library, type Preset } from '~/lib/programs'
+import { programMark } from '~/lib/art'
 
 const experiences = computed(() => {
   const q = norm(library.query.trim()) as string
@@ -27,7 +28,12 @@ const open = (p?: Preset) => p && navigateTo(programPath(p.doc.id))
         </thead>
         <tbody>
           <tr v-for="row in experiences" :key="row.preset" class="cursor-pointer border-t border-default align-top hover:bg-primary/10" @click="open(row.p)">
-            <td class="px-2.5 py-2"><b class="text-highlighted">{{ row.state }}</b></td>
+            <td class="px-2.5 py-2">
+              <span class="flex items-center gap-2.5">
+                <ArtMark v-if="programMark(row.p?.doc.category, row.preset)" :name="programMark(row.p?.doc.category, row.preset)!" class="w-9 shrink-0 text-toned max-sm:hidden" />
+                <b class="text-highlighted">{{ row.state }}</b>
+              </span>
+            </td>
             <td class="px-2.5 py-2 text-muted">{{ row.region }}</td>
             <td class="px-2.5 py-2"><NuxtLink v-if="row.p" :to="programPath(row.p.doc.id)" class="font-semibold text-primary underline underline-offset-4" @click.stop>{{ row.p.doc.name }}</NuxtLink></td>
           </tr>

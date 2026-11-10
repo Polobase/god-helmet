@@ -4,6 +4,7 @@
 import { device } from '~/lib/device'
 import { presetById } from '~/lib/programs'
 import { trialForm, stimulationGroups, type Trial } from '~/lib/trials'
+import { TRIAL_MARKS } from '~/lib/art'
 
 const props = defineProps<{
   /** Picture sets a trial can use. */
@@ -35,7 +36,11 @@ const blocked = computed(() => props.busy || !online.value || !props.usableCount
 
 <template>
   <section class="panel grid grid-cols-1 gap-5 p-5 sm:p-7" aria-labelledby="new-trial">
-    <h2 id="new-trial" class="text-2xl">New trial</h2>
+    <div class="flex items-center justify-between gap-4">
+      <h2 id="new-trial" class="text-2xl">New trial</h2>
+      <!-- The mode that is chosen below, as a picture. -->
+      <ArtMark v-if="TRIAL_MARKS[trialForm.mode]" :name="TRIAL_MARKS[trialForm.mode]!" class="-my-1 w-10 shrink-0 text-toned" />
+    </div>
 
     <UAlert v-if="unfinished" color="warning" variant="subtle" icon="i-lucide-hourglass" :title="`Trial #${unfinished.id} is not finished yet.`"
       description="Resume it, or abort it before you start another." :actions="[{ label: 'Resume it', color: 'neutral', variant: 'outline', onClick: () => emit('resume') }]" />

@@ -246,6 +246,48 @@ test('Switch program offers every program, and keeps the open page', async ({ pa
   await expect(page).not.toHaveURL(`${PROGRAM}/sources`)
 })
 
+test('every category in the two libraries has its mark, and the empty pages theirs', async ({ page }) => {
+  const main = page.getByRole('main')
+  for (const path of ['/app/programs', '/app/guides']) {
+    await page.goto(path)
+    const groups = main.locator('section[aria-label] h2')
+    await expect(groups.first()).toBeVisible()
+    const n = await groups.count()
+    expect(n, path).toBeGreaterThan(5)
+    await expect(main.locator('section[aria-label] h2 svg[data-mark]'), path).toHaveCount(n)
+  }
+  // Decoration: a mark has no name of its own and is hidden from screen readers.
+  await expect(main.locator('h2 svg[data-mark]').first()).toHaveAttribute('aria-hidden', 'true')
+  await page.goto('/app/log')
+  await expect(main.locator('svg[data-mark="unplugged"]')).toBeVisible()
+  await main.getByRole('button', { name: 'Demo' }).click()
+  await expect(main.locator('svg[data-mark="notebook"]')).toBeVisible()
+  await tab(page, 'Trials')
+  await expect(main.locator('svg[data-mark="remote-viewing"]')).toBeVisible()
+  await expect(main.locator('svg[data-mark="envelope"]')).toBeVisible()
+})
+
+test('a drawing in the app stands still while the helmet runs a session', async ({ page }) => {
+  await demoWithSafety(page)
+  const main = page.getByRole('main')
+  await main.getByPlaceholder('Search programs, sites, brain regions…').fill('obe')
+  await main.locator('a[href="/app/programs/obe"]').first().click()
+  // The out-of-body programs show the out-of-body scene beside their summary.
+  const scene = main.locator('svg[data-scene="obe"]')
+  await expect(scene).toHaveAttribute('data-art', 'run')
+  await main.getByRole('button', { name: 'Start…' }).first().click()
+  await page.getByRole('dialog').getByRole('button', { name: 'Start', exact: true }).click()
+  await expect(main.getByText(/Session running/).first()).toBeVisible()
+  // (The panel of the running session pushes the scene down the page.)
+  await scene.scrollIntoViewIfNeeded()
+  await page.waitForTimeout(400)
+  await expect(scene).not.toHaveAttribute('data-art')
+  await page.getByRole('banner').getByRole('button', { name: 'Stop', exact: true }).first().click()
+  await expect(main.getByText(/Session running/)).toHaveCount(0, { timeout: 15_000 })
+  await scene.scrollIntoViewIfNeeded()
+  await expect(scene).toHaveAttribute('data-art', 'run')
+})
+
 test('units and themes apply everywhere', async ({ page }) => {
   await page.goto(PROGRAM)
   const header = page.getByRole('banner')

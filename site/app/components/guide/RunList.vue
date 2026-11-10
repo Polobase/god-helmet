@@ -42,7 +42,7 @@ const exportAll = () => downloadBlob(exportBlob(props.runs), EXPORT_FILENAME)
       <h2 class="text-2xl">{{ title }}</h2>
       <UButton v-if="runs.length" size="sm" icon="i-lucide-download" @click="exportAll">Export JSON</UButton>
     </div>
-    <p v-if="!runs.length" class="text-sm text-muted">No runs yet. Every run is stored on this phone only; export it to keep a copy.</p>
+    <p v-if="!runs.length" class="flex items-center gap-3 text-sm text-muted"><ArtMark name="notebook" class="w-11 shrink-0 text-toned" />No runs yet. Every run is stored on this phone only; export it to keep a copy.</p>
     <ul v-else class="grid gap-1.5">
       <li v-for="r in runs" :key="r.id" class="rounded-lg border border-default" :class="{ 'border-accented': open === r.id }">
         <button type="button" class="run" :aria-expanded="open === r.id" @click="open = open === r.id ? '' : r.id">

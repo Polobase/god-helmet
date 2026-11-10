@@ -5,6 +5,7 @@ import { describePattern, describeSpatial, fmtMinutes } from '#core/lib/format.j
 import { coilsUsed } from '#core/engine/spatial.js'
 import { PATTERN_INFO } from '#core/engine/patterns.js'
 import { presetById, sessionSites, program, preview, setPhase, startPreview, stopPreview } from '~/lib/programs'
+import { programScene } from '~/lib/art'
 
 const preset = computed(() => presetById(program.id)!)
 const doc = computed(() => preset.value.doc)
@@ -16,6 +17,8 @@ const used = computed(() => coilsUsed(phase.value.spatial, session.value.geometr
 const direction = computed(() => (phase.value.spatial.mode === 'rotate' ? (phase.value.spatial.ccw ? 'ccw' : 'cw') : null))
 const levels = computed(() => (preview.value ? preview.value.drives.map(Math.abs) : null))
 const coilCount = computed(() => sessionSites(session.value).filter(Boolean).length)
+// A drawing of what the program is about, where one fits: its own, its category's, or the ring when the field goes round all eight coils.
+const scene = computed(() => programScene(doc.value.category, doc.value.id, coilCount.value === 8 && session.value.phases.some((p) => p.spatial.mode === 'rotate')))
 const facts = computed(() => [['Setting', doc.value.setting], ['Schedule', doc.value.schedule]].filter(([, v]) => v) as [string, string][])
 
 // "left-tpj" -> "left TPJ" (the Brain page has the full region names)
@@ -26,9 +29,13 @@ const targetName = (id: string) => id.replace(/-/g, ' ').replace(/\b(tpj|dlpfc|v
   <div v-if="session" class="grid gap-5">
     <section class="panel grid gap-8 p-5 sm:p-7 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
       <div class="grid min-w-0 content-start gap-5">
-        <div class="grid gap-2">
-          <p class="measure text-[1.05rem] text-highlighted">{{ doc.summary }}</p>
-          <p v-if="doc.origin" class="text-sm text-muted">{{ doc.origin }}</p>
+        <div class="grid items-start gap-x-6 gap-y-2" :class="{ 'sm:grid-cols-[minmax(0,1fr)_12rem]': scene }">
+          <div class="grid gap-2">
+            <p class="measure text-[1.05rem] text-highlighted">{{ doc.summary }}</p>
+            <p v-if="doc.origin" class="text-sm text-muted">{{ doc.origin }}</p>
+          </div>
+          <!-- Beside the text where there is room; a phone has the small mark in the header. -->
+          <ArtScene v-if="scene" :name="scene" class="text-toned max-sm:hidden" />
         </div>
 
         <div class="grid gap-3 border-t border-default pt-5">

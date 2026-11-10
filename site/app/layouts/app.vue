@@ -1,6 +1,11 @@
 <script setup lang="ts">
 // The control app: its own header, and nothing rendered on the server.
+import { running } from '~/lib/device'
+import { ART_QUIET } from '~/lib/art'
+
 useHead({ meta: [{ name: 'robots', content: 'noindex' }] })
+// While the helmet runs a session, nothing on the screen moves for decoration.
+provide(ART_QUIET, computed(() => running()))
 </script>
 
 <template>

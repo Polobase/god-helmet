@@ -4,6 +4,7 @@
 import { errorMessage } from '~/lib/device'
 import { live, armRunning, stopLeftover } from '~/lib/guideRun'
 import { presetById } from '~/lib/programs'
+import { guideMark } from '~/lib/art'
 import { guides, CATEGORY_LABELS, guideLibrary as lib, guidePath, listRuns, type GuideDoc, type GuideEntry, type RunRecord } from '~/lib/guides'
 
 definePageMeta({
@@ -146,7 +147,10 @@ onBeforeRouteLeave(() => {
     <UEmpty v-else-if="!groups.length" icon="i-lucide-search-x" title="No guide matches these filters." :actions="[{ label: 'Clear filters', onClick: clearFilters }]" />
 
     <section v-for="g in groups" :key="g.key" class="grid gap-3" :aria-label="g.label">
-      <h2 class="border-b border-default pb-2 text-xl">{{ g.label }} <span class="num font-sans text-sm font-normal text-muted">{{ g.items.length }}</span></h2>
+      <h2 class="flex items-center gap-3 border-b border-default pb-2 text-xl">
+        <ArtMark v-if="guideMark(g.key)" :name="guideMark(g.key)!" class="w-10 shrink-0 text-toned" />
+        <span>{{ g.label }} <span class="num font-sans text-sm font-normal text-muted">{{ g.items.length }}</span></span>
+      </h2>
       <div class="cards">
         <NuxtLink v-for="{ doc, errors } in g.items" :key="doc.id" :to="guidePath(doc.id)" class="panel flex min-w-0 flex-col gap-2.5 p-4 transition-colors hover:border-accented hover:bg-elevated/40"
           :class="{ 'border-primary! ring-1 ring-primary': run?.id === doc.id }" :aria-current="run?.id === doc.id ? 'true' : undefined">

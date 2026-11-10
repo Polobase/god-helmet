@@ -5,6 +5,7 @@
 import { fmtDate } from '#core/lib/format.js'
 import { device } from '~/lib/device'
 import { STEPS, stepOf, isActive, type Trial, type TrialChecks } from '~/lib/trials'
+import { TRIAL_MARKS } from '~/lib/art'
 
 const props = defineProps<{
   trial: Trial
@@ -36,7 +37,10 @@ const canAbort = computed(() => props.trial.state === 'open' || props.trial.stat
 <template>
   <section class="panel grid grid-cols-1 gap-5 p-5 sm:p-7" :aria-label="`Trial ${trial.id}`">
     <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-      <h2 class="text-2xl">Trial #{{ trial.id }}, {{ trial.mode === 'rv' ? 'remote viewing' : 'telepathy' }}</h2>
+      <h2 class="flex items-center gap-3 text-2xl">
+        <ArtMark v-if="TRIAL_MARKS[trial.mode]" :name="TRIAL_MARKS[trial.mode]!" class="w-10 shrink-0 text-toned" />
+        <span>Trial #{{ trial.id }}, {{ trial.mode === 'rv' ? 'remote viewing' : 'telepathy' }}</span>
+      </h2>
       <div class="flex items-center gap-2">
         <UBadge color="primary" variant="solid" class="rounded-full" data-test="trial-state">{{ trial.state }}{{ trial.blind ? ', blind' : '' }}</UBadge>
         <UButton variant="ghost" size="sm" @click="emit('close')">{{ active ? 'Close for now' : 'Close' }}</UButton>

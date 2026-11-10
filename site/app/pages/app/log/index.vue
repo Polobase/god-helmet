@@ -112,6 +112,7 @@ async function exportAll() {
       </div>
       <p class="measure text-sm text-muted">Stored on the helmet. Blind sessions show "hidden" until you rate them.</p>
       <div v-if="!device.kind" class="flex flex-wrap items-center gap-3">
+        <ArtMark name="unplugged" animate class="w-11 shrink-0 text-toned" />
         <span class="text-sm text-warning">Connect the helmet (or the demo) to see its log.</span>
         <AppConnect />
       </div>
@@ -179,7 +180,10 @@ async function exportAll() {
         <UButton :disabled="loading" :loading="loading && !exporting" @click="load(true)">Load more ({{ items.length }} of {{ total }})</UButton>
       </div>
     </section>
-    <p v-else-if="device.kind && !loading" class="panel p-5 text-sm text-muted sm:p-7">No sessions yet. <NuxtLink to="/app/programs" class="text-primary underline underline-offset-4">Pick a program</NuxtLink> to start one.</p>
+    <div v-else-if="device.kind && !loading" class="panel flex items-center gap-4 p-5 text-sm text-muted sm:p-7">
+      <ArtMark name="notebook" class="w-12 shrink-0 text-toned" />
+      <p>No sessions yet. <NuxtLink to="/app/programs" class="text-primary underline underline-offset-4">Pick a program</NuxtLink> to start one.</p>
+    </div>
   </div>
 </template>
 
