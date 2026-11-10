@@ -82,7 +82,7 @@ The AD5328 has no data-out pin, so the board cannot tell whether the module is c
 | **Coils** | Seen from above, nose up, your left on the left. Step through the coils with the arrows or tap one on the map. For each coil: where it goes, in cm for your head, and how to measure it accurately |
 | **Details** | The program's full text: evidence, summary, setting, schedule, placement basis, notes |
 | **Start** | Field strength (µT at 20 mm, up to your ceiling) and **Blind**: real or sham drawn at random and revealed after you rate. Missing clock or a session less than 72 h ago: a warning, and you tap Start twice |
-| **Session** | Time left, phase, field ±, **Skip phase**, **STOP**. The BOOT button is STOP too. The screen stays on, or follows **Settings → Screen in session**: dimmed, or dark after 10 s (touch it higher up to see it again; **in the dark, the bottom quarter of the screen is STOP**) |
+| **Session** | Time left, phase, field ±, **Skip phase**, **STOP**. The BOOT button is STOP too (it counts once held for 40 ms). The screen stays on, or follows **Settings → Screen in session**: dimmed, or dark after 10 s (touch it higher up to see it again; **in the dark, the bottom quarter of the screen is STOP**) |
 | **Rate** | 0 (nothing) to 10 (profound), before you look anything up. Blind sessions show real or sham once rated. **Later** leaves it in the log |
 | **Log** | Past sessions, newest first; tap an unrated one to rate it |
 | **Settings** | Head size, Clock, Brightness, Screen in session, Field limits, Module check, LED test, Coil test, Bluetooth, Touch calibration, Display, Safety page, About |

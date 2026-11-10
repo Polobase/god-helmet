@@ -47,7 +47,7 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
   - the session and trial log;
   - the safety interlocks: STOP button, arming switch, field ceiling, 60-min cap.
 
-  A running session continues if the phone or computer disconnects.
+  A running session continues if the phone or computer disconnects, and the app shows it again when it reconnects. If the helmet itself restarts, the session's log entry says why and how long it ran.
 
 ## What's here
 

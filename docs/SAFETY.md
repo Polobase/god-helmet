@@ -34,10 +34,11 @@ Evidence words follow the project's scale (see [PRESET_FORMAT.md](PRESET_FORMAT.
 
 ## How to use it
 
-- Sit or lie down in a quiet, dark room. Keep the **STOP** button in your hand. The board's **BOOT** button is a second STOP on every board. On the standalone display board, STOP is the red button on the screen (with the screen set to go dark: the bottom quarter of it) or the BOOT button.
+- Sit or lie down in a quiet, dark room. Keep the **STOP** button in your hand. The board's **BOOT** button is a second STOP on every board (press it properly: a touch shorter than 40 ms does not count). On the standalone display board, STOP is the red button on the screen (with the screen set to go dark: the bottom quarter of it) or the BOOT button.
 - Standalone display board (no arming switch): power it, **wait for the screen**, then put the helmet on. Never flash, reset or connect it to a computer while you wear it ([WIRING.md](WIRING.md#esp32-32e-28-display-board)).
 - **Installing firmware** (from the app or PlatformIO) restarts the board: never while you wear the helmet.
-- **USB connection:** connect before putting the helmet on, disconnect after taking it off. On boards with an auto-reset circuit, opening or closing the port can pull the BOOT line (a STOP) or restart the board. Either one ends a running session.
+- **USB connection:** connect before putting the helmet on, disconnect after taking it off. On boards with an auto-reset circuit, a program that opens the port can restart the board, which ends a running session. The app opens the port in an order that does not; other programs (a serial monitor, a flashing tool) may. Opening the port also pulls the BOOT line low for a few milliseconds; since firmware 0.4.0 that no longer counts as a STOP.
+- **A lost connection does not stop a session.** The helmet runs it to its end by itself, whether the phone sleeps, Bluetooth drops or the cable comes out; the app shows it again when it reconnects. Without a connection only the STOP button stops it, so keep it in your hand. To have the helmet stop by itself when the app is gone, set the keepalive (**Helmet** → Settings).
 - Have a second person present for your first session.
 - Take hearing aids out, or switch the telecoil off. A telecoil picks up the signal as hum.
 - No magnets anywhere in the headband or coil clips. Use Velcro.
@@ -57,12 +58,14 @@ Evidence words follow the project's scale (see [PRESET_FORMAT.md](PRESET_FORMAT.
 |---|---|
 | Series resistors | Hardware current limit of 4.54 mA per coil (±10 V through 2.2 kΩ). No setting in the firmware or the app can exceed it |
 | Arming switch (PhotoMOS) | Coil return stays open at power-up until the DAC is at 0 V, and closes only when a session starts. Opens on STOP, at session end and on any reset (a 10 kΩ pull-down holds it open while the ESP32 restarts). Not on the standalone display board: there the DAC is set to 0 V first thing at power-on, and the helmet goes on only after the screen is up |
-| STOP button | Hardware interrupt that cuts the coil return instantly, independent of Bluetooth, USB and the app. No fade. The board's BOOT button does the same on every board. Display board: the BOOT button and the on-screen STOP set all outputs to 0 V within 0.5 ms |
+| STOP button | Hardware interrupt that cuts the coil return instantly, independent of Bluetooth, USB and the app. No fade. The board's BOOT button is a second STOP on every board; it is read 2000 times a second and stops once it has been held for 40 ms (a computer opening the USB port pulls that pin low for a few milliseconds, which must not stop a session). Display board: the on-screen STOP sets all outputs to 0 V within 0.5 ms, the BOOT button 40 ms after it is pressed |
 | Field ceiling | User ceiling (default 5 µT, at most 10 µT at 20 mm) clamps every program; DC tests limited to 4.6 mA and 120 s (the resistors cap the current at 4.54 mA anyway) |
 | Fades | 10 s fade-in/out unless a program sets its own; tests use 0.5 s. A stop from the app, or a lost keepalive, fades out over 2 s |
 | Watchdog | The real-time task is supervised by the ESP32 task watchdog; a hang of more than about 5 s resets the ESP32, which opens the arming switch |
 | Session cap | 60 min per session; the firmware rejects longer programs |
-| Optional app keepalive | Stops the session if no app has been connected for a set time (**Helmet** → Settings) |
+| Optional app keepalive | Stops the session when no app has been present for a set time, 5 s to 1 h (**Helmet** → Settings; off by default). Present means an app that listens to the helmet's status over Bluetooth, or asks for it over USB; a connection that does neither does not count |
+| Restart during a session | The outputs go to 0 V as at every start. The session's log entry is closed with the time it ran and the reason, e.g. `restart: task watchdog`; after a power cut, `power lost` ([BLE_PROTOCOL.md](BLE_PROTOCOL.md#when-the-connection-drops)) |
+| Start only with a record | A session does not start unless its log entry has been written and read back, so the real-or-sham choice of a blind session is on file before the outputs come on |
 | Safety gate | The helmet refuses to start sessions and tests until the safety page has been accepted in the app (or on the display board's screen) |
 | Interval warning | The app asks you to press Start twice if the last session was less than 72 h ago (needs the helmet clock, which the app sets) |
 

@@ -56,7 +56,7 @@ The firmware runs on four ESP32 chips, each with its own fixed pins (firmware en
 | Pulsed low after the 8 words: all coils change at the same instant | GPIO9 | GPIO17 | GPIO5 | GPIO20 | out | module **LDAC** |
 | **Arming switch** (add a 10 kΩ pull-down so it stays off during boot/reset) | GPIO4 | GPIO26 | GPIO10 | GPIO22 | out | PhotoMOS LED via 330 Ω |
 | STOP button to GND; interrupt opens the coil return immediately | GPIO5 | GPIO27 | GPIO3 | GPIO23 | in | push button |
-| The board's **BOOT** button is a second STOP | GPIO0 | GPIO0 | GPIO9 | GPIO9 | in | (on the board) |
+| The board's **BOOT** button is a second STOP (it counts once held for 40 ms) | GPIO0 | GPIO0 | GPIO9 | GPIO9 | in | (on the board) |
 | Status LED: blue blink idle, steady blue app connected (Bluetooth or USB), amber session (also during sham) | on-board RGB (GPIO48) | GPIO2 | on-board RGB (GPIO8) | on-board RGB (GPIO8) | out | – |
 | Module supply (max 5.5 V) | 5V pin | 5V / VIN | 5V | 5V | power | module **5V** |
 | Common ground | GND | GND | GND | GND | – | module **GND** (header and output terminal) |
@@ -84,10 +84,10 @@ Almost every pin already drives the display, touch, SD card, speaker or RGB LED 
 | SPI header · IO19 (MISO) | 19 | – (leave free) | the microSD card's data line; the AD5328 never sends data |
 | Expansion header · 3.3V | – | module **LDAC** | no pin is left for LDAC: tied high, the firmware updates all 8 outputs at once with the AD5328's software "single update" word |
 | Expansion header · GND | – | module **GND** | the SPI header has no ground pin: this wire is the common ground |
-| BOOT button (on the board) | 0 | – | **STOP** (as the red button on the screen) |
+| BOOT button (on the board) | 0 | – | **STOP** (as the red button on the screen; counts once held for 40 ms) |
 | USB-C | – | power bank, 5 V | |
 
-This board has **no arming switch** and **no external STOP button**: the coil returns go straight to the module's GND, and STOP is the on-screen button or the BOOT button. Both stop the field at once (the sequencer writes 0 V to all eight outputs within 0.5 ms).
+This board has **no arming switch** and **no external STOP button**: the coil returns go straight to the module's GND, and STOP is the on-screen button or the BOOT button. The on-screen button stops the field at once (the sequencer writes 0 V to all eight outputs within 0.5 ms); the BOOT button does so once it has been held for 40 ms, because opening the board's USB port pulses that pin.
 
 **Power-on rule.** The AD5328 starts at code 0, which on the ±10 V module is about −10 V on every output (up to 4.5 mA per coil through the 2.2 kΩ resistors) until the firmware sets 0 V, a fraction of a second after power-on. A reset holds whatever the outputs had. So:
 - Power the board and the module, **wait for the screen**, then put the helmet on.
