@@ -1,0 +1,347 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+@import "@fontsource-variable/bricolage-grotesque/standard.css";
+@import "@fontsource-variable/atkinson-hyperlegible-next/wght.css";
+@import "@fontsource-variable/atkinson-hyperlegible-next/wght-italic.css";
+
+/*
+  Patina. Copper wire that has been left out turns blue-green; that mineral
+  green is the one accent. It marks what is live: the coils, the current
+  choice, the action that switches the field on. Around it: deep, slightly
+  cool black with soft light behind the content, as if lit by the field.
+
+  Four modes: light, dark, and night (red on black, to keep dark adaptation
+  during a session). Night is a dark mode, so `dark:` utilities apply to it.
+*/
+@custom-variant dark (&:where(.dark, .dark *, .night, .night *));
+@custom-variant night (&:where(.night, .night *));
+
+@theme static {
+  --font-sans: 'Atkinson Hyperlegible Next Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Atkinson Hyperlegible Next Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-patina-50: oklch(97.5% 0.018 182);
+  --color-patina-100: oklch(94% 0.042 182);
+  --color-patina-200: oklch(89% 0.072 182);
+  --color-patina-300: oklch(84% 0.098 182);
+  --color-patina-400: oklch(78% 0.112 182);
+  --color-patina-500: oklch(69% 0.112 183);
+  --color-patina-600: oklch(58% 0.098 184);
+  --color-patina-700: oklch(48% 0.083 185);
+  --color-patina-800: oklch(40% 0.068 186);
+  --color-patina-900: oklch(33% 0.054 187);
+  --color-patina-950: oklch(23% 0.04 188);
+
+  --color-soot-50: oklch(98.2% 0.004 200);
+  --color-soot-100: oklch(96% 0.006 200);
+  --color-soot-200: oklch(91.5% 0.009 200);
+  --color-soot-300: oklch(85% 0.011 200);
+  --color-soot-400: oklch(69% 0.014 200);
+  --color-soot-500: oklch(55% 0.015 200);
+  --color-soot-600: oklch(44% 0.015 200);
+  --color-soot-700: oklch(34% 0.014 200);
+  --color-soot-800: oklch(24.5% 0.013 205);
+  --color-soot-900: oklch(18% 0.012 208);
+  --color-soot-950: oklch(13.5% 0.011 210);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer theme {
+  :root {
+    --ui-radius: 0.5rem;
+    --ui-container: 80rem;
+    --ui-header-height: 4rem;
+  }
+
+  /*
+    Nuxt UI writes its own colour variables on :root and .dark at runtime, on
+    client-only pages after this file. The doubled selectors here win over
+    those wherever its style tag ends up.
+  */
+  :root:not(.dark, .night) {
+    --ui-primary: var(--ui-color-primary-700);
+    /* Status colours dark enough to read as text on white. */
+    --ui-success: var(--ui-color-success-800);
+    --ui-info: var(--ui-color-info-800);
+    --ui-warning: var(--ui-color-warning-800);
+    --ui-error: var(--ui-color-error-600);
+    --ui-bg: #fff;
+    --ui-bg-muted: var(--ui-color-neutral-50);
+    --ui-bg-elevated: var(--ui-color-neutral-100);
+    --ui-text: var(--ui-color-neutral-700);
+    --ui-text-highlighted: var(--ui-color-neutral-950);
+    /* The page behind the panels, the wash under a live coil, and the two lights behind the content. */
+    --page: oklch(97.6% 0.006 200);
+    --stage: oklch(95.5% 0.022 182);
+    --light-a: oklch(88% 0.09 182 / 0.55);
+    --light-b: oklch(88% 0.07 285 / 0.4);
+    --panel-top: #fff;
+    --panel-bottom: oklch(99% 0.004 200);
+    --hairline: oklch(84% 0.012 200 / 0.9);
+    --hairline-strong: oklch(72% 0.04 185);
+    --panel-shadow: 0 1px 0 #fff inset, 0 20px 40px -28px oklch(40% 0.05 200 / 0.35);
+    --grain-opacity: 0.035;
+  }
+
+  :root.dark {
+    --ui-primary: var(--ui-color-primary-400);
+    --ui-bg: var(--ui-color-neutral-950);
+    --ui-bg-muted: var(--ui-color-neutral-900);
+    --ui-bg-elevated: var(--ui-color-neutral-800);
+    --ui-bg-accented: var(--ui-color-neutral-700);
+    --ui-border: oklch(27% 0.014 205);
+    --ui-border-muted: oklch(23% 0.013 205);
+    --ui-border-accented: oklch(36% 0.016 200);
+    --ui-text: var(--ui-color-neutral-200);
+    --ui-text-highlighted: oklch(97.5% 0.006 180);
+    --ui-text-inverted: oklch(14% 0.02 190);
+    --page: oklch(10.5% 0.012 215);
+    --stage: oklch(24% 0.05 182 / 0.55);
+    --light-a: oklch(55% 0.11 182 / 0.22);
+    --light-b: oklch(45% 0.13 285 / 0.2);
+    --panel-top: oklch(18.5% 0.014 208);
+    --panel-bottom: oklch(14.5% 0.012 212);
+    --hairline: oklch(100% 0 0 / 0.09);
+    --hairline-strong: oklch(78% 0.112 182 / 0.55);
+    --panel-shadow: 0 1px 0 oklch(100% 0 0 / 0.05) inset, 0 30px 60px -40px #000;
+    --grain-opacity: 0.06;
+  }
+
+  /* Night: one hue, low luminance. Status colours collapse to red on purpose. */
+  :root.night {
+    --ui-primary: #b23b2a;
+    --ui-secondary: #8f2f22;
+    --ui-success: #a3402f;
+    --ui-info: #94392b;
+    --ui-warning: #c4503f;
+    --ui-error: #d05a45;
+    --ui-bg: #070303;
+    --ui-bg-muted: #0d0504;
+    --ui-bg-elevated: #160806;
+    --ui-bg-accented: #220c09;
+    --ui-bg-inverted: #c4503f;
+    --ui-border: #2a0f0b;
+    --ui-border-muted: #1f0b08;
+    --ui-border-accented: #3a140f;
+    --ui-border-inverted: #c4503f;
+    --ui-text-dimmed: #5e231a;
+    --ui-text-muted: #7d2f23;
+    --ui-text-toned: #9c3b2c;
+    --ui-text: #b84735;
+    --ui-text-highlighted: #d05a45;
+    --ui-text-inverted: #070303;
+    --page: #030101;
+    --stage: #1a0806;
+    --light-a: transparent;
+    --light-b: transparent;
+    --panel-top: #0d0504;
+    --panel-bottom: #080302;
+    --hairline: #2a0f0b;
+    --hairline-strong: #7d2f23;
+    --panel-shadow: none;
+    --grain-opacity: 0;
+  }
+
+  /*
+    Drawing tokens: the head maps, waveforms and the brain view are drawn by
+    hand (SVG and canvas) and read these.
+  */
+  :root {
+    --bg: var(--ui-bg);
+    --surface: var(--ui-bg-muted);
+    --surface-2: var(--ui-bg-elevated);
+    --line: var(--ui-border);
+    --text: var(--ui-text-highlighted);
+    --muted: var(--ui-text-muted);
+    --accent: var(--ui-primary);
+    --accent-ink: var(--ui-text-inverted);
+    --accent-soft: color-mix(in oklab, var(--ui-primary) 16%, transparent);
+    --accent-hi: color-mix(in oklab, var(--ui-primary) 70%, white);
+    --accent-lo: color-mix(in oklab, var(--ui-primary) 62%, black);
+    --glow: color-mix(in oklab, var(--ui-primary) 35%, transparent);
+    --blue: var(--ui-info);
+    --ok: var(--ui-success);
+    --warn: var(--ui-warning);
+    --bad: var(--ui-error);
+    --font-body: var(--font-sans);
+  }
+}
+
+@layer base {
+  html { scroll-padding-top: calc(var(--ui-header-height) + 1.5rem); }
+
+  body {
+    background: var(--page);
+    font-size: 1rem;
+    line-height: 1.6;
+    /* Bricolage and Atkinson both look best with these on. */
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+  }
+
+  /*
+    Two soft lights behind everything (the field's glow) and a film of grain
+    so the gradients don't band. Fixed: content scrolls over them.
+  */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(60rem 38rem at 82% -8%, var(--light-a), transparent 68%),
+      radial-gradient(52rem 40rem at -6% 28%, var(--light-b), transparent 70%),
+      radial-gradient(70rem 44rem at 60% 118%, var(--light-a), transparent 70%);
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-stretch: 84%;
+    font-weight: 640;
+    letter-spacing: -0.018em;
+    line-height: 1.08;
+    color: var(--ui-text-highlighted);
+    text-wrap: balance;
+  }
+
+  ::selection { background: color-mix(in oklab, var(--ui-primary) 38%, transparent); color: var(--ui-text-highlighted); }
+
+  /* Figures that are compared down a column keep their width. */
+  .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+  :focus-visible { outline: 2px solid var(--ui-primary); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+}
+
+/* Page changes cross-fade (browsers with view transitions). */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) { animation: 0.18s ease-out both vt-out; }
+  ::view-transition-new(root) { animation: 0.32s var(--ease-out-expo) both vt-in; }
+}
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(6px); } }
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-stretch: 84%;
+  letter-spacing: -0.018em;
+}
+
+/*
+  A panel: the surface the app is built from. Lit from above, a hairline that
+  catches the light at the top edge, a soft shadow below.
+*/
+@utility panel {
+  position: relative;
+  background: linear-gradient(180deg, var(--panel-top), var(--panel-bottom));
+  border: 1px solid var(--hairline);
+  border-radius: calc(var(--ui-radius) * 2.5);
+  box-shadow: var(--panel-shadow);
+}
+
+/* Frosted: for bars that float over content (headers, sticky bars). */
+@utility glass {
+  background: color-mix(in oklab, var(--page) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+}
+
+/* The app's column: narrower than the site's, with room for a phone's notch. */
+@utility app-container {
+  width: 100%;
+  max-width: 70rem;
+  margin-inline: auto;
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+}
+
+/* Long text: a measure you can read. */
+@utility measure {
+  max-width: 68ch;
+}
+
+@layer components {
+  /*
+    The main action (app.config.ts adds this class to solid primary buttons):
+    lit from above, with the field's glow under it.
+  */
+  .btn-live {
+    background-image: linear-gradient(180deg, color-mix(in oklab, var(--ui-primary) 82%, white), var(--ui-primary) 55%, color-mix(in oklab, var(--ui-primary) 86%, black));
+    box-shadow: 0 1px 0 oklch(100% 0 0 / 0.35) inset, 0 0 0 1px color-mix(in oklab, var(--ui-primary) 70%, black), 0 10px 28px -10px var(--glow);
+    transition: box-shadow 0.25s, transform 0.15s var(--ease-out-expo), filter 0.2s;
+  }
+  .btn-live:hover:not(:disabled) {
+    filter: brightness(1.06);
+    box-shadow: 0 1px 0 oklch(100% 0 0 / 0.4) inset, 0 0 0 1px color-mix(in oklab, var(--ui-primary) 70%, black), 0 14px 36px -8px var(--glow), 0 0 0 5px color-mix(in oklab, var(--ui-primary) 14%, transparent);
+  }
+  .btn-live:active:not(:disabled) { transform: translateY(1px) scale(0.985); }
+  .night .btn-live { background-image: none; box-shadow: none; }
+
+  /*
+    A card that follows the pointer with a soft light (v-spotlight sets --mx
+    and --my). The light sits on the border and, faintly, on the surface.
+  */
+  .spot { position: relative; isolation: isolate; }
+  .spot::before, .spot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+  .spot::before {
+    z-index: -1;
+    background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--ui-primary) 13%, transparent), transparent 62%);
+  }
+  .spot::after {
+    padding: 1px;
+    inset: -1px;
+    background: radial-gradient(16rem circle at var(--mx, 50%) var(--my, 0%), var(--hairline-strong), transparent 65%);
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .spot:hover::before, .spot:hover::after, .spot:focus-visible::before, .spot:focus-visible::after { opacity: 1; }
+  .night .spot::before { display: none; }
+
+  /*
+    Appear once, on entering the screen (v-reveal). Children with
+    [data-reveal-item] follow one after the other.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-ready, .reveal-ready [data-reveal-item] {
+      opacity: 0;
+      transform: translateY(1.4rem);
+      transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+      transition-delay: calc(var(--reveal-i, 0) * 70ms);
+    }
+    .reveal-ready:has([data-reveal-item]) { opacity: 1; transform: none; }
+    .reveal-in, .reveal-in [data-reveal-item] { opacity: 1; transform: none; }
+  }
+
+  /* The first stop for the keyboard: past the header, to the content. Shown when focused. */
+  .skip { position: fixed; z-index: 100; left: 0.75rem; top: 0.75rem; padding: 0.55rem 0.9rem; border-radius: 0.6rem; background: var(--ui-bg); color: var(--ui-text-highlighted); border: 1px solid var(--ui-primary); font-weight: 600; transform: translateY(-200%); }
+  .skip:focus-visible { transform: none; }
+
+  /* On paper everything is there, whether it had scrolled into view or not. */
+  @media print {
+    .reveal-ready, .reveal-ready [data-reveal-item] { opacity: 1 !important; transform: none !important; }
+  }
+
+  /* A hairline that fades out at both ends. */
+  .rule-fade { height: 1px; background: linear-gradient(90deg, transparent, var(--hairline) 18%, var(--hairline) 82%, transparent); }
+}

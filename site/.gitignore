@@ -1,0 +1,12 @@
+node_modules/
+.nuxt/
+.output/
+.data/
+# (a link to .output/public after a build)
+dist
+test-results/
+playwright-report/
+
+# Firmware images for the installer (firmware/scripts/web_bundle.sh; CI builds them)
+public/firmware/
+.wrangler/

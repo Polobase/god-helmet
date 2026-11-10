@@ -1,0 +1,5 @@
+# The control app is one client-only shell: every /app route gets it, so deep
+# links and reloads work. Status 200 = serve, don't redirect. Cloudflare Pages
+# serves 200.html under the name /200.
+/app    /200  200
+/app/*  /200  200

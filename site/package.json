@@ -1,0 +1,42 @@
+{
+  "name": "god-helmet-site",
+  "private": true,
+  "version": "0.4.0",
+  "type": "module",
+  "description": "Landing page, articles, docs and the control app for the 8-coil weak-field helmet",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt generate",
+    "preview": "node scripts/serve.mjs",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@iconify-json/lucide": "^1.2.152",
+    "@nuxt/content": "^3.16.2",
+    "@nuxt/ui": "^4.12.0",
+    "esp-web-tools": "10.4.0",
+    "marked": "18.0.14",
+    "nuxt": "^4.6.4",
+    "tailwindcss": "^4.3.5",
+    "three": "0.185.1"
+  },
+  "overrides": {
+    "@material/web": "2.4.1"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.17.0",
+    "@playwright/test": "^1.65.0",
+    "@types/node": "^26.6.6",
+    "@types/three": "^0.185.0",
+    "eslint": "^10.0.0",
+    "typescript": "^6.0.3",
+    "vitest": "^5.1.0",
+    "vue-tsc": "^3.3.14"
+  }
+}

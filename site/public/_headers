@@ -1,0 +1,22 @@
+# Cloudflare Pages response headers.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  # The app talks to the helmet over Bluetooth and USB, asks for the location
+  # once (sidereal time) and keeps the screen awake during a guide.
+  Permissions-Policy: bluetooth=(self), serial=(self), geolocation=(self), screen-wake-lock=(self), camera=(), microphone=(), payment=()
+
+# Built files carry a content hash in their name.
+/_nuxt/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Firmware images and their manifests are replaced on every release under the
+# same names: always ask the server.
+/firmware/*
+  Cache-Control: no-cache
+
+# The app is a tool, not a page to find in a search engine.
+/app/*
+  X-Robots-Tag: noindex
