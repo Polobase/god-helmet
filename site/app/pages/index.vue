@@ -166,7 +166,7 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
             </div>
           </NuxtLink>
         </div>
-        <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+        <ul class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <li v-for="a in background" :key="a.path">
             <NuxtLink v-spotlight :to="a.path" class="panel group flex items-baseline gap-4 px-6 py-5">
               <span class="font-display text-xl font-[640] text-highlighted group-hover:text-primary">{{ a.label }}</span>

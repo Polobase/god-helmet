@@ -120,6 +120,14 @@ const ALL_DOCS: DocMeta[] = [
     group: 'History',
     description: 'Military, intelligence and health-agency history: ELF research, the remote-viewing programmes, Gateway, the replication controversy, and what WHO, IARC and ICNIRP concluded.',
   },
+  {
+    file: 'docs/PSIONIC_HELMET.md',
+    section: 'articles',
+    slug: 'psionic-helmet',
+    label: 'The Psionic Helmet',
+    group: 'Comparison',
+    description: 'A hobbyist “psionic helmet” and the electrode-wired device in Spielberg’s Disclosure Day set beside the God Helmet and the ganzfeld: what each is, what is claimed, what they share (a helmet, covered eyes, expectation), and how to test such claims blind.',
+  },
 
   // ---- docs
   {

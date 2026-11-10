@@ -6,6 +6,7 @@ const columns = [
     { label: 'Remote viewing', to: '/articles/remote-viewing' },
     { label: 'The evidence', to: '/articles/research' },
     { label: 'History', to: '/articles/history' },
+    { label: 'The Psionic Helmet', to: '/articles/psionic-helmet' },
   ] },
   { title: 'Claims', links: [
     { label: 'Telepathy', to: '/articles/telepathy' },

@@ -38,7 +38,7 @@ const background = computed(() => (articles.value ?? []).filter((a) => a.group !
 
     <section class="mt-16" aria-labelledby="background">
       <h2 id="background" class="text-2xl">Background</h2>
-      <div class="mt-6 grid gap-4 lg:grid-cols-2">
+      <div class="mt-6 grid gap-4 lg:grid-cols-3">
         <ArticleCard v-for="a in background" :key="a.path" :article="a" large />
       </div>
     </section>

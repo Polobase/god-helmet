@@ -80,6 +80,7 @@ export const PAGE_SCENES: Record<string, SceneId> = {
   '/articles/random-numbers': 'micro-pk',
   '/articles/research': 'helmet',
   '/articles/history': 'history',
+  '/articles/psionic-helmet': 'ganzfeld',
   '/docs/overview': 'helmet',
   '/docs/experiments': 'blind',
   '/docs/placement': 'ring',
