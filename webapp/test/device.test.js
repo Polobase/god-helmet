@@ -1,8 +1,14 @@
 // The connection as the views see it (ble/device.js), against a fake helmet:
 // what stays on screen when the link drops, reconnecting, what is said about
 // the time in between, starts whose reply got lost, Kp.
-import { test, beforeEach } from 'node:test'
+import { test, beforeEach, after } from 'node:test'
 import assert from 'node:assert/strict'
+
+// The app's own timers (reconnect pauses, the status watchdog) are made not
+// to keep Node alive. While a test waits for one of them, nothing else may be
+// pending, and Node 22 then ends the run in the middle of the test. This keeps it alive.
+const awake = setInterval(() => {}, 1000)
+after(() => clearInterval(awake))
 
 const store = new Map()
 Object.defineProperty(globalThis, 'localStorage', {

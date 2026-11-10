@@ -2,7 +2,7 @@
 // showing the session, reconnects by itself and picks everything up again.
 // In Demo mode, with the demo helmet's hooks (webapp/src/ble/demo.js):
 // window.__helmetDemo.drop(ms), comeBack(), dropAfter(op), dropBefore(op, ms), restart(), pressStop().
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Locator, type Page } from '@playwright/test'
 
 const PROGRAM = '/app/programs/god-helmet-classic'
 const NAME = 'God Helmet classic'
@@ -49,6 +49,10 @@ async function startSession(page: Page) {
 }
 
 const note = (page: Page) => page.locator('[data-test=link-note]')
+// Presses Reconnect where it is shown. The app also reconnects by itself, so
+// the button may be gone before the press lands (on a slow machine the two
+// race): either way the link comes back, which is what the tests then check.
+const pressReconnect = (where: Locator) => where.getByRole('button', { name: 'Reconnect' }).click({ timeout: 3000 }).catch(() => undefined)
 const pill = (page: Page) => page.getByRole('banner').locator('[data-test=session-pill]').first()
 const panel = (page: Page) => page.locator('[data-test=live-panel]')
 
@@ -118,7 +122,7 @@ test('a reload on a docs page, and a drop there: the session does not vanish wit
   await expect(sitePill).toHaveAttribute('data-lost', 'true')
   await expect(sitePill.getByRole('button', { name: 'Stop' })).toBeDisabled()
   await demo(page, 'comeBack')
-  await line.getByRole('button', { name: 'Reconnect' }).click()
+  await pressReconnect(line)
   await expect(line).toHaveText(/Reconnected\. .* is still running\./)
   await sitePill.getByRole('button', { name: 'Stop' }).click()
   await expect(sitePill).toHaveCount(0, { timeout: 10_000 })
@@ -153,7 +157,7 @@ test('the session ended while the link was down: said so, and the rating prompt 
   await expect(pill(page)).toHaveAttribute('data-lost', 'true')
   await demo(page, 'pressStop') // on the helmet, while the app cannot see it
   await demo(page, 'comeBack')
-  await note(page).getByRole('button', { name: 'Reconnect' }).click()
+  await pressReconnect(note(page))
   await expect(note(page)).toHaveText(/^Reconnected\. “God Helmet classic.*” ended at \d.* while the connection was down: it was stopped with the helmet’s STOP button\.$/)
   await expect(pill(page)).toHaveCount(0)
   const prompt = page.locator('[data-test=rating-prompt]')
@@ -209,7 +213,7 @@ test('Start waits for the first status after connecting, and a lost answer to St
   await expect(dialog.getByRole('button', { name: 'Connection lost' })).toBeDisabled()
   await expect(dialog.getByText('Connection to the demo helmet lost')).toBeVisible()
   await demo(page, 'comeBack')
-  await dialog.getByRole('button', { name: 'Reconnect' }).click()
+  await pressReconnect(dialog)
   await expect(dialog.getByRole('button', { name: 'Start', exact: true })).toBeEnabled()
   // The helmet starts the session, but its answer is lost with the link.
   await demo(page, 'dropAfter', 'session.start')
@@ -297,7 +301,7 @@ test('a guide\'s helmet arm whose start never reached the helmet is not started 
   await expect(main.getByRole('button', { name: 'Done' })).toBeVisible()
   // The helmet is back, well within the time a lost start would be sent again: but nobody wants it any more.
   await demo(page, 'comeBack')
-  await note(page).getByRole('button', { name: 'Reconnect' }).click()
+  await pressReconnect(note(page))
   await expect(note(page)).toContainText('Reconnected to the demo helmet.')
   await page.waitForTimeout(1500)
   const state = await demo(page, 'state')
@@ -417,7 +421,7 @@ test('firmware without the new fields: a drop and a reconnect still pick the ses
   await expect(pill(page)).toHaveAttribute('data-lost', 'true')
   await demo(page, 'pressStop')
   await demo(page, 'comeBack')
-  await note(page).getByRole('button', { name: 'Reconnect' }).click()
+  await pressReconnect(note(page))
   await expect(note(page)).toHaveText(/Reconnected\. “God Helmet classic.*” ended at \d.* while the connection was down: it was stopped with the helmet’s STOP button\./, { timeout: 20_000 })
   await expect(page.locator('[data-test=rating-prompt]')).toBeVisible()
 })
@@ -436,7 +440,7 @@ test('with the keepalive on, the lost line says that the helmet stops the sessio
   await expect(note(page)).toContainText('The helmet stops “God Helmet classic (Persinger 2-phase)” by itself after 5 s without the app.')
   await expect(note(page)).toContainText('The helmet has stopped “God Helmet classic (Persinger 2-phase)” by now', { timeout: 15_000 })
   await demo(page, 'comeBack')
-  await note(page).getByRole('button', { name: 'Reconnect' }).click()
+  await pressReconnect(note(page))
   await expect(note(page)).toHaveText(/ended at \d.* while the connection was down: the helmet stopped it after 5 s without the app\.$/, { timeout: 15_000 })
 })
 
@@ -450,7 +454,7 @@ test('the lost connection on a phone: the session, the line and its buttons fit 
   await expect(row.getByRole('button', { name: 'Stop' })).toBeDisabled()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
   await demo(page, 'comeBack')
-  await note(page).getByRole('button', { name: 'Reconnect' }).click()
+  await pressReconnect(note(page))
   await expect(note(page)).toContainText('is still running')
   await row.getByRole('button', { name: 'Stop' }).click()
 })
