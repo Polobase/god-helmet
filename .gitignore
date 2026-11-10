@@ -3,6 +3,11 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# Credentials (Cloudflare and the like): never in the repository
+.env
+.env.*
+!.env.example
 webapp/node_modules/
 webapp/dist/
 
