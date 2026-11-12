@@ -1,7 +1,7 @@
 {
   "name": "god-helmet-site",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "type": "module",
   "description": "Landing page, articles, docs and the control app for the 8-coil weak-field helmet",
   "scripts": {

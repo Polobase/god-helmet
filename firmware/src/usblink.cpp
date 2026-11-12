@@ -54,7 +54,7 @@ void answer(Port& p) {
     return;
   }
   bool valid = false;
-  const std::string reply = rpc::handle(p.line, &valid);
+  const std::string reply = rpc::handle(std::move(p.line), &valid);  // leaves p.line empty
   // Only a real request counts as "an app is there" (status LED, keepalive):
   // noise on the line or a boot message echoed back does not.
   if (valid) {

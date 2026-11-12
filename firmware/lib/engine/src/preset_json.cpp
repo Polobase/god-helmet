@@ -24,24 +24,20 @@ int b64Value(char c) {
   return -1;
 }
 
-// Standard base64 (with or without padding) -> bytes. False on bad input.
-bool decodeBase64(const char* s, std::vector<uint8_t>& out) {
-  out.clear();
-  uint32_t acc = 0;
-  int bits = 0;
-  for (; *s && *s != '='; ++s) {
-    const int v = b64Value(*s);
-    if (v < 0) return false;
-    acc = (acc << 6) | static_cast<uint32_t>(v);
-    bits += 6;
-    if (bits >= 8) {
-      bits -= 8;
-      out.push_back(static_cast<uint8_t>((acc >> bits) & 0xFF));
-    }
-  }
+// Standard base64, with or without padding: the characters, then any '='.
+bool validBase64(const char* s) {
+  for (; *s && *s != '='; ++s)
+    if (b64Value(*s) < 0) return false;
   for (; *s == '='; ++s) {
   }
   return *s == '\0';
+}
+
+// Bytes a valid base64 string decodes to.
+size_t base64Length(const char* s) {
+  size_t chars = 0;
+  for (; *s && *s != '='; ++s) ++chars;
+  return chars * 6 / 8;
 }
 
 bool checkTableSize(size_t n, size_t pool, std::string* error) {
@@ -55,17 +51,39 @@ inline int8_t toPoint(int v) {
   return static_cast<int8_t>(x < -127 ? -127 : x);
 }
 
+// Decodes a valid base64 string straight into the pool, without a copy in between.
+void appendBase64(const char* s, std::vector<int8_t>& pool) {
+  uint32_t acc = 0;
+  int bits = 0;
+  for (; *s && *s != '='; ++s) {
+    acc = (acc << 6) | static_cast<uint32_t>(b64Value(*s));
+    bits += 6;
+    if (bits >= 8) {
+      bits -= 8;
+      pool.push_back(toPoint(static_cast<int>((acc >> bits) & 0xFF)));
+    }
+  }
+}
+
+// Points a pattern's own table will add to the pool (0 for anything else).
+size_t ownTablePoints(const mj::Value& pattern) {
+  if (std::strcmp(pattern["type"].str(""), "table") != 0) return 0;
+  if (pattern["data"].isArray()) return pattern["data"].size();
+  if (pattern["dataB64"].isString()) return base64Length(pattern["dataB64"].str());
+  return 0;
+}
+
 // Appends point values 0..255 (128 = zero field) to the session's table pool:
 // a JSON array of numbers, or (compact, SD-card programs) a base64 string of bytes.
 bool appendTable(const mj::Value& v, std::vector<int8_t>& pool, uint32_t& offset, uint32_t& len,
                  std::string* error) {
   if (v.isString()) {
-    std::vector<uint8_t> bytes;
-    if (!decodeBase64(v.str(), bytes)) return fail(error, "table base64 is invalid");
-    if (!checkTableSize(bytes.size(), pool.size(), error)) return false;
+    if (!validBase64(v.str())) return fail(error, "table base64 is invalid");
+    const size_t n = base64Length(v.str());
+    if (!checkTableSize(n, pool.size(), error)) return false;
     offset = static_cast<uint32_t>(pool.size());
-    len = static_cast<uint32_t>(bytes.size());
-    for (uint8_t b : bytes) pool.push_back(toPoint(b));
+    len = static_cast<uint32_t>(n);
+    appendBase64(v.str(), pool);
     return true;
   }
   if (!checkTableSize(v.size(), pool.size(), error)) return false;
@@ -214,6 +232,19 @@ bool sessionFromJson(const mj::Value& doc, Session& out, PresetInfo* info, std::
 
   // Shared point table ("tableData"), used by table patterns without inline "data".
   const mj::Value& shared = doc["tableData"].isArray() ? doc["tableData"] : doc["tableDataB64"];
+
+  // Room for every table at once, at its exact size: a pool that doubled as
+  // it filled would need the old and the new copy at the same moment, more
+  // than an ESP32 has in one piece with Bluetooth running.
+  size_t points = shared.isArray() ? shared.size() : shared.isString() ? base64Length(shared.str()) : 0;
+  for (size_t i = 0; i < phases.size(); ++i) {
+    const mj::Value& pv = phases[i];
+    const mj::Value& tracks = pv["tracks"];
+    if (!tracks.isArray()) points += ownTablePoints(pv["pattern"]);
+    else
+      for (size_t t = 0; t < tracks.size() && t < 2; ++t) points += ownTablePoints(tracks[t]["pattern"]);
+  }
+  if (points > 0 && points <= kMaxTablePool) out.table.reserve(points);  // more fails below with its own message
   uint32_t sharedLen = 0;
   if (shared.isArray() || shared.isString()) {
     uint32_t offset = 0;

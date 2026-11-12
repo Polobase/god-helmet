@@ -104,6 +104,7 @@ Reply hello() {
   w.key("lastSessionEpoch").integer(gSettings.lastSessionEpoch);
   w.key("minIntervalS").integer(limits::kMinIntervalS);
   w.key("freeHeap").integer(ESP.getFreeHeap());
+  w.key("maxAlloc").integer(ESP.getMaxAllocHeap());  // the largest piece: what a large program needs
   // Measured while idle (storage.h): asking the filesystem here would hold up a running session.
   w.key("fsUsed").integer(storage::usedBytes());
   w.key("fsTotal").integer(storage::totalBytes());
@@ -376,7 +377,7 @@ Reply dispatch(const std::string& op, const mj::Value& v, const std::string& raw
 
 }  // namespace
 
-std::string handle(const std::string& request, bool* valid) {
+std::string handle(std::string request, bool* valid) {
   if (valid != nullptr) *valid = false;
   // Read from the text itself, so that even a request that cannot be parsed
   // (or that runs the board out of memory) is answered to the right caller.
@@ -393,6 +394,8 @@ std::string handle(const std::string& request, bool* valid) {
       id = static_cast<long long>(v["id"].num(0));
       const std::string op = v["op"].str("");
       if (valid != nullptr) *valid = !op.empty();
+      // Everything is in `v` now; only settings.set reads the text again.
+      if (op != "settings.set") std::string().swap(request);
       reply = dispatch(op, v, request);
     }
     mj::Writer w;

@@ -102,7 +102,7 @@ All signals are s(t) in −1…1, multiplied by the coil gain, the phase level a
 | `semirandom` | `pointMs` 3, `seed` 1 | Random value per point. |
 | `pm` | `f0` 40 Hz carrier, `f1` 0.5 Hz modulation, `depth` 3 rad | Phase-modulated sine ("modulated 40 Hz"). |
 | `noise` | `f0` 4 – `f1` 8 Hz, `seed` | Band-limited noise ("theta-band random noise"). |
-| `table` | `data` [0–255], `pointMs`, `gapMs` | Exact point tables; 128 = zero. Up to 8192 points per table and 16384 per program. A table with no `data` uses the program's shared `tableData`. |
+| `table` | `data` [0–255], `pointMs`, `gapMs` | Exact point tables; 128 = zero. Up to 8192 points per table and 16384 per program. A table with no `data` uses the program's shared `tableData`. The same table can be written packed as `dataB64` / `tableDataB64` (base64, one byte per point); the app sends programs to the helmet that way. |
 
 Frequencies are 0–500 Hz, `pointMs` 0–1000, `depth` 0–20 rad.
 

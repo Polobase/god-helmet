@@ -1,7 +1,10 @@
-// Compact program form for the device's SD card (webapp/scripts/sd-pack.mjs):
-// only the fields the engine reads, with every point table as base64 of its
-// bytes ("dataB64", "tableDataB64"). A 16,000-point table is then one JSON
-// string instead of 16,000 parsed numbers, which the ESP32 could not hold.
+// Compact program form: only the fields the engine reads, with every point
+// table as base64 of its bytes ("dataB64", "tableDataB64"). A 16,000-point
+// table is then one JSON string instead of 16,000 parsed numbers, which the
+// ESP32 cannot hold: its JSON reader runs out of memory at about 1,000.
+// Used for the device's SD card (webapp/scripts/sd-pack.mjs) and for every
+// program the app sends to a helmet (ble/device.js). Firmware reads it since
+// 0.3.0. The program passed in is left unchanged.
 const RUNTIME_KEYS = ['id', 'name', 'uT', 'layout', 'placement', 'fadeInS', 'fadeOutS', 'phases']
 
 function toB64(values) {
@@ -24,7 +27,8 @@ export function compactProgram(doc) {
   const out = {}
   for (const k of RUNTIME_KEYS) if (doc[k] !== undefined) out[k] = doc[k]
   out.phases = (doc.phases ?? []).map((ph) => {
-    const c = compactTrack(ph)
+    // A copy even when the phase itself has no table: its tracks are replaced below.
+    const c = { ...compactTrack(ph) }
     if (Array.isArray(ph.tracks)) c.tracks = ph.tracks.map(compactTrack)
     return c
   })

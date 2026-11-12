@@ -264,7 +264,7 @@ void serve() {
   Request r;
   if (xQueueReceive(gInbox, &r, 0) == pdTRUE) {
     bool valid = false;
-    std::string reply = rpc::handle(*r.text, &valid);
+    std::string reply = rpc::handle(std::move(*r.text), &valid);
     delete r.text;
     if (valid) seq::keepalive();
     // Handling can take a second (the log is read from flash). The app may

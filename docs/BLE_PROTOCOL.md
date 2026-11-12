@@ -80,7 +80,7 @@ One JSON message per line at 115200 baud (the chips' own USB ignores the baud ra
 
 | op | Parameters | Returns |
 |---|---|---|
-| `hello` | – | `firmware`, `protocol`, `board`, `chip` (e.g. `ESP32-C3`), `helmetId`, `bootId`, `uptimeS`, `resetReason`, `recoveredLogId` (these five: [below](#when-the-connection-drops)), `transports` (`["ble","usb"]`, or `["usb"]` with Bluetooth off), `calibrated`, `safetyAccepted`, `maxReachableUT`, `maxFieldUT`, `defaultFieldUT`, `lastSessionEpoch`, `minIntervalS`, `freeHeap`, `fsUsed`, `fsTotal` (measured while no session runs), `links` (`ble`: connected apps, `bleStatus`: those subscribed to status, `usb`: ports with a request in the last 10 s), `env` |
+| `hello` | – | `firmware`, `protocol`, `board`, `chip` (e.g. `ESP32-C3`), `helmetId`, `bootId`, `uptimeS`, `resetReason`, `recoveredLogId` (these five: [below](#when-the-connection-drops)), `transports` (`["ble","usb"]`, or `["usb"]` with Bluetooth off), `calibrated`, `safetyAccepted`, `maxReachableUT`, `maxFieldUT`, `defaultFieldUT`, `lastSessionEpoch`, `minIntervalS`, `freeHeap`, `maxAlloc` (the largest free piece of memory), `fsUsed`, `fsTotal` (measured while no session runs), `links` (`ble`: connected apps, `bleStatus`: those subscribed to status, `usb`: ports with a request in the last 10 s), `env` |
 | `status` | – | the live status (the same JSON as the Bluetooth status notification) |
 | `time.set` | `epochMs` | `env` (the app sends its clock on every connect) |
 | `env.set` | `kp` (0–9), `ap`, `source` | `env` |
@@ -181,10 +181,12 @@ Same format as the files in `presets/`. Parsed by `firmware/lib/engine/src/prese
 
 | Field | Values |
 |---|---|
-| Pattern `type` | `off`, `dc`, `sine`, `chirp`, `burst`, `thomas`, `pulse`, `semirandom`, `table` (needs `tableData`, values 0–255, at most 8192) |
+| Pattern `type` | `off`, `dc`, `sine`, `chirp`, `burst`, `thomas`, `pulse`, `semirandom`, `table` (its own `data` or the program's `tableData`, values 0–255, at most 8192 per table and 16384 per program) |
 | Spatial `mode` | `bilateral`, `left`, `right`, `rotate`, `cycle` (one `side`), `alternate` (`alternateMs`), `single` (`channel`) |
 | Dwell | `"dwellMs": 20` (fixed) or `"dwell": [start, step, end]` (ramp, repeats) |
 | Duration | `minutes` or `seconds` per phase; the total must be ≤ 60 min |
+
+**Send tables packed.** A table can also be given as `dataB64` (in a pattern) or `tableDataB64` (for the whole program): base64 of its bytes, one byte per point. As lists of numbers, a table of more than about 1,000 points is too large for an ESP32 to read: the request is answered with `out of memory`, and 87 of the programs in `presets/` have such tables. Packed, the largest program in `presets/` is 24 KB with one short number list at most. Firmware reads the packed form since 0.3.0; the app always sends programs packed (`webapp/src/engine/compact.js`), with only the fields the firmware reads. `hello`'s `maxAlloc` is the largest free piece of memory, which is what a large program needs.
 
 ## Trial commitment
 

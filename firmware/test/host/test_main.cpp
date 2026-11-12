@@ -1105,6 +1105,29 @@ static void testTableData() {
                           toBase64(std::vector<uint8_t>(8193, 128)) + R"("}}]})";
   mj::parse(big, doc);
   CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("8192") != std::string::npos);
+
+  // Memory on the ESP32: the pool is reserved once at its exact size, so it
+  // never doubles (old and new copy at once). Two packed tracks, a shared table.
+  std::vector<uint8_t> a(5190), b(5000);
+  for (size_t i = 0; i < a.size(); ++i) a[i] = static_cast<uint8_t>(i * 7);
+  for (size_t i = 0; i < b.size(); ++i) b[i] = static_cast<uint8_t>(255 - i % 256);
+  const std::string two = R"({"id":"t","phases":[{"seconds":10,"tracks":[{"pattern":{"type":"table","pointMs":1,"dataB64":")" + toBase64(a) +
+                          R"("}},{"pattern":{"type":"table","pointMs":1,"dataB64":")" + toBase64(b) + R"("}}]}],"tableDataB64":"gP8AyA=="})";
+  mj::parse(two, doc);
+  CHECK(sessionFromJson(doc, s, nullptr, &err));
+  CHECK(s.table.size() == 4 + 5190 + 5000 && s.table.capacity() == s.table.size());
+  CHECK(s.phases[0].pattern.tableOffset == 4 && s.phases[0].pattern.tableLen == 5190);
+  CHECK(s.phases[0].pattern2.tableOffset == 4 + 5190 && s.phases[0].pattern2.tableLen == 5000);
+  // Unpacked straight into the pool: every point exactly as an array would give it.
+  bool same = true;
+  for (size_t i = 0; i < a.size(); ++i) same &= s.table[4 + i] == static_cast<int8_t>(std::max(-127, a[i] - 128));
+  for (size_t i = 0; i < b.size(); ++i) same &= s.table[4 + 5190 + i] == static_cast<int8_t>(std::max(-127, b[i] - 128));
+  CHECK(same);
+  // A broken table after a good one: rejected, with its own message.
+  const std::string bad = R"({"id":"t","phases":[{"seconds":10,"tracks":[{"pattern":{"type":"table","dataB64":")" + toBase64(a) +
+                          R"("}},{"pattern":{"type":"table","dataB64":"gP$A"}}]}]})";
+  mj::parse(bad, doc);
+  CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("base64") != std::string::npos);
 }
 
 // Tape-measure directions: the C++ port must match webapp/src/lib/tape.js

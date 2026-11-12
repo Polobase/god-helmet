@@ -53,7 +53,9 @@ test('JS engine matches the C++ engine for every preset', () => {
 test('compact SD-card programs (base64 tables) parse to the same session', () => {
   for (const file of readdirSync(presetsDir).filter((f) => f.endsWith('.json'))) {
     const doc = JSON.parse(readFileSync(join(presetsDir, file), 'utf8'))
+    const original = JSON.stringify(doc)
     const compact = compactProgram(doc)
+    assert.equal(JSON.stringify(doc), original, `${doc.id}: the program passed in is left unchanged`)
     assert.ok(!JSON.stringify(compact).includes('"data":['), `${doc.id}: no numeric tables left`)
     assert.deepEqual(parseSession(compact), parseSession(doc), doc.id)
   }

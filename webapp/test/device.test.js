@@ -38,9 +38,9 @@ const nowS = () => Math.floor(Date.now() / 1000)
 const DEFAULT_TIMING = { ...timing, retryMs: [...timing.retryMs] }
 
 // A helmet behind a fake transport. `old`: firmware without helmetId, bootId and tokens.
-function fakeHelmet({ kind = 'ble', name = 'GodHelmet-EEFF', helmetId = 'AABBCCDDEEFF', old = false } = {}) {
+function fakeHelmet({ kind = 'ble', name = 'GodHelmet-EEFF', helmetId = 'AABBCCDDEEFF', old = false, firmware = old ? '0.3.0' : '0.4.0' } = {}) {
   const h = {
-    kind, name, old, calls: [], opens: [], started: 0, bootId: 11, resetReason: 'power-on', recoveredLogId: 0, settings: { keepaliveS: 0, longitudeDeg: 8 },
+    kind, name, old, firmware, calls: [], opens: [], started: 0, bootId: 11, resetReason: 'power-on', recoveredLogId: 0, settings: { keepaliveS: 0, longitudeDeg: 8 },
     log: [], session: null, last: null, lastStopReason: '', link: null, handlers: null, env: { timeValid: false, kpValid: false },
     unreachable: '', loseReply: '', swallow: '', mute: false, bannerOnOpen: false, helloFails: 0,
   }
@@ -80,7 +80,7 @@ function fakeHelmet({ kind = 'ble', name = 'GodHelmet-EEFF', helmetId = 'AABBCCD
     'time.set': () => ((h.env.timeValid = true), h.env),
     hello: () => {
       if (h.helloFails > 0 && h.helloFails--) throw linkError('timeout', 'hello: no answer from the helmet')
-      return { firmware: old ? '0.3.0' : '0.4.0', protocol: 1, safetyAccepted: true, env: { ...h.env }, ...(old ? {} : { helmetId, bootId: h.bootId, uptimeS: 5, resetReason: h.resetReason, recoveredLogId: h.recoveredLogId }) }
+      return { firmware: h.firmware, protocol: 1, safetyAccepted: true, env: { ...h.env }, ...(old ? {} : { helmetId, bootId: h.bootId, uptimeS: 5, resetReason: h.resetReason, recoveredLogId: h.recoveredLogId }) }
     },
     'settings.get': () => ({ ...h.settings }),
     status,
@@ -893,4 +893,22 @@ test('on pages that are not the app, a remembered helmet is only reached for whe
   assert.equal(restore({ sessionOnly: true }), true)
   await until('the reconnect', () => device.link === 'connected')
   assert.equal(device.event.type, 'running')
+})
+
+test('programs go to the helmet packed, one base64 string per table; the app\'s copy stays as it was', async () => {
+  const { readFileSync } = await import('node:fs')
+  const doc = JSON.parse(readFileSync(new URL('../../presets/shakti-alternate.json', import.meta.url), 'utf8'))
+  const before = JSON.stringify(doc)
+  const h = await connected1(fakeHelmet())
+  await start('session.start', { session: doc, presetId: doc.id })
+  const sent = JSON.stringify(h.ops('session.start')[0].session)
+  assert.ok(!sent.includes('"data":[') && sent.includes('"dataB64"'), 'no number lists left')
+  assert.ok(sent.length < before.length / 3, `${sent.length} of ${before.length} bytes`)
+  assert.equal(JSON.stringify(doc), before, 'the program in the app is unchanged')
+  h.end()
+  disconnect()
+  // Firmware older than 0.3.0 reads number lists only: it gets the program as it is.
+  const old = await connected1(fakeHelmet({ firmware: '0.2.0' }))
+  await start('session.start', { session: doc, presetId: doc.id })
+  assert.equal(JSON.stringify(old.ops('session.start')[0].session), before)
 })

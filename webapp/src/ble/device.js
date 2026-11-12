@@ -8,6 +8,7 @@ import { openSerial, serialAvailable, onSerialPlugged } from './serial.js'
 import { openDemo } from './demo.js'
 import { linkError, noReply, droppedByHelmet } from './link.js'
 import { fetchKp } from '../lib/noaa.js'
+import { compactProgram } from '../engine/compact.js'
 
 export const device = reactive({
   kind: null,          // 'ble' | 'usb' | 'demo' | null: the helmet in use, also while its link is down
@@ -613,9 +614,25 @@ async function rebooted(t) {
 }
 
 // ---------------------------------------------------------------- requests
+// Programs go to the helmet packed (engine/compact.js): every point table as
+// one base64 string. Sent as lists of numbers, 87 of the programs are too
+// large for an ESP32 to read. Firmware reads the packed form since 0.3.0 and
+// so does the demo; older firmware gets the program as it is.
+const atLeast = (version, min) => {
+  const a = String(version ?? '').split('.').map(Number)
+  const b = min.split('.').map(Number)
+  for (let i = 0; i < b.length; i++) if ((a[i] || 0) !== b[i]) return (a[i] || 0) > b[i]
+  return true
+}
+const readsPacked = () => device.kind === 'demo' || atLeast(device.info?.firmware, '0.3.0')
+export function packed(op, params) {
+  if ((op !== 'session.start' && op !== 'trial.new') || !params?.session || typeof params.session !== 'object' || !readsPacked()) return params
+  return { ...params, session: compactProgram(params.session) }
+}
+
 export async function call(op, params, timeoutMs) {
   if (!transport) throw device.kind ? linkError('lost', 'The connection to the helmet is lost. This works again once it is back.') : new Error('Connect the helmet first (or use the demo).')
-  return transport.call(op, params, timeoutMs)
+  return transport.call(op, packed(op, params), timeoutMs)
 }
 
 export async function refresh() {
@@ -676,7 +693,7 @@ async function recoverStart(op, params, token, sent, cause) {
     if (Date.now() - sent.at > timing.startRepeatMs) throw new Error(NOT_STARTED)
     // And only if it is still wanted (a guide's step may be over by now).
     if (sent.wanted && !sent.wanted()) throw linkError('unwanted', 'The start did not reach the helmet, and is not wanted any more: nothing was started.')
-    return t.call(op, { ...params, token })
+    return t.call(op, packed(op, { ...params, token }))
   }
 
   // Ours by the token: running, or ended since.
