@@ -1,0 +1,29 @@
+# Pin header, 1 x 4, 2.54 mm, straight, through-hole: XFCN PZ254V-11-04P (I2C header).
+# Datasheet: XFCN drawing PZ254V-11-XX, rev. A1 (2024.05.24), 1 page (LCSC copy for C2691448), read 2026-11-12:
+#   square pins 0.64 x 0.64 at 2.54 +-0.05; recommended PCB hole 1.02; insulator 2.50 high; mating pin 6.1,
+#   tail 3.0; 3 A, -40 ... 105 C; plating "matte tin or gold over nickel" (JLCPCB lists gold).
+# KiCad 10.0.6 footprint PinHeader_1x04_P2.54mm_Vertical: pads 1.7 with drill 1.0 at y 0, 2.54, 5.08, 7.62
+#   (read 2026-11-12): pitch as drawn, drill 0.02 mm under XFCN's recommendation (0.91 mm pin diagonal).
+# Symbol Connector_Generic:Conn_01x04: pins 1-4; footprint pads 1-4: equal, checked 2026-11-12.
+# JLCPCB parts API, read 2026-11-13: C2691448, Extended, through-hole, stock 920,147, USD 0.0274 at 1+. The same
+#   MPN is also C492403 (stock 61,580, USD 0.0282). No Basic 1 x 4 header was found.
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package HDR-TH_4P-P2.54-V-M,
+#   read 2026-11-12) lies along x with pad 1 on the left; KiCad's along y with pad 1 on top: turned by 270
+#   degrees counter-clockwise it lies on KiCad's with equal numbers (as the box headers, docs/jlcpcb.md §6):
+#   cplRotation 270. Its origin is the header's centre, (0, 3.81) mm from KiCad's pin-1 anchor: check the
+#   position in the preview (the schema has no offset field).
+schema: 1
+description: Pin header, 1 x 4, 2.54 mm, vertical, THT
+symbol: Connector_Generic:Conn_01x04
+footprint: Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical
+assembly: tht
+datasheet: https://datasheet.lcsc.com/datasheet/pdf/3b85a1cdf6ed945f2e278f00c1e42442.pdf?productCode=C2691448
+values:
+  1x04 2.54:
+    mpn: PZ254V-11-04P
+    manufacturer: XFCN
+    lcsc: C2691448
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C2691448", date: "2026-11-13" }
+    cplRotation: 270
+order: { previewCheck: "pin 1" }

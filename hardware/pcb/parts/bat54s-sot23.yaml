@@ -1,0 +1,28 @@
+# Nexperia BAT54S,215: dual Schottky diode in series (A1 - K1/A2 - K2), 30 V, 200 mA, SOT-23.
+# Datasheet: Nexperia "BAT54S Schottky barrier diodes", product data sheet 1 July 2022 (the copy JLCPCB/LCSC serve for
+# C47546), read 2026-11-12:
+#   Table 2 p. 1, pinning: 1 A1 (anode diode 1), 2 K2 (cathode diode 2), 3 K1/A2 (cathode 1 = anode 2).
+#   KiCad's Diode:BAT54S: 1 A, 2 K, 3 COM, drawn as anode(1) -> K/A at the centre (3) -> cathode(2): the same.
+#   With Package_TO_SOT_SMD:SOT-23 pads 1-3: match (checked 2026-11-12).
+#   Limiting values (Table 5 p. 2): VR 30 V; IF 200 mA; IFRM 300 mA; IFSM 600 mA (10 ms). VF max (Table 7 p. 3):
+#   240 mV at 0.1 mA, 320 mV at 1 mA, 400 mV at 10 mA, 800 mV at 100 mA. IR max 2 uA at 25 V (p. 1).
+# Use: clamps of 3.3 V logic lines to GND and 3.3 V (spec.md, comparator outputs). Not across the +-15 V rails: a coil
+# output at one rail puts about 29-30 V on the other diode, at its 30 V rating; bas40-04-sot23.yaml (40 V) is for that.
+# JLCPCB parts API, read 2026-11-12: C47546, Nexperia BAT54S,215, Extended, SMT, stock 254,788, USD 0.0223 (1+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOT-23-3_L3.0-W1.7-P0.95-LS2.9-BR, read 2026-11-12) turned by 180 degrees lies on KiCad's (same numbers), as the
+# table's ^SOT-23 line gives: no correction.
+schema: 1
+description: Dual Schottky diode, series, 30 V 200 mA, SOT-23 (BAT54S)
+symbol: Diode:BAT54S
+footprint: Package_TO_SOT_SMD:SOT-23
+assembly: smt
+datasheet: https://www.lcsc.com/datasheet/lcsc_datasheet_2410121943_Nexperia-BAT54S-215_C47546.pdf
+values:
+  BAT54S:
+    mpn: BAT54S,215
+    manufacturer: Nexperia
+    lcsc: C47546
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C47546", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

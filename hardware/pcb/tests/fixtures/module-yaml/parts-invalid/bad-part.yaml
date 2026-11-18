@@ -1,0 +1,15 @@
+# Test fixture: invalid part (LCSC number without the leading C, unknown key).
+schema: 1
+description: Broken part
+symbol: Device:R
+footprint: Resistor_SMD:R_0603_1608Metric
+assembly: smt
+datasheet: null
+package: "0603"
+values:
+  10k:
+    mpn: null
+    manufacturer: null
+    lcsc: "12345"
+    jlcpcbTier: null
+    verified: null

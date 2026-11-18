@@ -1,0 +1,37 @@
+# Addressable RGB LED with integrated driver, 2.0 x 2.0 mm: Worldsemi WS2812B-2020-V6 (status LED on GPIO48).
+# Datasheet: Worldsemi "WS2812B-2020-V6 Smart External Control Integrated LED Light Source", 10 pages, no
+# revision or date printed (LCSC copy for C52917434), read 2026-11-12:
+#   p. 2 pin table: 1 DO (data out), 2 GND, 3 DI (data in), 4 VDD. Top view: DI(3) top left, VDD(4) bottom
+#     left, GND(2) top right, DO(1) bottom right. "PCB Solder Pad": four 0.7 x 0.7 pads, 0.40 apart vertically
+#     (centres +-0.55) and 1.13 apart horizontally (centres +-0.915).
+#   p. 3: VDD +3.3 ... +5.3 V; logic input -0.3 V ... VDD + 0.7 V; VIH min 0.55 x VDD, VIL max 0.7 V (table at
+#     VDD = 5 V: VIH 2.75 V there); quiescent current max 1 uA. p. 1: "supports a 3.3 V power supply".
+#   p. 5: 800 kHz single-wire code, T0H 220-380 ns, T1H 580 ns-1 us, reset >= 280 us, GRB order, MSB first.
+#   p. 8: moisture sensitivity level 5a.
+# KiCad's footprint LED_WS2812B-2020_PLCC4_2.0x2.0mm (made from the WS2812B-2020 V1.3 datasheet, read
+#   2026-11-12): pads 1 (-0.915,-0.55), 2 (-0.915,+0.55), 3 (+0.915,+0.55), 4 (+0.915,-0.55), 0.7 x 0.7. The
+#   V6's top view is the same pattern turned by 180 degrees (1 and 2 on one side, 2 and 3 across the body, the
+#   same sense of rotation): pad numbers and the V6 pins agree, no mirror. Symbol LED:WS2812B-2020: 1 DOUT,
+#   2 VSS, 3 DIN, 4 VDD = V6 pins 1-4 by function. Pin numbers vs pads: equal (4 = 4), checked 2026-11-12.
+# Note for the schematic: at VDD = 5 V the input needs 2.75 V high (0.55 x VDD), more than a 3.3 V output is sure
+#   to give; at VDD = 3.3 V it needs 1.82 V. Powering it from 3.3 V is inside its range (at the lowest point);
+#   the ESP32-S3's output levels are not checked here.
+# JLCPCB parts API, read 2026-11-13: C52917434, Extended, SMT, stock 871,333, USD 0.0859 at 1+ (0.0681 at 50+).
+#   The other WS2812B-2020 numbers (plain, -V7, Worldsemi C965555) had stock 0.
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+#   LED-SMD_4P-L2.2-W2.0-P1.00_WS2815C-2020-4P, read 2026-11-12): pads 1-4 at (+-0.865, +-0.55) with the same
+#   numbers at the same corners as KiCad's: no cplRotation.
+schema: 1
+description: Addressable RGB LED, WS2812B-2020-V6, 2.0 x 2.0 mm
+symbol: LED:WS2812B-2020
+footprint: LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm
+assembly: smt
+datasheet: https://datasheet.lcsc.com/datasheet/pdf/a29e59ba4bc7e47e236b4d50b6c26345.pdf?productCode=C52917434
+values:
+  WS2812B-2020-V6:
+    mpn: WS2812B-2020-V6
+    manufacturer: Worldsemi
+    lcsc: C52917434
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C52917434", date: "2026-11-13" }
+order: { previewCheck: "pin 1 (DO) corner" }

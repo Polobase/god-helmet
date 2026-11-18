@@ -1,0 +1,48 @@
+# EVISUN A0515S-2WR3: isolated, unregulated DC/DC converter module, 5 V (4.5-5.5 V) in, ±15 V out, 2 W, SIP.
+# The helmet-driver's tES island supply (modules/helmet-driver/spec.md "tES island").
+# Datasheet: EVISUN (Xingning Yicheng Electronic Technology) "A_S-2WR3 & B_S-2WR3 series", version V1.0, 6 pages, in
+# Chinese (LCSC copy for C7465204, read 2026-11-12):
+# - p. 1, model table: A0515S-2WR3, ±15 V, ±67 mA full load / ±7 mA light load, efficiency 82/86 % (min/typ).
+# - p. 2: input current 505 mA full load / 8 mA no load (5 V input types).
+# - p. 3: line regulation ±1.2 %; load regulation 7 % for 15 V outputs (10 % to 100 % load); ripple and noise 75 typ,
+#   180 max mVp-p (20 MHz); isolation 1500 VDC for 1 min, 3000 VDC for 1 s (leakage < 1 mA); insulation resistance
+#   1000 MOhm at 500 VDC; isolation capacitance 20 pF; switching 200-340 kHz; package 19.65 x 10.16 x 7.00 mm;
+#   -40...+105 C, derated above 85 C (p. 4, Fig. 2).
+# - p. 5, pin table (dual output): 1 Vin, 2 GND, 4 -Vo, 5 0V, 6 +Vo (no pin 3). KiCad's
+#   Converter_DCDC_Isolated:NMA0515SC (extends NMA0512SC) has 1 VIN+, 2 VIN-, 4 VOUT-, 5 0V, 6 VOUT+: the same.
+#   The symbol's description says "1W" (Murata's NMA); the pins and functions match, the rating is EVISUN's 2 W.
+# - p. 5, drawing (mm): pins 0.50 x 0.30 (cross-section tolerance ±0.10), 4.10 long, 2.54 pitch, pin 1 to pin 6
+#   12.70, pin 1 2.21 ±0.50 from its end of the 19.65 body; the pin row is 0.90 from the printed face, so 6.10 from
+#   the back face of the 7.00 body; other tolerances ±0.25. Recommended PCB layout: holes Ø1.00 on a 2.54 grid.
+# - p. 5, Table 1: Cin 4.7 µF/16 V for 5 V input; Cout 1 µF/25 V on each output for ±15 V. p. 6: avoid loads below
+#   10 % of rated power (add a dummy load), keep output capacitance small (start-up). Max capacitive load: the p. 1
+#   table cell shared by A0512S/A0515S reads 220 µF (JLCPCB lists 220 µF): likely.
+# Footprint, checked 2026-11-12 against KiCad 10.0.6 Converter_DCDC_Murata_NMAxxxxSC_THT: pads 1, 2, 4, 5, 6 at
+# y 0, 2.54, 7.62, 10.16, 12.70 (match), 1.5 mm pads, **0.7 mm holes**; body (F.Fab) x -4.77...+1.23 (6.0 mm),
+# y -2.03...+17.47 (19.5 mm); courtyard x -5.02...+1.48, y -2.28...+17.72.
+# **Does not fit as is: derived footprint Converter_DCDC:Converter_DCDC_EVISUN_A0515S-2WR3_THT (tools/kicad/derived.ts,
+# 2026-11-13)** with these edits:
+# - holes 1.0 mm (EVISUN's recommendation): the pin's diagonal is 0.58 mm nominal, 0.72 mm at the ±0.10 limit,
+#   more than the stock 0.7 mm hole; pads 1.7 mm (0.35 mm ring, 0.84 mm between pads);
+# - body (F.Fab) x -6.10...+0.90 (printed face at +x, KiCad's pin-1 chamfer kept there), y -2.21...+17.44;
+#   the stock body is 1.0 mm thinner, all of it on the -x side;
+# - silkscreen 0.12 mm outside the body; courtyard 0.25 mm outside the body plus the drawing's tolerances
+#   (±0.50 on the 2.21, ±0.25 on the 0.90 and 7.00): x -6.60...+1.40, y -2.96...+18.19.
+#   The 3D model stays Murata's, a stand-in.
+# JLCPCB parts API and part page (2026-11-12): C7465204, Extended, through-hole ("插件"), stock 948, USD 1.6013
+# (1+), 1.3544 (10+), 1.2006 (30+). JLCPCB's own footprint was not compared (the EasyEDA footprint service refused
+# the request, 403): check pin 1 and the printed face in the placement preview.
+schema: 1
+description: Isolated DC/DC converter, 5 V to ±15 V, 2 W, 1500 VDC, SIP-5 (EVISUN A0515S-2WR3)
+symbol: Converter_DCDC_Isolated:NMA0515SC
+footprint: Converter_DCDC:Converter_DCDC_EVISUN_A0515S-2WR3_THT
+assembly: tht
+datasheet: https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2307211806_EVISUN-A0515S-2WR3_C7465204.pdf
+values:
+  A0515S-2WR3:
+    mpn: A0515S-2WR3
+    manufacturer: EVISUN
+    lcsc: C7465204
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C7465204", date: "2026-11-12" }
+order: { previewCheck: "pin 1 (dot on the printed face)" }

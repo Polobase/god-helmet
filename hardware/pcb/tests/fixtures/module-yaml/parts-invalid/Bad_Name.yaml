@@ -1,0 +1,14 @@
+# Test fixture: valid content, but the file name is not a valid part key.
+schema: 1
+description: Resistor
+symbol: Device:R
+footprint: Resistor_SMD:R_0603_1608Metric
+assembly: smt
+datasheet: null
+values:
+  10k:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null

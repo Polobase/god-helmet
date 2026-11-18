@@ -1,0 +1,16 @@
+# Solder jumper, open as delivered: two 1.0 x 1.5 mm pads 0.3 mm apart (KiCad 10.0.6 footprint
+# SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm, read 2026-10-04). A solder blob closes it.
+# A board feature, not a part: nothing is sourced, placed or soldered (assembly: none).
+schema: 1
+description: Solder jumper, 2 pads, open (bridge with solder to close)
+symbol: Jumper:SolderJumper_2_Open
+footprint: Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm
+assembly: none
+datasheet: null
+values:
+  Open:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null

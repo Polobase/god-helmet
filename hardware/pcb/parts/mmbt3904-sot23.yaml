@@ -1,0 +1,23 @@
+# NPN small-signal transistor MMBT3904, SOT-23: Jiangsu Changjing (JSCJ), JLCPCB Basic part.
+# Datasheet JSCJ "MMBT3904 TRANSISTOR (NPN)", Rev. 2.1 (LCSC copy for C20526, read 2026-11-12), p. 1:
+# - SOT-23 pins 1 BASE, 2 EMITTER, 3 COLLECTOR. KiCad's Transistor_BJT:MMBT3904 (extends Q_NPN_BEC) has 1 B, 2 E,
+#   3 C: the same. Package_TO_SOT_SMD:SOT-23: pin-to-pad check passed 2026-11-12 (3 pins, 3 pads).
+# - VCEO 40 V, VCBO 60 V, VEBO 6 V; IC 200 mA; PC 200 mW, RθJA 625 C/W; hFE 100-300 at VCE 1 V, IC 10 mA;
+#   VCE(sat) 0.3 V at 50 mA/5 mA; fT 300 MHz; Tj -55...+150 C.
+# JLCPCB parts API and part page (2026-11-12): C20526 MMBT3904(RANGE:100-300), Basic, stock 4,184,015, USD 0.0103
+# (1+), 0.0079 (500+), 0.0069 (3000+). JLCPCB's own footprint was not compared (the EasyEDA footprint service refused
+# the request, 403): check pin 1 in the placement preview.
+schema: 1
+description: NPN transistor 40 V 200 mA, SOT-23 (MMBT3904; 1 B, 2 E, 3 C)
+symbol: Transistor_BJT:MMBT3904
+footprint: Package_TO_SOT_SMD:SOT-23
+assembly: smt
+datasheet: https://www.lcsc.com/datasheet/lcsc_datasheet_2207041900_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--MMBT3904-RANGE-100-300_C20526.pdf
+values:
+  MMBT3904:
+    mpn: MMBT3904(RANGE:100-300)
+    manufacturer: Jiangsu Changjing Electronics Technology (JSCJ)
+    lcsc: C20526
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C20526", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

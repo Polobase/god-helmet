@@ -1,0 +1,24 @@
+# Texas Instruments LM4040AIM3-4.1/NOPB: 4.096 V shunt voltage reference, A grade (0.1 %), SOT-23. The helmet-driver's
+# threshold references: coil trip thresholds (5.5 / 22 mA) and the tES trip thresholds (+/-4.64 mA), one of them used
+# upside down from the island's negative rail.
+# Datasheet TI SNOS633N (December 1991, revised August 2025), read 2026-11-13:
+# - p. 3-4, Figure 4-1 DBZ (SOT-23) and Table 4-1: 1 cathode, 2 anode, 3 "must float or connect to anode".
+#   KiCad's Reference_Voltage:LM4040DBZ-4.1: 1 K, 2 A, 3 NC (hidden, no_connect); with Package_TO_SOT_SMD:SOT-23: match
+#   (scratchpad kicheck.py, 2026-11-13).
+# - p. 1: shunt current 60 µA to 15 mA (4.1 V); thermal resistance 326 °C/W in SOT-23.
+# JLCPCB parts API (2026-11-13): C126807 LM4040AIM3-4.1/NOPB, Texas Instruments, Extended, stock 1,789, USD 1.74 (1+).
+#   JLCPCB's own footprint not compared: check pin 1 in the placement preview.
+schema: 1
+description: 4.096 V shunt voltage reference, 0.1 %, SOT-23 (TI LM4040AIM3-4.1)
+symbol: Reference_Voltage:LM4040DBZ-4.1
+footprint: Package_TO_SOT_SMD:SOT-23
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/lm4040-n.pdf
+values:
+  LM4040-4.1:
+    mpn: LM4040AIM3-4.1/NOPB
+    manufacturer: Texas Instruments
+    lcsc: C126807
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C126807", date: "2026-11-13" }
+order: { previewCheck: "pin 1" }

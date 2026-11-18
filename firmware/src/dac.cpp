@@ -6,6 +6,92 @@
 #include "ad5328_words.h"
 #include "config.h"
 #include "fastio.h"
+#ifdef HAS_PCB_DRIVER
+#include "board.h"
+#endif
+
+#ifdef HAS_PCB_DRIVER
+// The helmet-driver board (rev B): one DAC81408 for the eight coils, 24-bit frames (lib/pcb/src/board.h), on the
+// SPI bus it shares with the two monitor ADCs (pcbboard.cpp; SPI transactions keep them apart). Its outputs are
+// synchronous: the data registers take the codes, then the LDAC pin (active low) loads all eight at once. The board
+// holds the DAC in RESET while not armed (every output tied to ground, 0 mA), so it is configured after every arm:
+// configure(), called by the sequencer once the rails are up.
+namespace dac {
+namespace {
+
+SPIClass gSpi(FSPI);
+const SPISettings kSpiSettings(limits::kSpiHz, MSBFIRST, SPI_MODE1);  // SDI taken on SCLK falling edges
+// Reading back: SDO changes on SCLK rising edges (FSDO 0, the reset value) and is read on falling ones; slower.
+const SPISettings kReadSettings(8000000, MSBFIRST, SPI_MODE1);
+
+uint32_t frame(uint32_t word) {
+  fastWrite<pins::kCsDac>(false);
+  const uint32_t hi = gSpi.transfer(static_cast<uint8_t>(word >> 16));
+  const uint32_t lo = gSpi.transfer16(static_cast<uint16_t>(word));
+  fastWrite<pins::kCsDac>(true);
+  return (hi << 16) | lo;
+}
+
+void pulseLdac() {
+  fastWrite<pins::kLdac>(false);  // at least 10 ns low
+  delayMicroseconds(1);
+  fastWrite<pins::kLdac>(true);
+}
+
+}  // namespace
+
+void begin(bool, bool) {
+  pinMode(pins::kCsDac, OUTPUT);
+  digitalWrite(pins::kCsDac, HIGH);
+  pinMode(pins::kLdac, OUTPUT);
+  digitalWrite(pins::kLdac, HIGH);
+  gSpi.begin(pins::kSclk, pins::kMiso, pins::kMosi, -1);
+  // Nothing to write: the DAC sits in RESET until the board is armed.
+}
+
+// No gain or reference words: configure() sets the DAC up after every arm.
+void reconfigure(bool, bool) {}
+
+bool configure() {
+  uint32_t f[pcb::kDacConfigFrames];
+  pcb::dac81408Config(f);
+  gSpi.beginTransaction(kSpiSettings);
+  for (uint32_t w : f) {
+    frame(w);
+    delayMicroseconds(3);  // tDACWAIT: 2.4 µs between output updates (the data writes update at once here)
+  }
+  gSpi.endTransaction();
+  // Read back: each read command, then a NOP frame that brings its value (SLASER3A Table 3).
+  bool ok = true;
+  gSpi.beginTransaction(kReadSettings);
+  for (const pcb::DacExpect& e : pcb::kDacExpect) {
+    frame(pcb::dac81408Read(e.reg));
+    uint16_t v = 0;
+    const bool got = pcb::dac81408Readback(frame(pcb::dac81408Write(pcb::kDacNop, 0)), e.reg, v);
+    ok = ok && got && (v & e.mask) == e.value;
+  }
+  gSpi.endTransaction();
+  return ok;
+}
+
+void writeAll(const uint16_t codes[8]) {
+  gSpi.beginTransaction(kSpiSettings);
+  for (uint8_t ch = 0; ch < 8; ++ch)
+    frame(pcb::dac81408Write(static_cast<uint8_t>(pcb::kDacData0 + ch), pcb::dac81408Data(codes[ch])));
+  gSpi.endTransaction();
+  pulseLdac();
+}
+
+void writeMidscale() {
+  const uint16_t mid[8] = {0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800};
+  writeAll(mid);
+}
+
+SPIClass& spi() { return gSpi; }
+
+}  // namespace dac
+
+#else
 
 namespace dac {
 namespace {
@@ -95,3 +181,5 @@ void writeMidscale() {
 }
 
 }  // namespace dac
+
+#endif  // HAS_PCB_DRIVER

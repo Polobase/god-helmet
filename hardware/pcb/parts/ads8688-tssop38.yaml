@@ -1,0 +1,32 @@
+# Texas Instruments ADS8688IDBTR: 16-bit, 500 kSPS, 8-channel SAR ADC with a programmable front end per channel
+# (bipolar and unipolar ranges, 1 MOhm inputs, overvoltage protection), 4.096 V internal reference, SPI, TSSOP-38.
+# Rev B of the helmet-driver: the coil monitor (two, in a daisy chain) and the tES island's monitor, read without
+# divider networks.
+# Datasheet: TI SBAS582C (July 2014, revised April 2015), read 2026-11-14:
+#   Pins pp. 4-5: 1 SDI, 2 RST/PD (active low), 3 DAISY, 4 REFSEL (low: internal reference), 5 REFIO, 6 REFGND,
+#   7 REFCAP, 8 AGND, 9 AVDD, 10 AUX_IN, 11 AUX_GND, 12-27 AIN_6P/6GND, 7P/7GND, 0P/0GND, 1P/1GND, 2GND/2P, 3GND/3P,
+#   4GND/4P, 5GND/5P, 28-29 AGND, 30 AVDD, 31-32 AGND, 33 DGND, 34 DVDD (1.65-5.25 V), 35 DNC (floating), 36 SDO,
+#   37 SCLK, 38 CS. KiCad's Analog_ADC:ADS8688 has the same 38 numbers (AGND 28, 29, 31, 32 hidden and stacked on
+#   pin 8; DNC hidden); with Package_SO:TSSOP-38_4.4x9.7mm_P0.5mm pads 1-38: match.
+#   p. 6: AIN_nP to AIN_nGND +-20 V with AVDD = 5 V, +-11 V with AVDD floating; AVDD 4.75-5.25 V.
+#   pp. 30-31: ranges +-2.5, +-1.25, +-0.625 x VREF and 0-2.5, 0-1.25 x VREF (VREF 4.096 V: +-10.24, +-5.12, +-2.56 V);
+#   1 MOhm constant input impedance; 2nd-order anti-alias filter at 15 kHz; output straight binary (8000h = 0 V).
+#   pp. 32, 44-47: frames of 32 SCLK (16-bit command on SDI, taken on falling edges; the previous sample's 16-bit
+#   result on SDO from the 16th falling edge); MAN_Ch_n commands C000h + n x 400h; program registers addressed
+#   in bits 15-9, bit 8 write; range registers 05h-0Ch. Daisy chain: SDI and CS shared, SDO of one into DAISY of
+#   the next. fSCLK up to 17 MHz.
+# JLCPCB parts API, read 2026-11-14: C527390 ADS8688IDBTR, Extended, stock 7,714, USD 9.1721 (1+).
+schema: 1
+description: 16-bit 8-channel SAR ADC, bipolar inputs to +-10.24 V, 1 MOhm, 4.096 V reference, SPI, TSSOP-38 (ADS8688)
+symbol: Analog_ADC:ADS8688
+footprint: Package_SO:TSSOP-38_4.4x9.7mm_P0.5mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/ads8688.pdf
+values:
+  ADS8688:
+    mpn: ADS8688IDBTR
+    manufacturer: Texas Instruments
+    lcsc: C527390
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C527390", date: "2026-11-14" }
+order: { previewCheck: "pin 1" }

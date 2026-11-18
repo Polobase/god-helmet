@@ -1,0 +1,14 @@
+# Test fixture (not the parts DB): sourcing deliberately unknown.
+schema: 1
+description: 0805 LED (test fixture)
+symbol: Device:LED
+footprint: LED_SMD:LED_0805_2012Metric
+assembly: smt
+datasheet: null
+values:
+  red:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null

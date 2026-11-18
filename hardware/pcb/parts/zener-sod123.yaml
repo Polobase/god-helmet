@@ -1,0 +1,24 @@
+# Zener diodes in SOD-123. The helmet-driver uses the 11 V part back to back across each tES integrator capacitor
+# (anti-windup: the drive stays at about +/-11.6 V, inside the INA821's input range; spec.md "tES island").
+# BZT52C11-7-F: Diodes Incorporated datasheet DS18004 Rev. 38-2, read 2026-11-13:
+# - p. 1: SOD-123, 500 mW (at TL = +75 °C; 370 mW at TA = +25 °C), polarity: cathode band.
+# - p. 2, table: BZT52C11, marking WG, VZ 10.4-11.6 V (nominal 11 V) at IZT 5 mA.
+# Symbol Device:D_Zener (pin 1 K, pin 2 A) with Diode_SMD:D_SOD-123 (pad 1 = cathode, KiCad's diode convention):
+#   pin-to-pad check (scratchpad kicheck.py, 2026-11-13) 2 = 2, match.
+# JLCPCB parts API (2026-11-13): C92321 BZT52C11-7-F, Diodes Incorporated, Extended, stock 1,492, USD 0.0475 (1+).
+#   Same type from Jiangsu Changjing: C14941 (stock 1,433). JLCPCB's own footprint not compared: check the cathode
+#   band in the placement preview.
+schema: 1
+description: Zener diode, SOD-123, 500 mW
+symbol: Device:D_Zener
+footprint: Diode_SMD:D_SOD-123
+assembly: smt
+datasheet: https://www.diodes.com/assets/Datasheets/ds18004.pdf
+values:
+  11V:
+    mpn: BZT52C11-7-F
+    manufacturer: Diodes Incorporated
+    lcsc: C92321
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C92321", date: "2026-11-13" }
+order: { previewCheck: "the cathode band" }

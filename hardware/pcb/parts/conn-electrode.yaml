@@ -1,0 +1,39 @@
+# tES electrode connector, one per electrode pair: JST XH 2-pin shrouded header, vertical, 2.5 mm (B2B-XH-A).
+# Chosen 2026-11-12 because it cannot be mistaken for the board's RJ45 coil jacks or its 3.5 mm STOP jack, and
+# because no 2 mm touch-proof (DIN 42802) PCB socket was found:
+# - JLCPCB/LCSC searches (parts API, 2026-11-12: "touch proof", "DIN 42802", "2mm banana", "safety socket",
+#   "banana"; jlcsearch "banana", "touch proof") found only 4 mm sockets (Amass 24.243.x angled 4 mm sockets, 24.245.x
+#   1 kV; Keystone 575-4/575-8) and Amass GC2011 2 mm bullet connectors, none touch-proof 2 mm;
+# - KiCad 10.0.6 has no DIN 42802 footprint (Connector.pretty has Cliff 4 mm FCR7350 and generic banana holes).
+# Electrode leads with DIN 42802 plugs need an adapter cable (touch-proof sockets on a lead to an XH housing),
+# made by hand.
+# JST catalogue "XH connector" (LCSC copy for C158012, read 2026-11-12), p. 1: 2.5 mm pitch, box-shaped shrouded
+# header with a boss (polarized; the catalogue names no latch: friction retention); 3 A (AWG 22), 250 V AC/DC,
+# withstanding 1000 VAC for 1 min; wire AWG 30-22; -25...+85 C; PCB holes Ø1.0 ±0.05 for 2 circuits, 1.6 mm board.
+# Footprint Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical: pads 1 (0, 0) and 2 (2.5, 0), 1.7 x 2.0 mm,
+# holes 1.0 mm. Symbol Connector_Generic:Conn_01x02. Pin-to-pad check passed 2026-11-12 (2 pins, 2 pads).
+# JLCPCB parts API and part page (2026-11-12): C158012 B2B-XH-A(LF)(SN), JST, Extended, through-hole, stock 566,866,
+# USD 0.0334 (1+), 0.0249 (200+), 0.021 (1000+). Clones, also Extended: BOOMELE XH-2A C20079 (651,212, USD 0.0068).
+# Other options read the same day:
+# - Molex Micro-Fit 3.0 43650-0215, C293740, stock 2,769, USD 0.6052: positive latch, 600 V, 8.5 A; stock footprint
+#   Connector_Molex:Molex_Micro-Fit_3.0_43650-0215_1x02_P3.00mm_Vertical (pads 1, 2 and two unnumbered peg holes;
+#   pin-to-pad check with Conn_01x02 passed).
+# - 2.5 mm jacks in stock (SHOU HAN PJ-242 SMD C431536, 16,331; XKB PJ-210B THT C2689715, 5,602), but KiCad has no
+#   2.5 mm jack footprint (Connector_Audio: 3.5 and 6.35 mm only): a derived footprint would be needed, and a 2.5 mm
+#   plug fits loosely into a 3.5 mm jack.
+# JLCPCB's own footprint was not compared (the EasyEDA footprint service refused the request, 403): check pin 1 and
+# the header's opening side in the placement preview.
+schema: 1
+description: Electrode connector, JST XH 2-pin shrouded header, 2.5 mm, vertical, through-hole (B2B-XH-A)
+symbol: Connector_Generic:Conn_01x02
+footprint: Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical
+assembly: tht
+datasheet: https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_JST-B2B-XH-A-LF-SN_C158012.pdf
+values:
+  B2B-XH-A:
+    mpn: B2B-XH-A(LF)(SN)
+    manufacturer: JST
+    lcsc: C158012
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C158012", date: "2026-11-12" }
+order: { previewCheck: "pin 1 and the side of the header's opening" }

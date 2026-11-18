@@ -1,0 +1,54 @@
+# helmet-driver: board definition, checked by `bun run validate` (schema: BoardYaml in tools/module/schema.ts).
+# The controller board of the god-helmet project (https://github.com/Polobase/god-helmet): an ESP32-S3, eight
+# current-output coil drivers and two isolated transcranial-stimulation (tES) outputs, fed from a 5 V USB-C power
+# bank. A standalone board: it sits in its own box (kind: board). spec.md has the requirements and sources.
+schema: 1
+id: "helmet-driver"
+name: "Helmet Driver"
+kind: board
+revision:
+  rev: B
+  date: "2026-11-14"
+  # Rev A (2026-11-12/13): plan approved by you; schematic approved 2026-11-13 (sha256 a91ad97dd22a…); routed and
+  # fab-ready, never ordered. Its files: build/helmet-driver/archive-rev-A.
+  # Rev B (2026-11-14, your request "more modern, fewer chips" after a web search): one DAC81408 instead of two
+  # DAC8565 and the stage-1 op-amps, ADS8688 monitor ADCs without divider networks (coils and tES island), the
+  # coil drivers as four dual OPA2197, the ARM delay and the two AND gates in dual packages. 35 ICs instead of 44,
+  # 347 placed parts instead of 461. Safety chain unchanged. Rev A's approval does not carry over: you approve this
+  # schematic again (bun run sch:approve).
+  status: fab-ready # spec → schematic → schematic-approved → layout → fab-ready → built → verified
+  approval:
+    schSha256: 0cbcbf2c85dd5ac0b09fdc6cf16479fee05ffad0db2a6d2b9446db9de15fab8d
+    date: 2026-11-14
+power:
+  # The board draws only from its USB-C 5 V (spec.md "Power budget": about 250 mA idle with Bluetooth, up to
+  # about 1.1 A with all eight coils at 20 mA DC). Worst case, mA by supply rail.
+  drawMa: { usb-c-5v: 1100 }
+  drawBasis: estimate # must be "measured" from status "built"
+pcb:
+  boards: 1
+  # 4 layers on JLCPCB's JLC04161H-7628 stackup (docs/pcb.md "4-layer boards"): In1.Cu GND and the island's GND1,
+  # In2.Cu a routing layer filled with the grounds after routing; each ground on its own polygon, the 3.2 mm
+  # isolation gap between them (pcb.ts).
+  layers: 4
+  thicknessMm: 1.6
+  mask: green
+  # The first build's box (~120 × 80 × 40 mm, hardware/BOM.md) is too small for 474 parts with an isolation gap at
+  # a density the autorouter manages: 160 × 100 mm (Eurocard), which standard card-guide enclosures take (pcb.ts).
+  sizeMm: { w: 160, h: 100 }
+  copperOz: 1
+jlcpcb:
+  assembly: economic
+  smtSide: top
+  # Through-hole parts (the Micro-Fit coil connector, the isolated DC/DC converter, the electrode and STOP jacks): JLCPCB
+  # solders them; you can untick lines in JLCPCB's BOM page and solder them yourself.
+  tht: jlcpcb
+  handSolder: []
+  qty: 5
+  # Two assembled test boards; the other three PCBs arrive bare (spec.md "Bring-up").
+  assembleQty: 2
+  removeOrderNumber: true
+order:
+  notes:
+    - "Test boards: nothing on this board is proven until the bring-up checklist in spec.md has passed on a board, with resistor loads first and never on a person."
+    - "For your own use only. Brain-stimulation equipment without a medical purpose (also the coil helmet) is a regulated product in the EU (MDR Annex XVI point 6, class III) and in Switzerland (MedDO Annex 1, group 6). Do not sell or hand on assembled boards (spec.md 'Rules')."

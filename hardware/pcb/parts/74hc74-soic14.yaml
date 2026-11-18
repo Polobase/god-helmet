@@ -1,0 +1,29 @@
+# Texas Instruments SN74HC74DR: dual positive-edge D flip-flop with preset and clear (active low), 2-6 V, SOIC-14 (D).
+# The TRIP and STOP latches (spec.md "Ceiling and fault chain").
+# Datasheet: TI SCLS094F (SN74HC74, SN54HC74; December 1982, revised June 2021), read 2026-11-12:
+#   Pin functions p. 3 (D package): 1 1CLR, 2 1D, 3 1CLK, 4 1PRE, 5 1Q, 6 1Q-bar, 7 GND, 8 2Q-bar, 9 2Q, 10 2PRE,
+#   11 2CLK, 12 2D, 13 2CLR, 14 VCC (CLR and PRE active low).
+#   Function table, Table 8-1 p. 11: PRE low sets Q high, CLR low clears it; PRE and CLR both low gives Q = Q-bar = H,
+#   which "does not persist" when either returns high (nonstable).
+#   KiCad's 74xx:74HC74 (extends 74LS74): unit A 1 ~R, 2 D, 3 C, 4 ~S, 5 Q, 6 ~Q; unit B 8 ~Q, 9 Q, 10 ~S, 11 C,
+#   12 D, 13 ~R; power unit C 7 GND, 14 VCC (~R = CLR, ~S = PRE). The symbol's footprint filter is DIP only; with
+#   Package_SO:SOIC-14_3.9x8.7mm_P1.27mm pads 1-14: match (checked 2026-11-12). Place all three units.
+# JLCPCB parts API, read 2026-11-12: C6762, Texas Instruments SN74HC74DR, Extended, SMT, stock 11,001,
+# USD 0.2248 (1+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOIC-14_L8.7-W3.9-P1.27-LS6.0-BL, read 2026-11-12) turned by 270 degrees lies on KiCad's (same numbers), as the
+# table's ^SOIC- line gives: no correction.
+schema: 1
+description: Dual D flip-flop with preset and clear, 74HC, SOIC-14 (SN74HC74)
+symbol: 74xx:74HC74
+footprint: Package_SO:SOIC-14_3.9x8.7mm_P1.27mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/sn74hc74.pdf
+values:
+  74HC74:
+    mpn: SN74HC74DR
+    manufacturer: Texas Instruments
+    lcsc: C6762
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C6762", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

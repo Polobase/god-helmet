@@ -10,6 +10,8 @@
 
 #include "ad5328_words.h"
 #include "astro.h"
+#include "board.h"
+#include "tes.h"
 #include "bench.h"
 #include "bleframe.h"
 #include "conn.h"
@@ -94,6 +96,386 @@ static void testDrive() {
   CHECK(toCode(-1.0f, 2047.0f) == 1);
   CHECK(toCode(5.0f, 2047.0f) == 4095);
   CHECK(toCode(-5.0f, 4000.0f) == 0);
+
+  // Current drive (the helmet-driver board): ±20.16 mA at full swing whatever the coil.
+  DriveConfig pcb;
+  pcb.fullScaleMA = 20.16f;
+  CHECK_NEAR(fullSwingMA(pcb), 20.16, 1e-6);
+  CHECK_NEAR(maxCurrentMA(pcb), 20.16, 1e-6);
+  pcb.coilOhm = 500.0f;  // the coil does not matter
+  CHECK_NEAR(swingForCurrentMA(pcb, 10.08f), 1023.5, 0.01);
+  // The ceiling switch at 5 mA: nothing commands more, the scale stays that of the full swing.
+  pcb.ceilingMA = 5.0f;
+  CHECK_NEAR(maxCurrentMA(pcb), 5.0, 1e-6);
+  CHECK_NEAR(swingForCurrentMA(pcb, 2.0f), 2.0 / 20.16 * 2047.0, 1e-3);
+  CHECK_NEAR(swingForCurrentMA(pcb, 20.0f), 5.0 / 20.16 * 2047.0, 1e-3);
+  CHECK_NEAR(swingForCurrentMA(pcb, -9.0f), 5.0 / 20.16 * 2047.0, 1e-3);
+  CHECK_NEAR(maxFieldUT(pcb, 1.8f), 9.0, 1e-4);
+  // A ceiling above the full swing changes nothing.
+  pcb.ceilingMA = 25.0f;
+  CHECK_NEAR(maxCurrentMA(pcb), 20.16, 1e-6);
+  // The voltage drive ignores a ceiling of 0 and keeps its numbers.
+  DriveConfig v;
+  v.ceilingMA = 0.0f;
+  CHECK_NEAR(swingForCurrentMA(v, 4.5368f), 2047.0, 0.01);
+}
+
+static void testTes() {
+  std::printf("tES\n");
+  using namespace tes;
+  Limits lim;
+  char err[96];
+  // Validation.
+  Plan p;
+  p.mA[0] = 2.0f;
+  p.holdS = 1200;
+  CHECK(validate(p, lim, err, sizeof err));
+  CHECK_NEAR(sessionS(p), 1260.0, 1e-3);
+  CHECK_NEAR(plannedChargeC(p), 0.002 * (1200 + 30), 1e-6);
+  Plan bad = p;
+  bad.mA[0] = 4.5f;
+  CHECK(!validate(bad, lim, err, sizeof err));
+  bad = p;
+  bad.mA[0] = 2.5f;
+  bad.mA[1] = -2.0f;  // 4.5 mA together
+  CHECK(!validate(bad, lim, err, sizeof err));
+  bad = p;
+  bad.mA[0] = 0;
+  CHECK(!validate(bad, lim, err, sizeof err));
+  bad = p;
+  bad.rampUpS = 1.0f;
+  CHECK(!validate(bad, lim, err, sizeof err));
+  bad = p;
+  bad.holdS = 2400;  // 40 min plus ramps
+  CHECK(!validate(bad, lim, err, sizeof err));
+  bad = p;
+  bad.mA[0] = 4.0f;  // 4 mA for 1940 s: 7.88 C
+  bad.holdS = 1940;
+  CHECK(!validate(bad, lim, err, sizeof err));
+  bad.holdS = 1700;  // 7.04 C
+  CHECK(validate(bad, lim, err, sizeof err));
+  bad = p;
+  bad.mode = Mode::AC;
+  bad.hz = 300.0f;
+  CHECK(!validate(bad, lim, err, sizeof err));
+  bad.hz = 10.0f;
+  CHECK(validate(bad, lim, err, sizeof err));
+  bad.mA[0] = -1.0f;  // AC takes an amplitude
+  CHECK(!validate(bad, lim, err, sizeof err));
+  bad = p;
+  bad.mode = Mode::RNS;
+  bad.lowHz = 100.0f;
+  bad.highHz = 700.0f;
+  CHECK(!validate(bad, lim, err, sizeof err));
+  bad.highHz = 640.0f;
+  CHECK(validate(bad, lim, err, sizeof err));
+
+  // DC run: ramps, hold, charge.
+  {
+    Runner r;
+    Plan q = p;
+    q.mA[0] = -1.0f;
+    q.holdS = 10;
+    q.rampUpS = q.rampDownS = 2.0f;
+    r.start(q, 1);
+    float out[2];
+    const float dt = 0.0005f;
+    float t = 0, peak = 0, atOne = 0;
+    bool sawHold = false, otherOff = true;
+    while (r.advance(dt, out)) {
+      t += dt;
+      peak = std::fmin(peak, out[0]);
+      otherOff = otherOff && out[1] == 0.0f;
+      if (std::fabs(t - 1.0f) < dt / 2) atOne = out[0];
+      sawHold = sawHold || r.phase() == tes::Phase::Hold;
+    }
+    CHECK(otherOff);
+    CHECK_NEAR(atOne, -0.5, 1e-3);
+    CHECK(sawHold);
+    CHECK_NEAR(t, 14.0, 0.01);
+    CHECK_NEAR(peak, -1.0, 1e-6);
+    CHECK_NEAR(r.chargeC(), 0.001 * 12.0, 1e-4);
+    CHECK(r.phase() == tes::Phase::Done);
+  }
+  // A stop during the hold ramps down at the plan's rate.
+  {
+    Runner r;
+    Plan q = p;
+    q.holdS = 100;
+    q.rampUpS = q.rampDownS = 4.0f;
+    r.start(q, 1);
+    float out[2];
+    for (int i = 0; i < 20000; ++i) r.advance(0.0005f, out);  // 10 s: holding
+    CHECK(r.phase() == tes::Phase::Hold);
+    r.requestStop();
+    float t = 0;
+    while (r.advance(0.0005f, out)) t += 0.0005f;
+    CHECK_NEAR(t, 4.0, 0.01);
+  }
+  // Sham: up and straight down, then silent until a real session would end.
+  {
+    Runner r;
+    Plan q = p;
+    q.sham = true;
+    q.holdS = 20;
+    q.rampUpS = q.rampDownS = 5.0f;
+    r.start(q, 1);
+    float out[2];
+    float t = 0, maxAfter = 0, peak = 0;
+    while (r.advance(0.001f, out)) {
+      t += 0.001f;
+      peak = std::fmax(peak, out[0]);
+      if (t > 10.01f) maxAfter = std::fmax(maxAfter, std::fabs(out[0]));
+    }
+    CHECK_NEAR(t, 30.0, 0.01);
+    CHECK_NEAR(peak, 2.0, 1e-3);
+    CHECK(maxAfter == 0.0f);
+    CHECK_NEAR(r.chargeC(), 0.002 * 5.0, 1e-4);  // two 5 s ramps: half their full charge
+    // Stopped in its silence: ends at once.
+    Runner s2;
+    s2.start(q, 1);
+    for (int i = 0; i < 12000; ++i) s2.advance(0.001f, out);
+    CHECK(s2.running());
+    s2.requestStop();
+    CHECK(!s2.advance(0.001f, out));
+  }
+  // AC: the frequency and the amplitude.
+  {
+    Runner r;
+    Plan q = p;
+    q.mode = Mode::AC;
+    q.hz = 10.0f;
+    q.mA[0] = 1.0f;
+    q.mA[1] = 1.0f;
+    q.rampUpS = q.rampDownS = 2.0f;
+    q.holdS = 4;
+    r.start(q, 1);
+    float out[2], prev = 0, peak = 0;
+    int crossings = 0;
+    float t = 0;
+    bool same = true;
+    while (r.advance(0.0005f, out)) {
+      t += 0.0005f;
+      if (t > 2.0f && t < 6.0f) {
+        if (prev < 0 && out[0] >= 0) ++crossings;
+        peak = std::fmax(peak, out[0]);
+        same = same && out[1] == out[0];
+      }
+      prev = out[0];
+    }
+    CHECK(same);
+    CHECK(crossings >= 39 && crossings <= 41);
+    CHECK_NEAR(peak, 1.0, 1e-3);
+  }
+  // RNS: within ±peak, standard deviation about a third of it, little DC, and the mean |i| below the planned 0.5.
+  {
+    Runner r;
+    Plan q = p;
+    q.mode = Mode::RNS;
+    q.mA[0] = 1.5f;
+    q.lowHz = 100.0f;
+    q.highHz = 640.0f;
+    q.rampUpS = q.rampDownS = 2.0f;
+    q.holdS = 30;
+    r.start(q, 42);
+    float out[2];
+    double sum = 0, sq = 0, absSum = 0;
+    int n = 0;
+    float t = 0, peak = 0;
+    while (r.advance(0.0005f, out)) {
+      t += 0.0005f;
+      peak = std::fmax(peak, std::fabs(out[0]));
+      if (r.phase() == tes::Phase::Hold) {
+        sum += out[0];
+        sq += static_cast<double>(out[0]) * out[0];
+        absSum += std::fabs(out[0]);
+        ++n;
+      }
+    }
+    CHECK(peak <= 1.5f + 1e-6f);
+    CHECK_NEAR(std::sqrt(sq / n), 0.5, 0.05);
+    CHECK(std::fabs(sum / n) < 0.02);
+    CHECK(absSum / n < 0.5 * 1.5);
+    CHECK(r.chargeC() < plannedChargeC(q));
+  }
+  // DAC80504 frames and codes: (a - b) / 549 Ω.
+  CHECK(dacWrite(kRegSync, kSyncAllOnLdac) == 0x02FF0Fu);
+  CHECK(dacWrite(kRegTrigger, kTriggerLdac) == 0x050010u);
+  CHECK(dacWrite(kRegDac0 + 3, 0x1234) == 0x0B1234u);
+  {
+    const CodePair z = codesForMA(0.0f);
+    CHECK(z.a == kMidscale && z.b == kMidscale);
+    const CodePair c = codesForMA(4.0f);
+    const float va = c.a * 2.5f / 65536.0f, vb = c.b * 2.5f / 65536.0f;
+    CHECK_NEAR((va - vb) / 549.0f * 1000.0f, 4.0, 1e-3);
+    const CodePair m = codesForMA(-2.0f);
+    CHECK(m.a < kMidscale && m.b > kMidscale);
+    const CodePair big = codesForMA(10.0f);  // beyond the range: clamped, 4.55 mA at most
+    CHECK(big.a == 0xFFFF && big.b == 0);
+  }
+  // The island's ADS8688: VS and TSP on ±2.56 V, the electrodes on ±10.24 V; read directly.
+  CHECK(adcRange(VS1) == pcb::AdsRange::V2_56 && adcRange(TSP2) == pcb::AdsRange::V2_56);
+  CHECK(adcRange(EA1) == pcb::AdsRange::V10_24 && adcRange(EB2) == pcb::AdsRange::V10_24);
+  CHECK_NEAR(senseMA(0.0f), 0.0, 1e-6);
+  CHECK_NEAR(senseMA(4.0f * 0.549f), 4.0, 1e-4);
+  CHECK_NEAR(setpointMA(-2.0f * 0.549f), 2.0, 1e-4);  // TSP = b - a
+  CHECK(4.64f * 0.549f < 2.56f);                       // the trip current still reads within ±2.56 V
+  CHECK(kComplianceV < 2.0f * 10.24f);                 // the limit across a pair is within what the monitor reads
+  // Impedance.
+  CHECK(judgeImpedance(0.5f, 0.1f, 2.0f).ok);         // 5 kΩ at 2 mA: 10 V
+  CHECK(judgeImpedance(0.03f, 0.1f, 2.0f).short_);    // 0.3 kΩ
+  CHECK(judgeImpedance(1.2f, 0.1f, 2.0f).high);       // 12 kΩ at 2 mA needs 24 V
+  CHECK(judgeImpedance(2.5f, 0.1f, 0.5f).high);       // 25 kΩ: above the range
+  CHECK(judgeImpedance(1.0f, 0.0f, 1.0f).high);       // no current: open
+  // Watch: a current that follows passes; one that falls short stops the session; so does the compliance.
+  {
+    Watch w;
+    const float set[2] = {2.0f, 0.0f}, good[2] = {1.98f, 0.0f}, bad[2] = {0.8f, 0.0f}, v[2] = {10.0f, 0.0f}, hi[2] = {21.0f, 0.0f};
+    const char* reason = nullptr;
+    for (int i = 0; i < 300 && !reason; ++i) reason = watchStep(w, 0.01f, set, good, v);
+    CHECK(reason == nullptr);
+    Watch w2;
+    for (int i = 0; i < 100 && !reason; ++i) reason = watchStep(w2, 0.01f, set, bad, v);
+    CHECK(reason != nullptr && std::strstr(reason, "channel 1") != nullptr);
+    Watch w3;
+    reason = nullptr;
+    int steps = 0;
+    for (; steps < 100 && !reason; ++steps) reason = watchStep(w3, 0.01f, set, good, hi);
+    CHECK(reason != nullptr && std::strstr(reason, "voltage limit") != nullptr);
+    CHECK(steps >= 20 && steps <= 22);
+  }
+}
+
+static void testPcbBoard() {
+  std::printf("pcb board\n");
+  using namespace pcb;
+  // DAC81408 frames (SLASER3A Table 2): bit 23 R/W, 21-16 register, 15-0 data.
+  CHECK(dac81408Write(kDacData0 + 7, 0x8000) == 0x1B8000u);
+  CHECK(dac81408Write(kDacSpiConfig, 0x0A04) == 0x030A04u);
+  CHECK(dac81408Read(kDacDeviceId) == 0x810000u);
+  {
+    uint16_t v = 0;
+    CHECK(dac81408Readback(0x810A61u, kDacDeviceId, v) && v == 0x0A61);
+    CHECK(!dac81408Readback(0x010A61u, kDacDeviceId, v));  // not a read's echo
+    CHECK(!dac81408Readback(0x820A61u, kDacDeviceId, v));  // another register
+  }
+  // The engine's 12-bit offset code as straight binary: 0x800 = 8000h = 0 V on ±2.5 V.
+  CHECK(dac81408Data(0x800) == 0x8000);
+  CHECK(dac81408Data(0xFFF) == 0xFFF0);
+  CHECK(dac81408Data(0x000) == 0x0000);
+  CHECK(dac81408Data(0x801) == 0x8010);
+  CHECK(dac81408Data(0x1FFF) == 0xFFF0);  // out of range: clamped
+  {
+    // Configuration: device and reference on, ranges, mid-scale everywhere, then LDAC mode, then the outputs on last.
+    uint32_t f[kDacConfigFrames];
+    dac81408Config(f);
+    auto reg = [](uint32_t w) { return static_cast<uint8_t>((w >> 16) & 0x3F); };
+    for (uint32_t w : f) CHECK((w & 0x800000u) == 0);  // all writes
+    CHECK(f[0] == 0x030A04u);                          // SPICONFIG: DEV-PWDWN 0, the rest as at reset
+    CHECK(f[1] == 0x043F00u);                          // GENCONFIG: REF-PWDWN 0
+    CHECK(f[2] == 0x0BEEEEu && f[3] == 0x0CEEEEu);     // ±2.5 V (1110) for all eight
+    for (int ch = 0; ch < 8; ++ch) CHECK(f[4 + ch] == dac81408Write(static_cast<uint8_t>(kDacData0 + ch), 0x8000));
+    CHECK(f[12] == 0x060FF0u);                         // SYNCCONFIG: DAC0-7 on LDAC
+    CHECK(f[13] == 0x09F00Fu);                         // DACPWDWN: the eight outputs on
+    // The outputs come on only after every data register holds mid-scale and every range is set.
+    int pwd = -1, lastData = -1, lastRange = -1;
+    for (int i = 0; i < kDacConfigFrames; ++i) {
+      if (reg(f[i]) == kDacPowerDown) pwd = i;
+      if (reg(f[i]) >= kDacData0 && reg(f[i]) < kDacData0 + 8) lastData = i;
+      if (reg(f[i]) == kDacRange0 || reg(f[i]) == kDacRange1) lastRange = i;
+    }
+    CHECK(pwd == kDacConfigFrames - 1 && lastData < pwd && lastRange < lastData);
+    // A configured DAC passes its own readback list.
+    for (const DacExpect& e : kDacExpect) {
+      uint16_t v = 0;
+      for (int i = 0; i < kDacConfigFrames; ++i)
+        if (reg(f[i]) == e.reg) v = static_cast<uint16_t>(f[i]);
+      if (e.reg == kDacDeviceId) v = 0x0A61;  // 298h << 2, version 1
+      if (e.reg == kDacStatus) v = 0x0002;    // DAC-BUSY is not compared
+      if (e.reg == kDacPowerDown) v = 0xF00F;
+      CHECK((v & e.mask) == e.value);
+    }
+    // A DAC that reset again (DEV-PWDWN 1, outputs off) does not.
+    CHECK((0x0A24 & kDacExpect[2].mask) != kDacExpect[2].value);
+    CHECK((0xFFFF & kDacExpect[5].mask) != kDacExpect[5].value);
+  }
+  // ADS8688 commands (SBAS582C Table 6, Table 7) and codes (Figure 69, Table 4).
+  CHECK(ads8688Manual(0) == 0xC000);
+  CHECK(ads8688Manual(1) == 0xC400);
+  CHECK(ads8688Manual(7) == 0xDC00);
+  CHECK(ads8688WriteReg(kAdsRangeReg0 + 0, 0x02) == 0x0B02);  // channel 0 on ±0.625 x VREF
+  CHECK(ads8688WriteReg(kAdsRangeReg0 + 7, 0x00) == 0x1900);
+  CHECK_NEAR(ads8688Volts(0x8000, AdsRange::V10_24), 0.0, 1e-6);
+  CHECK_NEAR(ads8688Volts(0x8001, AdsRange::V10_24), 312.5e-6, 1e-9);
+  CHECK_NEAR(ads8688Volts(0x0000, AdsRange::V10_24), -10.24, 1e-5);
+  CHECK_NEAR(ads8688Volts(0xFFFF, AdsRange::V2_56), 2.56 - 78.125e-6, 2e-6);
+  {
+    const uint8_t rx[6] = {0x00, 0x00, 0x80, 0x10, 0x7F, 0xF0};
+    uint16_t a = 0, b = 0;
+    ads8688Chain2(rx, a, b);
+    CHECK(a == 0x8010 && b == 0x7FF0);
+  }
+  // Coil monitor: X read directly; +20 mA -> 2.48 V.
+  CHECK_NEAR(coilMA(2.48f), 20.0, 1e-4);
+  CHECK_NEAR(coilMA(-0.62f), -5.0, 1e-4);
+  CHECK(coilMA(ads8688FullScaleV(kCoilRange)) > 22.0f * 3);  // the range covers the trip with room
+  // Ceiling switch: 0.684 V and 2.72 V; anything else stops coil sessions.
+  CHECK(ceilingFromVolts(0.684f) == Ceiling::MA5);
+  CHECK(ceilingFromVolts(2.72f) == Ceiling::MA20);
+  CHECK(ceilingFromVolts(0.0f) == Ceiling::Unknown);
+  CHECK(ceilingFromVolts(1.6f) == Ceiling::Unknown);
+  CHECK(ceilingFromVolts(3.3f) == Ceiling::Unknown);
+  CHECK_NEAR(ceilingMA(Ceiling::MA5), 5.0, 1e-6);
+  CHECK_NEAR(ceilingMA(Ceiling::Unknown), 0.0, 1e-6);
+  CHECK_NEAR(tripMA(Ceiling::MA20), 22.0, 1e-4);
+  // Rails: +15 V / 11; -15 V against 3.3 V through 150k / 22k.
+  CHECK_NEAR(p15FromVolts(14.56f / 11.0f), 14.56, 1e-3);
+  const float n = (-14.56f / 150e3f + 3.3f / 22e3f) / (1.0f / 150e3f + 1.0f / 22e3f);
+  CHECK_NEAR(n15FromVolts(n), -14.56, 1e-3);
+  CHECK(n > 0.0f && n < 3.1f);
+  // USB-C current offered on CC.
+  CHECK_NEAR(ccOfferedMA(0.42f), 500.0, 1e-6);
+  CHECK_NEAR(ccOfferedMA(0.9f), 1500.0, 1e-6);
+  CHECK_NEAR(ccOfferedMA(1.7f), 3000.0, 1e-6);
+  CHECK_NEAR(ccOfferedMA(0.05f), 0.0, 1e-6);
+  // Coil check: 1 mA into 4.2 Ω (plus cable) follows; an open coil leaves the driver at its rail.
+  {
+    CoilReading r{1.0f, 0.998f, 0.128f, 0.124f};
+    const CoilVerdict v = judgeCoil(r);
+    CHECK(v.ok && !v.open);
+    CHECK_NEAR(v.ohms, 4.008, 0.01);
+  }
+  {
+    CoilReading r{1.0f, 0.0f, 10.24f, 0.0f};
+    const CoilVerdict v = judgeCoil(r);
+    CHECK(!v.ok && v.open);
+    CHECK_NEAR(v.ohms, 0.0, 1e-6);
+  }
+  {
+    // 300 Ω at 20 mA: OUT 8.5 V, within the monitor's range; the current followed.
+    CoilReading r{20.0f, 19.95f, 8.46f, 2.474f};
+    const CoilVerdict v = judgeCoil(r);
+    CHECK(v.ok && !v.open);
+    CHECK_NEAR(v.ohms, 300.1, 0.5);
+  }
+  {
+    // 500 Ω at 20 mA needs 12.5 V: the current followed, but OUT reads full scale: no resistance, not open.
+    CoilReading r{20.0f, 19.95f, 10.24f, 2.474f};
+    const CoilVerdict v = judgeCoil(r);
+    CHECK(v.ok && !v.open);
+    CHECK_NEAR(v.ohms, 0.0, 1e-6);
+  }
+  {
+    // An open coil: the driver at its rail reads full scale (10.24 V), no current.
+    CoilReading r{1.0f, 0.0f, -10.24f, 0.0f};
+    CHECK(judgeCoil(r).open);
+  }
+  {
+    // The current fell short but the driver is not at its rail: not open, not ok.
+    CoilReading r{2.0f, 1.5f, 3.0f, 0.186f};
+    const CoilVerdict v = judgeCoil(r);
+    CHECK(!v.ok && !v.open);
+  }
 }
 
 static void testPatterns() {
@@ -1305,6 +1687,8 @@ int main(int argc, char** argv) {
   if (argc == 4 && std::string(argv[1]) == "--dump") return dumpReference(argv[2], argv[3]);
   testAd5328Words();
   testDrive();
+  testPcbBoard();
+  testTes();
   testPatterns();
   testSpatial();
   testSession();

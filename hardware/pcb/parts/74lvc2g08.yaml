@@ -1,0 +1,20 @@
+# Texas Instruments SN74LVC2G08DCTR: dual 2-input AND gate, 1.65-5.5 V, SM8 (DCT, SSOP-8 2.95 x 2.8 mm, 0.65 mm).
+# Rev B of the helmet-driver: DAC_RST_N and TES_ENG in one package (rev A: two 74LVC1G08).
+# Datasheet: TI SCES198 (SN74LVC2G08, 1999-2015), read 2026-11-14: pins p. 3: 1 1A, 2 1B, 3 2Y, 4 GND, 5 2A, 6 2B,
+#   7 1Y, 8 VCC. KiCad's 74xGxx:74LVC2G08: unit 1 pins 1, 2 (in) and 7 (out), unit 2 pins 5, 6 (in) and 3 (out), unit 3
+#   4 GND and 8 VCC; with Package_SO:SSOP-8_2.95x2.8mm_P0.65mm pads 1-8: match.
+# JLCPCB parts API, read 2026-11-14: C352973 SN74LVC2G08DCTR, Extended, stock 19,031, USD 0.307.
+schema: 1
+description: Dual 2-input AND gate, 1.65-5.5 V, SSOP-8 2.95 x 2.8 mm (74LVC2G08)
+symbol: 74xGxx:74LVC2G08
+footprint: Package_SO:SSOP-8_2.95x2.8mm_P0.65mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/sn74lvc2g08.pdf
+values:
+  74LVC2G08:
+    mpn: SN74LVC2G08DCTR
+    manufacturer: Texas Instruments
+    lcsc: C352973
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C352973", date: "2026-11-14" }
+order: { previewCheck: "pin 1" }

@@ -1,0 +1,41 @@
+# Texas Instruments ADS7828E/2K5: 12-bit, 8-channel SAR ADC with I2C (standard, fast, 3.4 MHz high-speed) and a
+# 2.5 V internal reference, TSSOP-16 (PW).
+# Datasheet: TI SBAS181C (November 2001, revised March 2005), read 2026-11-12:
+#   Pin descriptions p. 2: 1-8 CH0-CH7, 9 GND, 10 REFIN/REFOUT, 11 COM, 12 A0, 13 A1, 14 SCL, 15 SDA, 16 +VDD.
+#   KiCad's Analog_ADC:ADS7828 has the same 16 numbers (REF for pin 10); with Package_SO:TSSOP-16_4.4x5mm_P0.65mm
+#   pads 1-16: match.
+#   COM (pp. 3, 11): the common negative input in single-ended mode (command byte SD = 1: CHx against COM). The
+#   negative input's absolute range is -0.2 to +0.2 V, so COM goes to (analog) ground; the positive input -0.2 to
+#   VDD + 0.2 V; full scale = positive minus negative input, 0 to VREF. With SD = 0 the channels pair up
+#   differentially (CH0/CH1, CH2/CH3, ...; Table II p. 11).
+#   REF (pp. 3, 9, 11, 14): pin 10 is the internal 2.5 V reference's output and the external reference input.
+#   Internal: 2.475-2.525 V, 15 ppm/C, output impedance 110 Ohm when on (1 GOhm off). It defaults to OFF at power-up
+#   and is switched by the command byte's PD1 bit (PD1 = 1: on); every conversion that uses it must keep PD1 = 1, and
+#   after switching it on it needs settling time (Turn-On Time plot p. 8: 42 us without a capacitor, 1240 us with
+#   1 uF to 12-bit accuracy). External reference: 0.05 V to VDD, 1 GOhm, PD1 = 0. Figure 1 p. 9 shows 0.1 uF on
+#   REFIN/REFOUT and VDD fed through 5 Ohm with 1-10 uF.
+#   Can REF be loaded? The datasheet gives no output current, only the 110 Ohm output impedance: 10 uA drawn from it
+#   would shift it by 1.1 mV (1.8 LSB at 610 uV/LSB; derived). Treat it as unloaded; buffer it if anything else
+#   needs it.
+#   I2C address (p. 11): 1 0 0 1 0 A1 A0 (R/W): 7-bit 0x48 + 2*A1 + A0, i.e. 0x48-0x4B; A1, A0 to VDD or GND, read
+#   at power-up. Up to four devices per bus.
+#   Supply (p. 3): 2.7-3.6 V specified; absolute maximum 6 V (p. 2); digital inputs to VDD + 0.3 V.
+# JLCPCB parts API, read 2026-11-12: C701649, Texas Instruments ADS7828E/2K5, Extended, SMT, stock 3,026,
+# USD 4.8628 (1+), 3.8585 (30+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# TSSOP-16_L5.0-W4.4-P0.65-LS6.4-BL, read 2026-11-12) turned by 270 degrees lies on KiCad's (same numbers), as the
+# table's ^TSSOP- line gives: no correction.
+schema: 1
+description: 12-bit 8-channel ADC, I2C, 2.5 V internal reference, TSSOP-16 (ADS7828)
+symbol: Analog_ADC:ADS7828
+footprint: Package_SO:TSSOP-16_4.4x5mm_P0.65mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/ads7828.pdf
+values:
+  ADS7828:
+    mpn: ADS7828E/2K5
+    manufacturer: Texas Instruments
+    lcsc: C701649
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C701649", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

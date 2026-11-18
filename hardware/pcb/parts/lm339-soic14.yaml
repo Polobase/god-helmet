@@ -1,0 +1,44 @@
+# Texas Instruments LM339 / LM339B: quad comparator with open-collector (B: open-drain) outputs, SOIC-14 (D).
+# Datasheet: TI SLCS006Z (LM139, LM239, LM339, LM339B, ...; October 1979, revised May 2025), read 2026-11-12:
+#   Pin functions, Table 5-1 p. 4, D package: 1 OUT1, 2 OUT2, 3 VCC, 4 IN2-, 5 IN2+, 6 IN1-, 7 IN1+, 8 IN3-, 9 IN3+,
+#   10 IN4-, 11 IN4+, 12 GND, 13 OUT4, 14 OUT3. TI's own note: the names of channels 1 and 2 are transposed by some
+#   makers (pin 1 is the output of the comparator whose inputs are 6, 7; pin 2 that of 4, 5); electrically the same.
+#   The D-package table is common to LM339 and LM339B.
+#   KiCad's Comparator:LM339 has five units: A (2 out, 4 -, 5 +), B (1 out, 6 -, 7 +), C (13 out, 10 -, 11 +),
+#   D (14 out, 8 -, 9 +) and the power unit E (3 V+, 12 V-). Each unit's three pins are one comparator of TI's table;
+#   only the unit letters differ from TI's channel numbers. The symbol has no footprint: Package_SO:SOIC-14_3.9x8.7mm_P1.27mm
+#   (its filter allows SOIC-14 3.9 x 8.7 mm), pads 1-14: match (checked 2026-11-12). Place all five units.
+#   LM339 (non-B), pp. 5-6 and 9: supply absolute maximum 36 V, recommended 2-30 V (non-V devices); TJ 0-70 C;
+#   common-mode input range 0 to VCC - 1.5 V (25 C), 0 to VCC - 2 V (full range); inputs may not go more than 0.3 V
+#   below GND; IOL 6 min / 16 typ mA at VOL 1.5 V; supply current 0.8 typ / 2 max mA for all four.
+#   LM339B, pp. 5-6: supply absolute maximum 38 V, recommended 2-36 V; TA -40 to 85 C; input range (V-) - 0.1 to
+#   (V+) - 2.0 V; response 1 us typ (p. 1 table).
+#   On +-14.5 V rails (29 V, up to about 29.9 V with the TPS65131's 3 %) the LM339 is at the edge of its 30 V
+#   recommended supply; the LM339B has 6 V more. Recommendation: LM339B.
+# JLCPCB parts API, read 2026-11-12:
+#   LM339: C7948, Texas Instruments LM339DR, Extended, SMT, stock 2,563, USD 0.1641 (1+).
+#   LM339B: C22416291, Texas Instruments LM339BIDR, Extended, SMT, stock 827, USD 0.1875 (1+). JLCPCB stores no
+#   datasheet for this number; its attributes (2-36 V, open-drain, 38 V) agree with SLCS006Z.
+# CPL: JLCPCB's footprints for both (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOIC-14_L8.7-W3.9-P1.27-LS6.0-BL, C7948 read 2026-11-12, C22416291 read 2026-11-13) turned by 270 degrees lie on
+# KiCad's (same numbers), as the table's ^SOIC- line gives: no correction.
+schema: 1
+description: Quad comparator, open-collector/open-drain outputs, SOIC-14 (LM339 / LM339B)
+symbol: Comparator:LM339
+footprint: Package_SO:SOIC-14_3.9x8.7mm_P1.27mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/lm339.pdf
+values:
+  LM339:
+    mpn: LM339DR
+    manufacturer: Texas Instruments
+    lcsc: C7948
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C7948", date: "2026-11-12" }
+  LM339B:
+    mpn: LM339BIDR
+    manufacturer: Texas Instruments
+    lcsc: C22416291
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C22416291", date: "2026-11-13" }
+order: { previewCheck: "pin 1" }

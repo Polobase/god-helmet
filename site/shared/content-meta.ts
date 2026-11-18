@@ -183,6 +183,16 @@ const ALL_DOCS: DocMeta[] = [
     description: 'Running the helmet from the 2.8" display board without phone or computer: flashing, the SD-card program pack, clock and screens.',
   },
   {
+    // The helmet-driver board: published once a board has passed its bring-up.
+    file: 'docs/PCB.md',
+    hidden: true,
+    section: 'docs',
+    slug: 'driver-board',
+    label: 'Driver board',
+    group: 'Build it',
+    description: 'The current-source driver board with isolated tES channels: connectors, firmware, the tES rules and the bring-up.',
+  },
+  {
     file: 'docs/PLACEMENT.md',
     section: 'docs',
     slug: 'placement',

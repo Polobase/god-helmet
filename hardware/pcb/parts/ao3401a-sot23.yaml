@@ -1,0 +1,29 @@
+# Alpha & Omega AO3401A: P-channel MOSFET, -30 V, -4 A, SOT-23. Here the TPS65131's load-disconnect switch on the
+# boost input (BSW drives its gate: low = on while ENP is high; TI SLVS493E p. 3 and 8.2.2.5 p. 15, which asks for
+# VGS and VGD ratings that cover the input voltage).
+# Datasheet: AOS "AO3401A 30V P-Channel MOSFET" Rev 3.1, December 2023, read 2026-11-12, p. 1:
+#   VDS -30 V; VGS +-12 V; ID -4.0 A (25 C), -3.2 A (70 C); RDS(on) < 50 mOhm at VGS -10 V, < 60 mOhm at -4.5 V,
+#   < 85 mOhm at -2.5 V; PD 1.4 W (25 C). From 5 V the gate sees -5 V: inside +-12 V.
+#   Pinout: the SOT23 top view on p. 1 shows D alone on one side and G, S on the other with the pin-1 dot at G, i.e.
+#   1 G, 2 S, 3 D. AOS's SOT-23 outline (aosmd.com/res/packaging_information/SOT23.pdf, read 2026-11-12) has no pin
+#   numbers. JLCPCB's symbol for C15127 numbers them the same (1 G, 2 S, 3 D), as does KiCad's
+#   Transistor_FET:AO3401A (extends TP0610T); with Package_TO_SOT_SMD:SOT-23 pads 1-3: match.
+# JLCPCB parts API, read 2026-11-12: C15127, Alpha & Omega Semicon AO3401A, Basic, SMT, stock 1,628,193,
+# USD 0.0813 (1+). Many clones share the number (BORN, UMW, HUASHUO, ...); this is the AOS one.
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOT-23_L2.9-W1.3-P1.90-LS2.4-BR, read 2026-11-12) turned by 180 degrees lies on KiCad's (same numbers), as the
+# table's ^SOT-23 line gives: no correction.
+schema: 1
+description: P-channel MOSFET, -30 V, -4 A, SOT-23 (AO3401A)
+symbol: Transistor_FET:AO3401A
+footprint: Package_TO_SOT_SMD:SOT-23
+assembly: smt
+datasheet: https://www.aosmd.com/res/datasheets/AO3401A.pdf
+values:
+  AO3401A:
+    mpn: AO3401A
+    manufacturer: Alpha & Omega Semiconductor
+    lcsc: C15127
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C15127", date: "2026-11-12" }
+order: { previewCheck: "pin 1 (gate)" }

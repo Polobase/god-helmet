@@ -19,6 +19,9 @@
 #include "envdata.h"
 #include "journal.h"
 #include "logbook.h"
+#ifdef HAS_PCB_DRIVER
+#include "pcbops.h"
+#endif
 #include "sdcard.h"
 #include "sequencer.h"
 #include "settings.h"
@@ -121,6 +124,9 @@ void setup() {
 #endif
   gSettings.load();
   dac::begin(gSettings.dacGain2x, gSettings.dacBufferedRef);
+#ifdef HAS_PCB_DRIVER
+  pcbops::begin();  // latches, monitor ADCs, the tES island at 0 mA with its relays open
+#endif
   journal::begin();  // why this start, and what the last run left behind
 
   usblink::begin();
@@ -194,6 +200,9 @@ void loop() {
       usblink::logf("Log entry %lu could not be closed\n", static_cast<unsigned long>(finished.logId));
   }
   storage::loop();
+#ifdef HAS_PCB_DRIVER
+  pcbops::loop();
+#endif
 
 #ifdef STANDALONE_UI
   ui::loop();

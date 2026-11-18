@@ -7,7 +7,11 @@
 #pragma once
 #include <cstdint>
 
+#include "config.h"
 #include "session.h"
+#ifdef HAS_PCB_DRIVER
+#include "tes.h"
+#endif
 
 namespace seq {
 
@@ -48,6 +52,16 @@ struct Status {
   float levels[8] = {0};    // |v| per channel, for the live view
   uint32_t overruns = 0;    // output periods that were late or lost (a stall of 5 ms counts 10)
   char lastStopReason[40] = {0};
+#ifdef HAS_PCB_DRIVER
+  // tES on the helmet-driver board: runs instead of a coil session (state Running/Stopping as for one).
+  bool tes = false;           // the running session is tES
+  bool tesCheck = false;      // ... the impedance check (tes.check), not a stimulation
+  float tesElapsedS = 0, tesTotalS = 0;
+  float tesChargeC = 0;
+  float tesSetMA[2] = {0, 0}; // the commands now (hidden in blind sessions: 0)
+  char tesStopReason[40] = {0};
+  float tesCheckV[2] = {0, 0}, tesCheckMA[2] = {0, 0};  // RMS over the last impedance check
+#endif
   // The session that runs, or the last one: kept until the next start, so an
   // app that reconnects can tell whether it is the one it started.
   uint32_t trialId = 0;
@@ -87,5 +101,11 @@ bool popFinished(Finished& out);
 // stops when it has been held for 40 ms (lib/resume/hold.h), because a
 // computer opening the USB port pulses that pin for a few milliseconds.
 void emergencyStopFromIsr();
+
+#ifdef HAS_PCB_DRIVER
+// tES (the helmet-driver board): a validated plan (control::startTes checks it). `check`: the impedance check, a
+// short low current that is not a stimulation. False if the queue is full.
+bool startTes(const tes::Plan& plan, uint32_t seed, bool blind, bool check);
+#endif
 
 }  // namespace seq

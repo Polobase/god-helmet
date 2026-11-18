@@ -1,0 +1,27 @@
+# Nexperia BAT54C,215: dual Schottky diode, common cathode, 30 V, 200 mA, SOT-23.
+# Datasheet: Nexperia "BAT54C Schottky barrier diode", product data sheet 1 July 2022 (the copy JLCPCB/LCSC serve for
+# C37704), read 2026-11-12:
+#   Table 2 p. 1, pinning: 1 A1 (anode diode 1), 2 A2 (anode diode 2), 3 K1, K2 (common cathode).
+#   KiCad's Diode:BAT54C has unnamed pins; its drawing has the anode of the left diode at pin 1, the anode of the right
+#   diode at pin 2 and both cathodes at the centre pin 3 (read from the symbol's graphics 2026-11-12): the same.
+#   With Package_TO_SOT_SMD:SOT-23 pads 1-3: match.
+#   Limiting values (p. 2): VR 30 V; IF 200 mA. VF max 800 mV at 100 mA, IR max 2 uA at 25 V (p. 1).
+# JLCPCB parts API, read 2026-11-12: C37704, Nexperia BAT54C,215, Extended with JLCPCB's "preferred" flag (no
+# loading fee on Economic PCBA, likely), SMT, stock 366,907, USD 0.0145 (1+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR, read 2026-11-13) turned by 180 degrees lies on KiCad's (same numbers), as the
+# table's ^SOT-23 line gives: no correction.
+schema: 1
+description: Dual Schottky diode, common cathode, 30 V 200 mA, SOT-23 (BAT54C)
+symbol: Diode:BAT54C
+footprint: Package_TO_SOT_SMD:SOT-23
+assembly: smt
+datasheet: https://www.lcsc.com/datasheet/lcsc_datasheet_2407241028_Nexperia-BAT54C-215_C37704.pdf
+values:
+  BAT54C:
+    mpn: BAT54C,215
+    manufacturer: Nexperia
+    lcsc: C37704
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C37704", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

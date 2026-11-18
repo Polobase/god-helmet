@@ -1,0 +1,62 @@
+* tES ceiling and trip. (1) The largest setpoint the DAC can give (a = 2.5 V, b = 0 V) into 1 kohm: the hardware
+* ceiling, 2.5 V / 549 ohm = 4.55 mA, above the firmware's 4.0 mA and below the 4.64 mA trip. (2) A fault: from 2 ms
+* the E+ electrode is pulled to the +14.5 V rail through 50 ohm, as an E+ driver stuck at its rail would do.
+* The window comparator trips at 4.64 mA (2.55 V on the sense output; LM339 and latch 2 us), and the latch opens the
+* relays (CPC1017N, up to 10 ms per its datasheet; modelled as 1 ms).
+*   ifs    current at full scale, before the fault
+*   tdel   time from the fault to the trip (s)
+*   ifault highest current while the relays open
+*   iend   current after the relays opened
+* @assert ifs ≈ 0.004554 ±0.5%
+* @assert tdel between 0 10u
+* @assert iend between -1u 1u
+.include helmet-driver.lib
+XR vp vn RAILS v=14.5
+VA a 0 PWL(0 0 200u 1.25 201u 2.5)
+VB b 0 PWL(0 0 200u 1.25 201u 0)
+* the channel of helmet-driver.lib with a fault switch on the drive node
+XU1 p1 n1x vp vn sp OPAx197
+R11 b p1 10k
+R12 p1 0 10k
+R13 a n1x 10k
+R14 n1x sp 10k
+XU2 0 n2 vp vn drv OPAx197
+R21 sp n2 10k
+R22 vs n2 10k
+C21 n2 drv 330p
+DZ1 n2 nz DZ11
+DZ2 drv nz DZ11
+XU3 drv ea vp vn ea OPAx197
+XU4 0 n4 vp vn eb OPAx197
+R41 drv n4 10k
+R42 n4 eb 10k
+RR1 ea ep 16
+SF vp ep fc 0 SWF
+VFC fc 0 PWL(0 0 2m 0 2.01m 1)
+RR2 en sx 16
+RS sx eb 549
+EINA vs 0 sx eb 1
+* trip: window comparator with latch, then the relay
+RDL vs sd 2k
+CDL sd 0 1n
+BTRIP trip 0 V = min(1, u(V(sd)-2.55) + u(-V(sd)-2.55) + u(V(trd)-0.5))
+RTD trip trd 1k
+CTD trd 0 1n
+RRL trip rl 1Meg
+CRL rl 0 1n
+BRC ctl 0 V = 1 - V(rl)
+S1 ep q1 ctl 0 SWR
+RL q1 en 1k
+.meas tran ifault MAX par('(v(q1)-v(en))/1k') FROM=2m TO=6m
+.model SWR SW(VT=0.5 VH=0.1 RON=0.01 ROFF=1G)
+.model SWF SW(VT=0.5 VH=0.1 RON=50 ROFF=1G)
+.tran 1u 6m uic
+.meas tran ifs FIND par('(v(q1)-v(en))/1k') AT=1.9m
+.meas tran ttrip WHEN v(trip)=0.5 RISE=1
+.meas tran tdel PARAM='ttrip-2.005m'
+.meas tran iend FIND par('(v(q1)-v(en))/1k') AT=5.9m
+.control
+run
+quit
+.endc
+.end

@@ -1,0 +1,24 @@
+# Texas Instruments OPA2197IDR: dual 36 V precision op-amp, rail-to-rail input and output, SOIC-8. Rev B of the
+# helmet-driver: stage 2 of two coil channels per package.
+# Datasheet: TI SBOS737C (OPA197, OPA2197, OPA4197; January 2016, revised March 2018), read 2026-11-14:
+#   Pins p. 4, OPA2197 D: 1 OUT A, 2 -IN A, 3 +IN A, 4 V-, 5 +IN B, 6 -IN B, 7 OUT B, 8 V+. KiCad's
+#   Amplifier_Operational:OPA2197xD: unit 1 pins 1 (out), 2 (-), 3 (+); unit 2 pins 5 (+), 6 (-), 7 (out); unit 3
+#   pins 4 (V-), 8 (V+); with Package_SO:SOIC-8_3.9x4.9mm_P1.27mm pads 1-8: match.
+#   p. 6, 6.5: RthJA 107.9 C/W (SOIC-8). p. 8: short-circuit current +-65 mA; quiescent current 1 mA typ per amplifier.
+#   Heat (design-notes.md, rev B): two channels at 20 mA DC into 4 Ohm coils dissipate 2 x 0.24 W + 0.06 W = 0.54 W:
+#   +58 C, 98 C at 40 C ambient (your limit: about 100 C).
+# JLCPCB parts API, read 2026-11-14: C139363 OPA2197IDR, Extended, stock 1,107, USD 1.4775 (1+).
+schema: 1
+description: Precision op-amp, 36 V, rail-to-rail in/out, dual, SOIC-8 (OPA2197)
+symbol: Amplifier_Operational:OPA2197xD
+footprint: Package_SO:SOIC-8_3.9x4.9mm_P1.27mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/opa2197.pdf
+values:
+  OPA2197:
+    mpn: OPA2197IDR
+    manufacturer: Texas Instruments
+    lcsc: C139363
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C139363", date: "2026-11-14" }
+order: { previewCheck: "pin 1" }

@@ -1,0 +1,29 @@
+# onsemi BAS40-04LT1G: dual Schottky diode in series, 40 V, SOT-23. Suggested (not in the brief) for the coil
+# outputs' clamps to the +-15 V rails (TI, Green 2019, p. 115 in spec.md): with the output at one rail the other diode
+# sees about 29-30 V, the BAT54S's full 30 V rating; this part has 40 V.
+# Datasheet: onsemi BAS40-04LT1/D Rev. 15 (September 2026), read 2026-11-12:
+#   p. 1: SOT-23 case 318 style 11: 1 anode, 2 cathode, 3 cathode/anode. VR 40 V; IF(continuous) 120 mA; IFSM 200 mA
+#   (1 s), 600 mA (10 ms); PF 225 mW; RthJA 508 C/W (minimum pad). p. 2: V(BR)R 40 V min; CT 5.0 pF max at 1 V.
+#   KiCad's Diode:BAS40-04 has unnamed pins; its drawing: pin 1 anode of the left diode, the centre pin 3 joins its
+#   cathode to the right diode's anode, pin 2 that diode's cathode (read from the symbol's graphics 2026-11-12): the
+#   same. With Package_TO_SOT_SMD:SOT-23 pads 1-3: match.
+#   JLCPCB's symbol for C78265 labels the pins 1 K1, 2 K2, 3 A, which does not describe this part; only its footprint
+#   is used (the pad numbers agree with KiCad's).
+# JLCPCB parts API, read 2026-11-12: C78265, onsemi BAS40-04LT1G, Extended, SMT, stock 44,474, USD 0.0349 (1+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR, read 2026-11-13) turned by 180 degrees lies on KiCad's (same numbers), as the
+# table's ^SOT-23 line gives: no correction.
+schema: 1
+description: Dual Schottky diode, series, 40 V 120 mA, SOT-23 (BAS40-04)
+symbol: Diode:BAS40-04
+footprint: Package_TO_SOT_SMD:SOT-23
+assembly: smt
+datasheet: https://www.onsemi.com/download/data-sheet/pdf/bas40-04lt1-d.pdf
+values:
+  BAS40-04:
+    mpn: BAS40-04LT1G
+    manufacturer: onsemi
+    lcsc: C78265
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C78265", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

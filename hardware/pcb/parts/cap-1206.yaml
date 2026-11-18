@@ -1,0 +1,25 @@
+# Sourcing verified 2026-09-24 via JLCPCB's parts API and partdetail pages (Phase-3 research, re-checked by a second agent).
+# 10u 50V (C13585) read again 2026-11-12 through the JLCPCB parts API: Basic, X5R, +-10 %, stock 3,469,604, USD 0.127
+# for 1+ (verified date unchanged). It is the 10 uF part for the 3.3 V and 5 V rails. Samsung's characteristic data
+# for CL31A106KBHNNN (typical, 25 C, 1 kHz, 1 V; read 2026-11-12 at
+# https://weblib.samsungsem.com/mlcc/mlcc-ec-data-sheet.do?partNumber=CL31A106KBHNNN):
+#   -12.8 % at 3.3 V (8.7 uF), -27.2 % at 5 V (7.3 uF), -66.1 % at 12 V (3.4 uF), -74.5 % at 15 V (2.6 uF):
+#   not for the +-15 V rails (cap-1210 has the 1210 X7R parts for those).
+# Compared the same day, not added: X7R 1206 10 uF 25 V CL31B106KAHNNNE (C14860, Extended) loses about the same
+# (-27.3 % at 5 V); X7R 1206 10 uF 50 V CL31B106KBHNNNE (C89632, Extended, USD 0.21) -15.0 % at 5 V, -63.6 % at 15 V;
+# Basic 0603 10 uF 10 V X5R CL10A106KP8NNNC (C19702) -55.7 % at 3.3 V (4.4 uF); Basic 1206 22 uF 25 V X5R
+# CL31A226KAHNNNE (C12891) -80.7 % at 15 V (4.2 uF; 120 Hz, 0.5 V).
+# No cplRotation: a non-polar two-pad part.
+schema: 1
+description: MLCC capacitor, 1206
+symbol: Device:C
+footprint: Capacitor_SMD:C_1206_3216Metric
+assembly: smt
+datasheet: null
+values:
+  10u 50V:
+    mpn: CL31A106KBHNNNE
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C13585
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C13585", date: "2026-09-24" }

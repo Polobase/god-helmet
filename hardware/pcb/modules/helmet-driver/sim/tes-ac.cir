@@ -1,0 +1,32 @@
+* tES channel, AC: tACS at 40 Hz and the top of the tRNS band (640 Hz, Terney 2008), 2 mA peak into an
+* electrode-skin model (1 kohm in series with 4.7 kohm || 100 nF; illustrative, no source gives one).
+*   g40, g640  current amplitude / 2 mA
+*   dc40       mean current over 2 periods at 40 Hz (no DC offset in tACS: LOTES)
+* @assert g40 between 0.99 1.01
+* @assert g640 between 0.95 1.02
+* @assert dc40 between -5u 5u
+.include helmet-driver.lib
+XR vp vn RAILS v=14.5
+VA1 a1 0 SIN(1.25 0.549 40 0)
+VB1 b1 0 SIN(1.25 -0.549 40 0)
+VA2 a2 0 SIN(1.25 0.549 640 0)
+VB2 b2 0 SIN(1.25 -0.549 640 0)
+X1 a1 b1 vp vn p1 n1 s1 TES
+RS1 p1 m1 1k
+RP1 m1 n1 4.7k
+CP1 m1 n1 100n
+X2 a2 b2 vp vn p2 n2 s2 TES
+RS2 p2 m2 1k
+RP2 m2 n2 4.7k
+CP2 m2 n2 100n
+.tran 5u 80m uic
+.meas tran a40 MAX par('v(p1,m1)/1k') FROM=30m TO=80m
+.meas tran a640 MAX par('v(p2,m2)/1k') FROM=70m TO=80m
+.meas tran dc40 AVG par('v(p1,m1)/1k') FROM=30m TO=80m
+.meas tran g40 PARAM='a40/0.002'
+.meas tran g640 PARAM='a640/0.002'
+.control
+run
+quit
+.endc
+.end

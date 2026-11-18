@@ -1,0 +1,21 @@
+# Thick-film resistor, 2512, 1 W, 1 %. JLCPCB parts API, read 2026-10-04 (Extended, SMT, -55...+155 C):
+#   100R:  UNI-ROYAL 25121WF1000T4E, C35218: 100 Ohm, +-100 ppm/C, stock 32,164. Chosen as a +5 V dummy
+#          load, 0.25 W each at 5 V. Datasheet:
+#          https://www.lcsc.com/datasheet/lcsc_datasheet_2206010030_UNI-ROYAL-Uniroyal-Elec-25121wf1000t4e_C35218.pdf
+# Unverified: the temperature where derating starts (the datasheet was not read).
+# Not for a resistor in series with a large capacitor: no thick-film datasheet read so far gives a pulse
+# rating; use a metal-strip part with a datasheet pulse rating there. The 0.12 Ohm thick-film value that was
+# here (FOJAN FRL2512FR120TS, C2934364) was taken out on 2026-10-04 for that reason.
+schema: 1
+description: Thick-film resistor, 2512, 1 W, 1 %
+symbol: Device:R
+footprint: Resistor_SMD:R_2512_6332Metric
+assembly: smt
+datasheet: null
+values:
+  100R:
+    mpn: 25121WF1000T4E
+    manufacturer: UNI-ROYAL
+    lcsc: C35218
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C35218", date: "2026-10-04" }

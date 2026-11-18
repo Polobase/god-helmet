@@ -1,0 +1,27 @@
+* tES channel, DC: 1 mA into 10 kohm, and the two "zero" states of the DAC: all outputs at 0 V (its reference
+* alarm) and all at mid-scale (power-on). With vset = a - b both must give 0 mA (spec.md "tES island").
+*   i1_10k    1 mA into 10 kohm: must be met (0.5 %)
+*   iz0, izm  current with a = b = 0 V and with a = b = 1.25 V
+* @assert i1_10k ≈ 0.001 ±0.5%
+* @assert iz0 between -2u 2u
+* @assert izm between -2u 2u
+.include helmet-driver.lib
+XR vp vn RAILS v=14.5
+VA1 a1 0 PWL(0 0 200u 1.25 201u 1.5245)
+VB1 b1 0 PWL(0 0 200u 1.25 201u 0.9755)
+VMID mid 0 PWL(0 0 200u 1.25)
+X4 a1 b1 vp vn p4 n4 s4 TES
+RL4 p4 n4 10k
+X5 0 0 vp vn p5 n5 s5 TES
+RL5 p5 n5 4.7k
+X6 mid mid vp vn p6 n6 s6 TES
+RL6 p6 n6 4.7k
+.tran 2u 3m uic
+.meas tran i1_10k FIND par('v(p4,n4)/10k') AT=2.9m
+.meas tran iz0 FIND par('v(p5,n5)/4.7k') AT=2.9m
+.meas tran izm FIND par('v(p6,n6)/4.7k') AT=2.9m
+.control
+run
+quit
+.endc
+.end

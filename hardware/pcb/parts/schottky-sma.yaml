@@ -1,0 +1,27 @@
+# SS14 sourcing verified 2026-09-24 (JLCPCB API).
+# Series reverse-polarity protection diode. Value and part number are placeholders until the
+# first real module picks a verified part (current rating vs. module draw).
+# 2026-11-12, for helmet-driver: SS14 as the TPS65131's two rectifiers (D1, D2 of TI SLVS493E Figure 8-1, where TI
+# uses 1 A 20 V Schottkys; the board needs at least 15.5 V on the boost side and VIN + |VNEG| = 20 V on the inverter):
+#   MDD datasheet "SS12 thru SS1200" Rev 2025A5 (the copy JLCPCB stores for C2480), read 2026-11-12, p. 1 table:
+#   SS14: VRRM 40 V, VRMS 28 V, VDC 40 V; IF(AV) 1.0 A; IFSM 25 A (8.3 ms half sine); VF 0.55 V max at 1.0 A;
+#   IR at the rated DC voltage 0.3 mA max at 25 C, 10 mA max at 100 C; CJ 110 pF typ; RthJA 90 C/W on 5 x 5 cm
+#   copper; TJ -55 to +150 C; colour band = cathode. 40 V gives 2x margin on the inverter side.
+#   JLCPCB parts API, read 2026-11-12: C2480, MDD SS14, Basic, SMT, stock 1,433,923, USD 0.0192 (1+).
+#   CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package SMA_L4.2-W2.6-LS5.0-RD_1,
+#   read 2026-11-13) has pad 1 = K on the left, as KiCad's D_SMA (pad 1 = cathode): no correction.
+#   Device:D_Schottky pin 1 = K, pin 2 = A; D_SMA pads 1, 2: match.
+schema: 1
+description: Schottky rectifier, SMA (DO-214AC)
+symbol: Device:D_Schottky
+footprint: Diode_SMD:D_SMA
+assembly: smt
+datasheet: https://www.lcsc.com/datasheet/lcsc_datasheet_2407101109_MDD-Microdiode-Semiconductor-SS14_C2480.pdf
+values:
+  SS14:
+    mpn: SS14
+    manufacturer: MDD (Microdiode Semiconductor)
+    lcsc: C2480
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C2480", date: "2026-11-12" }
+order: { previewCheck: "the cathode band" }

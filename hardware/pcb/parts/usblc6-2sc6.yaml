@@ -1,0 +1,29 @@
+# STMicroelectronics USBLC6-2SC6: two-line ESD protection for USB 2.0 data lines with a VBUS rail clamp, SOT23-6L.
+# Datasheet: ST "USBLC6-2" Doc ID 11265 Rev 5 (October 2011; the copy LCSC serves for C7519), read 2026-11-12:
+#   Figure 1 p. 1 (top view): 1 I/O1, 2 GND, 3 I/O2, 4 I/O2, 5 VBUS, 6 I/O1 (pins 1 and 6 are the same line, as are
+#   3 and 4: the data line passes through). KiCad's Power_Protection:USBLC6-2SC6 (extends USBLC6-2P6) has the same
+#   six numbers and names; Package_TO_SOT_SMD:SOT-23-6 has pads 1-6: match.
+#   Table 2 p. 2: leakage 150 nA max at 5.25 V; breakdown VBUS to GND 6 V min (IR = 1 mA); clamping I/O to GND
+#   12 V max at 1 A and 17 V max at 5 A (8/20 us); I/O capacitance 2.5 pF typ, 3.5 pF max.
+# JLCPCB parts API, read 2026-11-12: C7519, STMicroelectronics USBLC6-2SC6, Extended, SMT, stock 44,544,
+# USD 0.1567 (1+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL, read 2026-11-12) lies with pins 1-3 along the bottom edge, pin 1 at the left;
+# KiCad's SOT-23-6 has pins 1-3 down the left side. JLCPCB's turned by 270 degrees counter-clockwise lies on
+# KiCad's (all six pads within 0.012 mm, same numbers). The table's ^SOT-23 line gives 180, which would put pin 1
+# where pin 4 belongs: cplRotation 270.
+schema: 1
+description: USB 2.0 ESD protection, 2 data lines + VBUS, SOT-23-6 (USBLC6-2SC6)
+symbol: Power_Protection:USBLC6-2SC6
+footprint: Package_TO_SOT_SMD:SOT-23-6
+assembly: smt
+datasheet: https://datasheet.lcsc.com/datasheet/pdf/0d3a2ab954b34651a0695e7ccf534db0.pdf?productCode=C7519
+values:
+  USBLC6-2SC6:
+    mpn: USBLC6-2SC6
+    manufacturer: STMicroelectronics
+    lcsc: C7519
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C7519", date: "2026-11-12" }
+    cplRotation: 270
+order: { previewCheck: "pin 1" }

@@ -1,0 +1,29 @@
+* tES channel, DC: 4 mA (the working maximum under the 4 mA hardware ceiling) into resistor loads.
+* spec.md: about +/-26 V across a pair; the source stops when it runs out of voltage.
+*   i4_1k, i4_4k7  4 mA into 1 kohm and 4.7 kohm: must be met (0.5 %)
+*   i4_10k         4 mA commanded into 10 kohm: beyond the voltage limit (documents where it runs out)
+*   v4_4k7         voltage across the 4.7 kohm load at 4 mA
+* @assert i4_1k ≈ 0.004 ±0.5%
+* @assert i4_4k7 ≈ 0.004 ±0.5%
+* @assert i4_10k between 0.0018 0.0026
+* @assert v4_4k7 ≈ 18.8 ±1%
+.include helmet-driver.lib
+XR vp vn RAILS v=14.5
+VA4 a4 0 PWL(0 0 200u 1.25 201u 2.348)
+VB4 b4 0 PWL(0 0 200u 1.25 201u 0.152)
+X1 a4 b4 vp vn p1 n1 s1 TES
+RL1 p1 n1 1k
+X2 a4 b4 vp vn p2 n2 s2 TES
+RL2 p2 n2 4.7k
+X3 a4 b4 vp vn p3 n3 s3 TES
+RL3 p3 n3 10k
+.tran 2u 3m uic
+.meas tran i4_1k FIND par('v(p1,n1)/1k') AT=2.9m
+.meas tran i4_4k7 FIND par('v(p2,n2)/4.7k') AT=2.9m
+.meas tran i4_10k FIND par('v(p3,n3)/10k') AT=2.9m
+.meas tran v4_4k7 FIND par('v(p2)-v(n2)') AT=2.9m
+.control
+run
+quit
+.endc
+.end

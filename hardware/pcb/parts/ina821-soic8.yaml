@@ -1,0 +1,24 @@
+# TI INA821: precision instrumentation amplifier, gain 1 + 49.4 kOhm / RG, SOIC-8 (D). The helmet-driver's tES
+# current sense across the 499 Ohm resistor (gain 1: RG open), on the isolated island's +/-15 V.
+# Datasheet TI SBOS893D (August 2018, revised June 2020), read 2026-11-13:
+# - p. 4, pin table (D and DGK packages): 1 -IN, 2 RG, 3 RG, 4 +IN, 5 -VS, 6 REF (low-impedance source), 7 OUT,
+#   8 +VS. KiCad's Amplifier_Instrumentation:INA821xD: 1 "-", 2 Rg, 3 Rg, 4 "+", 5 Vs-, 6 Ref, 7 output, 8 Vs+.
+# - p. 6, §7.5: input operating range VCM (V-) + 2 V to (V+) - 2 V for VS = +/-2.25 V to +/-18 V. On +/-14.5 V that
+#   is +/-12.5 V, which sets the tES drive limit (anti-windup Zeners, spec.md).
+# Pin-to-pad check (scratchpad kicheck.py, 2026-11-13) against Package_SO:SOIC-8_3.9x4.9mm_P1.27mm: 8 = 8, match.
+# JLCPCB parts API (2026-11-13): C2060822 INA821IDR, Texas Instruments, Extended, stock 12,433, USD 2.40 (1+),
+#   2.08 (10+), 1.86 (30+). JLCPCB's own footprint not compared: check pin 1 in the placement preview.
+schema: 1
+description: Precision instrumentation amplifier, 36 V, SOIC-8 (TI INA821)
+symbol: Amplifier_Instrumentation:INA821xD
+footprint: Package_SO:SOIC-8_3.9x4.9mm_P1.27mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/ina821.pdf
+values:
+  INA821:
+    mpn: INA821IDR
+    manufacturer: Texas Instruments
+    lcsc: C2060822
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C2060822", date: "2026-11-13" }
+order: { previewCheck: "pin 1" }

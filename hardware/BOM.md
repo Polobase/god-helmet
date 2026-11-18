@@ -1,5 +1,7 @@
 # Bill of materials
 
+This list is the first build's. The [driver board](../docs/PCB.md) (not yet built) replaces the AD5328 module, the resistors, the PhotoMOS and the perfboard; its own parts list comes with its JLCPCB order files.
+
 ## On hand
 
 | Qty | Part | Notes |

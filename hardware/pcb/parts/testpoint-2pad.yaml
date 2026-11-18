@@ -1,0 +1,17 @@
+# Test point with its reference beside it: two plated holes of 0.8 mm at 2.54 mm pitch (KiCad 10.0.6
+# footprint TestPoint_2Pads_Pitch2.54mm_Drill0.8mm, read 2026-10-04). Pad 1 is the signal, pad 2 its 0 V:
+# a scope probe tip with a ground spring bridges the two, or a 2-pin header can be soldered in.
+# A board feature, not a part: nothing is sourced, placed or soldered (assembly: none).
+schema: 1
+description: Test point, 2 pads at 2.54 mm (signal and its reference)
+symbol: Connector:TestPoint_2Pole
+footprint: TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm
+assembly: none
+datasheet: null
+values:
+  TP:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null

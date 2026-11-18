@@ -1,0 +1,16 @@
+# Mounting hole for an M3 screw: one unplated hole of 3.2 mm without copper (KiCad 10.0.6 footprint
+# MountingHole_3.2mm_M3, read 2026-10-04). It connects to nothing; the symbol has no pin.
+# A board feature, not a part: nothing is sourced, placed or soldered (assembly: none).
+schema: 1
+description: Mounting hole, 3.2 mm for M3, unplated, no pad
+symbol: Mechanical:MountingHole
+footprint: MountingHole:MountingHole_3.2mm_M3
+assembly: none
+datasheet: null
+values:
+  M3:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null

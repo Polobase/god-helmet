@@ -1,0 +1,31 @@
+# IXYS (Littelfuse) CPC1017N: 1-Form-A (normally open) OptoMOS solid-state relay, 60 V, 100 mA, 16 Ohm, 4-pin SOP.
+# The helmet-driver's tES output relays (two per channel, one in each electrode line).
+# Datasheet IXYS Integrated Circuits DS-CPC1017N-R10 (LCSC copy for C81521, read 2026-11-12):
+# - p. 1, Pin Configuration: 1 + Control (LED anode), 2 - Control (LED cathode), 3 Load, 4 Load. KiCad's
+#   Relay_SolidState:CPC1017N has four unnamed passive pins; its LED is drawn from pin 1 (anode) to pin 2 (cathode),
+#   the MOSFET between 3 and 4: the same. Package_SO:SOP-4_3.8x4.1mm_P2.54mm (KiCad's own reference is this
+#   datasheet): pin-to-pad check passed 2026-11-12 (4 pins, 4 pads).
+# - p. 2: blocking voltage 60 VP; load current 100 mA (rms or DC; derated to 80 mA at 80 C), 350 mA peak for 10 ms;
+#   on-resistance 16 Ohm max at 100 mA; off-state leakage 1 µA max at 60 V; turn-on and turn-off 10 ms max
+#   (IF 5 mA, VL 10 V); output capacitance 5 pF at 50 V; LED current to operate 0.4 typ, 1 mA max (IL 100 mA),
+#   to deactivate 0.3 mA min; LED forward voltage 0.9-1.5 V at 5 mA; reverse input voltage 5 V; input current 50 mA
+#   max; input-output isolation 1500 Vrms, 1 pF; -40...+85 C. Note 3: above 60 C, drive the LED with at least 3 mA.
+# - p. 6, mechanical: body 4.089 x 3.810 mm; recommended land pattern 0.55 x 1.45 mm pads, 2.54 mm pitch, rows 5.50 mm
+#   apart. KiCad's footprint: 1.45 x 0.55 pads at x ±2.75, y ±1.27: the same pattern.
+# JLCPCB parts API and part page (2026-11-12): C81521 CPC1017NTR (reel), Extended, stock 18,821, USD 1.6815 (1+),
+# 1.4051 (10+), 1.2529 (30+). The tube parts C1559043 and C2760115 (CPC1017N) had stock 0. JLCPCB's own footprint was
+# not compared (the EasyEDA footprint service refused the request, 403): check pin 1 in the placement preview.
+schema: 1
+description: Solid-state relay 1-Form-A, 60 V, 100 mA, 16 Ohm, 1 mA LED, 4-pin SOP (IXYS/Littelfuse CPC1017N)
+symbol: Relay_SolidState:CPC1017N
+footprint: Package_SO:SOP-4_3.8x4.1mm_P2.54mm
+assembly: smt
+datasheet: https://www.lcsc.com/datasheet/lcsc_datasheet_1807271520_Littelfuse-IXYS-CPC1017NTR_C81521.pdf
+values:
+  CPC1017N:
+    mpn: CPC1017NTR
+    manufacturer: Littelfuse (IXYS)
+    lcsc: C81521
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C81521", date: "2026-11-12" }
+order: { previewCheck: "pin 1 (LED anode)" }

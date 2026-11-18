@@ -16,11 +16,16 @@ import { fmtDuration } from '../lib/format.js'
 import { goSafety } from '../lib/nav.js'
 import { unitLabel, toDisplay, fromDisplay } from '../lib/units.js'
 import FirmwareInstall from '../components/FirmwareInstall.vue'
+import BoardPanel from '../components/BoardPanel.vue'
+import TesPanel from '../components/TesPanel.vue'
 
 const s = ref(null)  // editable copy of the settings
 watch(() => device.settings, (v) => (s.value = v ? JSON.parse(JSON.stringify(v)) : null), { immediate: true })
 
 const kpManual = ref('')
+// The helmet-driver board (hello.pcb): current sources up to its ceiling switch, no series resistors.
+const pcb = computed(() => device.info?.pcb ?? null)
+const testMax = computed(() => (pcb.value ? pcb.value.ceilingMA || 5 : 4.5))
 const test = computed(() => (device.status?.test && device.status.state !== 'idle' ? device.status : null))
 // Coil and current the measured field belongs to: the last DC test, else the form.
 const target = computed(() => cal.last ?? { ch: cal.ch, mA: Math.abs(Number(cal.mA)) })
@@ -128,6 +133,11 @@ const setKp = () => run(async () => {
       </div>
     </header>
 
+    <template v-if="pcb">
+      <BoardPanel @message="(m) => flash(m.text, m.bad)" />
+      <TesPanel @message="(m) => flash(m.text, m.bad)" />
+    </template>
+
     <template v-if="s">
       <section class="card">
         <h2>Calibration</h2>
@@ -136,7 +146,7 @@ const setKp = () => run(async () => {
           <label class="field">Coil
             <select v-model.number="cal.ch"><option v-for="i in 8" :key="i" :value="i - 1">CH{{ i }}</option></select>
           </label>
-          <label class="field">Current (mA, max 4.5)<input v-model="cal.mA" type="number" step="0.1" min="0.1" max="4.5" /></label>
+          <label class="field">Current (mA, max {{ testMax }})<input v-model="cal.mA" type="number" step="0.1" min="0.1" :max="testMax" /></label>
           <label class="field">Seconds<input v-model="cal.sec" type="number" min="5" max="120" /></label>
         </div>
         <div class="row">
@@ -160,7 +170,8 @@ const setKp = () => run(async () => {
 
       <section class="card">
         <h2>Wiring check</h2>
-        <p class="small muted">Each coil in turn gets DC for the dwell time. Follow it with a compass, or measure about 2.2 V per mA across each 2.2 kΩ resistor.</p>
+        <p v-if="pcb" class="small muted">Each coil in turn gets DC for the dwell time. Follow it with a compass; the driver board panel shows each coil's measured current.</p>
+        <p v-else class="small muted">Each coil in turn gets DC for the dwell time. Follow it with a compass, or measure about 2.2 V per mA across each 2.2 kΩ resistor.</p>
         <div class="grid2">
           <label class="field">Layout<select v-model="rot.layout"><option v-for="L in LAYOUTS" :key="L.key" :value="L.key">{{ L.title }}</option></select></label>
           <label class="field">Direction<select v-model="rot.dir"><option value="ccw">Counter-clockwise</option><option value="cw">Clockwise</option></select></label>
@@ -174,9 +185,10 @@ const setKp = () => run(async () => {
         </p>
         <div class="load">
           <h3>Full load: all 8 outputs at once</h3>
-          <p class="small muted">Every output at the same DC current, for measuring the module's supply current and checking both ±12 V rails. Each output carries the current through its resistor ({{ (Number(load.mA) * (s.seriesOhm + s.coilOhm) / 1000).toFixed(1) }} V at {{ load.mA }} mA with {{ s.seriesOhm }} Ω + {{ s.coilOhm }} Ω). Not with the helmet on.</p>
+          <p v-if="pcb" class="small muted">Every output at the same DC current, for measuring the board's supply current and checking both ±15 V rails (driver board panel). Not with the helmet on.</p>
+          <p v-else class="small muted">Every output at the same DC current, for measuring the module's supply current and checking both ±12 V rails. Each output carries the current through its resistor ({{ (Number(load.mA) * (s.seriesOhm + s.coilOhm) / 1000).toFixed(1) }} V at {{ load.mA }} mA with {{ s.seriesOhm }} Ω + {{ s.coilOhm }} Ω). Not with the helmet on.</p>
           <div class="grid2">
-            <label class="field">Current per output (mA, max 4.6)<input v-model="load.mA" type="number" step="0.1" min="0.1" max="4.6" /></label>
+            <label class="field">Current per output (mA, max {{ pcb ? testMax : 4.6 }})<input v-model="load.mA" type="number" step="0.1" min="0.1" :max="pcb ? testMax : 4.6" /></label>
             <label class="field">Seconds<input v-model="load.sec" type="number" min="5" max="120" /></label>
           </div>
           <div class="row">
@@ -193,9 +205,11 @@ const setKp = () => run(async () => {
       <section class="card">
         <h2>Settings</h2>
         <div class="grid2">
-          <label class="field">Series resistor (Ω)<input v-model.number="s.seriesOhm" type="number" /></label>
-          <label class="field">Coil resistance (Ω)<input v-model.number="s.coilOhm" type="number" step="0.1" /></label>
-          <label class="field">Module full scale (V)<input v-model.number="s.vFullScale" type="number" step="0.1" /></label>
+          <template v-if="!pcb">
+            <label class="field">Series resistor (Ω)<input v-model.number="s.seriesOhm" type="number" /></label>
+            <label class="field">Coil resistance (Ω)<input v-model.number="s.coilOhm" type="number" step="0.1" /></label>
+            <label class="field">Module full scale (V)<input v-model.number="s.vFullScale" type="number" step="0.1" /></label>
+          </template>
           <label class="field">Max field at 20 mm ({{ unitLabel() }}, at most {{ disp(10) }})<input :value="disp(s.maxFieldUT)" type="number" :step="step(0.1)" @change="s.maxFieldUT = fromInput($event.target.value)" /></label>
           <label class="field">Default field ({{ unitLabel() }})<input :value="disp(s.defaultFieldUT)" type="number" :step="step(0.1)" @change="s.defaultFieldUT = fromInput($event.target.value)" /></label>
           <label class="field">Stop if no app for (s, 0 = off)<input v-model.number="s.keepaliveS" type="number" /></label>

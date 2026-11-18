@@ -1,0 +1,34 @@
+# DIP switch, 1 position, SMD gull wing, 2.54 mm, slide: SHOU HAN 2.54-1P TPGT (DSIC series). For the coil
+# ceiling switch (5 mA / 20 mA): it changes a threshold divider, a few mA at most.
+# Datasheet: SHOU HAN drawing DSP-DSICXXLS-AP "DSIC Series", P/N 2.54-1P TPGT, dated 03/04/01, 5 pages (LCSC copy
+#   for C7421519), read 2026-11-12:
+#   p. 1 (rendered): "P.C.B layout": pads 1.1 wide, rows 6.6 apart over the inner and 11 over the outer edges
+#     (2.2 long, centres +-4.4); lead span 9.4; body 6.15 across the rows; poles 1 ... 12 at 2.54 pitch;
+#     schematic: each switch between its two pins; "ON" printed on the body.
+#   p. 3: rated DC 24 V, 25 mA in the ON state; operating -30 ... 85 C.
+# KiCad 10.0.6 footprint SW_DIP_SPSTx01_Slide_6.7x4.1mm_W8.61mm_P2.54mm_LowProfile (read 2026-11-12): pads
+#   2.44 x 1.12 at +-4.305 (3.085 ... 5.525 from the centre); SHOU HAN's pads span 3.3 ... 5.5: the leads land.
+#   The KiCad body outline (6.7 x 4.1) is larger than this part's (JLCPCB: 6.2 x 2.5).
+# Symbol Switch:SW_DIP_x01: pins 1 and 2; footprint pads 1 and 2: equal, checked 2026-11-12.
+# JLCPCB parts API, read 2026-11-13: C7421519, Extended, SMT, stock 30,132, USD 0.4008 at 1+. JLCPCB calls the
+#   actuator "Rocked"; the recessed version 2.54-1P TPPT is C7421521 (stock 2,610, USD 0.4629). No Basic
+#   1-position DIP switch was found.
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+#   SW-SMD_2P-L6.2-W2.5-LS9.4, read 2026-11-12): pads 1 and 2 at +-4.5 along x as KiCad's: no cplRotation.
+#   Its silkscreen prints "ON" at the pad-2 side and "1" at the pad-1 side; KiCad's fab drawing has the knob at
+#   the pad-1 end and "on" towards pad 2. Unverified: that ON on the part is the pad-2 side; the firmware reads
+#   the threshold voltage, so a switch fitted the other way round shows at bring-up.
+schema: 1
+description: DIP switch, 1 position, SMD slide, 2.54 mm, SHOU HAN 2.54-1P
+symbol: Switch:SW_DIP_x01
+footprint: Button_Switch_SMD:SW_DIP_SPSTx01_Slide_6.7x4.1mm_W8.61mm_P2.54mm_LowProfile
+assembly: smt
+datasheet: https://datasheet.lcsc.com/datasheet/pdf/ff16e0c07f5ded5b4d8c896c2da80513.pdf?productCode=C7421519
+values:
+  2.54-1P TPGT:
+    mpn: 2.54-1P TPGT
+    manufacturer: SHOU HAN
+    lcsc: C7421519
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C7421519", date: "2026-11-13" }
+order: { previewCheck: "which side the ON mark faces" }

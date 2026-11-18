@@ -1,0 +1,40 @@
+# 3.5 mm jack, 4 contacts (TRRS), SMD, horizontal, two locating posts: Korean Hroparts (HRO) PJ-320D-4A.
+# For the hand-held STOP button: button between T (tip) and S (sleeve, GND). A mono or stereo plug's sleeve
+# also touches R1 and R2; leave them open or tie them to GND.
+# Datasheet: HRO drawing "PHONE JACKES" PJ-320D, sheet 1 of 1, drawn 2016/5/3 (revision field not read reliably), LCSC copy for
+#   C95562, read 2026-11-12 by rendering the page:
+#   schematic PJ-320D-A (4 pins): pin 1 the sleeve (the hooked contact), pins 2, 3, 4 spring contacts, pin 2
+#     the deepest (tip), pin 3 then pin 4 nearer the opening (rings). So 1 = S, 2 = T, 3 = R1, 4 = R2.
+#   "P.C.B Layout (TOP view)": pins 4, 3, 2 in one row at 3.20, 6.20, 10.20 from the front face, pin 1 on the
+#     other side at 11.30; pads 1.20 wide, 2.5 long (9.00 over both rows, 4.00 between them, centres +-3.25);
+#     two locating holes 1.00 at 1.60 and 8.60 from the face (posts 0.75). Rated 0.5 A 30 V DC, 5,000 cycles.
+# KiCad 10.0.6 footprint Jack_3.5mm_KoreanHropartsElec_PJ-320D-4A_Horizontal (made from the same LCSC datasheet;
+#   read 2026-11-12): NPTH at x -4.75 and +2.25 (face at -6.35), pads 1.2 x 2.5 at y +-3.25: R2 at x -3.15
+#   (pin 4), R1 at -0.15 (pin 3), T at +3.85 (pin 2), S at +4.95 on the other side (pin 1). Equal to HRO's
+#   layout, except the locating holes: 1.6 mm in KiCad against HRO's 1.0 (the posts locate more loosely).
+# Symbol Connector_Audio:AudioJack4 (TRRS): pins T, R1, R2, S; footprint pads T, R1, R2, S: equal, checked
+#   2026-11-12. AudioJack3 does not fit (the footprint has R1 and R2).
+# JLCPCB parts API, read 2026-11-13: C95562, Extended, SMT, stock 818, USD 0.1216 at 1+ (0.0966 at 50+).
+#   Rejected: CUI SJ1-3523N (C20182914, THT, stock 218): KiCad's footprint has 0.4 mm wide plated slots, below
+#   JLCPCB's 0.5 mm minimum (docs/jlcpcb.md). SHOU HAN PJ-320D (C431535, stock 61,914, USD 0.053) is cheaper;
+#   its drawing was not compared with a KiCad footprint.
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package AUDIO-SMD_PJ-320D-4A,
+#   read 2026-11-12) lies across KiCad's: turned by 90 degrees counter-clockwise its pads 1, 2, 3, 4 land on
+#   KiCad's S, T, R1, R2 (largest offset 0.38 mm, from its longer pads) - the same mapping as HRO's drawing:
+#   cplRotation 90. Its origin lies at (+0.90, -0.13) mm in KiCad's coordinates (0.9 mm along the jack's axis):
+#   check the position in JLCPCB's placement preview (the schema has no offset field).
+schema: 1
+description: 3.5 mm jack, 4 contacts (TRRS), SMD horizontal, HRO PJ-320D-4A
+symbol: Connector_Audio:AudioJack4
+footprint: Connector_Audio:Jack_3.5mm_KoreanHropartsElec_PJ-320D-4A_Horizontal
+assembly: smt
+datasheet: https://datasheet.lcsc.com/datasheet/pdf/47f01cfb735b61439fb6e15f9c9eccd4.pdf?productCode=C95562
+values:
+  PJ-320D-4A:
+    mpn: PJ-320D-4A
+    manufacturer: Korean Hroparts Elec
+    lcsc: C95562
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C95562", date: "2026-11-13" }
+    cplRotation: 90
+order: { previewCheck: "the opening towards the board edge, and the position (JLCPCB's origin is 0.9 mm off along the axis)" }

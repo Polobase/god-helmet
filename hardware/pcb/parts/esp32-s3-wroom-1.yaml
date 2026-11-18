@@ -1,0 +1,47 @@
+# Espressif ESP32-S3-WROOM-1-N16R8: Wi-Fi and Bluetooth LE module, 16 MB quad flash, 8 MB octal PSRAM (ESP32-S3R8),
+# on-board PCB antenna, 18 x 25.5 mm, 41 pads.
+# Datasheet: Espressif "ESP32-S3-WROOM-1 & WROOM-1U Datasheet" v1.8, read 2026-11-12:
+#   pinout Table 3-1 pp. 11-12 (1 GND, 2 3V3, 3 EN, 4-7 IO4-IO7, 8 IO15, 9 IO16, 10 IO17, 11 IO18, 12 IO8,
+#   13 IO19/USB_D-, 14 IO20/USB_D+, 15 IO3, 16 IO46, 17 IO9, 18 IO10, 19 IO11, 20 IO12, 21 IO13, 22 IO14, 23 IO21,
+#   24 IO47, 25 IO48, 26 IO45, 27 IO0, 28-30 IO35-IO37, 31 IO38, 32 IO39, 33 IO40, 34 IO41, 35 IO42, 36 RXD0 = GPIO44,
+#   37 TXD0 = GPIO43, 38 IO2, 39 IO1, 40 GND, 41 EPAD = GND). KiCad's RF_Module:ESP32-S3-WROOM-1 has exactly these
+#   41 pins (pins 40, 41 hidden GND); checked pin by pin 2026-11-12. The symbol names GPIO43/44 "TXD0"/"RXD0" and
+#   GPIO19/20 "USB_D-"/"USB_D+".
+#   Not usable on this module: IO35, IO36, IO37 (pins 28-30) go to the octal PSRAM on modules with ESP32-S3R8
+#   (Table 3-1 note b). GPIO26-34 are not brought out at all.
+#   EN (pin 3): high = on, low = chip off, must not float; p. 41 recommends an RC delay on EN, usually 10 kOhm and
+#   1 uF. IO0 (pin 27): strapping pin, weak pull-up; IO0 = 1 boots from flash, IO0 = 0 with IO46 = 0 enters
+#   Joint Download Boot (USB-Serial-JTAG, USB-OTG or UART0) (Table 4-1 p. 13, Table 4-3 p. 14). Other strapping
+#   pins: IO3 (JTAG source, floating), IO45 (VDD_SPI voltage, weak pull-down), IO46 (boot mode/ROM print, weak
+#   pull-down).
+#   IO3 checked in the chip's data sheet (ESP32-S3 Series Datasheet v2.2, section 3, Table 3-1 p. 32 and Table 3-5
+#   p. 35, read 2026-11-14): no internal pull; its strapping level is ignored while EFUSE_DIS_PAD_JTAG,
+#   EFUSE_DIS_USB_JTAG and EFUSE_STRAP_JTAG_SEL are 0, which is their default (not burnt). So IO3 is usable as an
+#   input (MISO) as long as nobody burns STRAP_JTAG_SEL. Table 2-2: IO1-IO8 show a 60 us low glitch at power-up.
+#   EPAD: soldering it is optional but helps heat (p. 41).
+#   Land pattern, Figure 11-1 p. 45: 40 pads 1.5 x 0.9 mm at 1.27 mm pitch, the two side rows 17.5 mm apart
+#   (centres), EPAD 3.7 x 3.7 mm with vias. KiCad's footprint: the same 40 pads (1.5 x 0.9, at x = +-8.75 mm),
+#   an EPAD of 3.9 x 3.9 mm with nine unnumbered 0.9 mm paste squares and 12 vias of 0.2 mm drill (JLCPCB: 0.2 mm is the
+#   preferred minimum via hole, docs/jlcpcb.md).
+# JLCPCB parts API, read 2026-11-12: C2913202, Espressif ESP32-S3-WROOM-1-N16R8, Extended, SMT, stock 22,317,
+# USD 5.3796 (1+), 4.2232 (30+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package WIRELM-SMD_ESP32-S3-WROOM-1,
+# read 2026-11-12) has every pad on KiCad's pad of the same number at 0 degrees: no rotation. Its origin is not
+# KiCad's: JLCPCB's pad 1 lies 8.895 mm above its origin, KiCad's pad 1 5.26 mm above its origin, so the two
+# origins are 3.64 mm apart along the module's long axis (JLCPCB's nearer the pin 15-26 row). The repo's CPL has
+# no offset correction: check the module's position in JLCPCB's placement preview.
+# Unverified: the antenna keep-out on the base board (Espressif Hardware Design Guidelines, not read here).
+schema: 1
+description: ESP32-S3-WROOM-1 module, N16R8 (16 MB flash, 8 MB octal PSRAM), PCB antenna
+symbol: RF_Module:ESP32-S3-WROOM-1
+footprint: RF_Module:ESP32-S3-WROOM-1
+assembly: smt
+datasheet: https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf
+values:
+  N16R8:
+    mpn: ESP32-S3-WROOM-1-N16R8
+    manufacturer: Espressif Systems
+    lcsc: C2913202
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C2913202", date: "2026-11-12" }
+order: { previewCheck: "pin 1 and the module's position (JLCPCB's origin is 3.64 mm from KiCad's)" }

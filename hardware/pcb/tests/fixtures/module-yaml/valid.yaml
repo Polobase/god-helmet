@@ -1,0 +1,24 @@
+# Test fixture: a complete, valid module.yaml of a board. Numbers are test data, not design values.
+schema: 1
+id: fixture-board
+name: Fixture Board
+kind: board
+revision:
+  rev: A
+  date: "2026-10-03"
+  status: spec
+power:
+  drawMa: { usb-c-5v: 250, +12V: 5 }
+  drawBasis: estimate
+pcb:
+  boards: 1
+  layers: 2
+  thicknessMm: 1.6
+  sizeMm: { w: 300, h: 40 }
+jlcpcb:
+  assembly: economic
+  smtSide: top
+  tht: jlcpcb
+  qty: 5
+  assembleQty: 2
+  removeOrderNumber: true

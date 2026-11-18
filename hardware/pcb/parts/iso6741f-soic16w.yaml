@@ -1,0 +1,35 @@
+# TI ISO6741F: quad digital isolator, 3 forward + 1 reverse channel, default output LOW (F suffix), 5000 Vrms,
+# wide SOIC-16 (DW). The helmet-driver's two isolators between the ESP32 and the tES island.
+# Datasheet TI SLLSFJ6G (December 2019, revised January 2023), read 2026-11-12:
+# - p. 1: default output high (ISO674x) or low (ISO674xF) on input power or signal loss; 1.71-1.89 V and
+#   2.25-5.5 V supplies, level translation between them; 50 Mbps; 1.6 mA per channel typical at 1 Mbps.
+# - p. 5, Figure 6-2 and p. 6, Table 6-1 (ISO6741): 1 VCC1, 2 GND1, 3 INA, 4 INB, 5 INC, 6 OUTD, 7 EN1, 8 GND1,
+#   9 GND2, 10 EN2, 11 IND, 12 OUTC, 13 OUTB, 14 OUTA, 15 GND2, 16 VCC2. KiCad's Isolator:ISO6741 has the same
+#   numbers and functions. Pins 8 (GND1) and 15 (GND2) are hidden passive pins stacked under pins 2 and 9: the
+#   schematic must put them in the GND1/GND2 nets too.
+# - Directions: A, B, C forward (side 1 pins 3/4/5 -> side 2 pins 14/13/12), D reverse (side 2 pin 11 -> side 1
+#   pin 6). EN1 (pin 7) enables the side-1 output (OUTD), EN2 (pin 10) the side-2 outputs (OUTA-C): high or open =
+#   enabled (550 kOhm internal pull-up, p. 31 Figure 9-3), low = high impedance.
+# - p. 31, Table 9-2 and Figure 9-3: F suffix: an open input or an unpowered input side (VCCI <= 1.05 V) gives a LOW
+#   output (inputs have a 1.5 MOhm pull-down); an unpowered OUTPUT side gives undetermined outputs; outputs are
+#   undetermined while a supply is between 1.89 and 2.25 V or between 1.05 and 1.71 V.
+# - p. 46, DW0016B example board layout: pads 2.0 x 0.6 at 9.3 mm (IPC-7351 nominal, 7.3 mm clearance/creepage)
+#   or 1.65 x 0.6 at 9.75 mm (HV option, 8.1 mm). KiCad's SOIC-16W_7.5x10.3mm_P1.27mm: 2.05 x 0.6 at x ±4.65
+#   (9.3 mm), 7.25 mm between the pad rows: the nominal pattern. Pin-to-pad check (2026-11-12): 16 pins, 16 pads.
+# JLCPCB parts API and part page (2026-11-12): C5216433 ISO6741FDWR, Extended, stock 2,132, USD 1.4705 (1+), 1.2039
+# (10+), 1.0583 (30+). JLCPCB's own footprint was not compared (the EasyEDA footprint service refused the request,
+# 403): check pin 1 in the placement preview.
+schema: 1
+description: Quad digital isolator 3/1, default output low, 5 kVrms, SOIC-16 wide (TI ISO6741F)
+symbol: Isolator:ISO6741
+footprint: Package_SO:SOIC-16W_7.5x10.3mm_P1.27mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/iso6741.pdf
+values:
+  ISO6741F:
+    mpn: ISO6741FDWR
+    manufacturer: Texas Instruments
+    lcsc: C5216433
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C5216433", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

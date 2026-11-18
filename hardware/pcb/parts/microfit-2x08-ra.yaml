@@ -1,0 +1,28 @@
+# Molex Micro-Fit 3.0 header 43045-1600: 2 x 8 circuits, 3.00 mm pitch, right angle, through hole, with latch and
+# polarization. The helmet-driver's coil connector (your decision 2026-11-13: one latching 16-pin plug instead of
+# two RJ45 jacks): one cable with 8 twisted pairs to the headband; coil k on pins k (signal) and k + 8 (return),
+# which face each other across the two rows, so each pair leaves the plug side by side.
+# Mating parts (not on the board): Molex 43025-1600 receptacle housing and 43030 series crimp terminals, or a
+#   ready-made Micro-Fit 3.0 16-circuit cable.
+# Footprint Connector_Molex:Molex_Micro-Fit_3.0_43045-1600_2x08_P3.00mm_Horizontal (KiCad 10.0.6): pads 1-8 in one
+#   row (pad 1 square), 9-16 in the row 3.00 mm behind, drill 1.02 mm. Symbol Connector_Generic:Conn_02x08_Top_Bottom
+#   (1-8 on one side, 9-16 on the other): pin-to-pad check 16 = 16, match (scratchpad kicheck.py, 2026-11-13).
+# UNVERIFIED: Molex's sales drawing (SD-43045) could not be read on 2026-11-13 (molex.com timed out; JLCPCB lists
+#   no datasheet for C277731). The circuit numbering is KiCad's footprint's. Check it against the cavity numbers
+#   molded on the 43025-1600 housing before crimping the cable, and pin 1 in JLCPCB's placement preview.
+# JLCPCB parts API (2026-11-13): C277731 430451600, Molex, Extended, stock 2,116, USD 1.34 (1+); "Right Angle, Tin,
+#   600 V, 8.5 A". Through hole: JLCPCB solders it (module.yaml jlcpcb.tht) or you do.
+schema: 1
+description: Molex Micro-Fit 3.0 header, 2 x 8, 3.00 mm, right angle, latching (43045-1600)
+symbol: Connector_Generic:Conn_02x08_Top_Bottom
+footprint: Connector_Molex:Molex_Micro-Fit_3.0_43045-1600_2x08_P3.00mm_Horizontal
+assembly: tht
+datasheet: https://www.molex.com/en-us/products/part-detail/430451600
+values:
+  43045-1600:
+    mpn: "430451600"
+    manufacturer: Molex
+    lcsc: C277731
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C277731", date: "2026-11-13" }
+order: { previewCheck: "pin 1 (square pad) and the latch facing the board edge" }

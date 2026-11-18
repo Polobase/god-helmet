@@ -1,0 +1,31 @@
+# Microchip MCP3208: 8-channel 12-bit SAR ADC, SPI, 2.7-5.5 V, SOIC-16 (150 mil). The helmet-driver's tES island
+# monitor (current, electrode voltages, island rails).
+# Datasheet Microchip DS21298E (2008), read 2026-11-12 (the LCSC copy JLCPCB lists for C626764 is the same 40-page
+# DS21298E):
+# - p. 1, Package Types: the MCP3208 comes in PDIP-16 and SOIC-16 only (the TSSOP is the 14-pin MCP3204); SPI modes
+#   0,0 and 1,1.
+# - p. 15, Table 3-1 (MCP3208, PDIP and SOIC): 1-8 CH0-CH7, 9 DGND, 10 CS/SHDN, 11 DIN, 12 DOUT, 13 CLK, 14 AGND,
+#   15 VREF, 16 VDD. KiCad's Analog_ADC:MCP3208 has the same numbers; it names no default footprint
+#   (ki_fp_filters DIP W7.62 or SOIC 3.9x9.9). Package_SO:SOIC-16_3.9x9.9mm_P1.27mm: pin-to-pad check passed
+#   2026-11-12 (16 pins, 16 pads).
+# - p. 2: VREF 0.25 V to VDD; single-ended input range VSS to VREF; pseudo-differential IN+ from IN- to VREF + IN-;
+#   clock rates below 10 kHz affect linearity (sample capacitor droop).
+# - p. 3: fCLK max 2.0 MHz at VDD = 5 V, 1.0 MHz at 2.7 V; DOUT goes high-impedance within 100 ns of CS rising.
+# JLCPCB parts API and part page (2026-11-12): C626764 MCP3208T-CI/SL, Extended, stock 782, USD 3.2239 (1+), 2.7626
+# (10+), 2.4895 (30+). Also: C16939 MCP3208-CI/SL (tube), stock 447, USD 3.3858; C2979740 MCP3208-BI/SL (B grade,
+# ±1 LSB), stock 255, USD 4.5684. JLCPCB's own footprint was not compared (the EasyEDA footprint service refused
+# the request, 403): check pin 1 in the placement preview.
+schema: 1
+description: 8-channel 12-bit SAR ADC, SPI, 2.7-5.5 V, SOIC-16 narrow (Microchip MCP3208, C grade)
+symbol: Analog_ADC:MCP3208
+footprint: Package_SO:SOIC-16_3.9x9.9mm_P1.27mm
+assembly: smt
+datasheet: https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2201051730_Microchip-Tech-MCP3208T-CI-SL_C626764.pdf
+values:
+  MCP3208:
+    mpn: MCP3208T-CI/SL
+    manufacturer: Microchip Technology
+    lcsc: C626764
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C626764", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

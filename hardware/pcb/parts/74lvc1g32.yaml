@@ -1,0 +1,23 @@
+# Texas Instruments SN74LVC1G32DBVR: single 2-input OR gate, 1.65-5.5 V, 5.5 V tolerant inputs, SOT-23-5 (DBV).
+# Datasheet: TI SCES219W (April 1999, revised August 2026), read 2026-11-12:
+#   Table 4-1 p. 3 (DBV): 1 A, 2 B, 3 GND, 4 Y, 5 VCC. KiCad's 74xGxx:74LVC1G32 has 1 and 2 inputs, 3 GND, 4 output,
+#   5 VCC (no footprint in the symbol); with Package_TO_SOT_SMD:SOT-23-5 pads 1-5: match (checked 2026-11-12).
+# JLCPCB parts API, read 2026-11-12: C10096, Texas Instruments SN74LVC1G32DBVR, Extended, SMT, stock 149,941,
+# USD 0.066 (1+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BR, read 2026-11-12) turned by 180 degrees lies on KiCad's (same numbers), as the
+# table's ^SOT-23 line gives: no correction.
+schema: 1
+description: Single 2-input OR gate, LVC, SOT-23-5 (SN74LVC1G32)
+symbol: 74xGxx:74LVC1G32
+footprint: Package_TO_SOT_SMD:SOT-23-5
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/sn74lvc1g32.pdf
+values:
+  74LVC1G32:
+    mpn: SN74LVC1G32DBVR
+    manufacturer: Texas Instruments
+    lcsc: C10096
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C10096", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

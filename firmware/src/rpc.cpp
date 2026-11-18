@@ -23,6 +23,9 @@
 #include "minijson.h"
 #include "preset_json.h"
 #include "sequencer.h"
+#ifdef HAS_PCB_DRIVER
+#include "pcbops.h"
+#endif
 #include "settings.h"
 #include "storage.h"
 #include "usblink.h"
@@ -115,6 +118,9 @@ Reply hello() {
   w.endObject();
   w.key("env");
   envdata::writeJson(w);
+#ifdef HAS_PCB_DRIVER
+  pcbops::writeHello(w);
+#endif
   w.endObject();
   return Reply::json(w.str());
 }
@@ -343,6 +349,29 @@ Reply dispatch(const std::string& op, const mj::Value& v, const std::string& raw
     return Reply();
   }
   if (op == "test") return test(v);
+#ifdef HAS_PCB_DRIVER
+  if (op == "coils.check" || op == "tes.check" || op == "tes.start") {
+    String error;
+    const bool ok = op == "coils.check" ? pcbops::coilsCheck(error)
+                    : op == "tes.check" ? pcbops::tesCheck(v, error)
+                                        : pcbops::tesStart(v, error);
+    return ok ? Reply::json(std::string("{\"started\":true}")) : Reply::fail(error);
+  }
+  if (op == "tes.stop") {
+    seq::stop(v["reason"].str("stopped in the app"));
+    return Reply::json(std::string("{}"));
+  }
+  if (op == "tes.log") {
+    mj::Writer w;
+    String error;
+    return pcbops::tesLog(w, error) ? Reply::json(w.str()) : Reply::fail(error);
+  }
+  if (op == "tes.reveal") {
+    mj::Writer w;
+    String error;
+    return pcbops::tesReveal(w, error) ? Reply::json(w.str()) : Reply::fail(error);
+  }
+#endif
   if (op == "log.list") return logList(v);
   if (op == "log.rate") return logRate(v);
   if (op == "trial.new") return trialNew(v);
@@ -454,6 +483,9 @@ std::string statusJson() {
     for (float l : st.levels) w.number(l, 2);
     w.endArray();
   }
+#ifdef HAS_PCB_DRIVER
+  pcbops::writeStatus(w, st.blind);
+#endif
   w.endObject();
   return w.take();
 }

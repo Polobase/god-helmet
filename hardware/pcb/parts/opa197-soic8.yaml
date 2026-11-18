@@ -1,0 +1,29 @@
+# Texas Instruments OPA197IDR: single 36 V precision op-amp, rail-to-rail input and output, SOIC-8. Stage 2 of each
+# coil channel (one amplifier per package for heat, spec.md).
+# Datasheet: TI SBOS737C (OPA197, OPA2197, OPA4197; January 2016, revised March 2018), read 2026-11-12:
+#   Pin functions p. 4, OPA197 D (SOIC): 1 NC, 2 -IN, 3 +IN, 4 V-, 5 NC, 6 OUT, 7 V+, 8 NC ("no internal connection,
+#   can be left floating"). KiCad's Amplifier_Operational:OPA197xD (extends OPA333xxD): 2 -, 3 +, 4 V-, 6 output,
+#   7 V+, 1/5/8 NC hidden; with Package_SO:SOIC-8_3.9x4.9mm_P1.27mm pads 1-8: match.
+#   Absolute maximum p. 5: supply +-20 V (40 V single); inputs (V-) - 0.5 to (V+) + 0.5 V, 10 mA; output short
+#   circuit continuous (one amplifier per package). Recommended: +-2.25 to +-18 V, -40 to 125 C.
+#   p. 6: RthJA 115.8 C/W (SOIC-8). p. 8 (VS = +-4 to +-18 V): short-circuit current +-65 mA at +-18 V; output swing
+#   from the rails 430 typ / 500 max mV at 2 kOhm load; quiescent current 1 mA typ, 1.3 mA max per amplifier.
+# JLCPCB parts API, read 2026-11-12: C79274, Texas Instruments OPA197IDR, Extended, SMT, stock 13,329,
+# USD 0.687 (1+), 0.4793 (30+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL, read 2026-11-12) turned by 270 degrees lies on KiCad's (same numbers), as the
+# table's ^SOIC- line gives: no correction.
+schema: 1
+description: Precision op-amp, 36 V, rail-to-rail in/out, single, SOIC-8 (OPA197)
+symbol: Amplifier_Operational:OPA197xD
+footprint: Package_SO:SOIC-8_3.9x4.9mm_P1.27mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/opa197.pdf
+values:
+  OPA197:
+    mpn: OPA197IDR
+    manufacturer: Texas Instruments
+    lcsc: C79274
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C79274", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

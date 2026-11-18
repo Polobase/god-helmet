@@ -1,0 +1,38 @@
+# Texas Instruments DAC81408RHAR: 8-channel, 16-bit, high-voltage output DAC with a 2.5 V internal reference, SPI,
+# VQFN-40 (RHA, 6 x 6 mm, thermal pad). Rev B of the helmet-driver: the eight coil setpoints on its +-2.5 V range,
+# in place of two DAC8565 and the stage-1 op-amps.
+# Datasheet: TI SLASER3A (July 2018, revised November 2018), read 2026-11-14:
+#   Pins p. 3-4: 1-4 and 27-30 NC; 5-8 OUT0-OUT3; 9 VIO (1.7-5.5 V); 10, 36 GND; 11 SDO; 12 SCLK; 13 SDI (taken on
+#   SCLK falling edges); 14 CS (active low); 15-17 TOGGLE0-2 (to ground when unused); 18 LDAC (active low: synchronous
+#   channels update); 19 RESET (active low: a power-on-reset event); 20 CLR (active low: clear code, mid-scale on
+#   bipolar ranges; to VIO when unused); 21 ALMOUT (open drain, 10 kOhm pull-up when used); 22 TEMPOUT; 23-26
+#   OUT4-OUT7; 31, 40 VCC (9-41.5 V); 32, 39 VSS (-21.5-0 V); 33 REF (150 nF to GND); 34 REFCMP (330 pF to REFGND);
+#   35 REFGND; 37 VAA, 38 VDD (4.5-5.5 V, same potential); thermal pad to the ground plane.
+#   p. 2 and 9.3.1: ranges 0-5/10/20/40 V and +-2.5/5/10/20 V per channel; data straight binary (8000h = 0 V on a
+#   bipolar range); outputs drive +-25 mA with 1.5 V from the supplies.
+#   9.3.3: after power-up or a RESET pulse (>= 500 ns) a POR event: every register at its default, the device in
+#   power-down, every output tied to ground through 10 kOhm, communication valid 1 ms later. 11: "There is no
+#   sequencing requirement for the power supplies."
+#   Registers p. 31-43: 24-bit frame (bit 23 R/W, 21-16 address, 15-0 data); SPICONFIG 03h (DEV-PWDWN bit 5, reset 1),
+#   GENCONFIG 04h (REF-PWDWN bit 14, reset 1), SYNCCONFIG 06h, DACPWDWN 09h, DACRANGE0/1 0Bh/0Ch (+-2.5 V = 1110),
+#   TRIGGER 0Eh, DAC0-DAC7 14h-1Bh.
+#   Package RHA0040C p. 52-53: thermal pad 4.7 mm, land 4.7 mm.
+# Symbol: KiCad has none; Generated:DAC81408 is built from the pin table above (tools/kicad/gensym.ts). Footprint:
+#   KiCad's Texas_RHA_VQFN-40 with a 4.6 mm thermal land (0.1 mm under TI's 4.7) and its thermal vias; pads 1-40 and
+#   41 match the symbol's pins (checked by lib:import).
+# JLCPCB parts API, read 2026-11-14: C2680134 DAC81408RHAR, Extended, stock 122, USD 28.4195 (1+). Fallback: the
+#   16-channel DAC81416RHAR, C2680104, stock 1,669, USD 48.264.
+schema: 1
+description: 8-channel 16-bit high-voltage output DAC, +-2.5 to +-20 V, 2.5 V reference, SPI, VQFN-40 (DAC81408)
+symbol: Generated:DAC81408
+footprint: Package_DFN_QFN:Texas_RHA_VQFN-40-1EP_6x6mm_P0.5mm_EP4.6x4.6mm_ThermalVias
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/dac81408.pdf
+values:
+  DAC81408:
+    mpn: DAC81408RHAR
+    manufacturer: Texas Instruments
+    lcsc: C2680134
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C2680134", date: "2026-11-14" }
+order: { previewCheck: "pin 1 (corner mark) and the thermal pad" }

@@ -1,0 +1,31 @@
+# Indicator LED, 0805, one colour. JLCPCB parts API, read 2026-10-04 (all three Basic, SMT):
+#   green:  Hubei KENTO KT-0805G, C2297: 2.6-3.1 V at 5 mA, 430 mcd, stock 3,122,134
+#   red:    NationStar NCD0805R1, C84256: 1.6-2.6 V, 195 mcd, stock 4,804,889
+#   yellow: Hubei KENTO KT-0805Y, C2296: 1.8-2.4 V, 175 mcd, stock 387,963
+# Unverified: the maximum forward current of each part (indicators here run at about 2 mA).
+schema: 1
+description: LED, 0805, single colour
+symbol: Device:LED
+footprint: LED_SMD:LED_0805_2012Metric
+assembly: smt
+datasheet: null
+values:
+  green:
+    mpn: KT-0805G
+    manufacturer: Hubei KENTO
+    lcsc: C2297
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C2297", date: "2026-10-04" }
+  red:
+    mpn: NCD0805R1
+    manufacturer: NationStar
+    lcsc: C84256
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C84256", date: "2026-10-04" }
+  yellow:
+    mpn: KT-0805Y
+    manufacturer: Hubei KENTO
+    lcsc: C2296
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C2296", date: "2026-10-04" }
+order: { previewCheck: "the cathode mark" }

@@ -1,0 +1,33 @@
+# TI DAC80504: quad 16-bit voltage-output DAC, internal 2.5 V reference, SPI, WQFN-16 (RTE) with thermal pad.
+# The helmet-driver's tES setpoint DAC on the isolated island: two outputs per tES channel, used as a difference
+# (spec.md "tES island"), so "all outputs 0 V" (a reference alarm) and "all at midscale" (power-on) both mean 0 mA.
+# Datasheet TI SBAS871C (August 2017, revised January 2019), read 2026-11-13:
+# - p. 5, pin table: 1 REF, 2-5 OUT0-OUT3, 6 GND, 7 VDD (2.7-5.5 V), 8 GAIN, 9 RSTSEL, 10 REFDIV, 11 LDAC,
+#   12 CS, 13 SCLK, 14 SDI, 15 SDO/ALARM, 16 VIO (1.7-5.5 V), thermal pad (to the ground plane with vias).
+#   KiCad's Analog_DAC:DAC80504 has the same numbers, the thermal pad as pin 17.
+#   GAIN: GND = gain 1, VIO = gain 2, read after power-up or reset. REFDIV: GND = reference not divided,
+#   VIO = divided by 2, read after power-up or reset. RSTSEL: GND = reset to zero scale, VIO = midscale.
+#   LDAC: a high-to-low edge updates the channels in synchronous mode; may be tied to GND.
+#   SDO/ALARM: SDO by default; as ALARM open drain with 10 kOhm to VIO.
+# - p. 6-7: VREFIN 1.25-5.5 V (conditions of the electrical tables); digital inputs 0 to VIO; VIH 0.7 x VIO.
+# Board use (derived): GAIN = GND and REFDIV = GND give 0-2.5 V from the internal 2.5 V reference, which a VDD of
+#   4.75-5.25 V (the island's L78L05) carries with headroom; RSTSEL = VIO gives midscale at power-up.
+# Pin-to-pad check (scratchpad kicheck.py, 2026-11-13) against
+#   Package_DFN_QFN:Texas_RTE0016D_WQFN-16-1EP_3x3mm_P0.5mm_EP0.8x0.8mm_ThermalVias: 17 = 17, match.
+# JLCPCB parts API (2026-11-13): C2862796 DAC80504RTET, Texas Instruments, Extended, stock 91, USD 19.99 (1+),
+#   19.01 (10+), 17.32 (30+). C2859652 DAC80504RTER: stock 0. JLCPCB's own footprint not compared: check pin 1
+#   in the placement preview.
+schema: 1
+description: Quad 16-bit voltage-output DAC, 2.5 V internal reference, SPI, WQFN-16 3 x 3 mm (TI DAC80504)
+symbol: Analog_DAC:DAC80504
+footprint: Package_DFN_QFN:Texas_RTE0016D_WQFN-16-1EP_3x3mm_P0.5mm_EP0.8x0.8mm_ThermalVias
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/dac80504.pdf
+values:
+  DAC80504:
+    mpn: DAC80504RTET
+    manufacturer: Texas Instruments
+    lcsc: C2862796
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C2862796", date: "2026-11-13" }
+order: { previewCheck: "pin 1" }

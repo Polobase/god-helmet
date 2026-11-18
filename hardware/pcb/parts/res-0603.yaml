@@ -1,0 +1,170 @@
+# 10k, 47k and 3k verified 2026-09-25 via the JLCPCB parts API (all Basic, 1 %, 100 ppm/K, 0.1 W).
+# Helmet-driver values, JLCPCB parts API read 2026-11-12 (UNI-ROYAL 0603WAF series: thick film, 1 %, 0.1 W, 75 V,
+# -55...+155 C; tempco 100 ppm/K except 10R, which the API lists at 400 ppm/K). Stock and price for 1+ that day:
+#   10R   C22859  Basic     5,427,607  USD 0.0020  (400 ppm/K)
+#   22R   C23345  Basic     5,488,704  USD 0.0017
+#   100R  C22775  Basic     9,930,295  USD 0.0020
+#   330R  C23138  Basic     2,413,303  USD 0.0020
+#   1k    C21190  Basic    28,784,068  USD 0.0017  (the entry was null before)
+#   5.1k  C23186  Basic    19,556,145  USD 0.0015
+#   22k   C31850  Basic     2,480,302  USD 0.0042
+#   220k  C22961  Basic       985,856  USD 0.0015
+#   1M    C22935  Basic     3,895,284  USD 0.0018
+#   1.1M  C13314  Extended     42,564  USD 0.0026  (no Basic 1.1M 0603 found: the API's Basic filter returns none)
+#   1.2M  C13315  Extended     33,427  USD 0.0024  (no Basic 1.2M either; C22766 is the same MPN, Extended, stock
+#                                                   170,022, but the API lists no power, type or tempco for it)
+# The older entries (2.2k, 4.7k, 10k, 47k, 100k), read again 2026-11-12: still Basic and in stock (their verified
+# dates are left as they were).
+# No cplRotation: a non-polar two-pad part.
+# More helmet-driver values, JLCPCB parts API read 2026-11-13 (UNI-ROYAL 0603WAF, 1 %, 100 ppm/K, 0.1 W, 75 V):
+#   33R   C23140  Basic     3,313,179  USD 0.0024
+#   150k  C22807  Basic       955,247  USD 0.0017
+#   165k  C22816  Extended     27,254  USD 0.0018
+#   200k  C25811  Basic     1,573,151  USD 0.0021
+#   5.6k  C23189  Basic       652,363  USD 0.0032
+#   16.5k C22812  Extended     61,092  USD 0.0016
+schema: 1
+description: Thick-film resistor, 0603, 1 %
+symbol: Device:R
+footprint: Resistor_SMD:R_0603_1608Metric
+assembly: smt
+datasheet: null
+values:
+  1k:
+    mpn: 0603WAF1001T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C21190
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C21190", date: "2026-11-12" }
+  10k:
+    mpn: 0603WAF1002T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C25804
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C25804", date: "2026-09-25" }
+  100k:
+    mpn: 0603WAF1003T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C25803
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C25803", date: "2026-09-24" }
+  4.7k:
+    mpn: 0603WAF4701T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C23162
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C23162", date: "2026-09-24" }
+  2.2k:
+    mpn: 0603WAF2201T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C4190
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C4190", date: "2026-09-24" }
+  47k:
+    mpn: 0603WAF4702T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C25819
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C25819", date: "2026-09-25" }
+  3k:
+    mpn: 0603WAF3001T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C4211
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C4211", date: "2026-09-25" }
+  10R:
+    mpn: 0603WAF100JT5E
+    manufacturer: UNI-ROYAL
+    lcsc: C22859
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C22859", date: "2026-11-12" }
+  22R:
+    mpn: 0603WAF220JT5E
+    manufacturer: UNI-ROYAL
+    lcsc: C23345
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C23345", date: "2026-11-12" }
+  100R:
+    mpn: 0603WAF1000T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C22775
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C22775", date: "2026-11-12" }
+  330R:
+    mpn: 0603WAF3300T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C23138
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C23138", date: "2026-11-12" }
+  5.1k:
+    mpn: 0603WAF5101T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C23186
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C23186", date: "2026-11-12" }
+  22k:
+    mpn: 0603WAF2202T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C31850
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C31850", date: "2026-11-12" }
+  220k:
+    mpn: 0603WAF2203T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C22961
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C22961", date: "2026-11-12" }
+  1M:
+    mpn: 0603WAF1004T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C22935
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C22935", date: "2026-11-12" }
+  1.1M:
+    mpn: 0603WAF1104T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C13314
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C13314", date: "2026-11-12" }
+  1.2M:
+    mpn: 0603WAF1204T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C13315
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C13315", date: "2026-11-12" }
+  33R:
+    mpn: 0603WAF330JT5E
+    manufacturer: UNI-ROYAL
+    lcsc: C23140
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C23140", date: "2026-11-13" }
+  150k:
+    mpn: 0603WAF1503T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C22807
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C22807", date: "2026-11-13" }
+  165k:
+    mpn: 0603WAF1653T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C22816
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C22816", date: "2026-11-13" }
+  200k:
+    mpn: 0603WAF2003T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C25811
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C25811", date: "2026-11-13" }
+  5.6k:
+    mpn: 0603WAF5601T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C23189
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C23189", date: "2026-11-13" }
+  16.5k:
+    mpn: 0603WAF1652T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C22812
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C22812", date: "2026-11-13" }

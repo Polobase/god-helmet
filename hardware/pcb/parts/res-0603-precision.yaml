@@ -1,0 +1,84 @@
+# Sourcing verified 2026-09-24 via JLCPCB's parts API and partdetail pages (Phase-3 research, re-checked by a second agent).
+# Gain-setting resistors: thin film 0.1 %, 25 ppm/K.
+# Helmet-driver values, JLCPCB parts API read 2026-11-12: all thin film, 0.1 %, 25 ppm/K, 0.1 W, -55...+155 C, all
+# Extended (the API's Basic and preferred filters return no 0.1 % 0603 resistor). Stock and price for 1+ that day:
+#   124R   KOA Speer RN73H1JTTD1240B25  C346154      3,562  USD 0.0761  (YAGEO RT0603BRD07124RL, C861098: stock 18)
+#   499R   YAGEO RT0603BRD07499RL       C861432      3,527  USD 0.0463
+#   1k     YAGEO RT0603BRD071KL         C110776    995,616  USD 0.0280
+#   2k     Viking Tech ARG03BTC2001     C335077    220,461  USD 0.0251  (YAGEO RT0603BRD072KL, C728588: stock 4)
+#   4.99k  YAGEO RT0603BRD074K99L       C723532     27,287  USD 0.0347
+#   10k    YAGEO RT0603BRD0710KL        C95204   1,768,020  USD 0.0301
+#   20k    YAGEO RT0603BRD0720KL        C723637     80,022  USD 0.0357
+#   49.9k  YAGEO RT0603BRD0749K9L       C705780    158,585  USD 0.0261
+# 100k (C122538) read again 2026-11-12: stock 1,793,519 (its verified date left as it was).
+# 124R as a coil sense resistor: 20 mA gives 50 mW, 22 mA (the trip point) 60 mW, against the 0.1 W the API lists.
+# Each Extended number adds JLCPCB's loading fee per part type. No cplRotation: a non-polar two-pad part.
+# 549R (tES sense, helmet-driver), JLCPCB parts API read 2026-11-13: C5266143 Viking Tech ARG03BTC5490, thin film,
+#   0.1 %, 25 ppm/K, 0.1 W, 75 V, Extended, stock 4,030, USD 0.0243 (1+). (YAGEO RT0603BRE07549RL, C849809: 50 ppm/K.)
+schema: 1
+description: Thin-film resistor, 0603, 0.1 %, 25 ppm/K
+symbol: Device:R
+footprint: Resistor_SMD:R_0603_1608Metric
+assembly: smt
+datasheet: null
+values:
+  100k:
+    mpn: RT0603BRD07100KL
+    manufacturer: YAGEO
+    lcsc: C122538
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C122538", date: "2026-09-24" }
+  124R:
+    mpn: RN73H1JTTD1240B25
+    manufacturer: KOA Speer
+    lcsc: C346154
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C346154", date: "2026-11-12" }
+  499R:
+    mpn: RT0603BRD07499RL
+    manufacturer: YAGEO
+    lcsc: C861432
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C861432", date: "2026-11-12" }
+  1k:
+    mpn: RT0603BRD071KL
+    manufacturer: YAGEO
+    lcsc: C110776
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C110776", date: "2026-11-12" }
+  2k:
+    mpn: ARG03BTC2001
+    manufacturer: Viking Tech
+    lcsc: C335077
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C335077", date: "2026-11-12" }
+  4.99k:
+    mpn: RT0603BRD074K99L
+    manufacturer: YAGEO
+    lcsc: C723532
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C723532", date: "2026-11-12" }
+  10k:
+    mpn: RT0603BRD0710KL
+    manufacturer: YAGEO
+    lcsc: C95204
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C95204", date: "2026-11-12" }
+  20k:
+    mpn: RT0603BRD0720KL
+    manufacturer: YAGEO
+    lcsc: C723637
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C723637", date: "2026-11-12" }
+  49.9k:
+    mpn: RT0603BRD0749K9L
+    manufacturer: YAGEO
+    lcsc: C705780
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C705780", date: "2026-11-12" }
+  549R:
+    mpn: ARG03BTC5490
+    manufacturer: Viking Tech
+    lcsc: C5266143
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C5266143", date: "2026-11-13" }

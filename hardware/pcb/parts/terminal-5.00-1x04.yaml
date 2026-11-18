@@ -1,0 +1,34 @@
+# Screw terminal block, 4 poles, 5.00 mm, wire entry from the side: Ningbo Kangnex WJ128V-5.0-04P-14-00A,
+# LCSC C192769. A supply or load terminal from JLCPCB's parts library; it is also the part that keeps the
+# derived-footprint path of `bun run lib:import` exercised (the pipeline-proof test fixture uses it).
+# Customer drawing "WJ128V-5.0-XXP-1Y-00A", version A, 2024.03.10 (LCSC copy for C192769, one page, read
+# 2026-10-04): pitch 5.00; pins 0.90 x 0.80, 4.30 long; PCB holes 1.50; body N x 5.00 long (20.00 for 4
+# poles) plus a 0.60 lug at one end, 10.28 deep, 14.10 high; the pin row is 4.90 from the back face, so 5.38
+# from the wire-entry face; wire 22-12 AWG, 2.5 mm2, strip 6-7 mm; UL 300 V 10 A, IEC 400 V 20 A; contact
+# resistance 20 mOhm; M2.5 screws, 0.4 N.m; -40...+105 C; soldering 250 C for 5 s. Type code: -14- is single
+# pitch, green housing.
+# Which face the 4.90 belongs to: the drawing is in third-angle projection. Its side view dimensions the 4.90
+# to the sloped face; the wire windows of the front view are on the opposite face, the one with the shoulder.
+# JLCPCB parts API and part page, read 2026-10-04: Extended, through-hole (wave soldering; Economic and
+# Standard assembly), stock 3,165, USD 0.2985 (1-49), 0.2332 (50+).
+# Other 4-pole blocks in JLCPCB's library on that day: Kangnex WJ127-5.0-04P (C192779, stock 3,499) is rated
+# 15 A and takes 1.5 mm2; Phoenix 1733596 (C192275, 5.08 mm) had 73 in stock at USD 1.87; HIWA PA001-4P
+# (C173286) had 42.
+# Footprint: derived from KiCad's Phoenix MKDS 1,5 4-pole block (tools/kicad/derived.ts): holes 1.5 mm, body
+# and courtyard after the drawing, the wire entry towards +y like every stock terminal block.
+# Unverified: which pole JLCPCB's placement takes as pin 1. The wire entry has to face the board edge in
+# JLCPCB's placement preview.
+schema: 1
+description: Screw terminal block, 4 poles, 5.00 mm pitch, horizontal wire entry
+symbol: Connector:Screw_Terminal_01x04
+footprint: TerminalBlock:TerminalBlock_Kangnex_WJ128V-5.0-04P_1x04_P5.00mm_Horizontal
+assembly: tht
+datasheet: https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1912251712_Ningbo-Kangnex-Elec-WJ128V-5-0-4P_C192769.pdf
+values:
+  WJ128V-5.0-04P:
+    mpn: WJ128V-5.0-04P-14-00A
+    manufacturer: Ningbo Kangnex Elec
+    lcsc: C192769
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C192769", date: "2026-10-04" }
+order: { previewCheck: "the wire-entry side (towards the board edge)" }

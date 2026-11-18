@@ -1,0 +1,29 @@
+* Compliance: DC current into high-resistance coils (spec.md "Compliance": about 500 ohm at 20 mA).
+*   i500  20 mA commanded into 500 ohm / 10 mH: must be met (0.5 %)
+*   i700  20 mA commanded into 700 ohm: beyond compliance; documents where the output runs out of voltage
+*   i2k   5 mA commanded into 2 kohm / 50 mH: must be met (0.5 %)
+*   v500  op-amp output at 500 ohm (headroom to the 14.5 V rail)
+* @assert i500 ≈ 0.02 ±0.5%
+* @assert i2k ≈ 0.005 ±0.5%
+* @assert i700 between 0.012 0.0198
+* @assert v500 between 12 14
+.include helmet-driver.lib
+XR vp vn RAILS
+VS20 s20 0 PWL(0 0 100u 0 101u 2.48)
+VS5 s5 0 PWL(0 0 100u 0 101u 0.62)
+XD1 s20 vp vn o1 x1 DRV
+XC1 o1 x1 COIL r=500 l=10m
+XD2 s20 vp vn o2 x2 DRV
+XC2 o2 x2 COIL r=700 l=10m
+XD3 s5 vp vn o3 x3 DRV
+XC3 o3 x3 COIL r=2k l=50m
+.tran 1u 5m uic
+.meas tran i500 FIND i(l.xc1.l1) AT=4.9m
+.meas tran i700 FIND i(l.xc2.l1) AT=4.9m
+.meas tran i2k FIND i(l.xc3.l1) AT=4.9m
+.meas tran v500 FIND v(o1) AT=4.9m
+.control
+run
+quit
+.endc
+.end

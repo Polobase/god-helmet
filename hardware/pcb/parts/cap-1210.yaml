@@ -1,0 +1,42 @@
+# MLCC capacitor, 1210 (3.2 x 2.5 x 2.5 mm). JLCPCB parts API and part page, read 2026-10-04:
+#   10u 25V: Samsung CL32B106KAJNNNE, C39232: X7R, +-10 %, Extended, SMT, stock 15,946.
+# What the capacitor is worth under DC bias decides a rail filter, so the figures come from Samsung's
+# own characteristic data for this part number (typical, 25 C, 1 kHz; read 2026-10-04 at
+# https://weblib.samsungsem.com/mlcc/mlcc-ec-data-sheet.do?partNumber=CL32B106KAJNNN):
+#   capacitance: -5.3 % at 5 V (9.5 uF), -26.0 % at 12 V (7.4 uF), -28.1 % at 12.72 V, -57 % at 25 V
+#   small signals (10...100 mV instead of 1 V): another -4 %
+#   temperature: within -3.4 % from 0 to 125 C (X7R)
+#   ESR 6.1 mOhm at 60 kHz, 2.4 mOhm at 1 MHz; self-resonance 1.54 MHz (about 1.2 nH)
+# Why not the 1206 parts already in parts/: the same data gives 3.4 uF at 12 V for the 10 uF 50 V X5R 1206
+# (CL31A106KBHNNNE, C13585) and 5.7 uF for the 22 uF 25 V X5R 1206 (CL31A226KAHNNNE, C12891), and both cost
+# more per piece than this one (USD 0.20 and 0.17 against 0.10 at 120 pieces, 2026-10-04).
+# Read again 2026-11-12 for the helmet driver's +-15 V rails (same Samsung page): 10u 25V keeps -33.4 % at 14.5 V
+# (6.7 uF) and -34.7 % at 15 V (6.5 uF); API that day: Extended, stock 132,798, USD 0.107 for 1+ (verified date unchanged).
+#   22u 25V: Samsung CL32B226KAJNNNE, C309062: X7R, +-10 %, Extended, SMT, stock 132,167, USD 0.2425 for 1+ (API
+#   2026-11-12). Samsung's data (https://weblib.samsungsem.com/mlcc/mlcc-ec-data-sheet.do?partNumber=CL32B226KAJNNN,
+#   typical, 25 C, measured at 120 Hz and 0.5 V, not 1 kHz/1 V as above): -20.5 % at 5 V, -59.3 % at 12 V, -67.2 % at
+#   14.5 V (7.2 uF), -68.5 % at 15 V (6.9 uF), -82.8 % at 25 V. At 15 V it is worth about what the 10u 25V is.
+#   Considered, not added: the 50 V X7R 1210 10 uF CL32B106KBJNNNE (C138687, Extended, stock 70,574, USD 0.3165):
+#   Samsung's data gives -34.5 % at 15 V (6.6 uF), no better than the 25 V part at three times the price.
+#   Second source for 22u, bias not read: Murata GRM32ER71E226KE15L (C21397, Extended, stock 80,446, USD 0.3583).
+# No cplRotation: a non-polar two-pad part.
+# Unverified: second sources. Other makers' 10 uF X7R 1210 parts need their own bias data before they stand in.
+schema: 1
+description: MLCC capacitor, 1210
+symbol: Device:C
+footprint: Capacitor_SMD:C_1210_3225Metric
+assembly: smt
+datasheet: https://weblib.samsungsem.com/mlcc/mlcc-ec-data-sheet.do?partNumber=CL32B106KAJNNN
+values:
+  10u 25V:
+    mpn: CL32B106KAJNNNE
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C39232
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C39232", date: "2026-10-04" }
+  22u 25V:
+    mpn: CL32B226KAJNNNE
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C309062
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C309062", date: "2026-11-12" }

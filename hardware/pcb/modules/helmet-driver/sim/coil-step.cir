@@ -1,0 +1,86 @@
+* Coil channel: full-scale steps (+20 mA at 0.1 ms, -20 mA at 3 ms) into six coils at once, one channel each.
+* The command is a hard step at stage 2's input (the firmware's worst case: a square program at full scale).
+* spec.md: overshoot at most 5 %, so a full-scale step stays below the 22 mA trip; settled current within 0.5 %.
+*
+*   o<n>, u<n>  overshoot of the positive and the negative step, as a fraction of 20 mA
+*   f<n>        current 2.9 ms after the positive step (A)
+*   r2          10-90 % rise for the 4.2 ohm / 4.1 mH levitation coil (s)
+*
+* Loads: 1 = 1 ohm / 1 uH (air coil, few turns), 2 = 4.2 ohm / 4.1 mH (the levitation coils of the first build),
+*        3 = 10 ohm / 1 mH, 4 = 30 ohm / 10 mH, 5 = 100 ohm / 20 mH, 6 = 500 ohm / 50 mH (slow: final value
+*        checked loosely).
+* @assert o1 between 0 0.05
+* @assert o2 between 0 0.05
+* @assert o3 between 0 0.05
+* @assert o4 between 0 0.05
+* @assert o5 between 0 0.05
+* @assert o6 between 0 0.05
+* @assert u1 between 0 0.05
+* @assert u2 between 0 0.05
+* @assert u3 between 0 0.05
+* @assert u4 between 0 0.05
+* @assert u5 between 0 0.05
+* @assert u6 between 0 0.05
+* @assert f1 ≈ 0.02 ±0.5%
+* @assert f2 ≈ 0.02 ±0.5%
+* @assert f3 ≈ 0.02 ±0.5%
+* @assert f4 ≈ 0.02 ±0.5%
+* @assert f5 ≈ 0.02 ±0.5%
+* @assert f6 ≈ 0.02 ±1%
+* @assert r2 between 50u 200u
+.include helmet-driver.lib
+XR vp vn RAILS
+VSET set 0 PWL(0 0 100u 0 101u 2.48 3m 2.48 3.001m -2.48 6m -2.48)
+
+XD1 set vp vn o1 x1 DRV
+XC1 o1 x1 COIL r=1 l=1u
+XD2 set vp vn o2 x2 DRV
+XC2 o2 x2 COIL r=4.2 l=4.1m
+XD3 set vp vn o3 x3 DRV
+XC3 o3 x3 COIL r=10 l=1m
+XD4 set vp vn o4 x4 DRV
+XC4 o4 x4 COIL r=30 l=10m
+XD5 set vp vn o5 x5 DRV
+XC5 o5 x5 COIL r=100 l=20m
+XD6 set vp vn o6 x6 DRV
+XC6 o6 x6 COIL r=500 l=50m
+
+.tran 0.5u 6m uic
+.meas tran p1 MAX i(l.xc1.l1) FROM=100u TO=3m
+.meas tran p2 MAX i(l.xc2.l1) FROM=100u TO=3m
+.meas tran p3 MAX i(l.xc3.l1) FROM=100u TO=3m
+.meas tran p4 MAX i(l.xc4.l1) FROM=100u TO=3m
+.meas tran p5 MAX i(l.xc5.l1) FROM=100u TO=3m
+.meas tran p6 MAX i(l.xc6.l1) FROM=100u TO=3m
+.meas tran n1 MIN i(l.xc1.l1) FROM=3m TO=6m
+.meas tran n2 MIN i(l.xc2.l1) FROM=3m TO=6m
+.meas tran n3 MIN i(l.xc3.l1) FROM=3m TO=6m
+.meas tran n4 MIN i(l.xc4.l1) FROM=3m TO=6m
+.meas tran n5 MIN i(l.xc5.l1) FROM=3m TO=6m
+.meas tran n6 MIN i(l.xc6.l1) FROM=3m TO=6m
+.meas tran f1 FIND i(l.xc1.l1) AT=2.99m
+.meas tran f2 FIND i(l.xc2.l1) AT=2.99m
+.meas tran f3 FIND i(l.xc3.l1) AT=2.99m
+.meas tran f4 FIND i(l.xc4.l1) AT=2.99m
+.meas tran f5 FIND i(l.xc5.l1) AT=2.99m
+.meas tran f6 FIND i(l.xc6.l1) AT=2.99m
+.meas tran o1 PARAM='max(p1/0.02-1,0)'
+.meas tran o2 PARAM='max(p2/0.02-1,0)'
+.meas tran o3 PARAM='max(p3/0.02-1,0)'
+.meas tran o4 PARAM='max(p4/0.02-1,0)'
+.meas tran o5 PARAM='max(p5/0.02-1,0)'
+.meas tran o6 PARAM='max(p6/0.02-1,0)'
+.meas tran u1 PARAM='max(-n1/0.02-1,0)'
+.meas tran u2 PARAM='max(-n2/0.02-1,0)'
+.meas tran u3 PARAM='max(-n3/0.02-1,0)'
+.meas tran u4 PARAM='max(-n4/0.02-1,0)'
+.meas tran u5 PARAM='max(-n5/0.02-1,0)'
+.meas tran u6 PARAM='max(-n6/0.02-1,0)'
+.meas tran t10 WHEN i(l.xc2.l1)=0.002 RISE=1
+.meas tran t90 WHEN i(l.xc2.l1)=0.018 RISE=1
+.meas tran r2 PARAM='t90-t10'
+.control
+run
+quit
+.endc
+.end

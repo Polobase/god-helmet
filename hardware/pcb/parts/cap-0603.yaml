@@ -1,0 +1,118 @@
+# Sourcing verified 2026-09-24 via JLCPCB's parts API and partdetail pages (Phase-3 research, re-checked by a second agent).
+# Helmet-driver values, JLCPCB parts API read 2026-11-12 (stock, price for 1+):
+#   100p C0G: Samsung CL10C101JB8NNNC, C14858, 50 V, +-5 %, Basic, 3,544,923, USD 0.0082
+#   1n C0G:   Samsung CL10C102JB8NNNC, C163508, 50 V, +-5 %, Extended, 247,238, USD 0.0090 (the API's Basic filter
+#             finds no 1 nF C0G 0603; the Basic 1 nF, C1588, is X7R)
+#   10n C0G:  Murata GRM1885C1H103JA01D, C85973, 50 V, +-5 %, Extended, 106,913, USD 0.0355 (no Basic 10 nF C0G in any
+#             size; stocked in 0603, so no 0805 part is needed)
+#   47n:      Samsung CL10B473KB8NNNC, C1622, X7R 50 V, +-10 %, Basic, 1,936,805, USD 0.0056
+#   1u 25V:   Samsung CL10B105KA8NNNC, C29936, X7R 25 V, +-10 %, Extended, 4,494,431, USD 0.0124 (no Basic 1 uF X7R 0603;
+#             the Basic 1 uF 0603, C15849, is X5R 50 V)
+#   100n (C14663), 22p C0G (C1653), 10p C0G (C1634) read again 2026-11-12: Basic, in stock (verified dates unchanged).
+# DC bias, Samsung's characteristic data (typical, 25 C, 1 kHz, 1 V; read 2026-11-12 at
+# https://weblib.samsungsem.com/mlcc/mlcc-ec-data-sheet.do?partNumber=<PN without the last letter>):
+#   1u 25V CL10B105KA8NNN: -8.6 % at 3.3 V, -17.5 % at 5 V, -60.7 % at 14.5 V, -62.2 % at 15 V (0.38 uF)
+#   47n CL10B473KB8NNN: -5.9 % at 14.5 V, -6.4 % at 15 V
+#   100p and 1n C0G: 0 % up to 50 V
+#   For comparison, not in this file: the Basic 1 uF 50 V X7R 0805 CL21B105KBFNNNE (C28323) keeps -20.4 % at 15 V
+#   (0.80 uF); the Basic X5R 0603 C15849 (CL10A105KB8NNN) -78.2 % (0.22 uF).
+# Unverified: DC bias of the YAGEO 100n (no maker data read); the Murata 10n C0G is class 1 (no bias loss expected).
+# No cplRotation: a non-polar two-pad part.
+# More helmet-driver values, JLCPCB parts API read 2026-11-13 (all 50 V, 0603):
+#   6.8p C0G  C1679     FH 0603CG6R8C500NT         Extended (preferred)  127,216  USD 0.0043
+#   7.5p C0G  C53424    FH 0603CG7R5C500NT         Extended                9,331  USD 0.0071
+#   330p C0G  C190577   FH 0603CG331J500NT         Extended               51,033  USD 0.0066
+#   2.2n C0G  C2991172  FH 0603CG222J500NT         Extended               67,973  USD 0.0142
+#   4.7n C0G  C85980    Murata GRM1885C1H472JA01D  Extended              118,940  USD 0.0187 (FH's 0603CG472J500NT: stock 16)
+#   220n      C64705    Samsung CL10B224KB8NNNC X7R Extended              226,425  USD 0.0092
+schema: 1
+description: MLCC capacitor, 0603
+symbol: Device:C
+footprint: Capacitor_SMD:C_0603_1608Metric
+assembly: smt
+datasheet: null
+values:
+  100n:
+    mpn: CC0603KRX7R9BB104
+    manufacturer: YAGEO
+    lcsc: C14663
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C14663", date: "2026-09-24" }
+  22p C0G:
+    mpn: CL10C220JB8NNNC
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C1653
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C1653", date: "2026-09-24" }
+  10p C0G:
+    mpn: CL10C100JB8NNNC
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C1634
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C1634", date: "2026-09-25" }
+  100p C0G:
+    mpn: CL10C101JB8NNNC
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C14858
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C14858", date: "2026-11-12" }
+  1n C0G:
+    mpn: CL10C102JB8NNNC
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C163508
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C163508", date: "2026-11-12" }
+  10n C0G:
+    mpn: GRM1885C1H103JA01D
+    manufacturer: Murata Electronics
+    lcsc: C85973
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C85973", date: "2026-11-12" }
+  47n:
+    mpn: CL10B473KB8NNNC
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C1622
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C1622", date: "2026-11-12" }
+  1u 25V:
+    mpn: CL10B105KA8NNNC
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C29936
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C29936", date: "2026-11-12" }
+  6.8p C0G:
+    mpn: 0603CG6R8C500NT
+    manufacturer: FH (Guangdong Fenghua Advanced Tech)
+    lcsc: C1679
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C1679", date: "2026-11-13" }
+  7.5p C0G:
+    mpn: 0603CG7R5C500NT
+    manufacturer: FH (Guangdong Fenghua Advanced Tech)
+    lcsc: C53424
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C53424", date: "2026-11-13" }
+  330p C0G:
+    mpn: 0603CG331J500NT
+    manufacturer: FH (Guangdong Fenghua Advanced Tech)
+    lcsc: C190577
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C190577", date: "2026-11-13" }
+  2.2n C0G:
+    mpn: 0603CG222J500NT
+    manufacturer: FH (Guangdong Fenghua Advanced Tech)
+    lcsc: C2991172
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C2991172", date: "2026-11-13" }
+  4.7n C0G:
+    mpn: GRM1885C1H472JA01D
+    manufacturer: Murata Electronics
+    lcsc: C85980
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C85980", date: "2026-11-13" }
+  220n:
+    mpn: CL10B224KB8NNNC
+    manufacturer: Samsung Electro-Mechanics
+    lcsc: C64705
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C64705", date: "2026-11-13" }

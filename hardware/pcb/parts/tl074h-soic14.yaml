@@ -1,0 +1,19 @@
+# Sourcing verified 2026-09-24 through JLCPCB's parts API (selectSmtComponentList, keyword C2878713):
+# Texas Instruments TL074HIDR, Extended, stock 30,960, USD 0.2565 for 1-49, SOIC-14.
+# Quad new-die TL07xH: output within 0.1-0.2 V of the rails, no phase reversal (TI SLOS080W §5.7,
+# Fig 5-26); pinout TI SLOS080W Table 4-6 (1OUT 1, 1IN- 2, 1IN+ 3, VCC+ 4, ..., VCC- 11), which
+# KiCad's Amplifier_Operational:TL074 follows.
+schema: 1
+description: Quad JFET-input op-amp, TL074H new die, SOIC-14
+symbol: Amplifier_Operational:TL074
+footprint: Package_SO:SOIC-14_3.9x8.7mm_P1.27mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/tl074h.pdf
+values:
+  TL074H:
+    mpn: TL074HIDR
+    manufacturer: Texas Instruments
+    lcsc: C2878713
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C2878713", date: "2026-09-24" }
+order: { previewCheck: "pin 1" }

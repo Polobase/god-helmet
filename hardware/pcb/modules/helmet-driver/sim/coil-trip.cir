@@ -1,0 +1,31 @@
+* Trip in the 5 mA position: the firmware wrongly commands the full 20 mA. The comparator (threshold
+* 5.5 mA x 124 ohm = 0.682 V, LM339 delay modelled as 2 us) sets the latch, which resets the DAC: stage 1's
+* output goes to 0 V. The latch: the trip source holds itself through a small RC once set.
+*   ipk   highest coil current (the ceiling is a trip, not a clamp: the current passes 5.5 mA briefly)
+*   ttr   time from the command to the trip (s)
+*   iend  current 2 ms later
+* @assert ipk between 0.0055 0.008
+* @assert iend between -0.0001 0.0001
+.include helmet-driver.lib
+XR vp vn RAILS
+VCMD cmd 0 PWL(0 0 100u 0 101u 2.48)
+RCMD cmd s 100
+S1 s 0 trip 0 SWL
+* comparator + latch delay: RC of 2 us on the sense node
+RDL x1 xd 2k
+CDL xd 0 1n
+BTRIP trip 0 V = min(1, u(V(xd)-0.682) + u(V(trd)-0.5))
+RTD trip trd 1k
+CTD trd 0 1n
+XD1 s vp vn o1 x1 DRV
+XC1 o1 x1 COIL r=4.2 l=4.1m
+.model SWL SW(VT=0.5 VH=0.4 RON=0.1 ROFF=1G)
+.tran 0.2u 3m uic
+.meas tran ipk MAX i(l.xc1.l1) FROM=100u TO=3m
+.meas tran ttr WHEN v(trip)=0.5 RISE=1
+.meas tran iend FIND i(l.xc1.l1) AT=2.9m
+.control
+run
+quit
+.endc
+.end

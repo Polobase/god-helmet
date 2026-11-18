@@ -12,6 +12,9 @@
 #include "bench.h"
 #include "config.h"
 #include "drive.h"
+#ifdef HAS_PCB_DRIVER
+#include "pcbops.h"
+#endif
 #include "envdata.h"
 #include "experiment.h"
 #include "logbook.h"
@@ -62,6 +65,10 @@ bool startAllowed(String& error) {
     error = "a session is already running";
     return false;
   }
+#ifdef HAS_PCB_DRIVER
+  // The helmet-driver board: its ceiling switch read, its latches cleared.
+  if (!pcbops::coilStartAllowed(error)) return false;
+#endif
   return true;
 }
 
@@ -205,7 +212,11 @@ Result startTest(const TestRequest& t) {
   if (checkToken(t.token, prior) != TokenCheck::Fresh) return prior;
   String error;
   if (!startAllowed(error)) return fail(error);
-  if (std::fabs(t.mA) > limits::kMaxTestMA || t.mA == 0) return fail("mA must be non-zero, |mA| <= 4.6");
+  if (std::fabs(t.mA) > limits::kMaxTestMA || t.mA == 0) {
+    char msg[48];
+    std::snprintf(msg, sizeof msg, "mA must be non-zero, |mA| <= %.1f", static_cast<double>(limits::kMaxTestMA));
+    return fail(msg);
+  }
   if (t.seconds == 0 || t.seconds > limits::kMaxTestSeconds) return fail("seconds must be 1..120");
 
   std::unique_ptr<engine::Session> s(new engine::Session());

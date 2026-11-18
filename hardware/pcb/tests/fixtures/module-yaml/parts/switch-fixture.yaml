@@ -1,0 +1,14 @@
+# Test fixture (not the parts DB): sourcing deliberately unknown.
+schema: 1
+description: Tactile push button, SMD (test fixture)
+symbol: Switch:SW_Push
+footprint: Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A
+assembly: smt
+datasheet: null
+values:
+  TS-1187A:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null

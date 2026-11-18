@@ -1,0 +1,32 @@
+# Texas Instruments DAC8565IAPWR: quad 16-bit voltage-output DAC with a 2.5 V internal reference, SPI, TSSOP-16 (PW).
+# Datasheet: TI SBAS411C (June 2007, revised March 2011), read 2026-11-12:
+#   Pin descriptions p. 5: 1 VOUTA, 2 VOUTB, 3 VREFH/VREFOUT, 4 AVDD (2.7-5.5 V), 5 VREFL, 6 GND, 7 VOUTC, 8 VOUTD,
+#   9 SYNC (active low, frame of 24 clocks), 10 SCLK (up to 50 MHz), 11 DIN, 12 IOVDD, 13 RST (active low: all
+#   channels to zero-scale with RSTSEL = 0, to mid-scale with RSTSEL = 1), 14 RSTSEL (also: low = straight binary,
+#   high = two's complement), 15 ENABLE (active low, connects the SPI interface), 16 LDAC (rising edge loads all
+#   DAC registers). KiCad's Analog_DAC:DAC8565 (extends DAC8165) has the same 16 numbers and names; with
+#   Package_SO:TSSOP-16_4.4x5mm_P0.65mm pads 1-16: match.
+#   Reference (p. 1, p. 4): enabled by default; 2.5 V +-0.1 % at 25 C; drift 5 typ / 25 max ppm/C for grades A and B
+#   (5 max for C and D); load regulation 30 uV/mA sourcing; output current capability +-20 mA. Ordering table p. 2:
+#   grade A = relative accuracy +-12 LSB, DNL +-1 LSB, 25 ppm/C. That DAC8565IAPWR is grade A is read from TI's naming
+#   (IA/IB/IC/ID in the package addendum): likely.
+#   IOVDD 1.8-5.5 V (p. 4).
+# JLCPCB parts API, read 2026-11-12: C69596, Texas Instruments DAC8565IAPWR, Extended, SMT, stock 2,178,
+# USD 12.6615 (1+), 9.4622 (30+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# TSSOP-16_L5.0-W4.4-P0.65-LS6.4-BL, read 2026-11-12) turned by 270 degrees lies on KiCad's (same numbers), as the
+# table's ^TSSOP- line gives: no correction.
+schema: 1
+description: Quad 16-bit DAC, 2.5 V internal reference, SPI, TSSOP-16 (DAC8565)
+symbol: Analog_DAC:DAC8565
+footprint: Package_SO:TSSOP-16_4.4x5mm_P0.65mm
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/dac8565.pdf
+values:
+  DAC8565:
+    mpn: DAC8565IAPWR
+    manufacturer: Texas Instruments
+    lcsc: C69596
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C69596", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

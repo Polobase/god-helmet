@@ -8,7 +8,41 @@
 #pragma once
 #include <cstdint>
 
-#if CONFIG_IDF_TARGET_ESP32S3
+#if defined(BOARD_HELMET_PCB)
+// The helmet-driver board (hardware/pcb/modules/helmet-driver, rev B, untested): ESP32-S3-WROOM-1-N16R8, 8 current-
+// source coil channels (DAC81408, +-20 mA, ceiling switch 5/20 mA, hardware trip latch), 2 isolated tES channels.
+// Its GPIO table: hardware/pcb/modules/helmet-driver/spec.md. The esp32s3 map is kept where the two overlap.
+namespace pins {
+constexpr int kSclk = 12;   // -> SCLK of the DAC81408 and both ADS8688 (33 Ω)
+constexpr int kMosi = 11;   // -> their SDI (33 Ω)
+constexpr int kCsDac = 10;  // -> CS of the DAC81408 (10 kOhm pull-up)
+constexpr int kCsAdc = 13;  // -> CS of both ADS8688 (daisy chain; 10 kOhm pull-up)
+constexpr int kLdac = 9;    // -> LDAC of the DAC81408 (active low; 10 kOhm pull-up): loads all eight outputs
+constexpr int kArm = 4;     // -> ARM (10 kOhm pull-down): enables the +-15 V rails with the latches clear
+constexpr int kStop = 5;    // <- STOP button and jack (pull-up); the STOP latch is set in hardware as well
+constexpr int kMiso = 3;     // <- the ADS8688 chain, and the DAC81408's readback (33 Ω). GPIO3 is a strapping pin
+                             //    for the JTAG source only, ignored with the default eFuses (spec.md, GPIO table)
+constexpr int kBoot = 0;
+constexpr int kRgbLed = 48;  // WS2812B-2020
+constexpr int kStatusLed = -1;
+// Board only:
+constexpr int kCeilAdc = 1;    // VTH_P through 10 kOhm: 0.684 V = 5 mA, 2.72 V = 20 mA
+constexpr int kP15Adc = 2;     // +15 V / 11
+constexpr int kN15Adc = 6;     // -15 V against 3.3 V (150k / 22k)
+constexpr int kCc1Adc = 7, kCc2Adc = 8;  // USB-C CC voltages
+constexpr int kTripQ = 14;     // <- TRIP latch Q (high = tripped)
+constexpr int kStopQ = 15;     // <- STOP latch Q (high = STOP pressed)
+constexpr int kClearN = 16;    // -> latch clear (low clears; a latch whose cause is still there stays set)
+constexpr int kSda = 17, kScl = 18;  // the I2C header J3 only (a magnetometer); 4.7 kOhm pull-ups on the board
+constexpr int kTesEn = 21;     // -> TES_EN (pull-down; gated with the STOP latch on the board)
+constexpr int kTesSck = 38, kTesMosi = 39, kTesMiso = 40;  // island SPI through the ISO6741F
+constexpr int kTesCsDac = 41, kTesCsAdc = 42;
+constexpr int kTesFault = 44;  // <- island trip latch (high = tripped)
+constexpr int kTesHeartbeat = 47;  // -> square wave, about 1 kHz, while tES runs
+}  // namespace pins
+#define BOARD_NAME "Helmet driver PCB"
+#define HAS_PCB_DRIVER 1
+#elif CONFIG_IDF_TARGET_ESP32S3
 // ESP32-S3-DevKitC-1 (N8R8 / N16R8). Avoids strapping pins (0, 3, 45, 46),
 // USB (19, 20), UART0 (43, 44) and the octal flash/PSRAM pins (26-37). FSPI default pins.
 namespace pins {
@@ -103,9 +137,13 @@ constexpr int kStatusLed = 2;  // the blue LED of most ESP32 DevKit boards
 
 namespace limits {
 constexpr uint32_t kTickUs = 500;          // sequencer period: 2 kHz
-constexpr uint32_t kSpiHz = 20000000;      // AD5328 accepts up to 30 MHz
+constexpr uint32_t kSpiHz = 20000000;      // AD5328 accepts up to 30 MHz, DAC81408 up to 50 MHz
 constexpr float kMaxFieldUT = 10.0f;       // absolute ceiling accepted from the app (at 20 mm)
+#ifdef HAS_PCB_DRIVER
+constexpr float kMaxTestMA = 20.0f;        // DC test current limit; the board's ceiling switch limits it further
+#else
 constexpr float kMaxTestMA = 4.6f;         // DC test current limit (hardware cap is 4.54 mA)
+#endif
 constexpr uint32_t kMaxTestSeconds = 120;
 constexpr uint32_t kMinIntervalS = 72u * 3600u;  // Shakti guidance: >= 72 h between sessions
 }  // namespace limits

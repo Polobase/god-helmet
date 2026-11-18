@@ -1,0 +1,88 @@
+* helmet-driver.lib — SPICE model of modules/helmet-driver (keep in step with schematic.ts and spec.md)
+* Models: bun run models:fetch (TI OPAx197 SBOMA34; downloaded, never committed).
+* The TI macro-models settle badly in .op with these feedback networks, so every bench
+* ramps the supplies with PWL and runs `.tran ... uic`.
+.include ../../../models/opa197.lib
+
+* Driver rails after the TPS65131 and its pi filter: +/-14.5 V (spec.md "Coil channel"), ramped in 20 us.
+* rip = peak ripple on each rail at frip (the converter's switching ripple after the filter; 0 = none).
+.subckt RAILS vp vn params: v=14.5 rip=0 frip=1.25Meg
+VP1 vp1 0 PWL(0 0 20u {v})
+VP2 vp vp1 SIN(0 {rip} {frip})
+VN1 vn1 0 PWL(0 0 20u {-v})
+VN2 vn vn1 SIN(0 {rip} {frip})
+.ends
+
+* Rev B: no stage 1. The DAC81408 sets each channel's setpoint directly on its +/-2.5 V range (setpoint.cir); rev A's
+* stage 1 (o = 2*dac - ref, one OPA4197 amplifier per channel) and its bench are in build/helmet-driver/archive-rev-A.
+
+* Stage 2: one coil channel. set = the DAC81408's output; the coil goes between out and x (it floats). Rev B puts two
+* channels in one OPA2197; TI's OPAx197 model covers it (one amplifier each).
+*   rt/ct  setpoint filter (smooths steps; design-notes.md "Coil stage compensation")
+*   rf     from the sense node x to -IN; cf in series with rd from the output to -IN: the second feedback path
+*          of TI's V-to-I for inductive loads (Green 2019, p.40-41)
+*   rs     sense resistor x -> GND: I = Vset / rs
+*   rsn/csn output snubber to GND
+* The Schottky clamps go from out to the rails (generic Schottky model; the part is BAT54S-class).
+.subckt DRV set vp vn out x params: rs=124 rf=10k cf=2.2n rd=47k rt=10k ct=4.7n rsn=10 csn=47n
+RT set sp {rt}
+CT sp 0 {ct}
+X1 sp inn vp vn out OPAx197
+RFB x inn {rf}
+CFB out cd {cf}
+RDD cd inn {rd}
+RSN out sn {rsn}
+CSN sn 0 {csn}
+RS x 0 {rs}
+DH out vp DSCH
+DL vn out DSCH
+.ends
+
+* A coil with its cable: r and l in series, the cable's capacitance across (2 m twisted pair, about 100 pF).
+.subckt COIL a b params: r=4.2 l=4.1m cc=100p
+L1 a c {l}
+R1 c b {r}
+CC a b {cc}
+.ends
+
+.model DSCH D(IS=1u N=1.05 RS=1 CJO=10p BV=30)
+* 11 V Zener, BZT52C11 class (VZ 10.4-11.6 V at 5 mA, Diodes DS18004)
+.model DZ11 D(IS=1n N=1 RS=5 BV=11 IBV=1m CJO=50p)
+
+* ---------------------------------------------------------------------------------------------------------
+* tES channel (island, isolated +/-15 V; island ground = node 0 in these benches).
+* Setpoint: two DAC80504 outputs a and b (0-2.5 V each); vset = a - b, so "all outputs at 0 V" (the DAC's
+* reference alarm) and "all at mid-scale" (power-on) both mean 0 mA. One OPA4197 per channel:
+*   U1 difference stage (0.1 % resistors): sp = a - b
+*   U2 error integrator: drv = (sp - vs) / (s*ri*ci), vs = I*rs from the instrumentation amplifier
+*   U3 E+ driver (follower), U4 E- driver (inverter): the electrodes swing in opposite directions
+* Sense: rs (549 ohm 0.1 %: |a - b| <= 2.5 V gives at most 4.55 mA, the hardware ceiling) between U4's output and
+* the E- line; INA821 at gain 1 modelled as an ideal
+* differential amplifier (its >1 MHz bandwidth at G = 1 is far above this loop's).
+* Relays (CPC1017N, 16 ohm max on) in both electrode lines. Ports: a b vp vn ep en (electrodes) vs (sense).
+.subckt TES a b vp vn ep en vs params: rs=549 ri=10k ci=330p rr=16
+* U1: difference stage, sp = b - a (inputs: a through 10k to -IN, b through 10k/10k divider to +IN)
+XU1 p1 n1 vp vn sp OPAx197
+R11 b p1 10k
+R12 p1 0 10k
+R13 a n1 10k
+R14 n1 sp 10k
+* U2: inverting integrator of (sp + vs): drv = -(sp + vs)/(s ri ci) = (a - b - vs)/(s ri ci)
+XU2 0 n2 vp vn drv OPAx197
+R21 sp n2 {ri}
+R22 vs n2 {ri}
+C21 n2 drv {ci}
+* anti-windup: back-to-back 11 V Zeners (BZT52C11) across the integrator capacitor limit the drive to about
+* +/-11.6 V: inside the INA821 input range (V-)+2..(V+)-2, and the loop recovers at once (spec.md)
+DZ1 n2 nz DZ11
+DZ2 drv nz DZ11
+* U3: E+ driver (follower); U4: E- driver (inverter)
+XU3 drv ea vp vn ea OPAx197
+XU4 0 n4 vp vn eb OPAx197
+R41 drv n4 10k
+R42 n4 eb 10k
+RR1 ea ep {rr}
+RR2 en sx {rr}
+RS sx eb {rs}
+EINA vs 0 sx eb 1
+.ends

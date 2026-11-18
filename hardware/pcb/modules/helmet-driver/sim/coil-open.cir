@@ -1,0 +1,27 @@
+* An open coil that comes back: 10 mA commanded, the coil disconnected (a plug out), then reconnected at 2 ms.
+* While open, the op-amp integrates through CF: its output ramps at (Vset/RF)/CF, about 8 V/ms for 10 mA,
+* towards the rail (the firmware sees output near a rail with no current: "open coil"). The current spike when the coil returns is what the trip comparators
+* see (in the 5 mA position they trip; in the 20 mA position the spike decides). Regression guard, not a spec.
+*   vopen  op-amp output 0.9 ms after the coil opened
+*   ipk    peak coil current after reconnection
+*   iend   current 3 ms after reconnection
+* @assert vopen between 5 15
+* @assert ipk between 0.01 0.12
+* @assert iend ≈ 0.01 ±1%
+.include helmet-driver.lib
+XR vp vn RAILS
+VS s 0 PWL(0 0 100u 0 101u 1.24)
+XD1 s vp vn o1 x1 DRV
+S1 o1 c1 ctl 0 SWC
+VC ctl 0 PWL(0 1 1m 1 1.001m 0 2m 0 2.001m 1)
+XC1 c1 x1 COIL r=4.2 l=4.1m
+.model SWC SW(VT=0.5 VH=0.1 RON=0.05 ROFF=1G)
+.tran 0.5u 5m uic
+.meas tran vopen FIND v(o1) AT=1.9m
+.meas tran ipk MAX i(l.xc1.l1) FROM=2m TO=5m
+.meas tran iend FIND i(l.xc1.l1) AT=4.99m
+.control
+run
+quit
+.endc
+.end

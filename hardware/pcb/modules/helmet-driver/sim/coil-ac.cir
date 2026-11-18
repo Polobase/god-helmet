@@ -1,0 +1,24 @@
+* A 1 kHz sine of 20 mA peak into the levitation coil (4.2 ohm / 4.1 mH): the amplitude that arrives.
+* The firmware's output loop runs at 2 kHz, so 1 kHz is the top of the band (spec.md).
+*   g1k   coil current amplitude / 20 mA at 1 kHz
+*   g100  the same at 100 Hz
+* @assert g100 between 0.99 1.01
+* @assert g1k between 0.6 1.0
+.include helmet-driver.lib
+XR vp vn RAILS
+VS1 s1 0 SIN(0 2.48 1k 100u)
+VS2 s2 0 SIN(0 2.48 100 100u)
+XD1 s1 vp vn o1 x1 DRV
+XC1 o1 x1 COIL r=4.2 l=4.1m
+XD2 s2 vp vn o2 x2 DRV
+XC2 o2 x2 COIL r=4.2 l=4.1m
+.tran 1u 40m uic
+.meas tran a1 MAX i(l.xc1.l1) FROM=35m TO=40m
+.meas tran a2 MAX i(l.xc2.l1) FROM=30m TO=40m
+.meas tran g1k PARAM='a1/0.02'
+.meas tran g100 PARAM='a2/0.02'
+.control
+run
+quit
+.endc
+.end

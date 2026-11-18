@@ -1,0 +1,14 @@
+schema: 1
+description: Dual JFET-input op-amp, SOIC-8
+symbol: Amplifier_Operational:TL072
+footprint: Package_SO:SOIC-8_3.9x4.9mm_P1.27mm
+assembly: smt
+datasheet: https://www.ti.com/product/TL072
+values:
+  TL072:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null
+order: { previewCheck: "pin 1" }

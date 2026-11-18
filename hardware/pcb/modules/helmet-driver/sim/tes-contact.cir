@@ -1,0 +1,29 @@
+* tES electrode contact lost and back: 2 mA into 4.7 kohm, the contact opens at 2 ms (a sponge comes off) and
+* returns at 5 ms. While open the drive sits at the anti-windup limit (about +/-11.6 V per electrode); when the
+* contact returns, the current spikes until the loop recovers. In hardware the 4.5 mA trip then opens the relays
+* and the session stops (the firmware also stops it on the voltage limit first). Regression guard.
+*   vopen  voltage across the open electrodes
+*   ipk    peak current after the contact returns (no trip modelled here)
+*   tback  time until the current is back within 5 % of 2 mA (s)
+* @assert vopen between 20 24
+* @assert ipk between 0.002 0.01
+* @assert tback between 0 200u
+.include helmet-driver.lib
+XR vp vn RAILS v=14.5
+VA a 0 PWL(0 0 200u 1.25 201u 1.799)
+VB b 0 PWL(0 0 200u 1.25 201u 0.701)
+X1 a b vp vn p1 n1 s1 TES
+S1 p1 q1 c 0 SWC
+VC c 0 PWL(0 1 2m 1 2.001m 0 5m 0 5.001m 1)
+RL q1 n1 4.7k
+.model SWC SW(VT=0.5 VH=0.1 RON=0.01 ROFF=1G)
+.tran 1u 7m uic
+.meas tran vopen FIND par('v(p1)-v(n1)') AT=4.9m
+.meas tran ipk MAX par('(v(q1)-v(n1))/4.7k') FROM=5m TO=7m
+.meas tran tin WHEN par('(v(q1)-v(n1))/4.7k')=0.0021 FALL=LAST
+.meas tran tback PARAM='tin-5.001m'
+.control
+run
+quit
+.endc
+.end

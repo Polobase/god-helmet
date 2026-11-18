@@ -1,0 +1,21 @@
+schema: 1
+id: Bad_Id
+name: Type errors
+revision:
+  rev: A
+  status: spec
+power:
+  drawMa: { usb-c-5v: -1, bad rail: 5 }
+  drawBasis: estimate
+  voltage: 12
+pcb:
+  boards: 1
+  layers: 2
+  thicknessMm: 1.5
+  sizeMm: { w: 100, h: 80 }
+jlcpcb:
+  assembly: economic
+  smtSide: top
+  tht: self
+  qty: 5
+  removeOrderNumber: true

@@ -1,0 +1,7 @@
+(version 1)
+
+# The tES island floats (spec.md, tES island): 3 mm between its copper and any other copper, on every layer.
+# pcb.ts keeps the gap free of tracks, vias and zones; this rule checks it.
+(rule "tES island isolation"
+  (constraint clearance (min 3mm))
+  (condition "(A.NetClass == 'Island' || A.NetClass == 'IslandPower' || A.NetClass == 'IslandFine') && B.NetClass != 'Island' && B.NetClass != 'IslandPower' && B.NetClass != 'IslandFine'"))

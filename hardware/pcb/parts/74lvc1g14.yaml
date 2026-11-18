@@ -1,0 +1,25 @@
+# Texas Instruments SN74LVC1G14DBVR: single Schmitt-trigger inverter, 1.65-5.5 V, 5.5 V tolerant input, SOT-23-5 (DBV).
+# Datasheet: TI SCES218AA (April 1999, revised October 2025), read 2026-11-12:
+#   Figure 4-1 and Table 4-1 pp. 3-4 (DBV): 1 N.C. (no internal connection; may be tied to any level, solder it),
+#   2 A, 3 GND, 4 Y, 5 VCC. KiCad's 74xGxx:74LVC1G14: 1 NC (hidden, no_connect), 2 input, 3 GND, 4 output, 5 VCC
+#   (no footprint in the symbol); with Package_TO_SOT_SMD:SOT-23-5 pads 1-5: match (checked 2026-11-12).
+#   Thresholds p. 7, -40 to 85 C, at VCC = 3 V: VT+ 1.5-1.87 V, VT- 0.84-1.14 V.
+# JLCPCB parts API, read 2026-11-12: C7835, Texas Instruments SN74LVC1G14DBVR, Extended, SMT, stock 203,987,
+# USD 0.0581 (1+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOT-23-5_L3.0-W1.7-P0.95-LS2.8-BR, read 2026-11-12) turned by 180 degrees lies on KiCad's (same numbers), as the
+# table's ^SOT-23 line gives: no correction.
+schema: 1
+description: Single Schmitt-trigger inverter, LVC, SOT-23-5 (SN74LVC1G14)
+symbol: 74xGxx:74LVC1G14
+footprint: Package_TO_SOT_SMD:SOT-23-5
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/sn74lvc1g14.pdf
+values:
+  74LVC1G14:
+    mpn: SN74LVC1G14DBVR
+    manufacturer: Texas Instruments
+    lcsc: C7835
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C7835", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

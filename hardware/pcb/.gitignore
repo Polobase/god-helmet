@@ -1,0 +1,9 @@
+# hardware/pcb: generated and downloaded files (never committed)
+node_modules/
+build/
+# vendor SPICE models: downloaded by `bun run models:fetch` (TI's terms: not redistributed)
+models/
+# Freerouting jar, fetched on first use
+.tools/
+# isolated KiCad settings for kicad-cli
+.kicad-config/

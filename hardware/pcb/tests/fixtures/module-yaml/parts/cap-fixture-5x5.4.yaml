@@ -1,0 +1,14 @@
+# Test fixture (not the parts DB): a dotted part key, like parts/ap2112k-3.3.yaml.
+schema: 1
+description: SMD electrolytic capacitor 5x5.4 mm (test fixture)
+symbol: Device:C_Polarized
+footprint: Capacitor_SMD:CP_Elec_5x5.4
+assembly: smt
+datasheet: null
+values:
+  10u 25V:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null

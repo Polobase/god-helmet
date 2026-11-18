@@ -1,0 +1,31 @@
+# Diodes Incorporated AP2112K-3.3TRG1: 600 mA CMOS LDO, 3.3 V fixed, with enable and output discharge, SOT25.
+# Datasheet: Diodes "AP2112" DS39724 Rev. 2-2, read 2026-11-12:
+#   SOT25 pin assignment p. 1 and pin descriptions p. 2: 1 VIN, 2 GND, 3 EN (high = on), 4 NC, 5 VOUT. KiCad's
+#   Regulator_Linear:AP2112K-3.3 (extends AP2204K-1.5): 1 VIN, 2 GND, 3 EN, 4 NC (hidden, no_connect), 5 VOUT; with
+#   Package_TO_SOT_SMD:SOT-23-5 pads 1-5: match.
+#   p. 2 typical application and Note 4: 1 uF ceramic (X5R or X7R) at input and output.
+#   p. 3: VIN absolute maximum 6.5 V, recommended 2.5-6.0 V; thetaJA (SOT25) 184 C/W. Dropout 250 mV typ at 600 mA
+#   (3.3 V version, p. 1). Ordering code p. 12: K = SOT25, TR = tape and reel, G1 = green.
+#   Heat (derived): from 5 V at 150 mA the LDO dissipates 0.26 W, about 47 C above ambient at 184 C/W; at a
+#   sustained 355 mA (the ESP32-S3 module's transmit peak in JLCPCB's attribute list) 0.6 W, too much for long.
+# JLCPCB parts API, read 2026-11-12: C51118, Diodes Incorporated AP2112K-3.3TRG1, Extended, SMT, stock 5,650,
+# USD 0.1666 (1+). Same-number clones (TECH PUBLIC C23380830, MSKSEMI C22365427) were not chosen.
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# SOT-25-5_L2.9-W1.6-P0.95-LS2.8-BL, read 2026-11-12) has pins 1-3 along the bottom edge, pin 1 at the left; KiCad's
+# SOT-23-5 has pins 1-3 down the left side. JLCPCB's turned by 270 degrees counter-clockwise lies on KiCad's
+# (all five pads within 0.2 mm, same numbers); the table's ^SOT-23 line (180) would be wrong: cplRotation 270.
+schema: 1
+description: LDO regulator 3.3 V 600 mA with enable, SOT-23-5 (AP2112K-3.3)
+symbol: Regulator_Linear:AP2112K-3.3
+footprint: Package_TO_SOT_SMD:SOT-23-5
+assembly: smt
+datasheet: https://www.diodes.com/assets/Datasheets/AP2112.pdf
+values:
+  AP2112K-3.3:
+    mpn: AP2112K-3.3TRG1
+    manufacturer: Diodes Incorporated
+    lcsc: C51118
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C51118", date: "2026-11-12" }
+    cplRotation: 270
+order: { previewCheck: "pin 1" }

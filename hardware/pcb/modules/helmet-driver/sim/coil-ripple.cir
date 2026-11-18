@@ -1,0 +1,18 @@
+* Converter ripple on the rails: 25 mV peak at 1.25 MHz on both rails (TPS65131 after the pi filter; the real
+* amplitude is measured at bring-up). The coil current must not carry it: below 1 uA peak to peak at 10 mA DC.
+*   ipp   peak-to-peak coil current over 20 us once settled
+* @assert ipp between 0 1u
+.include helmet-driver.lib
+XR vp vn RAILS rip=25m
+VS s 0 PWL(0 0 100u 0 101u 1.24)
+XD1 s vp vn o1 x1 DRV
+XC1 o1 x1 COIL r=4.2 l=4.1m
+.tran 10n 3.02m 3m uic
+.meas tran imax MAX i(l.xc1.l1) FROM=3m TO=3.02m
+.meas tran imin MIN i(l.xc1.l1) FROM=3m TO=3.02m
+.meas tran ipp PARAM='imax-imin'
+.control
+run
+quit
+.endc
+.end

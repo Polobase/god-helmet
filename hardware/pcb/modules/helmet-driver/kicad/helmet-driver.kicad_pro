@@ -1,0 +1,460 @@
+{
+  "board": {
+    "design_settings": {
+      "rules": {
+        "min_clearance": 0.15,
+        "min_track_width": 0.15,
+        "min_via_diameter": 0.5,
+        "min_via_annular_width": 0.1,
+        "min_through_hole_diameter": 0.2,
+        "min_hole_clearance": 0.35,
+        "min_hole_to_hole": 0.5,
+        "min_copper_edge_clearance": 0.3,
+        "min_text_height": 0.8,
+        "min_text_thickness": 0.1
+      }
+    }
+  },
+  "boards": [],
+  "cvpcb": {
+    "equivalence_files": []
+  },
+  "erc": {
+    "erc_exclusions": [],
+    "meta": {
+      "version": 0
+    },
+    "rule_severities": {}
+  },
+  "libraries": {
+    "pinned_footprint_libs": [],
+    "pinned_symbol_libs": []
+  },
+  "meta": {
+    "filename": "helmet-driver.kicad_pro",
+    "version": 3
+  },
+  "schematic": {
+    "connection_grid_size": 50,
+    "meta": {
+      "version": 1
+    },
+    "top_level_sheets": [
+      {
+        "filename": "helmet-driver.kicad_sch",
+        "name": "helmet-driver",
+        "uuid": "e4f19193-76db-57d2-a3ea-13b94a419cd9"
+      }
+    ]
+  },
+  "sheets": [
+    [
+      "e4f19193-76db-57d2-a3ea-13b94a419cd9",
+      "helmet-driver"
+    ]
+  ],
+  "text_variables": {
+    "GIT_SHA": "dev"
+  },
+  "net_settings": {
+    "classes": [
+      {
+        "name": "Default",
+        "track_width": 0.2,
+        "clearance": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "priority": 0
+      },
+      {
+        "name": "Power",
+        "track_width": 0.3,
+        "clearance": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "priority": 1
+      },
+      {
+        "name": "PowerMid",
+        "track_width": 0.25,
+        "clearance": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "priority": 2
+      },
+      {
+        "name": "PowerFine",
+        "track_width": 0.2,
+        "clearance": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "priority": 3
+      },
+      {
+        "name": "IslandPower",
+        "track_width": 0.3,
+        "clearance": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "priority": 4
+      },
+      {
+        "name": "IslandFine",
+        "track_width": 0.2,
+        "clearance": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "priority": 5
+      },
+      {
+        "name": "Island",
+        "track_width": 0.2,
+        "clearance": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "priority": 6
+      }
+    ],
+    "meta": {
+      "version": 5
+    },
+    "netclass_patterns": [
+      {
+        "netclass": "Power",
+        "pattern": "GND"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "+5V"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "Net-(D2-A)"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "Net-(D3-K)"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "Net-(Q1-D)"
+      },
+      {
+        "netclass": "PowerMid",
+        "pattern": "+3V3"
+      },
+      {
+        "netclass": "PowerMid",
+        "pattern": "+15V"
+      },
+      {
+        "netclass": "PowerMid",
+        "pattern": "-15V"
+      },
+      {
+        "netclass": "PowerMid",
+        "pattern": "+5VA"
+      },
+      {
+        "netclass": "PowerFine",
+        "pattern": "Net-(D2-K)"
+      },
+      {
+        "netclass": "PowerFine",
+        "pattern": "Net-(D3-A)"
+      },
+      {
+        "netclass": "IslandPower",
+        "pattern": "GND1"
+      },
+      {
+        "netclass": "IslandPower",
+        "pattern": "ISO_P15"
+      },
+      {
+        "netclass": "IslandPower",
+        "pattern": "ISO_N15"
+      },
+      {
+        "netclass": "IslandFine",
+        "pattern": "ISO_5V"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES channel 1/EN1"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES channel 1/EP1"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES channel 1/RLED_2"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES channel 2/EN2"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES channel 2/EP2"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES channel 2/RLED_4"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: isolated power, isolators, DAC, ADC/ADCT_REFCAP"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: isolated power, isolators, DAC, ADC/ADCT_REFIO"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: isolated power, isolators, DAC, ADC/I_CSA"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: isolated power, isolators, DAC, ADC/I_CSD"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: isolated power, isolators, DAC, ADC/I_MISO"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: isolated power, isolators, DAC, ADC/I_MOSI"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: isolated power, isolators, DAC, ADC/I_REF"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: isolated power, isolators, DAC, ADC/I_SCK"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: trip thresholds, latch, heartbeat, relay drive/HB_OK"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "/tES island: trip thresholds, latch, heartbeat, relay drive/I_OKQ"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "EA1"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "EA2"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "EB1"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "EB2"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "ITH_N"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "ITH_P"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "I_EN"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "I_FAULT"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "I_HB"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "I_TRIP_OC"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D32-K)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D33-A)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D34-COM)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D35-COM)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D35-K)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D36-A)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D36-K)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D37-A)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D40-A)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D40-K)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(D41-A)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(Q2-B)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(R92-Pad1)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(U14A-+)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(U14A--)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(U14D--)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(U15A-+)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(U15A--)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(U15D--)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(U34-+)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "Net-(U35-+)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "RLED_1"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "RLED_3"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "RLED_K"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "TSP1"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "TSP2"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "T_A1"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "T_A2"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "T_B1"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "T_B2"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "VS1"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "VS2"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(D32-NC-Pad3)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(D33-NC-Pad3)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(U13B-Q-Pad9)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(U13B-~{Q}-Pad8)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(U30-SDO{slash}~{ALARM}-Pad15)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(U31-DNC-Pad35)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(U32-NC-Pad1)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(U34-Rg-Pad2)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(U34-Rg-Pad3)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(U35-Rg-Pad2)"
+      },
+      {
+        "netclass": "Island",
+        "pattern": "unconnected-(U35-Rg-Pad3)"
+      }
+    ]
+  }
+}

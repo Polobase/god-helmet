@@ -1,0 +1,517 @@
+(kicad_sch
+	(version 20260306)
+	(generator "god-helmet-pcb")
+	(generator_version "0.1.0")
+	(uuid "e4f19193-76db-57d2-a3ea-13b94a419cd9")
+	(paper "A3")
+	(title_block
+		(title "Helmet Driver: 8 coil current sources, 2 isolated tES channels")
+		(date "2026-11-14")
+		(rev "B")
+		(company "god-helmet")
+		(comment 1 "GENERATED from helmet-driver/schematic.ts - do not edit in KiCad")
+		(comment 2 "input sha256 8f70bae0da9e")
+		(comment 3 "${GIT_SHA}")
+	)
+	(lib_symbols)
+	(sheet
+		(at 200.66 25.4)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "49a0977f-bf09-524d-bac8-15c2dd031ff8")
+		(property "Sheetname" "Safety logic: TRIP and STOP latches, ENABLE, coil trip thresholds"
+			(at 200.66 24.765 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-safety.kicad_sch"
+			(at 200.66 51.435 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 113.03 25.4)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "6245f0cb-4cb9-5c08-9d30-c5bc1ef1633b")
+		(property "Sheetname" "ESP32-S3 with Bluetooth LE, buttons, STOP, status LED, sensing"
+			(at 113.03 24.765 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-mcu.kicad_sch"
+			(at 113.03 51.435 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 25.4 106.68)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "6a6731b6-0e8c-5068-99dd-73c1ff09b122")
+		(property "Sheetname" "tES island: trip thresholds, latch, heartbeat, relay drive"
+			(at 25.4 106.045 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-island-safety.kicad_sch"
+			(at 25.4 132.715 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "10")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 288.29 66.04)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "7e19ea8e-a825-5560-bf79-d27ee0b9752f")
+		(property "Sheetname" "tES island: isolated power, isolators, DAC, ADC"
+			(at 288.29 65.405 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-island.kicad_sch"
+			(at 288.29 92.075 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "9")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 200.66 106.68)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "99b71c40-095d-5e9d-888f-87abebecdc73")
+		(property "Sheetname" "tES channel 2"
+			(at 200.66 106.045 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-tes-2.kicad_sch"
+			(at 200.66 132.715 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "12")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 25.4 25.4)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "aba2fdda-883a-5dee-a0fb-d61e57ba97fb")
+		(property "Sheetname" "Power: USB-C input, 3.3 V, ±15 V for the coil drivers"
+			(at 25.4 24.765 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-power.kicad_sch"
+			(at 25.4 51.435 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 113.03 66.04)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "c4776793-3a29-56ef-8a5f-c6be58c10299")
+		(property "Sheetname" "Coil channels 5-8"
+			(at 113.03 65.405 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-coil-b.kicad_sch"
+			(at 113.03 92.075 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 113.03 106.68)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "d33b215b-382b-5654-8852-0da4e29d7d78")
+		(property "Sheetname" "tES channel 1"
+			(at 113.03 106.045 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-tes-1.kicad_sch"
+			(at 113.03 132.715 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "11")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 25.4 66.04)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "d8dfd764-1f9a-579f-8e70-41c8810f48a7")
+		(property "Sheetname" "Coil channels 1-4"
+			(at 25.4 65.405 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-coil-a.kicad_sch"
+			(at 25.4 92.075 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 200.66 66.04)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "ea4122e2-9a3e-53e2-b183-c28d453b6305")
+		(property "Sheetname" "Coil connector, supplies of the coil drivers and comparators"
+			(at 200.66 65.405 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-coil-supply.kicad_sch"
+			(at 200.66 92.075 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 288.29 25.4)
+		(size 74.93 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "f37d2dc5-e286-52c8-a929-ab86478674c4")
+		(property "Sheetname" "DAC81408 and the monitor ADCs (ADS8688)"
+			(at 288.29 24.765 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "helmet-driver-converters.kicad_sch"
+			(at 288.29 51.435 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "helmet-driver"
+				(path "/e4f19193-76db-57d2-a3ea-13b94a419cd9"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)

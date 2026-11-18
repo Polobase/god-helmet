@@ -1,0 +1,24 @@
+* RC low-pass reference bench (must PASS)
+*
+* R1 = 10k, C1 = 10n  ->  fc = 1/(2*pi*R1*C1) = 1591.55 Hz. At fc the magnitude is 1/sqrt(2),
+* i.e. 20*log10(1/sqrt(2)) = -3.0103 dB.
+*
+* @assert f3db ≈ 1591.55 ±2%
+* @assert f3db between 1.55k 1.65k
+* @assert gain_10hz_db ~= 0 +-0.01
+
+V1 in 0 DC 0 AC 1
+R1 in out 10k
+C1 out 0 10n
+
+.ac dec 100 10 1Meg
+.meas ac f3db WHEN vdb(out)=-3.0103 FALL=1
+.meas ac gain_10hz_db FIND vdb(out) AT=10
+
+.control
+run
+wrdata rc-lowpass.dat vdb(out)
+quit
+.endc
+
+.end

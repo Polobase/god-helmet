@@ -21,17 +21,25 @@
 #include "keepalive.h"
 #include "settings.h"
 #include "ticks.h"
+#ifdef HAS_PCB_DRIVER
+#include "pcbboard.h"
+#endif
 
 namespace seq {
 namespace {
 
-enum class CommandType : uint8_t { Start, Stop, Skip, SetField, Reconfigure };
+enum class CommandType : uint8_t { Start, Stop, Skip, SetField, Reconfigure, TesStart };
 
 struct Command {
   CommandType type;
   StartRequest start;
   float value;
   char reason[40];
+#ifdef HAS_PCB_DRIVER
+  tes::Plan tesPlan;
+  uint32_t tesSeed;
+  bool tesBlind, tesCheck;
+#endif
 };
 
 constexpr double kTickMs = limits::kTickUs / 1000.0;
@@ -57,6 +65,11 @@ uint16_t gFieldChanges = 0;
 uint16_t gSkips = 0;
 uint32_t gProgressTicks = 0;
 resume::HoldDetector gBootHold;
+#ifdef HAS_PCB_DRIVER
+tes::Runner gTes;
+bool gTesBlind = false;
+uint32_t gTesTicks = 0;
+#endif
 
 // Shared with other tasks under gMux.
 Status gStatusShared;
@@ -69,11 +82,28 @@ void IRAM_ATTR onTimer() {
   if (woken) portYIELD_FROM_ISR();
 }
 
+#ifdef HAS_PCB_DRIVER
+// The helmet-driver board's DAC81408 sits in RESET while not armed. The board releases RESET about 10 ms after ARM
+// (an RC delay: hardware/pcb spec.md, "Ceiling and fault chain") and the DAC listens 1 ms later (SLASER3A 9.3.3.1).
+// It is configured once that has passed, and tried twice more 15 ms apart; until then its outputs stay tied to
+// ground (0 mA) and the session's first milliseconds pass without output.
+constexpr uint32_t kDacSettleMs = 25, kDacRetryMs = 15;
+constexpr int kDacTries = 3;
+uint32_t gArmMs = 0;
+int gDacTries = 0;
+bool gDacReady = false;
+#endif
+
 // Boards without an arming switch (coil returns wired to ground, kArm -1):
 // arming is then only a status flag and STOP relies on mid-scale.
 inline void arm(bool on) {
   fastWrite<pins::kArm>(on);
   gStatusLocal.armed = on;
+#ifdef HAS_PCB_DRIVER
+  gArmMs = millis();
+  gDacTries = 0;
+  gDacReady = false;
+#endif
 }
 
 void computeSwing() {
@@ -190,6 +220,73 @@ void beginSession(const StartRequest& req) {
   arm(true);  // identical for sham and active sessions
 }
 
+#ifdef HAS_PCB_DRIVER
+// tES on the island: the outputs to 0 mA, the relays open (TES_EN low; the heartbeat stops with the session).
+void tesFinish(const char* reasonIn) {
+  char reason[40];
+  std::snprintf(reason, sizeof reason, "%s", reasonIn);
+  const float zero[2] = {0, 0};
+  pcbboard::tesWrite(zero);
+  pcbboard::tesEnable(false);
+  pcbboard::tesWatchReset(false);
+  if (gStatusLocal.tesCheck) {
+    // The impedance check's readings, before the relays' opening adds zeros to them.
+    const pcbboard::Snapshot sn = pcbboard::snapshot();
+    for (int k = 0; k < 2; ++k) {
+      gStatusLocal.tesCheckV[k] = sn.tesRmsV[k];
+      gStatusLocal.tesCheckMA[k] = sn.tesRmsMA[k];
+    }
+  }
+  gStatusLocal.tesCheck = false;
+  gStatusLocal.tesChargeC = gTes.chargeC();
+  gStatusLocal.tesElapsedS = gTes.elapsedS();
+  gTes = tes::Runner{};
+  gStatusLocal.state = State::Idle;
+  gStatusLocal.tes = false;
+  gStatusLocal.tesSetMA[0] = gStatusLocal.tesSetMA[1] = 0;
+  std::snprintf(gStatusLocal.tesStopReason, sizeof gStatusLocal.tesStopReason, "%s", reason);
+  std::snprintf(gStatusLocal.lastStopReason, sizeof gStatusLocal.lastStopReason, "%s", reason);
+  publish();
+}
+
+void tesBegin(const Command& c) {
+  if (gRunner.running() || gTes.running()) return;  // control checks busy() first; never two at once
+  gTes.start(c.tesPlan, c.tesSeed);
+  gTesBlind = c.tesBlind;
+  gTesTicks = 0;
+  gStatusLocal.state = State::Running;
+  gStatusLocal.tes = true;
+  gStatusLocal.tesCheck = c.tesCheck;
+  gStatusLocal.blind = c.tesBlind;
+  gStatusLocal.tesElapsedS = 0;
+  gStatusLocal.tesTotalS = tes::sessionS(c.tesPlan);
+  gStatusLocal.tesChargeC = 0;
+  gStatusLocal.tesStopReason[0] = '\0';
+  gStatusLocal.lastStopReason[0] = '\0';
+  pcbboard::resetTesRms();
+  // The impedance check measures whatever the electrodes do, so the watch would only get in its way.
+  pcbboard::tesWatchReset(!c.tesCheck);
+  pcbboard::tesEnable(true);
+  publish();
+}
+
+// One output period (or several, after a stall) of a running tES session.
+void tesTick(uint32_t ticks) {
+  if (pcbboard::tesFaultLatched()) return tesFinish("tES trip (island latch)");
+  if (const char* r = pcbboard::tesWatchReason()) return tesFinish(r);
+  // A computer on the USB socket: the island's isolation would be all that separates the person from it.
+  if (++gTesTicks % 200 == 0 && pcbboard::snapshot().usbHost) return tesFinish("computer on USB");
+  float out[2];
+  if (!gTes.advance(static_cast<float>(ticks * kTickMs / 1000.0), out)) {
+    return tesFinish(gStatusLocal.state == State::Stopping ? gStatusLocal.lastStopReason : "completed");
+  }
+  pcbboard::tesWrite(out);
+  gStatusLocal.tesElapsedS = gTes.elapsedS();
+  gStatusLocal.tesChargeC = gTes.chargeC();
+  for (int k = 0; k < 2; ++k) gStatusLocal.tesSetMA[k] = gTesBlind ? 0.0f : out[k];
+}
+#endif
+
 void handleCommand(const Command& c) {
   switch (c.type) {
     case CommandType::Start:
@@ -198,6 +295,13 @@ void handleCommand(const Command& c) {
       gPending--;
       break;
     case CommandType::Stop:
+#ifdef HAS_PCB_DRIVER
+      if (gTes.running()) {
+        gTes.requestStop();
+        gStatusLocal.state = State::Stopping;
+        std::snprintf(gStatusLocal.lastStopReason, sizeof gStatusLocal.lastStopReason, "%s", c.reason);
+      }
+#endif
       if (gRunner.running()) {
         gRunner.requestStop();
         gStatusLocal.state = State::Stopping;
@@ -224,6 +328,12 @@ void handleCommand(const Command& c) {
     case CommandType::Reconfigure:
       if (!gRunner.running()) dac::reconfigure(gSettings.dacGain2x, gSettings.dacBufferedRef);
       break;
+    case CommandType::TesStart:
+#ifdef HAS_PCB_DRIVER
+      tesBegin(c);
+#endif
+      gPending--;
+      break;
   }
 }
 
@@ -241,7 +351,18 @@ void renderTick(double dtMs) {
     gCodes[ch] = gActive.sham ? 0x800 : engine::toCode(v[ch], gSwing[ch]);
     gStatusLocal.levels[ch] = gActive.sham ? 0.0f : std::fabs(v[ch]);
   }
+#ifdef HAS_PCB_DRIVER
+  if (!gDacReady && millis() - gArmMs >= kDacSettleMs + kDacRetryMs * static_cast<uint32_t>(gDacTries)) {
+    gDacReady = dac::configure();
+    if (!gDacReady && ++gDacTries >= kDacTries) {
+      finish(false, "coil DAC does not answer");
+      return;
+    }
+  }
+  if (gDacReady) dac::writeAll(gCodes);
+#else
   dac::writeAll(gCodes);
+#endif
 
   const engine::Phase& ph = gSession->phases[f.phase];
   gStatusLocal.phase = f.phase;
@@ -268,7 +389,14 @@ void task(void*) {
     // session's ticks sit mid-period and ordinary jitter reads as exactly one.
     const uint64_t nowUs = static_cast<uint64_t>(esp_timer_get_time());
     uint32_t ticks = 0;
-    if (gRunner.running()) ticks = resume::periodsSince(nowUs, periodUs, limits::kTickUs);
+#ifdef HAS_PCB_DRIVER
+    const bool active = gRunner.running() || gTes.running();
+    // The island's relays stay closed only while this toggles (about 1 kHz): if this task stops, they open.
+    if (gTes.running()) pcbboard::tesBeat();
+#else
+    const bool active = gRunner.running();
+#endif
+    if (active) ticks = resume::periodsSince(nowUs, periodUs, limits::kTickUs);
     else periodUs = nowUs - limits::kTickUs / 2;
 
     // BOOT is a STOP button, but only when held: a USB port being opened
@@ -290,11 +418,19 @@ void task(void*) {
         dac::writeMidscale();  // defensive: outputs to 0 V even when idle
         arm(false);
       }
+#ifdef HAS_PCB_DRIVER
+      if (gTes.running()) tesFinish(gEmergencyReason);
+#endif
     }
 
     Command c;
     while (xQueueReceive(gQueue, &c, 0) == pdTRUE) handleCommand(c);
 
+#ifdef HAS_PCB_DRIVER
+    // The coil trip latch has already cut the rails and reset the DACs; the session ends with it.
+    if (gRunner.running() && pcbboard::tripLatched()) finish(false, "coil current trip");
+    if (gTes.running() && ticks > 0) tesTick(ticks);
+#endif
     if (gRunner.running()) {
       if (ticks > 1 && !emergency) gStatusLocal.overruns += ticks - 1;
       if (gStatusLocal.state == State::Running &&
@@ -345,6 +481,21 @@ bool start(const StartRequest& request) {
   gPending--;
   return false;
 }
+
+#ifdef HAS_PCB_DRIVER
+bool startTes(const tes::Plan& plan, uint32_t seed, bool blind, bool check) {
+  Command c{};
+  c.type = CommandType::TesStart;
+  c.tesPlan = plan;
+  c.tesSeed = seed;
+  c.tesBlind = blind;
+  c.tesCheck = check;
+  gPending++;
+  if (send(c)) return true;
+  gPending--;
+  return false;
+}
+#endif
 
 void emergencyStop(const char* reason) {
   gEmergencyReason = reason;

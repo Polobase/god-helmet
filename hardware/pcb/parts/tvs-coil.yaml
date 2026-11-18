@@ -1,0 +1,32 @@
+# TVS diode, bidirectional, SOD-123FL, 200 W (10/1000 us): Littelfuse SMF15CA, for the coil outputs at the
+# RJ45 jacks (they swing up to about +-14.5 V; spec.md "Coil channel").
+# Datasheet: Littelfuse "TVS Diodes, Surface Mount - 200W > SMF Series", revised 05/15/20 (LCSC copy for
+# C1851361), read 2026-11-12:
+#   p. 1: 200 W peak pulse power (10/1000 us), 1000 W (8/20 us); RthJA 220 C/W; TJ -65 ... 150 C.
+#   p. 2: SMF15CA (marking IM): stand-off VR 15 V, leakage max 1 uA at VR; breakdown 16.70-18.50 V at 1 mA;
+#     Ipp 8.2 A and clamping max 24.4 V at Ipp (10/1000 us).
+#   p. 5: "Mounting Pad Layout": two pads 1.3 x 1.4 with a 1.6 gap (centres +-1.45); body 2.90-3.10 x 1.50-2.00
+#     (CA types), over the leads 3.40-3.90; bidirectional: no cathode band.
+# KiCad 10.0.6 footprint D_SOD-123F: pads 1.1 x 1.1 at +-1.4 (gap 1.7, read 2026-11-12): smaller than
+#   Littelfuse's 1.3 x 1.4 and 0.05 mm further in; the leads (E 0.35-0.90 from the body ends) land on them.
+# Symbol Device:D_TVS (bidirectional): pins 1 (A1) and 2 (A2); footprint pads 1 and 2: equal, checked 2026-11-12.
+# JLCPCB parts API, read 2026-11-13: C1851361, Extended, SMT, stock 5,314, USD 0.1577 at 1+ (0.1268 at 50+).
+#   Cheaper SMF15CA numbers of other makers exist (MDD C123803, USD 0.031; Jingdao C353310): their own
+#   datasheets would need reading first. More margin: SMF16CA (VR 16 V, VBR 17.80-19.70 V, clamp 26.0 V,
+#   same datasheet p. 2), JLCPCB number not looked up.
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+#   SOD-123FL_L2.8-W1.8-LS3.7-BI, read 2026-11-12): pads 1 and 2 at +-1.70 along x as KiCad's: no cplRotation
+#   (a bidirectional part has no polarity anyway).
+schema: 1
+description: TVS diode, bidirectional, SOD-123FL, 200 W, 15 V stand-off
+symbol: Device:D_TVS
+footprint: Diode_SMD:D_SOD-123F
+assembly: smt
+datasheet: https://datasheet.lcsc.com/datasheet/pdf/f8c76908115d9cf3a4ee18f1a219bc4b.pdf?productCode=C1851361
+values:
+  SMF15CA:
+    mpn: SMF15CA
+    manufacturer: Littelfuse
+    lcsc: C1851361
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C1851361", date: "2026-11-13" }

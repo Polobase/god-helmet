@@ -1,0 +1,17 @@
+# Solder jumper, closed as delivered: two 1.0 x 1.5 mm pads 0.3 mm apart, joined by a copper strip 0.5 mm
+# wide (KiCad 10.0.6 footprint SolderJumper-2_P1.3mm_Bridged_Pad1.0x1.5mm, read 2026-10-04; the footprint
+# is a net tie between pads 1 and 2). Cut the strip to open it; a solder blob closes it again.
+# A board feature, not a part: nothing is sourced, placed or soldered (assembly: none).
+schema: 1
+description: Solder jumper, 2 pads, bridged by a copper strip (cut to open)
+symbol: Jumper:SolderJumper_2_Bridged
+footprint: Jumper:SolderJumper-2_P1.3mm_Bridged_Pad1.0x1.5mm
+assembly: none
+datasheet: null
+values:
+  Bridged:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null

@@ -1,0 +1,40 @@
+{
+  "name": "god-helmet-pcb",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Helmet driver PCB for god-helmet: schematic as code, KiCad 10, ngspice, JLCPCB order files",
+  "engines": {
+    "bun": ">=1.4.2"
+  },
+  "scripts": {
+    "doctor": "bun tools/cli/doctor.ts",
+    "validate": "bun tools/cli/validate.ts",
+    "lib:import": "bun tools/cli/lib-import.ts",
+    "sch": "bun tools/cli/sch.ts",
+    "sch:check": "bun tools/cli/sch-check.ts",
+    "sch:approve": "bun tools/cli/sch-approve.ts",
+    "sim": "bun tools/cli/sim.ts",
+    "models:fetch": "bun tools/cli/models-fetch.ts",
+    "pcb": "bun tools/cli/pcb.ts",
+    "fab": "bun tools/cli/fab.ts",
+    "order": "bun tools/cli/order.ts",
+    "render": "bun tools/cli/render.ts",
+    "verify:outputs": "bun tools/cli/verify-outputs.ts",
+    "typecheck": "bun --bun tsc --noEmit",
+    "test": "bun test",
+    "test:unit": "SKIP_EXTERNAL_TOOLS=1 bun test",
+    "test:full": "REQUIRE_EXTERNAL_TOOLS=1 bun test",
+    "check": "bun run typecheck && bun test && bun run validate && bun run sch:check",
+    "check:fast": "bun run typecheck && bun run test:unit && bun run validate && bun run sch:check"
+  },
+  "dependencies": {
+    "fflate": "0.8.3",
+    "yaml": "2.9.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.2",
+    "typescript": "7.0.2"
+  }
+}

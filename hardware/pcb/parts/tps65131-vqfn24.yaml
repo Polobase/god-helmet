@@ -1,0 +1,51 @@
+# Texas Instruments TPS65131RGER: dual DC-DC converter, positive boost (up to 15 V) and negative inverting
+# buck-boost (down to -15 V), 2.7-5.5 V input, 1.95 A switch limits, BSW gate drive for an external P-MOSFET that
+# disconnects the boost output; VQFN-24 (RGE, 4 x 4 mm) with thermal pad.
+# Datasheet: TI SLVS493E (TPS65130, TPS65131; March 2004, revised April 2022), read 2026-11-12:
+#   Pinout Figure 5-1 and Table 5-1 p. 3: 1 INP, 2 PGND, 3 PGND, 4 VIN, 5 INN, 6 INN, 7 BSW, 8 ENP, 9 PSP, 10 ENN,
+#   11 PSN, 12 NC, 13 OUTN, 14 OUTN, 15 VNEG, 16 FBN, 17 VREF, 18 CN, 19 AGND, 20 NC, 21 CP, 22 FBP, 23 VPOS, 24 INP,
+#   thermal pad. KiCad's Regulator_Switching:TPS65131RGE (extends TPS65130RGE) has these 24 numbers and names
+#   (3, 6, 14, 24 and the NCs hidden) plus pin 25 EP; the footprint's pads 1-25 match (checked 2026-11-12).
+#   BSW (p. 3): gate control for the external switch, low when ENP is high; output resistance 27 kOhm (p. 5).
+#   ENP/ENN: 0 V disabled, VIN enabled; VIH 1.4 V min, VIL 0.4 V max (p. 5): a 3.3 V logic gate drives them.
+#   Absolute maximum (p. 4): VIN, INN 6 V; VPOS and INP 17 V; VNEG -17 V; OUTN to INN 24 V.
+#   Recommended (p. 4): VIN 2.7-5.5 V; VPOS VIN + 0.5 to 15 V; VNEG -15 to -2 V. Output accuracy 3 % (p. 5).
+#   Switch current limit, TPS65131: 1800 min, 1950 typ, 2200 max mA, both converters (p. 5). Oscillator 1250-1500 kHz
+#   (p. 6). Thermal pad: connect the PGND plane to it, AGND to PGND (Layout Guidelines p. 26); RthJA 34.1 C/W (p. 5).
+# Application section (Section 8.2, pp. 11-15), for the parts around it:
+#   Figure 8-1 / Table 8-2: C1, C2 (INP, INN inputs) 4.7 uF X5R; C3 100 nF with R7 100 Ohm as the VIN RC filter (or a
+#   ferrite bead, 8.2.3.2 p. 16); C4, C5 (outputs) 4 x 4.7 uF 25 V X7R each; C6 (CP) 10 nF; C7 (CN) 4.7 nF C0G;
+#   C8 (VREF) 220 nF; dividers for +15 V R1 975 kOhm / R2 85.8 kOhm, for -15 V R3 1.3 MOhm / R4 104.8 kOhm (R4 goes to
+#   VREF, not GND; R2 and R4 below 200 kOhm, divider current 5-10 uA, p. 12-13); D1, D2 Schottky 1 A 20 V
+#   (onsemi MBRM120); L1, L2 4.7 uH (EPCOS B82462-G4472 for the TPS65131); Q1 P-MOSFET 12 V 4 A (Vishay Si2323DS).
+#   Inductors (8.2.2.2 p. 13-14): 4.7 uH recommended, the device is optimised for 3.3-6.8 uH; keep the peak inductor
+#   current below the switch limit, ripple about 20 %. Peak current, Eq. 3: IL = IPOS x VPOS / (VI x 0.64).
+#   Output capacitors (8.2.2.3.2 p. 14): about 12 uF minimum for 10 mV ripple; more for load transients.
+#   Rectifiers (8.2.2.4 p. 15): Schottky, forward current rating = maximum output current.
+#   PMOS (8.2.2.5 p. 15): VGS and VGD ratings must cover the input voltage; leave BSW open without one.
+#   Derived for 5 V in and +-15 V out: boost diode reverse voltage about 15.5 V, inverter diode VIN + |VNEG| = 20 V;
+#   with the 1.8 A minimum limit Eq. 3 allows about 0.38 A from the +15 V output (1.8 x 5 x 0.64 / 15).
+# Footprint: TI's land pattern (RGE0024B, pp. 36-38): pads 0.6 x 0.25 mm, rows 3.8 mm apart (centres), thermal pad
+# 2.45 mm with nine optional 0.2 mm vias on a 0.975 mm grid, "filled, plugged or tented" if used. KiCad's
+# VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm_ThermalVias (the symbol's default) has the same pad rows (0.775 x 0.25,
+# 0.175 mm longer outward), the 2.45 mm pad and the same nine 0.2 mm vias. The variant without vias
+# (VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm) has the same pad numbers if the vias are to be placed by the layout.
+# JLCPCB parts API, read 2026-11-12: C87663, Texas Instruments TPS65131RGER, Extended, SMT, stock 718,
+# USD 3.4365 (1+), 2.6743 (30+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+# QFN-24_L4.0-W4.0-P0.50-TL-EP2.6, read 2026-11-12) has all 24 pins on KiCad's pads of the same number at 0 degrees
+# (within 0.014 mm against the plain variant); no correction (no table line matches "VQFN-").
+schema: 1
+description: Dual-output DC-DC converter, boost up to +15 V and inverter down to -15 V, 2 A switches, VQFN-24 (TPS65131)
+symbol: Regulator_Switching:TPS65131RGE
+footprint: Package_DFN_QFN:VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm_ThermalVias
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/tps65131.pdf
+values:
+  TPS65131:
+    mpn: TPS65131RGER
+    manufacturer: Texas Instruments
+    lcsc: C87663
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C87663", date: "2026-11-12" }
+order: { previewCheck: "pin 1" }

@@ -1,0 +1,32 @@
+* Rev B setpoint: the DAC81408's output (+/-2.5 V range) straight into the driver's setpoint filter, coil 4.2 ohm /
+* 4.1 mH. DAC81408 data sheet SLASER3A: total unadjusted error +/-0.1 % of the full-scale range at most (5 V range:
+* +/-5 mV); after a reset or power-up every output is tied to ground through 10 kohm until it is configured.
+*   ireset  coil current while the DAC is in reset (output = 10 kohm to ground): the driver's own offset only
+*   izero   mid-scale with the worst-case error (+5 mV): the offset the firmware trims with the monitor
+*   ifull   full scale (2.5 V - 5 mV): 20.12 mA
+* @assert ireset between -0.000005 0.000005
+* @assert izero between -0.000045 0.000045
+* @assert ifull ≈ 0.02012 ±0.3%
+.include helmet-driver.lib
+XR vp vn RAILS
+* in reset: 10 kohm to ground (data sheet 9.3.3.1)
+RRST s0 0 10k
+XD0 s0 vp vn o0 x0 DRV
+XC0 o0 x0 COIL r=4.2 l=4.1m
+* configured, mid-scale with +5 mV error
+VZ sz 0 PWL(0 0 100u 0 101u 0.005)
+XD1 sz vp vn o1 x1 DRV
+XC1 o1 x1 COIL r=4.2 l=4.1m
+* configured, full scale with -5 mV error
+VF sf 0 PWL(0 0 100u 0 101u 2.495)
+XD2 sf vp vn o2 x2 DRV
+XC2 o2 x2 COIL r=4.2 l=4.1m
+.tran 1u 3m uic
+.meas tran ireset FIND par('v(x0)/124') AT=2.9m
+.meas tran izero FIND par('v(x1)/124') AT=2.9m
+.meas tran ifull FIND par('v(x2)/124') AT=2.9m
+.control
+run
+quit
+.endc
+.end

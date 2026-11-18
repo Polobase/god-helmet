@@ -1,0 +1,15 @@
+# Sourcing verified 2026-09-24 via JLCPCB's parts API and partdetail pages (Phase-3 research, re-checked by a second agent).
+# 250 mW: an output resistor survives a short to ground (0.13 W).
+schema: 1
+description: Thick-film resistor, 1206, 1 %, 250 mW
+symbol: Device:R
+footprint: Resistor_SMD:R_1206_3216Metric
+assembly: smt
+datasheet: null
+values:
+  1k:
+    mpn: 1206W4F1001T5E
+    manufacturer: UNI-ROYAL
+    lcsc: C4410
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C4410", date: "2026-09-24" }

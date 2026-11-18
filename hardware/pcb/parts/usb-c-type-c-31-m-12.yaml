@@ -1,0 +1,44 @@
+# USB-C receptacle, USB 2.0 only, 16 contacts plus 4 shell tabs, SMD, right angle: Korean Hroparts (HRO)
+# TYPE-C-31-M-12. Rated 5 A, 20 V; 10,000 cycles.
+# Datasheet: HRO drawing TYPE-C-31-M-12, rev. A (2020.12.08), sheet 1 of 1 (LCSC copy for C165948), read
+# 2026-11-12 by rendering the page:
+#   pin table: A1 GND, A4 VBUS, A5 CC1, A6 DP1, A7 DN1, A8 SBU1, A9 VBUS, A12 GND; B1 GND, B4 VBUS, B5 CC2,
+#     B6 DP2, B7 DN2, B8 SBU2, B9 VBUS, B12 GND. KiCad's symbol names them the same way (D+ = DP, D- = DN).
+#   "Recommend P.C.B layout (component side)", tolerance +-0.05: one row of 12 pads, left to right
+#     A1/B12, A4/B9, B8, A5, B7, A6, A7, B6, A8, B5, B4/A9, B1/A12. The shared pads are 0.60 wide at +-3.20
+#     (A1/B12, B1/A12) and +-2.40 (A4/B9, B4/A9); the signal pads 0.30 wide at 0.50 pitch (+-0.25 ... +-1.75).
+#     Two NPTH locating holes 0.60 at +-2.89 (5.78 apart). Four shell tabs in plated slots at +-4.325 (8.65):
+#     rear pair 2.00 pad / 1.70 hole on the pad row's inner edge, front pair 1.70 pad / 1.40 hole 4.18 from it.
+#     Board edge 5.79 in front of the locating holes. The drawing gives the shell tabs no pin name.
+# KiCad 10.0.6 footprint USB_C_Receptacle_HRO_TYPE-C-31-M-12 (read 2026-11-12) against that layout:
+#   pad order and names the same; signal pads at the same x; NPTH 0.65 at +-2.89; slots at +-4.32, rear drill
+#   0.6 x 1.7 (equal), front drill 0.6 x 1.2 (HRO 1.4). Differences: the four shared pads sit at +-3.25 and
+#   +-2.45 (0.05 mm outside HRO's, the edge of its +-0.05 tolerance) and all 16 pads are 1.45 long instead of
+#   about 1.14, reaching 0.53 mm further back. Likely harmless (KiCad's footprint is the one commonly used with
+#   this part); the shorter front slot is unverified against the tab, whose size the drawing does not give.
+#   Slots: 0.6 mm wide, above JLCPCB's 0.5 mm minimum for plated slots (docs/jlcpcb.md).
+# Symbol Connector:USB_C_Receptacle_USB2.0_16P: pins A1 A4 A5 A6 A7 A8 A9 A12 B1 B4 B5 B6 B7 B8 B9 B12 and SH
+#   (the shield; the stock symbol calls it SH, not S1). The footprint has numbered pads A1 ... B12 (A1/B12,
+#   A4/B9, A9/B4, A12/B1 as stacked pads at the same place) and four SH pads (the shell tabs): the number sets
+#   are equal (17 = 17), checked 2026-11-12.
+# JLCPCB parts API, read 2026-11-13: C165948, Extended, SMT, stock 542,732, USD 0.1868 at 1+ (0.1476 at 50+).
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package
+#   USB-C_SMD-TYPE-C-31-M-12_1, read 2026-11-12) has the pad row along x as KiCad's, pads at HRO's +-3.20/+-2.40,
+#   its four shell pads numbered 1-4 ("EH"): turned by 0 degrees it lies on KiCad's (largest pad offset 0.16 mm),
+#   so no cplRotation. Its origin lies 1.54 mm from KiCad's (towards the pad row, -y in KiCad): JLCPCB places
+#   on its own origin, so the part may land 1.5 mm towards the board edge unless corrected. The schema has no
+#   offset field: check the position in JLCPCB's placement preview.
+schema: 1
+description: USB-C receptacle, USB 2.0 (16P), SMD right angle, HRO TYPE-C-31-M-12
+symbol: Connector:USB_C_Receptacle_USB2.0_16P
+footprint: Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12
+assembly: smt
+datasheet: https://datasheet.lcsc.com/datasheet/pdf/9e56b777c022540fcce7c7f67825f55e.pdf?productCode=C165948
+values:
+  TYPE-C-31-M-12:
+    mpn: TYPE-C-31-M-12
+    manufacturer: Korean Hroparts Elec
+    lcsc: C165948
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C165948", date: "2026-11-13" }
+order: { previewCheck: "the position: JLCPCB's origin is 1.5 mm from KiCad's along the pad row's axis" }

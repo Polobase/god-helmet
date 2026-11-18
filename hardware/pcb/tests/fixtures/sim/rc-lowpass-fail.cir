@@ -1,0 +1,22 @@
+* RC low-pass with deliberately wrong expectations (must FAIL)
+*
+* Same circuit as rc-lowpass.cir (fc = 1591.55 Hz). Proves the assertion gate is not vacuous:
+* the runner has to report the first and the last assertion as failed.
+*
+* @assert f3db ≈ 1000 ±2%
+* @assert f3db between 1.55k 1.65k
+* @assert not_measured ≈ 1 ±1%
+
+V1 in 0 DC 0 AC 1
+R1 in out 10k
+C1 out 0 10n
+
+.ac dec 100 10 1Meg
+.meas ac f3db WHEN vdb(out)=-3.0103 FALL=1
+
+.control
+run
+quit
+.endc
+
+.end

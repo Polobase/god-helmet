@@ -1,0 +1,21 @@
+# Sourcing verified 2026-09-24 via JLCPCB's parts API and partdetail pages (Phase-3 research, re-checked by a second agent).
+# Re-read 2026-11-12 through the JLCPCB parts API (C1017): Sunlord GZ2012D601TF, Basic, 600 R +-25 % at 100 MHz,
+# 500 mA rated, DCR 300 mOhm (max or typ not stated by the API), -55...+125 C, stock 382,032, USD 0.020 for 1+.
+# Enough for the helmet driver's +-15 V pi filters (about 175 mA per rail at full coil current, spec.md "Power budget":
+# 52 mV across 300 mOhm); not for its 5 V input at up to 1.1 A. Higher-current 600 R 0805 bead seen the same day:
+# Murata BLM21PG601SN1D (1.4 A, 140 mOhm), C41556732, Extended, stock 64 only.
+# Unverified: how far the impedance falls at the working current (Sunlord's datasheet not read).
+# No cplRotation: a non-polar two-pad part.
+schema: 1
+description: Ferrite bead, 0805, 600 R at 100 MHz, 500 mA
+symbol: Device:FerriteBead_Small
+footprint: Inductor_SMD:L_0805_2012Metric
+assembly: smt
+datasheet: null
+values:
+  600R:
+    mpn: GZ2012D601TF
+    manufacturer: Sunlord
+    lcsc: C1017
+    jlcpcbTier: basic
+    verified: { source: "https://jlcpcb.com/partdetail/C1017", date: "2026-11-12" }

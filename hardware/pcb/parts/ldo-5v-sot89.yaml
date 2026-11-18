@@ -1,0 +1,35 @@
+# 5 V linear regulator for the helmet-driver's tES island, fed from the isolated +15 V: ST L78L05ABUTR, SOT-89.
+# Datasheet ST L78L, DocID2145 Rev 24 (February 2015), LCSC copy for C42738, read 2026-11-12:
+# - p. 4, Figure 2 (SOT-89, top view): pin 1 VOUT, pin 2 GND (also the tab), pin 3 VIN. KiCad's
+#   Regulator_Linear:L78L05_SOT89 (extends MC78L05_SOT89) has 1 OUT, 2 GND, 3 IN: the same. Package_TO_SOT_SMD:SOT-89-3
+#   has pads 1, 2 (with the tab), 3: pin-to-pad check passed 2026-11-12. SOT-89 pinouts differ between makers:
+#   Holtek's HT75xx-1 is 1 GND, 2 VIN, 3 VOUT and needs the HT75xx-1-SOT89 symbol, never this file.
+# - p. 5, Table 1: VI max 30 V (5 V types); IO 100 mA; operating Tj -40...+125 C (AB). Table 2: SOT-89 RthJC 15 C/W,
+#   RthJA 55 C/W with 6 cm2 of copper.
+# - p. 16, Table 13 (L78L05AB): VO 4.8-5.2 V at 25 C, 4.75-5.25 V for 1-40 mA and VI 7-20 V; quiescent current 6 mA
+#   max; dropout 1.7 V; CI 0.33 µF, CO 0.1 µF in the test circuit (p. 4, Figure 3).
+# Dissipation (derived): (16 V - 5 V) x (30 mA + 6 mA) = 0.40 W at the A0515S-2WR3's light-load output (+8 %),
+# +22 C with 6 cm2 of copper on the tab; the tab is GND, so the island's ground pour can be that copper.
+# Note for the DAC80502 on this rail: with its default REF-DIV = 0 and the internal 2.5 V reference, VDD must be at
+# least 5.0 V (DAC80502 datasheet §7.3); the L78L05AB may give 4.75 V (see parts/dac80502-wson10.yaml).
+# JLCPCB parts API and part page (2026-11-12): C42738 L78L05ABUTR, Extended, stock 156,548, USD 0.072 (1+), 0.0566
+# (50+), 0.0488 (150+). Alternative with the same pinout, Basic tier: UTC 78L05G-AB3-R, C71136, stock 219,481,
+# USD 0.0797 (UTC QW-R101-001.R p. 1: AB3 = SOT-89, pins O G I; p. 3: VIN 30 V, PD 350 mW for SOT-89, operating
+# -40...+85 C); not chosen because 350 mW is below the 0.40 W above. Holtek HT7550-1 (C16106, stock 176,581;
+# Holtek HT75xx-1 Rev. 2.40: 30 V, 2.5 µA quiescent, SOT-89 200 C/W without copper) has the other pinout.
+# JLCPCB's own footprint was not compared (the EasyEDA footprint service refused the request, 403): check pin 1 in
+# the placement preview.
+schema: 1
+description: 5 V 100 mA linear regulator, 30 V input, SOT-89 (ST L78L05AB; 1 OUT, 2 GND/tab, 3 IN)
+symbol: Regulator_Linear:L78L05_SOT89
+footprint: Package_TO_SOT_SMD:SOT-89-3
+assembly: smt
+datasheet: https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_STMicroelectronics-L78L05ABUTR_C42738.pdf
+values:
+  L78L05AB:
+    mpn: L78L05ABUTR
+    manufacturer: STMicroelectronics
+    lcsc: C42738
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C42738", date: "2026-11-12" }
+order: { previewCheck: "pin 1 (the tab is GND, pin 2)" }

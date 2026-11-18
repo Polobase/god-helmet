@@ -1,0 +1,30 @@
+# Shielded wire-wound SMD power inductor, 6.0 x 6.0 x 4.5 mm: Sunlord SWPA6045S series. For the TPS65131 boost and
+# inverter (tps65131-vqfn24.yaml: 4.7 uH recommended, 3.3-6.8 uH allowed, peak current below the 1.8-2.2 A switch
+# limit; TI SLVS493E 8.2.2.2 pp. 13-14).
+# Datasheet: Sunlord "Wire Wound SMD Power Inductors - SWPA Series", revised 2025/5/8 (the copy JLCPCB stores for
+# C78804; a scanned catalogue, read 2026-11-12 by OCR and checked against the page images):
+#   p. 13, SWPA6045S4R7MT: L 4.7 uH +-20 % (100 kHz, 1 V); DCR 0.034 Ohm max, 0.026 typ; SRF 24 MHz min;
+#   Isat 4.97 A / 5.50 A (the two columns headed "Max." and "Typ."); Irms 3.30 A / 3.60 A.
+#   p. 16 notes: Isat = DC current at which L drops about 30 %; Irms = DC current for a 40 C rise from 20 C ambient;
+#   rated current = the smaller of the two. Operating range -40 to +125 C including self-heating (p. 1).
+#   p. 2, SWPA6045S: body 6.0 +-0.3 x 6.0 +-0.3 x 4.5 max; recommended land pattern a (gap) 2.8, b (pad width) 1.7,
+#   c (pad length) 5.7 mm.
+# Footprint: KiCad's Inductor_SMD:L_Sunlord_SWPA6045S has two pads 1.7 x 5.7 mm at x = +-2.25 mm, i.e. a 2.8 mm gap:
+# Sunlord's land pattern exactly. Device:L pins 1, 2 = pads 1, 2.
+# JLCPCB parts API, read 2026-11-12: C78804, Sunlord SWPA6045S4R7MT, Extended, SMT, stock 30,336, USD 0.0812 (1+).
+# The API's own figures (26 mOhm, 3.3 A, 5.5 A) are the typical DCR, the lower Irms and the higher Isat column.
+# CPL: JLCPCB's footprint (EasyEDA/JLCEDA official library, https://easyeda.com; package IND-SMD_L6.0-W6.0_SWPA6045S,
+# read 2026-11-13) has its two pads on KiCad's at 0 degrees (within 0.35 mm, same numbers); non-polar anyway.
+schema: 1
+description: Power inductor, shielded wire-wound, 6.0 x 6.0 x 4.5 mm (Sunlord SWPA6045S)
+symbol: Device:L
+footprint: Inductor_SMD:L_Sunlord_SWPA6045S
+assembly: smt
+datasheet: https://www.lcsc.com/datasheet/lcsc_datasheet_2310251551_Sunlord-SWPA6045S4R7MT_C78804.pdf
+values:
+  4.7u:
+    mpn: SWPA6045S4R7MT
+    manufacturer: Sunlord
+    lcsc: C78804
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C78804", date: "2026-11-12" }

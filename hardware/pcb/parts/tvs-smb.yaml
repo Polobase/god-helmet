@@ -1,0 +1,28 @@
+# TVS diode, unidirectional, SMB (DO-214AA), 600 W (10/1000 us): hongjiacheng SMBJ series.
+# Datasheet (LCSC copy for C19077567, pp. 1-2, read 2026-10-04 by the part-sourcing-verifier agent):
+#   SMBJ13A:  stand-off 13.0 V; breakdown 14.40-15.90 V at 1 mA; clamps 21.5 V at 27.91 A; leakage 5 uA
+#   SMBJ6.0A: stand-off 6.0 V; breakdown 6.67-7.37 V at 10 mA; clamps 10.3 V at 58.25 A; leakage 800 uA
+#   forward surge 100 A (8.3 ms half sine).
+# JLCPCB parts API, read 2026-10-04: both Extended, SMT; stock 64,418 and 228,276. No Basic unidirectional
+# TVS with these stand-off voltages was found.
+# The symbol is KiCad's Zener (cathode = pin 1): KiCad's D_TVS draws a bidirectional part.
+schema: 1
+description: TVS diode, unidirectional, SMB (DO-214AA), 600 W
+symbol: Device:D_Zener
+footprint: Diode_SMD:D_SMB
+assembly: smt
+datasheet: https://datasheet.lcsc.com/datasheet/pdf/29e006ceaae5808e6d17d021de7bda89.pdf?productCode=C19077567
+values:
+  SMBJ13A:
+    mpn: SMBJ13A
+    manufacturer: hongjiacheng
+    lcsc: C19077567
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C19077567", date: "2026-10-04" }
+  SMBJ6.0A:
+    mpn: SMBJ6.0A
+    manufacturer: hongjiacheng
+    lcsc: C19077560
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C19077560", date: "2026-10-04" }
+order: { previewCheck: "the cathode band" }

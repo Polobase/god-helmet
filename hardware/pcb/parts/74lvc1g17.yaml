@@ -1,0 +1,22 @@
+# Texas Instruments SN74LVC1G17DBVR: single Schmitt-trigger buffer, 1.65-5.5 V, SOT-23-5 (DBV). The helmet-driver
+# squares the tES heartbeat detector's slow output with it (spec.md "tES island").
+# Datasheet TI SCES351Y (July 2001, revised October 2025), pin functions (DBV): 1 NC, 2 A, 3 GND, 4 Y, 5 VCC; read 2026-11-13 from
+#   https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf. KiCad's 74xGxx:74LVC1G17: 1 NC (hidden), 2 input, 3 GND,
+#   4 output, 5 VCC; with Package_TO_SOT_SMD:SOT-23-5: match (scratchpad kicheck.py, 2026-11-13).
+# JLCPCB parts API (2026-11-13): C7836 SN74LVC1G17DBVR, Texas Instruments, Extended, stock 9,848, USD 0.1711 (1+).
+# CPL: same SOT-23-5 package as 74lvc1g08.yaml, whose JLCPCB footprint was compared there (no correction); not
+#   compared for this number: check pin 1 in the placement preview.
+schema: 1
+description: Single Schmitt-trigger buffer, LVC, SOT-23-5 (SN74LVC1G17)
+symbol: 74xGxx:74LVC1G17
+footprint: Package_TO_SOT_SMD:SOT-23-5
+assembly: smt
+datasheet: https://www.ti.com/lit/ds/symlink/sn74lvc1g17.pdf
+values:
+  74LVC1G17:
+    mpn: SN74LVC1G17DBVR
+    manufacturer: Texas Instruments
+    lcsc: C7836
+    jlcpcbTier: extended
+    verified: { source: "https://jlcpcb.com/partdetail/C7836", date: "2026-11-13" }
+order: { previewCheck: "pin 1" }

@@ -1,0 +1,14 @@
+# Test fixture (not the parts DB): sourcing deliberately unknown.
+schema: 1
+description: 2-pin JST XH header, vertical (test fixture)
+symbol: Connector_Generic:Conn_01x02
+footprint: Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical
+assembly: hand
+datasheet: null
+values:
+  B2B-XH-A:
+    mpn: null
+    manufacturer: null
+    lcsc: null
+    jlcpcbTier: null
+    verified: null
