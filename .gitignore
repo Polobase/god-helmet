@@ -22,3 +22,6 @@ godhelmet/
 
 # Firmware images for the web installer (firmware/scripts/web_bundle.sh; CI builds them)
 webapp/public/firmware/
+
+# Downloaded copies of cited papers and documents (tools/fetch_sources.py): mostly copyrighted, never committed
+library/
