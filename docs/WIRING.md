@@ -4,6 +4,8 @@
 
 Regenerate both drawings with `python3 hardware/make_schematic.py`.
 
+This page covers the first build (AD5328 module, series resistors, perfboard). The [driver board](PCB.md) replaces those: its coils need no resistors, connect through one Micro-Fit plug with a separate return wire for every coil (coil *k* on pins *k* and *k* + 8), and the pair rules below still apply to the cable.
+
 ## Coil leads: which is signal, which is return
 
 ![Coil lead convention](coil-leads.svg)
@@ -106,10 +108,14 @@ Notes:
 
 What the board itself shows (silkscreen and parts, from photos of a V1.2 board):
 
+![AD5328 module schematic, reconstructed from photos](ad5328-module.svg)
+
+The schematic is reconstructed from photos: solid lines come from the silkscreen, the part codes and the parts' data sheets, dashed lines from where the parts sit (the traces under them are not visible). Regenerate it with `python3 hardware/make_module_schematic.py`.
+
 | Connector | Order on the board | Use |
 |---|---|---|
 | Output terminal block (10 screws) | GND, AO8, AO7, AO6, AO5, AO4, AO3, AO2, AO1, GND | AOx → 2.2 kΩ → coil; either GND screw is the module ground |
-| Logic header H1 (6 pins) | 5V, GND, CLK, DIN, SYNC, LDAC | To the ESP32 (pin table above). CLK, DIN and SYNC pass a 100 Ω resistor array (RN1) on the board |
+| Logic header H1 (6 pins) | 5V, GND, CLK, DIN, SYNC, LDAC | To the ESP32 (pin table above). CLK, DIN, SYNC and LDAC pass RN1, a 4 × 100 Ω array, on the board |
 | Power terminal (2 screws) | 5V, GND | The same 5 V as H1; use one of them, not both from different supplies |
 | Reference jumper (3 pins, "基准源") | 1 = 2V5, 2 = EX, 3 = GND | **1-2: onboard 2.5 V reference (use this).** Pin 2 alone is the external-reference input. Never bridge 2-3: it shorts the reference to ground |
 | Test pads | 5V, 12V, −12V, VREF, GND | Bench checks (docs/CALIBRATION.md §1) |
@@ -117,8 +123,8 @@ What the board itself shows (silkscreen and parts, from photos of a V1.2 board):
 Parts:
 - **DAC:** AD5328BRU (TSSOP-16). The date code on the one photographed is 0331 (2003): old stock or a recovered part, so run the bench test before trusting it.
 - **Output amplifiers:** four SGMicro SGM8272 dual op-amps (one amplifier per channel), rated for supplies up to ±18 V ([SGM8272](https://sg-micro.com/product/SGM8272)).
-- **Supply:** an on-board DC-DC converter followed by 78L12 and 79L12 regulators makes ±12 V for the op-amps; LED1 is the power light.
-- **Per channel:** 3 kΩ, 12 kΩ, 30 kΩ and 120 kΩ resistors (codes 302, 123, 303, 124), both pairs in a 1 : 4 ratio. That is a difference amplifier with a gain of 4 between the DAC output and the 2.5 V reference: **V_out = ±4 · (V_DAC − 2.5 V)**. With the DAC set to 0–5 V (GAIN ×2, the firmware default), code 0x800 gives 0 V and the full range is ±10 V. Which input the DAC feeds, and so the sign, cannot be seen from the photos; the bench test shows it. Code 0 (the DAC's power-on state) gives −10 V (or +10 V) on every output, not 0 V, which is why the DevKit boards use the arming switch (the display board instead follows a power-on rule, see above).
+- **Supply:** a TI TPS61040 boost converter (U2, marking PHOI) raises the 5 V to about 16 V (1.233 V × (1 + 1.2 MΩ / 100 kΩ), R5 and R4); a charge pump on its switch node (a SOT-23 double diode, D2) makes about −15 V; a 78L12 and a 79L12 (U3) regulate these to ±12 V for the op-amps. LED1 is the power light. The 2.5 V reference (U9, SOT-23) carries no readable marking.
+- **Per channel:** 3 kΩ, 12 kΩ, 30 kΩ and 120 kΩ resistors (codes 302, 123, 303, 124), both pairs in a 1 : 4 ratio, and a 0 Ω in series with the output. The 3 kΩ / 12 kΩ pair sits at the op-amp's inverting input (12 kΩ is the feedback), the 30 kΩ / 120 kΩ pair at its non-inverting input (120 kΩ to ground). That is a difference amplifier with a gain of 4 between the DAC output and the 2.5 V reference: **V_out = ±4 · (V_DAC − 2.5 V)**. With the DAC set to 0–5 V (GAIN ×2, the firmware default), code 0x800 gives 0 V and the full range is ±10 V. Which input the DAC feeds, and so the sign, cannot be seen from the photos (the schematic draws the DAC on the 30 kΩ, the + sign). A meter settles it with the power off: U6 pin 4 (VOUTA) has continuity to one of AO1's resistors, a 30 kΩ (303) for the + sign or a 3 kΩ (302) for the − sign; the bench test shows it too. Code 0 (the DAC's power-on state) gives −10 V (or +10 V) on every output, not 0 V, which is why the DevKit boards use the arming switch (the display board instead follows a power-on rule, see above).
 
 ## One output channel (×8)
 
@@ -142,8 +148,8 @@ Parts:
 | AO1–AO8 → 2.2 kΩ → coil | Full scale: ±9.995 V over 2204 Ω (resistor + coil + 2 m of cable) | **4.53 mA** (45 mW in the resistor, 0.09 mW in the coil) |
 | AO1–AO8 | Tolerances: resistor 1 % low, module gain or reference high (its resistors are 3-digit-code parts, probably 5 %), output ±10.5 V | about 4.8 mA |
 | AO1–AO8 | Fault: amplifier stuck at its rail, about ±11 V on the ±12 V supply | about **5.0 mA, the hard ceiling** (≈ 9.4 µT at 20 mm, 55 mW in the resistor) |
-| AO1–AO8 without the resistor | Never: ±10 V into 4.2 Ω | limited only by the op-amp's short-circuit current, about 100× the intended field |
-| All 8 outputs together | Same sign, full scale | 36 mA from one ±12 V rail (78L12/79L12: 100 mA) |
+| AO1–AO8 without the resistor | Never: ±10 V into 4.2 Ω | limited only by the op-amp's current limit (SGM8272: about 60 mA typical, at least 30 mA at 25 °C) and the module's supply, about 100× the intended field |
+| All 8 outputs together | Same sign, full scale | 36 mA from one ±12 V rail, plus about 10 mA the module draws itself. The limit is not the 78L12/79L12 (100 mA each) but the TPS61040 boost that feeds both rails: about 40–55 mA in all (TI SLVS413L eq. 4, I = η · I_peak · V_in / (2 · V_out), with η 0.7–0.85, I_peak 350–450 mA, 5 V in, 16 V out). Full scale on all eight at once is at that limit: the rails can sag and the outputs clip below ±10 V |
 | GPIO4 → 330 Ω → PhotoMOS LED | (3.3 V − 1.2 V) / 330 Ω | about 6 mA: enough to switch the AQY212EH reliably, well under the ESP32's 20 mA default drive |
 | IO19 on the 2.8" display board | the same LED plus the 1 kΩ pull-down (3.3 mA) | about 9.5 mA, still under the 20 mA default drive |
 | CLK, DIN, SYNC, LDAC, STOP | Logic inputs | microamps (STOP: about 0.07 mA through the internal pull-up when pressed) |
@@ -200,7 +206,7 @@ Cable #1 carries CH1–CH4 and cable #2 CH5–CH8. In the temporal layouts and t
 |---|---|
 | ESP32-S3 with Bluetooth LE | 60–150 mA |
 | AD5328 module incl. its ±12 V converter | ~50–150 mA |
-| 8 coils at full scale (36 mA from the ±12 V rails) | ~100 mA |
+| 8 coils at full scale (36 mA through the module's 16 V boost) | ~150–180 mA |
 
 A 5 V / 2 A power bank is plenty. Some banks switch off at low load; if yours does, use one with an "always on" / low-current mode.
 

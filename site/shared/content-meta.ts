@@ -263,7 +263,7 @@ export const KNOWN_DOCS: readonly DocMeta[] = ALL_DOCS
 /** The pages the site publishes. */
 export const DOCS: DocMeta[] = ALL_DOCS.filter((d) => !d.hidden)
 /** Figures that belong to unpublished pages: not shown anywhere, not put in the bundle. */
-export const HIDDEN_FIGURES: readonly string[] = ['schematic.svg', 'coil-leads.svg']
+export const HIDDEN_FIGURES: readonly string[] = ['schematic.svg', 'coil-leads.svg', 'ad5328-module.svg']
 
 /** The program reference is generated from presets/*.json, not from a Markdown file. */
 export const PROGRAM_REFERENCE = {

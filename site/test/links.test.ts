@@ -76,7 +76,7 @@ describe('links in the Markdown', () => {
     for (const slug of ['wiring', 'calibration', 'standalone']) expect(pathForOldSlug(slug), slug).toBeNull()
     const published = new Set(DOCS.map((d) => d.file))
     for (const file of ['hardware/BOM.md', 'docs/WIRING.md', 'docs/CALIBRATION.md', 'docs/STANDALONE.md']) expect(published.has(file), file).toBe(false)
-    expect([...HIDDEN_FIGURES].sort()).toEqual(['coil-leads.svg', 'schematic.svg'])
+    expect([...HIDDEN_FIGURES].sort()).toEqual(['ad5328-module.svg', 'coil-leads.svg', 'schematic.svg'])
   })
 
   it('also when the parser has already dropped ".md"', () => {
