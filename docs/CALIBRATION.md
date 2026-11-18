@@ -51,6 +51,20 @@ python3 tools/calibrate.py measurements.csv
 
 Type the printed values into Helmet → Calibration and save.
 
+### Coil check with phyphox (automatic, local app)
+
+The app can read the phone itself and measure the coils one by one. It needs the local app, because a page from the web cannot read a phone over plain http:
+
+1. On the computer: `cd webapp && npm install && npm run dev`, then open the address it prints (http://localhost:5173), go to **Helmet** and connect the helmet (Bluetooth or USB).
+2. On the phone (same Wi-Fi): phyphox → **Magnetometer** → menu → **Allow remote access**. Raw data ("Rohdaten") is fine: only the change counts.
+3. In **Coil check with your phone**, type the address phyphox shows (for example `192.168.1.20:8080`) and press **Connect phone**. The live reading appears; about 45–48 µT is Earth's field.
+4. **Does each coil work?** Choose "On the phone's sensor spot", lay coil 1 flat on the spot where a coil gives the largest reading, and press **Measure CH1**. The helmet drives that coil +, pause, −, pause at the test current for 22 s; the app fits that pattern to the readings, which removes Earth's field and drift. A working coil gives tens of µT (the magnetometer chip sits about 1 cm inside the phone: 17–41 µT at 4.5 mA on a Galaxy Z Flip6); "No field" means the coil, its resistor or its wiring is open. Lay every coil the same way up: the direction column then shows a coil wired the other way round ("reversed").
+5. **Calibration:** choose "20 mm from the sensor", put each coil's face 20 mm from the sensor chip, centred over it, and measure it. The chip sits about 1 cm inside the phone, so that is about 10 mm of spacer between coil and phone; a 20 mm spacer on the phone would read about 30 % low. **Store µT/mA in the helmet** writes the measured coils' values and marks them measured. **Download CSV** gives the same values for `tools/calibrate.py`.
+
+6. **Signal check: does the set µT or mG arrive?** With the coil 20 mm from the chip as in step 5, choose a coil, a sine frequency (1–20 Hz; the phone reads 100 times a second) and an intensity, and press **Play and measure**. The helmet plays that sine as a program does: the set intensity is its peak 20 mm from the coil's face, converted to current with the coil's µT/mA. The app fits the sine to the phone's readings and shows the measured peak and the percentage that arrived; the last column gives the µT/mA this reading implies. About 100 % means the calibration holds; the same percentage at every frequency means the phone follows them all. Each run is a 20 s session in the helmet's log.
+
+Keep the phone and coil still during each run, and keep everything else magnetic away. Never connect a coil straight to a battery near the phone: about 1 A gives millitesla, which can upset the phone's own compass calibration.
+
 Expected values: about 1.8 µT/mA with the core (model range 1.4–2.2), 0.73 without. With 1.8, the 4.54 mA cap gives about 8 µT at 20 mm, about 1 µT at 45 mm and about 0.47 mT at the core face. An uncalibrated helmet with the old default (0.73) delivered about 2.4× the requested field; with the current default the error is small if the coil has a core and the field comes out lower (about 0.4×) if it has none.
 
 To check the model itself, also measure on axis at 0, 2, 5, 10 and 40 mm and at 90° in the coil's mid-plane (reverse the current to cancel Earth's field). Model values per mA: 105 µT at the face, 60 at 2 mm, 25 at 5 mm, 8.1 at 10 mm, 0.33 at 40 mm; −0.6 µT at 90°, 20 mm from the coil's side. A fluxgate (FLC100) or MMC5983MA works from about 5 mm outwards; use a Hall sensor (DRV5055) only at 0–5 mm.

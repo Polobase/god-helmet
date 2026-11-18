@@ -8,7 +8,7 @@ const load = reactive({ mA: 4.5, sec: 60 })  // full-load test: all 8 outputs at
 </script>
 
 <script setup>
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, ref, watch } from 'vue'
 import { device, call, refresh, connect, disconnect } from '../ble/device.js'
 import { fetchKp } from '../lib/noaa.js'
 import { LAYOUTS } from '../lib/layouts.js'
@@ -18,6 +18,9 @@ import { unitLabel, toDisplay, fromDisplay } from '../lib/units.js'
 import FirmwareInstall from '../components/FirmwareInstall.vue'
 import BoardPanel from '../components/BoardPanel.vue'
 import TesPanel from '../components/TesPanel.vue'
+// The coil check reads a phone through the dev server's phyphox proxy (vite.config.js): only in `npm run dev`, and
+// left out of the build.
+const CoilCheck = import.meta.env.DEV ? defineAsyncComponent(() => import('../components/CoilCheck.vue')) : null
 
 const s = ref(null)  // editable copy of the settings
 watch(() => device.settings, (v) => (s.value = v ? JSON.parse(JSON.stringify(v)) : null), { immediate: true })
@@ -167,6 +170,8 @@ const setKp = () => run(async () => {
         <label class="check"><input v-model="s.calibrated" type="checkbox" /> These values are measured</label>
         <div class="row"><button class="btn primary" @click="saveSettings">Save calibration</button></div>
       </section>
+
+      <CoilCheck v-if="CoilCheck" :test-max="testMax" />
 
       <section class="card">
         <h2>Wiring check</h2>
