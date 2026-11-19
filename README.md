@@ -62,6 +62,7 @@ It ships **176 programs**, each checked against its source ([docs/PRESET_AUDIT.m
 | [docs/HARDWARE_AUDIT.md](docs/HARDWARE_AUDIT.md) | Can the first build host the experiments? Verdict per family, ledger, bench protocol |
 | [docs/HARDWARE_REQUIREMENTS.md](docs/HARDWARE_REQUIREMENTS.md) | The changes the audit forces, with numbers and cost |
 | [docs/AUDIT_SUMMARY.md](docs/AUDIT_SUMMARY.md) | The audit on one page |
+| docs/LIBRARY_*.md | Reading notes from the library, one page per family of sources: what each paper or vendor page states, with page and passage |
 | [docs/BRAIN_VIEW.md](docs/BRAIN_VIEW.md) | How the brain view's field map is computed, its accuracy, data and licences |
 | [docs/GUIDES.md](docs/GUIDES.md), [docs/QUESTIONNAIRES.md](docs/QUESTIONNAIRES.md) | Guided-session format, audio engine, questionnaires and scoring |
 | [docs/WIRING.md](docs/WIRING.md) | Schematic, coil leads (inner = signal, outer = return), pin tables (S3, classic ESP32, C3, C6, 2.8" display board), arming switch, Cat6A pair mapping |

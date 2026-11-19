@@ -1,4 +1,5 @@
 import { fileURLToPath } from 'node:url'
+import { DOCS } from './shared/content-meta'
 
 // The engine, audio, protocol and lib modules (plain JavaScript, core/): the
 // same code the firmware's C++ engine is tested against (test/engine.test.js).
@@ -62,7 +63,7 @@ export default defineNuxtConfig({
     preset: 'static',
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/200.html', '/404.html', '/search.json', '/library.json', '/program-index.json', '/sw.js', ...(process.env.NUXT_PUBLIC_SITE_URL ? ['/sitemap.xml'] : [])],
+      routes: ['/', '/200.html', '/404.html', '/search.json', '/library.json', '/program-index.json', '/sw.js', '/llms.txt', ...DOCS.filter((d) => d.section === 'docs').map((d) => `/raw/docs/${d.slug}.md`), ...(process.env.NUXT_PUBLIC_SITE_URL ? ['/sitemap.xml'] : [])],
       // The app is one client-only shell (200.html, see public/_redirects),
       // not a page per program.
       ignore: ['/app'],

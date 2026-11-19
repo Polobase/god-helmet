@@ -8,6 +8,9 @@ const items = computed<NavigationMenuItem[]>(() => [
   { label: 'Source', to: 'https://github.com/Polobase/god-helmet', target: '_blank' },
 ])
 
+const inDocs = computed(() => route.path.startsWith('/docs'))
+const docsNav = docNavigation()
+
 // Coming from the app, the button leads back to where you were in it.
 const app = computed(() => (lastAppPath.value ? { to: lastAppPath.value, label: 'Back to the app' } : { to: '/app/programs', label: 'Open the app' }))
 
@@ -38,6 +41,11 @@ onMounted(() => (window.requestIdleCallback ?? setTimeout)(() => (pill.value = t
     <template #body>
       <UNavigationMenu :items="items" orientation="vertical" class="-mx-2.5" />
       <UButton :to="app.to" color="primary" variant="solid" block class="mt-4">{{ app.label }}</UButton>
+      <!-- In the docs, the menu also holds their navigation (the sidebar of wider screens). -->
+      <template v-if="inDocs">
+        <USeparator class="my-5" />
+        <UContentNavigation highlight :navigation="docsNav" data-test="docs-nav-menu" />
+      </template>
     </template>
 
     <!-- On a phone the running session gets its own row, as in the app. Under it, on every screen, the word about a lost connection. -->

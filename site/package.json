@@ -6,6 +6,7 @@
   "description": "Landing page, articles, docs and the control app for the 8-coil weak-field helmet",
   "scripts": {
     "dev": "nuxt dev",
+    "prebuild": "node scripts/clean-content-cache.mjs",
     "build": "nuxt generate",
     "preview": "node scripts/serve.mjs",
     "postinstall": "nuxt prepare",

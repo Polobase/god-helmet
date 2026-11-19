@@ -55,6 +55,11 @@ const groups = (() => {
 })()
 
 const total = groups.reduce((n, g) => n + g.programs.length, 0)
+const pageLinks = [
+  { icon: 'i-lucide-external-link', label: 'Files on GitHub', to: repoUrl('presets'), target: '_blank' },
+  { icon: 'i-lucide-clipboard-check', label: 'Program audit', to: '/docs/program-audit' },
+  { icon: 'i-lucide-play', label: 'Open the app', to: '/app/programs' },
+]
 const levels = Object.entries(EVIDENCE)
 const fidelities = Object.entries(FIDELITY)
 // Every category with its programs, as the old page's contents list had them.
@@ -86,13 +91,12 @@ onMounted(() => {
 
 <template>
   <DocsShell>
-    <article>
-      <header class="pb-8 border-b border-default">
-        <h1 class="text-4xl sm:text-[2.9rem]">{{ PROGRAM_REFERENCE.label }}</h1>
-        <p class="mt-5 text-lg text-toned measure">
+    <UPage>
+      <UPageHeader :title="PROGRAM_REFERENCE.label" :headline="PROGRAM_REFERENCE.group">
+        <template #description>
           All {{ total }} programs, generated from <a :href="repoUrl('presets')" target="_blank" rel="noopener" class="text-primary underline underline-offset-4">presets/*.json</a>, the same files the helmet runs.
           Field values are the peak at 20 mm depth; calibrate your coils before you rely on them.
-        </p>
+        </template>
         <dl class="mt-6 grid gap-x-6 gap-y-2 sm:grid-cols-[max-content_1fr] text-sm">
           <template v-for="[key, e] in levels" :key="key">
             <dt><EvidenceBadge :level="key" /></dt>
@@ -106,68 +110,71 @@ onMounted(() => {
             <dd class="text-muted">{{ f.info }}</dd>
           </template>
         </dl>
-      </header>
+      </UPageHeader>
 
-      <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-12">
-        <div class="min-w-0 py-8">
-          <UContentToc :links="toc" title="Categories and programs" class="mb-6 lg:hidden" />
-          <div class="flex flex-wrap items-center justify-end gap-3">
-            <ClientOnly><UnitToggle /></ClientOnly>
-            <UButton size="sm" :icon="allOpen ? 'i-lucide-fold-vertical' : 'i-lucide-unfold-vertical'" @click="allOpen = !allOpen">{{ allOpen ? 'Close all programs' : 'Open all programs' }}</UButton>
-          </div>
-
-          <section v-for="g in groups" :key="g.key" class="mt-10 first:mt-4">
-            <h2 :id="`cat-${g.key}`" class="text-2xl">{{ g.label }} <span class="num text-base font-sans font-normal text-muted">{{ g.programs.length }}</span></h2>
-            <div class="mt-4 border-y border-default divide-y divide-default">
-              <details v-for="p in g.programs" :id="p.id" :key="p.id" class="group scroll-mt-24" :open="allOpen || p.id === openId">
-                <summary class="flex cursor-pointer list-none flex-wrap items-baseline gap-x-4 gap-y-1 py-3 [&::-webkit-details-marker]:hidden">
-                  <UIcon name="i-lucide-chevron-right" class="size-4 shrink-0 self-center text-muted transition-transform group-open:rotate-90" />
-                  <span class="font-semibold text-highlighted">{{ p.name }}</span>
-                  <EvidenceBadge :level="p.evidence" />
-                  <FidelityBadge :level="p.fidelity" />
-                  <span class="num ml-auto text-sm text-muted">{{ p.minutes }}, {{ field(p.uT) }}</span>
-                </summary>
-                <div class="grid gap-3 pb-6 pl-8 text-[0.95rem]">
-                  <p class="text-sm text-muted"><code class="text-xs">{{ p.id }}</code>, layout: {{ p.layout }}<template v-if="p.origin">, {{ p.origin }}</template></p>
-                  <p v-if="p.summary" class="measure">{{ p.summary }}</p>
-                  <p v-if="p.setting" class="measure"><b>Setting:</b> {{ p.setting }}</p>
-                  <p v-if="p.schedule" class="measure"><b>Schedule:</b> {{ p.schedule }}</p>
-                  <p v-if="p.dose" class="measure"><b>Field in the source:</b> {{ p.dose }}</p>
-                  <p><b>Coils:</b> <span class="num">{{ p.coils }}</span></p>
-                  <div class="overflow-x-auto">
-                    <table class="w-full min-w-[34rem] text-sm">
-                      <thead class="text-left text-muted">
-                        <tr class="border-b border-default"><th class="py-1.5 pr-3 font-normal">#</th><th class="py-1.5 pr-3 font-normal">Phase</th><th class="py-1.5 pr-3 font-normal">Min</th><th class="py-1.5 pr-3 font-normal">Signal</th><th class="py-1.5 font-normal">Coils</th></tr>
-                      </thead>
-                      <tbody class="align-top">
-                        <tr v-for="r in p.phases" :key="r.n" class="border-b border-muted last:border-0">
-                          <td class="num py-1.5 pr-3 text-muted">{{ r.n }}</td><td class="py-1.5 pr-3">{{ r.name }}</td><td class="num py-1.5 pr-3">{{ r.min }}</td><td class="py-1.5 pr-3">{{ r.signal }}</td><td class="py-1.5">{{ r.coils }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <p v-if="p.notes" class="measure text-toned">{{ p.notes }}</p>
-                  <p v-if="p.targets.length"><b>Aims at:</b> {{ p.targets.join(', ') }} (<NuxtLink :to="`/app/programs/${p.id}/brain`" class="text-primary underline underline-offset-4">field on the brain</NuxtLink>)</p>
-                  <p v-if="p.sources.length" class="text-sm">
-                    <b>Sources:</b>
-                    <template v-for="(s, i) in p.sources" :key="i">
-                      <template v-if="i">; </template>
-                      <a v-if="s.url" :href="s.url" target="_blank" rel="noopener" class="text-primary underline underline-offset-4">{{ s.text || s.url }}</a><template v-else>{{ s.text }}</template>
-                      <a v-for="(u, j) in s.extra" :key="u" :href="u" target="_blank" rel="noopener" class="text-primary"> [{{ j + 2 }}]</a>
-                    </template>
-                  </p>
-                  <p><UButton :to="`/app/programs/${p.id}`" size="sm" trailing-icon="i-lucide-arrow-right">Open in the app</UButton></p>
-                </div>
-              </details>
-            </div>
-          </section>
+      <UPageBody>
+        <div class="flex flex-wrap items-center justify-end gap-3">
+          <ClientOnly><UnitToggle /></ClientOnly>
+          <UButton size="sm" :icon="allOpen ? 'i-lucide-fold-vertical' : 'i-lucide-unfold-vertical'" @click="allOpen = !allOpen">{{ allOpen ? 'Close all programs' : 'Open all programs' }}</UButton>
         </div>
-        <aside class="max-lg:hidden">
-          <div class="sticky top-(--ui-header-height) max-h-[calc(100dvh-var(--ui-header-height))] overflow-y-auto py-8">
-            <UContentToc :links="toc" title="Categories and programs" highlight />
+
+        <section v-for="g in groups" :key="g.key">
+          <h2 :id="`cat-${g.key}`" class="text-2xl font-semibold text-highlighted scroll-mt-24">{{ g.label }} <span class="num text-base font-sans font-normal text-muted">{{ g.programs.length }}</span></h2>
+          <div class="mt-4 border-y border-default divide-y divide-default">
+            <details v-for="p in g.programs" :id="p.id" :key="p.id" class="group scroll-mt-24" :open="allOpen || p.id === openId">
+              <summary class="flex cursor-pointer list-none flex-wrap items-baseline gap-x-4 gap-y-1 py-3 [&::-webkit-details-marker]:hidden">
+                <UIcon name="i-lucide-chevron-right" class="size-4 shrink-0 self-center text-muted transition-transform group-open:rotate-90" />
+                <span class="font-semibold text-highlighted">{{ p.name }}</span>
+                <EvidenceBadge :level="p.evidence" />
+                <FidelityBadge :level="p.fidelity" />
+                <span class="num ml-auto text-sm text-muted">{{ p.minutes }}, {{ field(p.uT) }}</span>
+              </summary>
+              <div class="grid gap-3 pb-6 pl-8 text-[0.95rem]">
+                <p class="text-sm text-muted"><code class="text-xs">{{ p.id }}</code>, layout: {{ p.layout }}<template v-if="p.origin">, {{ p.origin }}</template></p>
+                <p v-if="p.summary" class="measure">{{ p.summary }}</p>
+                <p v-if="p.setting" class="measure"><b>Setting:</b> {{ p.setting }}</p>
+                <p v-if="p.schedule" class="measure"><b>Schedule:</b> {{ p.schedule }}</p>
+                <p v-if="p.dose" class="measure"><b>Field in the source:</b> {{ p.dose }}</p>
+                <p><b>Coils:</b> <span class="num">{{ p.coils }}</span></p>
+                <div class="overflow-x-auto">
+                  <table class="w-full min-w-[34rem] text-sm">
+                    <thead class="text-left text-muted">
+                      <tr class="border-b border-default"><th class="py-1.5 pr-3 font-normal">#</th><th class="py-1.5 pr-3 font-normal">Phase</th><th class="py-1.5 pr-3 font-normal">Min</th><th class="py-1.5 pr-3 font-normal">Signal</th><th class="py-1.5 font-normal">Coils</th></tr>
+                    </thead>
+                    <tbody class="align-top">
+                      <tr v-for="r in p.phases" :key="r.n" class="border-b border-muted last:border-0">
+                        <td class="num py-1.5 pr-3 text-muted">{{ r.n }}</td><td class="py-1.5 pr-3">{{ r.name }}</td><td class="num py-1.5 pr-3">{{ r.min }}</td><td class="py-1.5 pr-3">{{ r.signal }}</td><td class="py-1.5">{{ r.coils }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p v-if="p.notes" class="measure text-toned">{{ p.notes }}</p>
+                <p v-if="p.targets.length"><b>Aims at:</b> {{ p.targets.join(', ') }} (<NuxtLink :to="`/app/programs/${p.id}/brain`" class="text-primary underline underline-offset-4">field on the brain</NuxtLink>)</p>
+                <p v-if="p.sources.length" class="text-sm">
+                  <b>Sources:</b>
+                  <template v-for="(s, i) in p.sources" :key="i">
+                    <template v-if="i">; </template>
+                    <a v-if="s.url" :href="s.url" target="_blank" rel="noopener" class="text-primary underline underline-offset-4">{{ s.text || s.url }}</a><template v-else>{{ s.text }}</template>
+                    <a v-for="(u, j) in s.extra" :key="u" :href="u" target="_blank" rel="noopener" class="text-primary"> [{{ j + 2 }}]</a>
+                  </template>
+                </p>
+                <p><UButton :to="`/app/programs/${p.id}`" size="sm" trailing-icon="i-lucide-arrow-right">Open in the app</UButton></p>
+              </div>
+            </details>
           </div>
-        </aside>
-      </div>
-    </article>
+        </section>
+      </UPageBody>
+
+      <template #right>
+        <UContentToc :links="toc" title="Categories and programs" highlight>
+          <template #bottom>
+            <div class="hidden lg:block space-y-6 mt-6!">
+              <USeparator type="dashed" />
+              <UPageLinks title="This page" :links="pageLinks" />
+            </div>
+          </template>
+        </UContentToc>
+      </template>
+    </UPage>
   </DocsShell>
 </template>

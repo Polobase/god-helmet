@@ -71,7 +71,7 @@ The other lines are in the [bench protocol](HARDWARE_AUDIT.md#bench-protocol).
 ## For the owner to decide
 
 - **The old Pages address.** `.github/workflows/pages.yml` now publishes only the firmware images, plus a forwarding page when the repository variable `SITE_URL` is set. The next push changes what that address serves.
-- **Publishing.** The program audit is listed under Reference on the site. The three hardware pages stay unpublished, like the rest of the build.
+- **Publishing.** The audit pages and the reading notes from the library are on the site, under Docs. The build instructions (parts, wiring, calibration, the touchscreen board, the driver board) stay unpublished until a complete helmet has been tested.
 - **Intensity.** If one reading of the lab's figures is to be preferred, the settings follow from the audit's table; the low range (M6) is needed for the scalp reading.
 - **One more program.** van Belkum 2021 is the closest tested exposure to this helmet, with a null result. It needs a choice of 8 of its 19 sites.
 - **Until M2 is built**, a session that STOP does not end is ended by pulling the helmet's cables.

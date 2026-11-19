@@ -9,7 +9,7 @@ useSeoMeta({ title: page.value.title, description: page.value.description })
 </script>
 
 <template>
-  <DocsShell v-if="page" v-slot="{ pages }">
-    <DocPage :page="page" :siblings="pages" />
+  <DocsShell v-if="page">
+    <DocsPage :page="page" />
   </DocsShell>
 </template>

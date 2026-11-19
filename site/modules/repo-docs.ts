@@ -28,6 +28,10 @@ function walk(nodes: Node[], file: string): Node[] {
       if (r.external) Object.assign(next, { target: '_blank', rel: 'noopener' })
       return [[tag, next, ...inside]]
     }
+    // "[661]" is plain text in these files (a printed page number, an OCR
+    // remark), but the parser reads square brackets without a link as a span
+    // and drops them. The brackets go back.
+    if (tag === 'span' && Object.keys(props).length === 0) return ['[', ...walk(children as Node[], file), ']']
     if (tag === 'img' && typeof props.src === 'string' && !/^(https?:)?\/\//.test(props.src)) {
       const name = props.src.split('/').pop() ?? ''
       if (HIDDEN_FIGURES.includes(name)) return []

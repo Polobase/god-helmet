@@ -114,6 +114,45 @@ test('docs: the hardware build is not published yet, the program reference lists
   await expect(page.locator('details#god-helmet-classic')).toHaveAttribute('open', '')
 })
 
+test('docs: laid out like a docs site, each page also as Markdown, with the audit and the library notes', async ({ page, request }) => {
+  await page.goto('/docs/safety')
+  // The navigation on the left, by group; the page's own contents on the right.
+  const nav = page.locator('[data-test="docs-nav"]')
+  for (const group of ['Start here', 'Use it', 'Reference', 'Audit', 'Library notes']) await expect(nav.getByText(group, { exact: true })).toBeVisible()
+  await expect(page.getByText('On this page').first()).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Copy page' })).toBeVisible()
+  // The page as the Markdown it is written in, and the list of all of them for assistants.
+  const md = await request.get('/raw/docs/safety.md')
+  expect(md.ok()).toBe(true)
+  expect(await md.text()).toMatch(/^# /)
+  const llms = await (await request.get('/llms.txt')).text()
+  for (const d of DOCS.filter((d) => d.section === 'docs')) expect(llms, d.slug).toContain(`/raw/docs/${d.slug}.md`)
+  // The audit and the reading notes from the library are pages like any other.
+  await nav.getByRole('link', { name: 'Hardware audit' }).click()
+  await expect(page).toHaveURL('/docs/hardware-audit')
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Hardware audit')
+  await nav.getByRole('link', { name: 'The ring of eight' }).click()
+  await expect(page).toHaveURL('/docs/library-ring')
+  expect(await page.locator('.doc-body table').count()).toBeGreaterThan(3)
+  // The front page lists every page of every group.
+  await page.goto('/docs')
+  for (const d of DOCS.filter((d) => d.section === 'docs')) await expect(page.locator(`main a[href="${pathFor(d)}"]`).first()).toBeAttached()
+})
+
+test('docs on a phone: the navigation is in the menu, a wide table scrolls inside the page @phone', async ({ page }) => {
+  // Also on the desktop run: a narrow window gets the same menu.
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/docs/library-ring')
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true)
+  await expect(async () => {
+    await page.getByRole('button', { name: /menu/i }).first().click()
+    await expect(page.locator('[data-test="docs-nav-menu"]').getByText('Library notes', { exact: true })).toBeVisible({ timeout: 1500 })
+  }).toPass()
+  await page.locator('[data-test="docs-nav-menu"]').getByRole('link', { name: 'Safety' }).click()
+  await expect(page).toHaveURL('/docs/safety')
+})
+
 test('search finds text inside the articles and docs', async ({ page }) => {
   await page.goto('/docs')
   const box = page.getByPlaceholder('Search articles, docs and programs…')
@@ -134,7 +173,7 @@ test('a heading link on a page stays on the page', async ({ page }) => {
   await page.goto('/articles/out-of-body#safety')
   await expect(page).toHaveURL('/articles/out-of-body#safety')
   await page.goto('/docs/preset-format')
-  await page.locator('aside a[href$="#placement"]').first().click()
+  await page.locator('nav a[href$="#placement"]').first().click()
   await expect(page).toHaveURL('/docs/preset-format#placement')
 })
 
@@ -221,6 +260,8 @@ test('no link inside the site leads nowhere', async ({ request }) => {
         continue
       }
       if (!html.has(target)) {
+        // A docs page as Markdown: one file per page of the docs.
+        if (/^\/raw\/docs\/[a-z0-9-]+\.md$/.test(target) && DOCS.some((d) => d.section === 'docs' && target === `/raw/docs/${d.slug}.md`)) continue
         if (/\.(json|xml|svg|png|txt)$/.test(target)) continue
         problems.push(`${from}: ${link} is not a page`)
         continue
