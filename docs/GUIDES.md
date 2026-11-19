@@ -118,7 +118,7 @@ In monaural mode each oscillator has its own gain: both at −3 dB while beating
 | `text` | `key`, `prompt`, `placeholder` | string |
 | `sketch` | `key`, `prompt` | PNG data URL |
 | `rating` | `items: [{key, label, min, max, minLabel, maxLabel}]` | numbers |
-| `questionnaire` | `instrument` (id in `webapp/src/lib/instruments.js`) | item answers + scale scores |
+| `questionnaire` | `instrument` (id in `site/core/lib/instruments.js`) | item answers + scale scores |
 | `choice` | `key`, `prompt`, `options: [..]`, `trials`, `feedback` (forced-choice training; target from a hardware/crypto RNG with commitment) | per-trial records |
 | `crv` | `stage` 1–6, `fields: [{key, label, kind}]` | structured stage data |
 | `trial` | `action`: `create` · `lock` · `judge` · `reveal` (drives the Trials tab's trial flow from inside a guide); `create` may set `mode` (`rv` or `telepathy`) and `arv: true` (only 2-picture sets are offered) | trial id |
@@ -139,13 +139,18 @@ ARV trials are marked on the device (IndexedDB `kv` / `arv-trials`) and left out
 
 ### Validation rules
 
-`webapp/src/lib/guides.js` checks every guide when the library loads (`npm test` runs it on all of them):
+`site/core/lib/guides.js` checks every guide when the library loads (`npm test` in `site/` runs it on all of them):
 - A non-zero beat needs `requires.headphones: true`.
 - A glide on an open-ended (manual) step needs `rampS`; `fadeOutS` on an open-ended step is flagged.
 - RNG trials use 8–2048 bits.
 - At most one outcome step and one ARV trial per guide; an outcome step must be followed by its reveal, and a guide with an outcome runs only one trial.
 - A trial may stop right after `create` (another guide continues it through the trial picker, as `obe-target-check` → `obe-target-record`), or an ARV trial after `judge` (finished from the run summary); otherwise every trial runs create → lock → judge → reveal.
-- Ids are unique, and each file name equals its id.
+- Ids are unique, and each file name equals its id. Guide and step ids are lower-case words joined by `-`; input keys start with a letter and use lower-case letters, digits, `-` or `_`, each key once per guide.
+- A field the format does not know is an error, at every level (guide, step, audio layer, input, rating item, CRV field).
+- Required on every guide: `name`, `summary`, `setting`, `cautions`, `minutes` above 0, `requires` with `headphones`, `helmet` and `pool`, and at least one source with a `title` (a `url` must be http or https).
+- A step gives `minutes` or `seconds`, not both. A `timer` step needs one of them. A step with an input must use `advance: "manual"`.
+- Audio ranges: `carrier` 20–1500 Hz, `beat` 0–40 Hz, `gainDb` and `noise.levelDb` −60 to 0 dB, `startS` at least 0, `rampS` and `noise.swellS` above 0. `startS` + `rampS`, and `crossfadeS` + `fadeOutS`, must fit in the step. `audio` needs at least one layer or noise (use `null` for silence).
+- Inputs: `choice` needs at least 2 distinct options and 1–500 trials; `outcome` exactly 2 options; a rating item needs whole numbers with `min` below `max`; each CRV stage (1–6) appears once.
 - A guide whose helmet arm uses a non-temporal preset must name the layout in `setting`; a helmet arm over a beat carries the Shakti caution.
 - Helmet presets used by guides (`presets/guide-*.json`) run at least 5 min longer than their steps, so a short pause does not end the program early.
 

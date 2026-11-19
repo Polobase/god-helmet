@@ -94,7 +94,7 @@ Todd Murphy, who sells the 8-coil Shakti and the Shiva replica of Persinger's "O
 
 ### What the independent evidence says
 
-No laboratory outside Persinger's has tested whether weak rotating fields change remote-viewing accuracy. Independent double-blind tests of God-Helmet-type fields on experience found no field effect: what people reported tracked suggestibility and absorption, not the field ([Granqvist et al. 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/); [Gendle & McGrath 2012](https://pubmed.ncbi.nlm.nih.gov/22582690/)). The God Helmet connection to remote viewing therefore rests on two one-subject papers from one lab, plus vendor designs that the vendor says are untested.
+No laboratory outside Persinger's has tested whether weak rotating fields change remote-viewing accuracy. Independent sham-controlled tests of God-Helmet-type fields found no field effect. In the double-blind one, what people reported tracked suggestibility and absorption, not the field ([Granqvist et al. 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/)). In the other, the experimenter knew the condition ([Gendle & McGrath 2012](https://pubmed.ncbi.nlm.nih.gov/22582690/), p.7 [223]). The God Helmet connection to remote viewing therefore rests on two one-subject papers from one lab, plus vendor designs that the vendor says are untested.
 
 ## Government programmes in brief
 
@@ -227,11 +227,10 @@ None of these has been shown to change remote-viewing accuracy. They let you tes
 
 | Program | What it is | Evidence |
 |---|---|---|
-| [Swann 2002: six counter-clockwise configurations as printed](#programs/persinger-swann-2002-table1) ([brain view](#programs/persinger-swann-2002-table1/brain)) | The 30-min exposure given to Swann, read from Table 1 of the paper | **single-lab** |
-| [Persinger-Swann 1998: six circumcerebral configurations](#programs/military-p06-persinger-swann-1998) ([brain view](#programs/military-p06-persinger-swann-1998/brain)) | The same session built from the lab's standard protocol | **single-lab** |
-| [Remote viewing (Octopus ring, CCW chirp 10→20 ms)](#programs/remote-viewing) ([brain view](#programs/remote-viewing/brain)) | Murphy's psi configuration for the ring; not the Swann session | **claim** |
-| [Harribance: Koren helmet, five conditions](#programs/persinger-harribance-koren-2s) ([brain view](#programs/persinger-harribance-koren-2s/brain)) | The patterns given to Harribance, including LTP | **single-lab** |
-| [Harribance: bilateral LTP, 20-s rotation](#programs/persinger-harribance-ltp-20s) ([brain view](#programs/persinger-harribance-ltp-20s/brain)) | The variant reported to *lower* his accuracy, alternating with no field | **single-lab** |
+| [Swann 2002: six counter-clockwise configurations as printed](#programs/persinger-swann-2002-table1) ([brain view](#programs/persinger-swann-2002-table1/brain)) | The 30-min exposure given to Swann, read from Table 1 of the paper (p.4 [930]) | **anecdote** (one subject) |
+| [Shiva psi session: chirp, counter-clockwise, 10→20 ms per coil (Murphy)](#programs/remote-viewing) ([brain view](#programs/remote-viewing/brain)) | Murphy's psi configuration for the ring; not the Swann session | **claim** |
+| [Harribance 1997: sine, LTP and burst-firing blocks](#programs/persinger-harribance-koren-2s) ([brain view](#programs/persinger-harribance-koren-2s/brain)) | One pass of the sequence given to Harribance: 2.5 min each of a 3.3 Hz sine, the LTP pattern, a 1.6 Hz sine and burst-firing, each after 3 min without field (Roll 2002 p.8-9 [203-204]) | **anecdote** (one subject) |
+| [Harribance: bilateral LTP, 20-s rotation](#programs/persinger-harribance-ltp-20s) ([brain view](#programs/persinger-harribance-ltp-20s/brain)) | The variant reported to *lower* his accuracy, alternating with no field | **anecdote** (one subject) |
 | [Shakti remote-viewing design (untested): occipital](#programs/murphy-shakti-psi-rv-untested-occipital) ([brain view](#programs/murphy-shakti-psi-rv-untested-occipital/brain)) | Murphy's modulated 40 Hz over the occipital lobes | **unverified** |
 | [Shakti psychic design (untested): frontal, then occipital](#programs/murphy-shakti-psi-rv-untested) ([brain view](#programs/murphy-shakti-psi-rv-untested/brain)) | Murphy's telepathy design | **unverified** |
 

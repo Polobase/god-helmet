@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Build the web app's brain-view assets (webapp/src/assets/brain/*.json).
+// Build the web app's brain-view assets (site/core/assets/brain/*.json).
 //
 // Inputs (download them yourself; the script never fetches anything):
 //   --bna    BNA-maxprob-thr25-1mm.nii.gz  Brainnetome atlas, MNI152, CC0
@@ -12,7 +12,7 @@
 //            cerebellum and brainstem, which Brainnetome lacks (MNI ICBM2009c sym, a few mm off)
 //            https://gin.g-node.org/anamanera/CerebrA/raw/master/CerebrA.nii
 //
-//   node tools/brain_assets.mjs --bna bna.nii.gz --sites fsaverage_1005.tsv --out webapp/src/assets/brain
+//   node tools/brain_assets.mjs --bna bna.nii.gz --sites fsaverage_1005.tsv --out site/core/assets/brain
 //
 // Output:
 //   brain-mesh.json  hemisphere and deep-structure surfaces (surface nets on a
@@ -173,7 +173,7 @@ function buildMesh(vol, pick, { fill = true, smooth = 12 } = {}) {
 }
 
 // Zigzag varints of successive differences: surface-net output is spatially
-// ordered, so most deltas fit one byte (decoder: webapp/src/lib/brain.js).
+// ordered, so most deltas fit one byte (decoder: site/core/lib/brain.js).
 function deltaVarint(values) {
   const out = []
   let prev = 0

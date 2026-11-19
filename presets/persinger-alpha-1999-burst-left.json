@@ -1,48 +1,46 @@
 {
   "id": "persinger-alpha-1999-burst-left",
-  "name": "Burst-firing 1 s every 4 s, left hemisphere, 5 uT, 30 min (Persinger 1999)",
+  "name": "Burst-firing 0.7 s on, 4 s off, left hemisphere, 30 min (Persinger 1999)",
   "category": "persinger",
   "evidence": "single-lab",
+  "fidelity": "approximation",
+  "dose": {"value": [1, 5], "unit": "uT", "plane": "scalp", "cite": "Persinger 1999 p.2 [164]"},
   "origin": "Persinger (Laurentian University), 1999 EEG alpha study in a dark acoustic chamber, left-hemisphere arm",
   "uT": 5,
-  "summary": "The left-hemisphere arm of Persinger (1999): a 5 uT burst-firing field for 1 s every 4 s over the left hemisphere for 30 min, with opaque goggles in an acoustic chamber. Persinger reported more alpha over the left than the right temporal lobe only when the field was over the left hemisphere.",
-  "notes": "Persinger (1999) measured the percentage of alpha per minute over the left and right temporal lobes during the first and second 15 min while subjects wore opaque goggles in an acoustic chamber and 'a weak (5 microT), burst-firing magnetic field was presented during this period for 1 s every 4 s primarily over the left or the right cerebral hemisphere'. It was one continuous exposure; the two 15-min phases here only mark the two analysis intervals (900 s is a whole number of 4-s cycles, so the switch is seamless). The burst-firing point values are unpublished, so an accelerating burst on 3-ms points (the lab default) stands in, on for the paper's 1 s and off for 3 s. The lab's file was 230-289 points at 3 ms (0.69-0.87 s; Carniello 2020, Collins 2014), and a rat version 230 points at 4 ms (0.92 s; Ryczko & Persinger 2002), so '1 s' may be a rounded on-time. The default 5 uT is the paper's intensity and this helmet's maximum, as peak field 20 mm in front of each coil; the paper does not say where it measured. Two coils per side approximate 'primarily over the left or right hemisphere': T7/TP7 play and the right side stays silent. This differs from presence-left and presence-right (after Persinger & Healey 2002: 1 uT, a 0.69-s burst every 4 s, four coils per side). In a related study the lab reported EEG driving in 43% of volunteers, who also reported more fear and odd tastes (Persinger, Richards & Koren 1997). The abstract reports no sham arm; this is a within-subject EEG asymmetry from one lab without independent replication, and independent double-blind tests found no field effect (Granqvist 2005; Gendle & McGrath 2012). Checking the result needs EEG. Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop on fear, odd tastes or smells, headache or distress.",
+  "summary": "The left-hemisphere arm of Persinger (1999): the 230-point burst-firing pattern (3-ms points, about 0.7 s) with 4 s between presentations, switched round four left-right coil pairs every 0.5 s with the left side about ten times stronger, for 30 min. The paper reports more alpha over the left than the right temporal lobe only when the field was over the left hemisphere.",
+  "notes": "The paper played 230 numbers at 3 ms per point (about 700 ms) with 4000 ms between presentations, 380 in 30 min. The helmet had four solenoids per side, a commutator switched on each left-right pair for 0.5 s in turn, and the activated side was about 10 times stronger (Persinger 1999 pp.2-3 [164-165]). This program plays 0.69 s on and 4 s off: one left-right pair is on at a time, and the right side is reversed so that the pair's field points through the head. The right side plays at one tenth. The four sites per side stand for the lab helmet's four solenoids per side on a 7.5 by 5 cm ellipse; the site names are this project's reading. The burst is the project's rising sweep with the published point duration and length; the point values were never published as numbers (the lab prints the shape only as a small figure, Persinger 2000 Fig. 2, p.5 [663]: 11 spikes in groups of 1, 2, 3, 3, 2, which the sweep does not have). It was one continuous exposure: the two 15-min phases only mark the paper's two analysis intervals. persinger-healey-burst-left plays the same pattern for 20 min. Field: the paper gives 1 to 5 uT at the scalp over the stimulated side and 0.2 to 1 uT at the deep cortical layers (p.2 [164]). This program's setting is the peak field 20 mm in front of each coil. The default of 5 uT gives about 120 uT at the scalp on this helmet, far above the paper's value. Support: no sham group, a blind rater counted alpha by hand, and the paper reports 32 subjects but 18 + 18 per side (p.2 [164]). One lab, not repeated. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005, double-blind; Gendle & McGrath 2012, where the experimenter knew the condition). Checking the result needs EEG. Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop on fear, odd tastes or smells, headache or distress.",
   "setting": "Seated or reclined in darkness and silence with opaque goggles (the original used an acoustic chamber); EEG over the left and right temporal lobes (near T7 and T8) if you have it.",
   "schedule": "One session per person in the original. For a self-test with EEG, compare the left, right and sham arms on separate days in counterbalanced order.",
   "targets": ["left-superior-temporal-gyrus-posterior", "left-tpj"],
   "source": "Persinger 1999, Increased emergence of alpha activity over the left but not the right temporal lobe within a dark acoustic chamber, Int J Psychophysiol 34:163-169 https://pubmed.ncbi.nlm.nih.gov/10576400/ ; Persinger, Richards & Koren 1997, Differential entrainment of electroencephalographic activity by weak complex electromagnetic fields, Percept Mot Skills 84:527-536 https://pubmed.ncbi.nlm.nih.gov/9106844/ ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Collins 2014, MA thesis 'Investigating the Shiva', Laurentian University (289 points, 3 ms) https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc ; Ryczko & Persinger 2002 (rats: 230 points, 4 ms per point, once every 3 s) https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
   "layout": "custom",
   "placement": {
-    "sites": ["T7", "TP7", "", "", "T8", "TP8", "", ""]
+    "sites": ["FFT7", "C5", "TP7", "T9h", "FFT8", "C6", "TP8", "T10h"]
   },
   "fadeInS": 10,
   "fadeOutS": 10,
   "phases": [
     {
-      "name": "Burst-firing left, 1 s every 4 s (min 0-15)",
+      "name": "Burst-firing left, 0.7 s on, 4 s off (min 0 to 15)",
       "minutes": 15,
       "pattern": {
         "type": "burst",
-        "sweepMs": 1000,
-        "gapMs": 3000,
+        "sweepMs": 690,
+        "gapMs": 4000,
         "pointMs": 3
       },
-      "spatial": {
-        "mode": "left"
-      }
+      "spatial": {"mode": "cycle", "side": "both", "dwellMs": 500, "weights": [1, 1, 1, 1, -0.1, -0.1, -0.1, -0.1]}
     },
     {
-      "name": "Burst-firing left, 1 s every 4 s (min 15-30)",
+      "name": "Burst-firing left, 0.7 s on, 4 s off (min 15 to 30)",
       "minutes": 15,
       "pattern": {
         "type": "burst",
-        "sweepMs": 1000,
-        "gapMs": 3000,
+        "sweepMs": 690,
+        "gapMs": 4000,
         "pointMs": 3
       },
-      "spatial": {
-        "mode": "left"
-      }
+      "spatial": {"mode": "cycle", "side": "both", "dwellMs": 500, "weights": [1, 1, 1, 1, -0.1, -0.1, -0.1, -0.1]}
     }
   ]
 }

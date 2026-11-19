@@ -78,6 +78,7 @@ onBeforeUnmount(stopPreview)
             <ArtMark v-if="mark" :name="mark" class="w-9 shrink-0 text-toned" />
             <span>{{ category }}</span>
             <EvidenceBadge :level="doc.evidence" />
+            <FidelityBadge :level="doc.fidelity" />
           </p>
           <h1 class="max-w-[22ch] text-3xl sm:text-[2.6rem]">{{ doc.name }}</h1>
         </div>

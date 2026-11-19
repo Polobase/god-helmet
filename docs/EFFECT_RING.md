@@ -34,7 +34,7 @@ Nothing reported for the ring is **established**; the laboratory results are **s
 
 ### Rotation schedules
 
-A configuration is a waveform, a time on the first coil, and a change in that time at each next coil. The lab wrote this as base ± change. The sign is a trap: in the papers "+" means each next coil gets *less* time, so the rotation speeds up ([Persinger & Lavallee 2010](https://jcer.com/index.php/jcj/article/view/99)); the patent uses the opposite sign ([SIGNALS.md](SIGNALS.md), sections 2.8–2.9).
+A configuration is a waveform, a time on the first coil, and a change in that time at each next coil. The lab wrote this as base ± change. The sign is a trap, because the papers disagree. In the patent, in Cook 1999 (p.3 [63]) and in Richards 2002, "+" means more time on each next coil. From Tsang 2004 on (p.5 [1187]), "+" means *less* time, so the rotation speeds up ([Persinger & Lavallee 2010](https://jcer.com/index.php/jcj/article/view/99); [SIGNALS.md](SIGNALS.md), sections 2.8–2.9). The first three rows below use the later reading. Each program's phase names give the times it plays.
 
 | Lab label | Time on coils 1 to 8 | One turn (*computed*) | In a program |
 |---|---|---|---|
@@ -43,7 +43,7 @@ A configuration is a waveform, a time on the first coil, and a change in that ti
 | "25+2" ([Tsang 2004](https://pubmed.ncbi.nlm.nih.gov/15370182/)) | 25, 23, … 11 ms | 144 ms | `"dwell": [25, -2, 11]` |
 | 100 ms with 20-ms changes | 100, 120, … 240 ms | 1,360 ms | `"dwell": [100, 20, 240]` |
 
-Only the Swann paper prints a full set of six configurations, and the waveforms were never published as files ([RESEARCH.md](RESEARCH.md), "Open questions").
+The same table of six configurations is printed in Cook 1999 (p.2 [62]), Richards 2002 (p.4 [674]), the Swann paper (p.4 [930]) and Booth 2008 (p.3 [428]). Of the waveforms, only the Thomas pattern is published as numbers, in a patent table. The burst-firing shape is printed only as a graph (Persinger 2000 Fig. 2 p.5 [663]) ([RESEARCH.md](RESEARCH.md), "Open questions").
 
 ## The reasoning: a 40 Hz "binding factor"
 
@@ -78,7 +78,7 @@ Gamma rhythms are real and follow attention (**established**). That they bind ex
 
 | Study | What was done | Reported | What is missing | Evidence |
 |---|---|---|---|---|
-| [Cook 1999](https://pubmed.ncbi.nlm.nih.gov/10400078/) | About 10 µT; six patterns of 2.5 min, each followed by a 10-s time estimate; clockwise and counter-clockwise groups | Counter-clockwise estimates "about 3 s longer", "approximately 50% of the variance" | No sample size, sham group or blinding in the abstract; the best of three rates of change was picked afterwards | **single-lab** |
+| [Cook 1999](https://pubmed.ncbi.nlm.nih.gov/10400078/) | 5–10 µT next to the scalp; six patterns of 5 min, with a 10-s time estimate midway through each; clockwise and counter-clockwise groups of 7 people (p.2 [62]) | Counter-clockwise estimates "about 3 s longer", "approximately 50% of the variance" | No sham group; no blinding in the abstract; the best of three rates of change was picked afterwards | **single-lab** |
 | [Richards 2002](https://pubmed.ncbi.nlm.nih.gov/12434867/) | 5–10 µT; six configurations; 8 volunteers; EEG in five bands over eight sites | About 30 % more theta power with the 20-ms-change configuration; right hemisphere 20 % higher at 5.0–5.9 Hz | No sham in the abstract; one configuration among many tests; the right-left difference came with all six, so no pattern explains it | **single-lab** |
 | [Tsang 2004](https://pubmed.ncbi.nlm.nih.gov/15370182/) | Six configurations of 5 min, counter-clockwise; 11 people | Only the 25 → 11 ms rotation raised 35–45 Hz power, frontally and occipitally | One of six; no sham in the abstract; scalp gamma is prone to eye-movement artefact | **single-lab** |
 | [Booth 2008](https://pubmed.ncbi.nlm.nih.gov/19037792/) | The same patterns in both directions | More power over the left hemisphere with clockwise, over the right with counter-clockwise rotation | No sample size, intensity or sham in the abstract; a repeat inside the lab | **single-lab** |
@@ -117,7 +117,7 @@ Mainstream groups do move a stimulus across the head, with fields or currents kn
 | Travelling-wave tACS | The place of the strongest electric field shifts over the cycle | Currents through scalp electrodes | Field recordings in two monkeys; no behaviour ([Alekseichuk 2019](https://pubmed.ncbi.nlm.nih.gov/31189931/)) |
 | Geomagnetic rotation | The direction of an Earth-strength field | About 35 µT ([RESEARCH.md](RESEARCH.md)) | A drop in alpha power; no independent replication found ([Wang 2019](https://pubmed.ncbi.nlm.nih.gov/31028046/)) (**single-lab**) |
 
-None of this supports an effect at 1–10 µT. The clinical low-field methods use fields tens to tens of thousands of times stronger than this helmet's, with mixed results ([RESEARCH.md](RESEARCH.md), "Mainstream low-field science"). The closest independent tests, double-blind and without a ring, found no effect of God-Helmet-type fields ([Granqvist 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/); [Gendle & McGrath 2012](https://pubmed.ncbi.nlm.nih.gov/22582690/)).
+None of this supports an effect at 1–10 µT. The clinical low-field methods use fields tens to tens of thousands of times stronger than this helmet's, with mixed results ([RESEARCH.md](RESEARCH.md), "Mainstream low-field science"). The closest independent tests, sham-controlled and without a ring, found no effect of God-Helmet-type fields ([Granqvist 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/), double-blind; [Gendle & McGrath 2012](https://pubmed.ncbi.nlm.nih.gov/22582690/), where the experimenter knew the condition, p.7 [223]).
 
 ## Reading list and primary sources
 
@@ -150,14 +150,16 @@ None of these has been shown to do what is claimed. They let you test the claims
 
 | Program | What it is | Evidence |
 |---|---|---|
-| [Cook 1999: six patterns, counter-clockwise](#programs/persinger-cook-1999-time-ccw) ([brain view](#programs/persinger-cook-1999-time-ccw/brain)) and [clockwise](#programs/persinger-cook-1999-time-cw) | The time-estimation session, with a 30-s pause for a 10-s estimate after each pattern | **single-lab** |
-| [Octopus ring: +20 ms per coil](#programs/persinger-octopus-plus20-ccw), [theta study](#programs/circumcerebral-theta) and [gamma study](#programs/circumcerebral-gamma) | Single 5-min configurations from Cook 1999, Richards 2002 and Tsang 2004 | **single-lab** |
-| [Swann 2002: six configurations as printed](#programs/persinger-swann-2002-table1) ([brain view](#programs/persinger-swann-2002-table1/brain)) | The 30-min exposure given to Ingo Swann | **single-lab** |
-| [Remote viewing (Octopus ring, chirp 10 → 20 ms)](#programs/remote-viewing) and [Shiva "Persinger Session"](#programs/murphy-shiva-persinger-session) | Murphy's psi configurations for the ring | **claim** |
-| [Collins 2013 Shiva amygdaloid](#programs/persinger-collins-2013-shiva-amygdaloid) and [64-coil Shiva OBE case](#programs/murphy-shiva64-obe-lab) | Eight-coil stand-ins for the 64-coil hat | **single-lab** (a thesis; one case) |
+| [Cook 1999: six patterns, counter-clockwise](#programs/persinger-cook-1999-time-ccw) ([brain view](#programs/persinger-cook-1999-time-ccw/brain)) and [clockwise](#programs/persinger-cook-1999-time-cw) | The time-estimation session: six 5-min patterns with 2 min without field between them, 40 min. The paper took the 10-s estimate midway through each pattern (p.2 [62]) | **single-lab** |
+| [Octopus ring: +20 ms per coil](#programs/persinger-octopus-plus20-ccw) and [Tsang 2004: 25 → 11 ms rotation](#programs/persinger-tsang-2004-gamma-thomas) | Single 5-min configurations: the 100 to 240 ms rotation of Cook 1999 and Richards 2002 (the theta study), and the rotation that Tsang 2004 reported for gamma | **single-lab** |
+| [Tsang 2004: six counter-clockwise rotations of the Thomas pattern](#programs/persinger-tsang-2004-six-configurations) | All six configurations of the gamma study, 5 min each, 30 min | **single-lab** |
+| [Booth 2008: six patterns, clockwise](#programs/persinger-booth-2008-cw) and [counter-clockwise](#programs/persinger-booth-2008-ccw) | The six configurations in one direction per program, as each group of six people received them (p.4 [429]); 5 min each with 30 s without field between them, 32.5 min | **single-lab** |
+| [Swann 2002: six configurations as printed](#programs/persinger-swann-2002-table1) ([brain view](#programs/persinger-swann-2002-table1/brain)) | The 30-min exposure given to Ingo Swann | **anecdote** (one subject) |
+| [Shiva psi session (chirp, 10 → 20 ms per coil)](#programs/remote-viewing) and [Shiva "Persinger Session"](#programs/murphy-shiva-persinger-session) | Murphy's psi configurations for the ring | **claim** |
+| [Collins 2013 Shiva amygdaloid](#programs/persinger-collins-2013-shiva-amygdaloid) and [64-coil Shiva OBE case](#programs/murphy-shiva64-obe-lab) | Eight-coil stand-ins for the 64-coil hat: one coil stands for each column of eight | **single-lab** (a thesis) and **anecdote** (one case) |
 | [sham](#programs/sham) | No field; or tick **Blind** on any program | – |
 
-The waveforms are approximations of unpublished files; each program's notes say what was inferred.
+The Thomas pattern plays from the published patent table. The burst-firing pattern is a stand-in: the lab printed its shape only as a graph and never published the point values as numbers. Murphy's signals are approximations of unpublished files. Each program's notes say what was inferred.
 
 ### A fair test: the 10-second estimate
 
@@ -166,7 +168,7 @@ The time claim needs no EEG, only a helper with a stopwatch. [EXPERIMENTS.md](EX
 1. **Write the plan down first.** One program (the counter-clockwise Cook session), the number of sessions, and one outcome: the mean of the six produced intervals, real against sham.
 2. **Run the cue test**, so you know the stepping coils make no sound you can hear.
 3. **Tick Blind and start.** The helmet picks real or sham and hides it.
-4. **In each pause, produce 10 seconds.** Say "start" and "stop". The helper times you on a stopwatch you cannot see and never tells you the result.
+4. **Midway through each pattern, produce 10 seconds**, as in the paper (2.5 min into each 5-min pattern, with the field on; p.2 [62]). Say "start" and "stop". The helper times you on a stopwatch you cannot see and never tells you the result.
 5. **Do not count.** Counting makes estimates more accurate and less variable; a plain instruction not to count is the simplest remedy that works ([Rattat & Droit-Volet 2012](https://pubmed.ncbi.nlm.nih.gov/21789731/)).
 6. **Guess the condition**, then save. Keep 72 hours between sessions ([SAFETY.md](SAFETY.md)) and analyse once, at the planned number.
 
@@ -175,7 +177,7 @@ The lab's figure, half the variance between two groups, corresponds to a differe
 ### What it cannot show
 
 - **The EEG claims.** Theta and gamma changes need EEG, which this project does not provide.
-- **The lab's exact exposure.** This helmet has one coil per position, a 5 µT program limit against Cook's 10 µT, and rebuilt waveforms. A null result here does not refute the paper.
+- **The lab's exact exposure.** This helmet has one coil per position and a rebuilt burst-firing waveform. The field strength is not matched either: Cook gives 5–10 µT next to the scalp (p.2 [62]), while a program's 5 µT is the field 20 mm in front of the coil, about 24 times less than at the scalp ([HARDWARE_AUDIT.md](HARDWARE_AUDIT.md)). A null result here does not refute the paper.
 - **Proof.** A positive personal series is a reason for someone else to repeat it. Time estimates shift with arousal and expectation, which is why only real against sham counts.
 
 Read [SAFETY.md](SAFETY.md) first. These programs are not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress. Nothing here treats any condition.

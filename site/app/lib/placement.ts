@@ -1,5 +1,5 @@
 // Coil placement: the tape recipes, the user's head, the coil ticks and the
-// site tables (webapp/src/lib, plain JavaScript) with types on them, and the
+// site tables (core/lib, plain JavaScript) with types on them, and the
 // few helpers the Placement page and the library's browse modes share.
 import { computed, ref, shallowRef } from 'vue'
 import * as brainJs from '#core/lib/brain.js'

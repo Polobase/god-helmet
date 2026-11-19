@@ -2,11 +2,11 @@
   "id": "erv-extended",
   "name": "Extended remote viewing (ERV) with blinded arms",
   "category": "remote-viewing",
-  "summary": "A long, deep-relaxation session that lets you test, under blinding, whether a state condition changes blind-judged quality. SRI defined extended remote viewing as sessions of over an hour that maximise the sense of the site and minimise awareness of the room. Here a 15-minute induction runs with an optional blinded helmet arm (the first 15 minutes of the Remote viewing program, ring layout) and a descending binaural beat; both arms are our research design. Stimulation stops before you view. There is no evidence that any sound or magnetic program improves remote viewing.",
+  "summary": "A long, deep-relaxation session that lets you test, under blinding, whether a state condition changes blind-judged quality. SRI defined extended remote viewing as sessions of over an hour that maximise the sense of the site and minimise awareness of the room. Here a 15-minute induction runs with an optional blinded helmet arm (the first 15 minutes of the Remote viewing program, on its custom layout) and a descending binaural beat; both arms are our research design. Stimulation stops before you view. There is no evidence that any sound or magnetic program improves remote viewing.",
   "evidence": "anecdote",
   "minutes": 92,
   "requires": { "headphones": true, "helmet": "optional", "pool": true },
-  "setting": "Reclined in a dark, quiet room, with headphones and the phone within reach for writing and sketching. If you use the helmet, fit it in the ring layout (see Placement): the Remote viewing program rotates around the head and plays on the wrong sites in the temporal fit. A blind interviewer on a headset is optional.",
+  "setting": "Reclined in a dark, quiet room, with headphones and the phone within reach for writing and sketching. If you use the helmet, fit it in the program's custom layout, a ring of eight sites (see Placement): the Remote viewing program rotates around the head and plays on the wrong sites in the temporal fit. A blind interviewer on a headset is optional.",
   "cautions": "Coil clicks, warmth or tingling can give away the real condition; the blinding check tells you whether blinding held. Long sessions are tiring (in 1976 Pat Price tired after 15 minutes). The CRV manual's own theory counts low-frequency fields as a possible inclemency. Stop on headache or distress. The 1995 AIR evaluation found a statistically significant laboratory effect that could not be clearly attributed to psi, and no operational value. Never use people as targets without their consent. One trial means little: with a realistic effect size (about 0.16) even 50 trials have only about 30 % power. Decide the number of trials in advance and keep every result. The helmet arm runs together with the binaural beat, and the god-helmet.com Shakti safety page advises against combining the helmet with binaural-beat devices in real time: that combination is exactly what the blinded arms test, so leave the helmet off if you prefer to follow the advice.",
   "sources": [
     { "title": "Targ R, Puthoff HE, Humphrey BS, May EC (1980) Special Orientation Techniques (SRI R-003-80), SRI International" },
@@ -42,7 +42,7 @@
       "id": "fit",
       "title": "Helmet (optional)",
       "minutes": 1,
-      "instructions": "If you use the helmet, put it on now in the **ring layout** (see the program's Placement tab), not the temporal fit. It runs blinded during the induction only, real or sham. Without the helmet, press Next.",
+      "instructions": "If you use the helmet, put it on now in the program's **custom layout**, a ring of eight sites (see the program's Placement tab), not the temporal fit. It runs blinded during the induction only, real or sham. Without the helmet, press Next.",
       "audio": null,
       "advance": "manual"
     },

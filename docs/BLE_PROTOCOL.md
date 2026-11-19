@@ -1,6 +1,6 @@
 # Bluetooth LE and USB protocol
 
-The web app (webapp/, served from GitHub Pages) talks to the helmet with **Web Bluetooth**, or over a USB cable with **Web Serial**. Both carry the same JSON requests and responses ([below](#requests-and-responses)). Any client that follows this page can control the helmet.
+The web app (site/) talks to the helmet with **Web Bluetooth**, or over a USB cable with **Web Serial**. Both carry the same JSON requests and responses ([below](#requests-and-responses)). Any client that follows this page can control the helmet.
 
 | Platform | Bluetooth | USB |
 |---|---|---|
@@ -37,11 +37,11 @@ A notification or write carries at most MTU − 3 bytes, so every JSON message i
 
 Implementations:
 - `firmware/lib/bleframe` (C++, host-tested);
-- `webapp/src/ble/frame.js` (JS, tested against the same cases).
+- `site/core/ble/frame.js` (JS, tested against the same cases).
 
 ## USB
 
-One JSON message per line at 115200 baud (the chips' own USB ignores the baud rate). Implementations: `firmware/src/usblink.cpp`, `webapp/src/ble/serial.js` (tested against a fake board).
+One JSON message per line at 115200 baud (the chips' own USB ignores the baud rate). Implementations: `firmware/src/usblink.cpp`, `site/core/ble/serial.js` (tested against a fake board).
 
 ```
 → {"c":1234567,"id":7,"op":"hello"}\n
@@ -90,7 +90,7 @@ One JSON message per line at 115200 baud (the chips' own USB ignores the baud ra
 | `session.stop` | – | fades out over 2 s |
 | `session.skip` | – | next phase (after the last phase: stop) |
 | `session.field` | `fieldUT` | live intensity change, clamped to `maxFieldUT` |
-| `test` | `mode` `dc`/`rotate`/`led` (one output flashing +, pause, −, pause, for two LEDs in place of a coil)/`leds` (the same on AO1 to AO8 in turn, 2 s each), `channel`, `mA` (≤ 4.6), `seconds` (≤ 120), `layout`, `dir`, `dwellMs`, `blinkHz` (`led`/`leds`: flashes per second of each LED, 0.1–20, default 1; 0 = 0.5, 1, 2, 5, 10 Hz in turn, `seconds`/5 each, at least one round of AO1 to AO8 for `leds`), `token` (optional) | `logId: 0` (not logged) |
+| `test` | `mode` `dc`/`dcall` (all eight outputs at the same DC current: the module's full load)/`rotate`/`led` (one output flashing +, pause, −, pause, for two LEDs in place of a coil)/`leds` (the same on AO1 to AO8 in turn, 2 s each), `channel`, `mA` (≤ 4.6), `seconds` (≤ 120), `layout`, `dir`, `dwellMs`, `blinkHz` (`led`/`leds`: flashes per second of each LED, 0.1–20, default 1; 0 = 0.5, 1, 2, 5, 10 Hz in turn, `seconds`/5 each, at least one round of AO1 to AO8 for `leds`), `token` (optional) | `logId: 0` (not logged) |
 | `log.list` | `offset`, `limit` (≤ 10) | `total`, `items` (newest first; unrated blind sessions show `condition: "hidden"`). An entry: `id`, `start`, `presetId`, `presetName`, `blind`, `condition`, `test`, `fieldUT`, `plannedMs`, `elapsedMs`, `finished`, `completed`, `reason`, `kpValid`, `kp`, `ap`, `kpSource`, `lst`, `rating`, `notes`, `trialId`, `token`, and once it has ended `finalFieldUT`, `fieldChanges`, `skips` |
 | `log.rate` | `id`, `rating` 0–10, `notes` | the entry with its condition revealed; refused while that session is still running, and for a trial's session until the trial is revealed or aborted |
 | `trial.new` | `mode` `rv`/`telepathy`, `manifestHash`, `sets` `[{id, size}]`, optional `session` + `presetId` + `blind` + `fieldUT`, `token` (optional) | public trial. The trial and its log entry are on file before the session starts |
@@ -128,7 +128,7 @@ One JSON message per line at 115200 baud (the chips' own USB ignores the baud ra
 - The `levels` field is omitted in blind sessions, since it would reveal a sham.
 - `token`, `presetId`, `startEpoch`, `trialId` and `logId` describe the session that runs, and stay after it has ended until the next start.
 - `overruns` counts output periods (0.5 ms each) that came late or were lost, measured against the clock: a stall of 5 ms adds 10. The session's own time does not fall behind.
-- `lastStopReason`: `completed`, `stopped from app`, `skipped past last phase`, `UI keepalive lost`, `STOP button`, `STOP button (BOOT)`, `STOP on screen`.
+- `lastStopReason`: `completed`, `stopped from app`, `skipped past last phase`, `UI keepalive lost`, `STOP button`, `STOP button (BOOT)`, `STOP on screen`, `replaced` (another start took its place) and `empty session`.
 
 ## When the connection drops
 
@@ -164,7 +164,7 @@ After reconnecting, an app asks `hello` and `status` and compares:
 
 ## Session JSON
 
-Same format as the files in `presets/`. Parsed by `firmware/lib/engine/src/preset_json.cpp` and `webapp/src/engine/session.js`:
+Same format as the files in `presets/` ([PRESET_FORMAT.md](PRESET_FORMAT.md) has every field and default). Parsed by `firmware/lib/engine/src/preset_json.cpp` and `site/core/engine/session.js`:
 
 ```json
 {
@@ -181,12 +181,14 @@ Same format as the files in `presets/`. Parsed by `firmware/lib/engine/src/prese
 
 | Field | Values |
 |---|---|
-| Pattern `type` | `off`, `dc`, `sine`, `chirp`, `burst`, `thomas`, `pulse`, `semirandom`, `table` (its own `data` or the program's `tableData`, values 0–255, at most 8192 per table and 16384 per program) |
+| Pattern `type` | `off`, `dc`, `sine`, `chirp`, `burst`, `thomas`, `pulse`, `semirandom`, `pm`, `noise`, `table` (its own `data` or the program's `tableData`, values 0–255, at most 8192 per table and 16384 per program) |
 | Spatial `mode` | `bilateral`, `left`, `right`, `rotate`, `cycle` (one `side`), `alternate` (`alternateMs`), `single` (`channel`) |
 | Dwell | `"dwellMs": 20` (fixed) or `"dwell": [start, step, end]` (ramp, repeats) |
+| Two signals at once | `"tracks": [{pattern, spatial, level}, {…}]` on a phase instead of `pattern`/`spatial`/`level`: one or two tracks, added per coil and clipped |
+| Coil sites | `"layout": "ring"`, `"temporal"` (default) or `"custom"` with `"placement": {"sites": [8 names, "" = unused], "order": [channels]}` |
 | Duration | `minutes` or `seconds` per phase; the total must be ≤ 60 min |
 
-**Send tables packed.** A table can also be given as `dataB64` (in a pattern) or `tableDataB64` (for the whole program): base64 of its bytes, one byte per point. As lists of numbers, a table of more than about 1,000 points is too large for an ESP32 to read: the request is answered with `out of memory`, and 87 of the programs in `presets/` have such tables. Packed, the largest program in `presets/` is 24 KB with one short number list at most. Firmware reads the packed form since 0.3.0; the app always sends programs packed (`webapp/src/engine/compact.js`), with only the fields the firmware reads. `hello`'s `maxAlloc` is the largest free piece of memory, which is what a large program needs.
+**Send tables packed.** A table can also be given as `dataB64` (in a pattern) or `tableDataB64` (for the whole program): base64 of its bytes, one byte per point. As lists of numbers, a table of more than about 1,000 points is too large for an ESP32 to read: the request is answered with `out of memory`, and 87 of the programs in `presets/` have such tables. Packed, the largest program in `presets/` is 24 KB with one short number list at most. Firmware reads the packed form since 0.3.0; the app always sends programs packed (`site/core/engine/compact.js`), with only the fields the firmware reads. `hello`'s `maxAlloc` is the largest free piece of memory, which is what a large program needs.
 
 ## Trial commitment
 

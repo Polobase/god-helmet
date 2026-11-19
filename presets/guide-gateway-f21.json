@@ -4,15 +4,17 @@
   "layout": "temporal",
   "category": "research",
   "evidence": "unverified",
+  "fidelity": "construct",
   "origin": "This app's Gateway-style guides (our design; no published protocol)",
   "uT": 2.0,
-  "summary": "Experimental arm of the Gateway-style Focus-21 guide (our design, untested): in-phase sine on all temporal coils at 4 Hz for 9 min (Focus-10 and 12-style steps), 7 Hz for 4 min (Focus-15-style), then 1 Hz (deepening and open reception, 13 min), at 2 uT or less. The 1 Hz phase runs 10 min longer than its steps so that a paused guide (the helmet keeps running while the guide is paused) does not cut it short; the guide stops it after its last arm step, so it is off during the trial step. A pause still moves the frequency changes earlier than the steps they belong to. Run it blinded (real vs sham) from the guide. The Shakti safety page advises against real-time combination with binaural-beat devices.",
-  "source": "Our design after the Gateway research notes; Lane et al. 1998, Physiol Behav 63:249; Shakti safety page https://www.god-helmet.com/wp/winshakti/safety.htm",
+  "summary": "The coil arm of this project's Gateway-style Focus 21 guide: an in-phase sine on all temporal coils at 4 Hz for 9 min, 7 Hz for 4 min, then 1 Hz for up to 23 min, at 2 uT. It is this project's own design and untested. The three rates mirror the guide's audio beat layers; no Gateway document gives a frequency for Focus 21 or describes a field.",
+  "source": "Our design after the Gateway research notes; Lane et al. 1998, Physiol Behav 63:249 (4 Hz layer; its delta beat is 1.5 Hz, the 1 Hz layer here is this project's); Wahbeh et al. 2007, J Altern Complement Med 13:199 (7 Hz layer); Shakti safety page https://www.god-helmet.com/wp/winshakti/safety.htm",
   "fadeInS": 10,
   "fadeOutS": 10,
   "phases": [
     {"name": "4 Hz in-phase sine", "minutes": 9, "pattern": {"type": "sine", "f0": 4, "f1": 4}, "spatial": {"mode": "bilateral"}},
     {"name": "7 Hz in-phase sine", "minutes": 4, "pattern": {"type": "sine", "f0": 7, "f1": 7}, "spatial": {"mode": "bilateral"}},
     {"name": "1 Hz in-phase sine", "minutes": 23, "pattern": {"type": "sine", "f0": 1, "f1": 1}, "spatial": {"mode": "bilateral"}}
-  ]
+  ],
+  "notes": "The Gateway method is sound through stereo headphones. No Gateway or Monroe document this project holds describes a magnetic or electrical stimulus (McDonnell 1983 p.8), and none gives a frequency for Focus 21. The three frequencies mirror the guide's own audio beat layers. 4 Hz: Lane 1998 used binaural beats in 'the theta/delta range (1.5 and 4 Hz)' (p.1). 7 Hz: the binaural beat of Wahbeh 2007, an audio study. 1 Hz: this project's delta layer, found in no cited source (Lane's delta beat is 1.5 Hz). This program plays a sine on all temporal coils in phase: 4 Hz for 9 min (the steps in the style of Focus 10 and 12), 7 Hz for 4 min (Focus 15 style), then 1 Hz (deepening and open reception, 13 min of steps). The 1 Hz phase lasts 23 min, 10 min longer than its steps, so that a paused guide does not cut it short: the helmet keeps running while the guide is paused. The guide stops the program after its last arm step, so the field is off during the trial step. A pause still moves the frequency changes ahead of the steps they belong to. The coil arm has no source: carrying audio beat rates over to a magnetic field is this project's choice. No source states a field strength, because none used a field; the 2 uT is this project's choice. This program's setting is the peak field 20 mm in front of each coil. Nobody has tested this arm. The only cited statement on the combination is a vendor's advice against it (Shakti safety page, rule 2: do not combine Shakti with other mind machines in real time). Run it blinded, real against sham, from the guide."
 }

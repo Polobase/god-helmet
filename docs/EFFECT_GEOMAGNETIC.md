@@ -155,8 +155,8 @@ No program is known to make a session depend on geomagnetic activity. These give
 
 | Program or guide | What it gives you | Evidence |
 |---|---|---|
-| [Geomagnetic-rotation probe (Wang 2019 trial structure)](#programs/lowfield-geomagnetic-rotation-probe) ([brain view](#programs/lowfield-geomagnetic-rotation-probe/brain)) | The timing of Wang's rotation trials on the ring. The helmet cannot rotate the Earth's field, and testing the EEG claim needs EEG | **single-lab** |
-| [Remote viewing (Octopus ring, CCW chirp 10→20 ms)](#programs/remote-viewing) ([brain view](#programs/remote-viewing/brain)) | Murphy's psi configuration, for blinded trials | **claim** |
+| [Ring sweep versus fixed pulse (trial timing after Wang 2019)](#programs/lowfield-geomagnetic-rotation-probe) ([brain view](#programs/lowfield-geomagnetic-rotation-probe/brain)) | The timing of Wang's rotation trials on the ring. The helmet cannot rotate the Earth's field, and testing the EEG claim needs EEG | **unverified** (timing only) |
+| [Shiva psi session: chirp, counter-clockwise, 10→20 ms per coil (Murphy)](#programs/remote-viewing) ([brain view](#programs/remote-viewing/brain)) | Murphy's psi configuration, for blinded trials | **claim** |
 | [Photo-target trial (free response)](#guides/photo-target-trial), [Psi trial with covariates (ganzfeld-style)](#guides/psi-trial-flow) | A blind rank per trial | **single-lab**, **claim** |
 | [Blinded helmet session with questionnaires](#guides/helmet-session-flow) | Presence and state ratings under real or sham | **claim** |
 | [Micro-PK with the hardware random generator](#guides/rng-pk) | A z score per session | **single-lab** |

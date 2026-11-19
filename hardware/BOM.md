@@ -15,7 +15,7 @@ This list is the first build's. The [driver board](../docs/PCB.md) (not yet buil
 | Qty | Part | Example / spec | Why |
 |---|---|---|---|
 | 8 (+4 spare) | Resistor 2.2 kΩ, 1 %, ¼ W metal film | – | **Mandatory** current limit per coil (4.54 mA max) |
-| a few | Resistors 4.7 kΩ and 1 kΩ | – | Lower/higher ceiling if your calibration calls for it |
+| a few | Resistors 4.7 kΩ | – | A lower ceiling if your calibration calls for it. Never fit less than 2.2 kΩ: every field and safety figure in the docs assumes it |
 | 1 | PhotoMOS relay AQY212EH (or AQY212GH, G3VM-61A1) | 60 V, 500 mA, bidirectional | Arming switch in the common coil return (silent) |
 | 1 | Resistors 330 Ω + 10 kΩ | – | PhotoMOS LED series resistor + pull-down |
 | | *alt.* 1-channel 5 V relay module, active-high, with input pull-down | – | Instead of the PhotoMOS |

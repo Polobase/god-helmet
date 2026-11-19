@@ -1,6 +1,6 @@
 // When the connection to the helmet fails in mid-session: the app keeps
 // showing the session, reconnects by itself and picks everything up again.
-// In Demo mode, with the demo helmet's hooks (webapp/src/ble/demo.js):
+// In Demo mode, with the demo helmet's hooks (core/ble/demo.js):
 // window.__helmetDemo.drop(ms), comeBack(), dropAfter(op), dropBefore(op, ms), restart(), pressStop().
 import { expect, test, type Locator, type Page } from '@playwright/test'
 
@@ -437,8 +437,8 @@ test('with the keepalive on, the lost line says that the helmet stops the sessio
   await tab(page, 'Programs')
   await startSession(page)
   await demo(page, 'drop', Infinity)
-  await expect(note(page)).toContainText('The helmet stops “God Helmet classic (Persinger 2-phase)” by itself after 5 s without the app.')
-  await expect(note(page)).toContainText('The helmet has stopped “God Helmet classic (Persinger 2-phase)” by now', { timeout: 15_000 })
+  await expect(note(page)).toContainText("The helmet stops “God Helmet classic (Murphy's Shiva 2-phase session)” by itself after 5 s without the app.")
+  await expect(note(page)).toContainText("The helmet has stopped “God Helmet classic (Murphy's Shiva 2-phase session)” by now", { timeout: 15_000 })
   await demo(page, 'comeBack')
   await pressReconnect(note(page))
   await expect(note(page)).toHaveText(/ended at \d.* while the connection was down: the helmet stopped it after 5 s without the app\.$/, { timeout: 15_000 })

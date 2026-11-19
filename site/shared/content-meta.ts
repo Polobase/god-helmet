@@ -193,6 +193,34 @@ const ALL_DOCS: DocMeta[] = [
     description: 'The current-source driver board with isolated tES channels: connectors, firmware, the tES rules and the bring-up.',
   },
   {
+    // The audit of the first build: published with the build itself.
+    file: 'docs/HARDWARE_AUDIT.md',
+    hidden: true,
+    section: 'docs',
+    slug: 'hardware-audit',
+    label: 'Hardware audit',
+    group: 'Build it',
+    description: 'What the sources\' apparatus did, what the first build does, and the gap: a ledger with pages, calculations and a bench protocol.',
+  },
+  {
+    file: 'docs/HARDWARE_REQUIREMENTS.md',
+    hidden: true,
+    section: 'docs',
+    slug: 'hardware-requirements',
+    label: 'Hardware requirements',
+    group: 'Build it',
+    description: 'The changes the audit forces, each with its old and new value, the number behind it and its cost, and the resulting architecture.',
+  },
+  {
+    file: 'docs/AUDIT_SUMMARY.md',
+    hidden: true,
+    section: 'docs',
+    slug: 'audit-summary',
+    label: 'Audit summary',
+    group: 'Build it',
+    description: 'One page: the verdict on the hardware, the forced changes, what happened to the programs and what is still unmeasured.',
+  },
+  {
     file: 'docs/PLACEMENT.md',
     section: 'docs',
     slug: 'placement',
@@ -255,6 +283,14 @@ const ALL_DOCS: DocMeta[] = [
     label: 'Device protocol',
     group: 'Reference',
     description: 'The Bluetooth service, packet framing, the USB line protocol, every operation, session JSON and the trial commitment.',
+  },
+  {
+    file: 'docs/PRESET_AUDIT.md',
+    section: 'docs',
+    slug: 'program-audit',
+    label: 'Program audit',
+    group: 'Reference',
+    description: 'Every program checked against its source: what was wrong, what was done about it, and the page that decided it.',
   },
 ]
 

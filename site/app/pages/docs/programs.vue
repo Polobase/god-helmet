@@ -5,13 +5,13 @@ import { describePattern, describeSpatial, fmtMinutes } from '#core/lib/format.j
 import { fmtSetting } from '#core/lib/units.js'
 import { PROGRAM_REFERENCE } from '~~/shared/content-meta'
 import { repoUrl } from '~~/shared/links'
-import { presets, CATEGORY_LABELS, sourceEntries, LAYOUTS, EVIDENCE } from '~/lib/programs'
+import { presets, CATEGORY_LABELS, sourceEntries, LAYOUTS, EVIDENCE, FIDELITY, doseText } from '~/lib/programs'
 
 useSeoMeta({ title: PROGRAM_REFERENCE.label, description: PROGRAM_REFERENCE.description })
 
 interface Row { n: number, name: string, min: number, signal: string, coils: string }
 interface Entry {
-  id: string, name: string, minutes: string, uT: number, layout: string, evidence?: string, origin?: string
+  id: string, name: string, minutes: string, uT: number, layout: string, evidence?: string, fidelity?: string, dose: string, origin?: string
   summary?: string, setting?: string, schedule?: string, coils: string, phases: Row[], notes?: string
   targets: string[], sources: { text: string, url: string | null, extra: string[] }[]
 }
@@ -32,6 +32,8 @@ const groups = (() => {
       uT: Number(d.uT ?? 1),
       layout: s.layout === 'custom' ? 'custom' : LAYOUTS[s.layout].title,
       evidence: d.evidence,
+      fidelity: d.fidelity,
+      dose: doseText(d.dose),
       origin: d.origin,
       summary: d.summary,
       setting: d.setting,
@@ -54,6 +56,7 @@ const groups = (() => {
 
 const total = groups.reduce((n, g) => n + g.programs.length, 0)
 const levels = Object.entries(EVIDENCE)
+const fidelities = Object.entries(FIDELITY)
 // Every category with its programs, as the old page's contents list had them.
 const toc = groups.map((g) => ({ id: `cat-${g.key}`, depth: 2, text: `${g.label} (${g.programs.length})`, children: g.programs.map((p) => ({ id: p.id, depth: 3, text: p.name })) }))
 
@@ -96,6 +99,13 @@ onMounted(() => {
             <dd class="text-muted">{{ e.info }}</dd>
           </template>
         </dl>
+        <p class="mt-6 text-sm text-toned measure">The first badge rates the source. The second says how closely this helmet reproduces what the source describes:</p>
+        <dl class="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-[max-content_1fr] text-sm">
+          <template v-for="[key, f] in fidelities" :key="key">
+            <dt><FidelityBadge :level="key" /></dt>
+            <dd class="text-muted">{{ f.info }}</dd>
+          </template>
+        </dl>
       </header>
 
       <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-12">
@@ -114,6 +124,7 @@ onMounted(() => {
                   <UIcon name="i-lucide-chevron-right" class="size-4 shrink-0 self-center text-muted transition-transform group-open:rotate-90" />
                   <span class="font-semibold text-highlighted">{{ p.name }}</span>
                   <EvidenceBadge :level="p.evidence" />
+                  <FidelityBadge :level="p.fidelity" />
                   <span class="num ml-auto text-sm text-muted">{{ p.minutes }}, {{ field(p.uT) }}</span>
                 </summary>
                 <div class="grid gap-3 pb-6 pl-8 text-[0.95rem]">
@@ -121,6 +132,7 @@ onMounted(() => {
                   <p v-if="p.summary" class="measure">{{ p.summary }}</p>
                   <p v-if="p.setting" class="measure"><b>Setting:</b> {{ p.setting }}</p>
                   <p v-if="p.schedule" class="measure"><b>Schedule:</b> {{ p.schedule }}</p>
+                  <p v-if="p.dose" class="measure"><b>Field in the source:</b> {{ p.dose }}</p>
                   <p><b>Coils:</b> <span class="num">{{ p.coils }}</span></p>
                   <div class="overflow-x-auto">
                     <table class="w-full min-w-[34rem] text-sm">

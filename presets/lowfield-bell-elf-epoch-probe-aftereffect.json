@@ -1,13 +1,15 @@
 {
   "id": "lowfield-bell-elf-epoch-probe-aftereffect",
-  "name": "Bell 1994 10 Hz after-effect test: 10 min field, 1 min off",
+  "name": "Bell 1994 10 Hz after-effect test: 13 min off, 10 min field, 11 min off",
   "category": "research",
-  "evidence": "single-lab",
+  "evidence": "unverified",
+  "fidelity": "timing",
+  "dose": {"value": 100, "unit": "uT", "plane": "centre", "cite": "Bell 1994 Neuroreport p.1 [510] (1 gauss rms)"},
   "origin": "Bell, Marino, Chesson (Louisiana State University Medical Center), 1991-1996",
   "uT": 5,
-  "summary": "The optional after-effect test of the Bell/Marino probe: a continuous 10 Hz sine field on all eight ring coils in phase for 10 min, then 1 min with the field off, the window in which Bell et al. 1994 (Neuroreport) measured occipital 10 Hz EEG power. They used 1 G (100 uT); this helmet gives at most 5 uT at 20 mm from each coil, so only the timing is copied.",
-  "notes": "Bell et al. 1994 (Neuroreport) reported reduced occipital 10 Hz power during the minute after a 10-min, 10 Hz, 1 G exposure in 10 subjects; this is a single-lab result. The geometry is not stated in the abstract; the full ring in phase stands in for a field applied to the head. At 5 uT 20 mm from the coils (about 0.5 uT at 40-50 mm) the program is about 20 times weaker than the original near the coils and far weaker at depth, so it copies the timing only. The sine is smooth (no point steps) and there is no fade-in, so the exposure lasts exactly 10 min; the field then switches off at the start of the 1-min window. Record occipital EEG (O1, O2) throughout and compare the last minute with the same minute of a blinded sham run (the app's Blind option). Measuring with the field off avoids direct pickup of the 10 Hz field, but check the recording chain with a phantom anyway. The induced electric field is about 1 uV/m, far below known neural thresholds. Not for people with epilepsy; stop if you feel unwell.",
-  "setting": "Seated, eyes closed, occipital EEG (O1, O2) recorded through the exposure and the minute after it.",
+  "summary": "The after-effect test of Bell et al. 1994 (Neuroreport): 13 min without field, a continuous 10 Hz sine on all eight ring coils in phase for 10 min, then 11 min without field, with 1-min EEG samples before the field, straight after it and 10 min later. They used a uniform field of 1 gauss rms (141 uT peak); this helmet gives 5 uT at 20 mm from each coil, so only the timing is copied.",
+  "notes": "Bell et al. 1994 applied 'a sinusoidal field of 1 gauss (rms), 10 Hz' continuously 'during a 10 min interval in the middle of a 32 min test session' (Neuroreport p.1 [510]). They sampled occipital EEG for 1 min four times: twice before the field, straight after it and 10 min later (Fig. 1 p.2 [511]). The control was the mean of the three other samples of the same session, not a separate sham run. The field came from Helmholtz coils (130 cm, 65 cm apart per the companion paper) and was uniform within 5% over head and upper chest; subjects sat between the coils in a dark, sound-proofed room with eyes closed (Neuroreport p.1 [510]; J Neurol Sci p.1-2 [26-27]). They reported reduced occipital 10 Hz power in the minute after the field. This program follows the figure: 13 min off (samples at minute 2 to 3 and in the last minute), 10 min of field, 11 min off (samples in the first minute and at minute 10 to 11). That is 34 min; the paper's text says 32 min and does not resolve the difference. All eight ring coils play the sine in phase. Bell's field ran left to right through the whole head; eight radial coils in phase give a field that points outward at every site and falls to under 1 uT at 4 cm. The sine is smooth and has no fade, so the exposure lasts exactly 10 min. Bell's 1 gauss rms is 141 uT peak, uniform over the head. This program's setting is the peak field 20 mm in front of each coil. At 5 uT it is 28 times weaker there (17 times at the helmet's maximum). The result comes from one lab and 10 subjects, with no separate sham run. Record occipital EEG (O1, O2) throughout and compare the samples as Bell did, or with a blinded sham run (the app's Blind option). Check the recording chain with a phantom. The induced electric field is about 1 uV/m. Not for people with epilepsy; stop if you feel unwell.",
+  "setting": "Seated, eyes closed, in a dark and quiet room, with occipital EEG (O1, O2) recorded through the whole 34 min: before the field, during it and for 11 min after it.",
   "schedule": "One run per sitting; compare with blinded sham runs of the same program.",
   "targets": ["primary-visual-cortex"],
   "source": "Bell et al. 1994, Neuroreport (10 Hz after-effect) https://pubmed.ncbi.nlm.nih.gov/8003686/ ; Bell et al. 1994, J Neurol Sci (1.5 and 10 Hz, 2-s epochs) https://pubmed.ncbi.nlm.nih.gov/8064317/ ; Marino et al. 1996, J Neurol Sci (false-negative rates) https://pubmed.ncbi.nlm.nih.gov/8994110/",
@@ -16,7 +18,8 @@
   "fadeInS": 0,
   "fadeOutS": 0,
   "phases": [
+    {"name": "Before the field (EEG at minute 2-3 and in the last minute)", "minutes": 13, "pattern": {"type": "off"}, "spatial": {"mode": "bilateral"}},
     {"name": "10 Hz continuous", "minutes": 10, "pattern": {"type": "sine", "f0": 10, "pointMs": 0}, "spatial": {"mode": "bilateral"}},
-    {"name": "After-effect window (field off)", "minutes": 1, "pattern": {"type": "off"}, "spatial": {"mode": "bilateral"}}
+    {"name": "After the field (EEG in the first minute and at minute 10-11)", "minutes": 11, "pattern": {"type": "off"}, "spatial": {"mode": "bilateral"}}
   ]
 }

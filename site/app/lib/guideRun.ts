@@ -14,7 +14,7 @@ import {
   type AudioChoice, type AudioMode, type GuideDoc, type GuideStep, type InputValue, type RunEnv, type RunHelmet, type RunRecord, type RunStepRecord, type StepAudio, type Trial,
 } from './guides'
 
-/** What the run uses of the core's audio engine (webapp/src/audio/engine.js). */
+/** What the run uses of the core's audio engine (core/audio/engine.js). */
 interface Engine {
   /** 'suspended' while a step should be playing means the sound was cut off. */
   readonly state: 'idle' | 'running' | 'suspended'

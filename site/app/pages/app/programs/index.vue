@@ -2,6 +2,7 @@
 // Program library: find a program by category, by placement, by scalp site
 // or by the experience it aims at. A card opens the program.
 import { EVIDENCE_KEYS, evidenceLabel } from '#core/lib/evidence.js'
+import { FIDELITY_KEYS, fidelityLabel } from '#core/lib/presetSchema.js'
 import { queryWords, score } from '#core/lib/search.js'
 import { presets, groupedPresets, categoryLabel, library, groups, program, type Preset } from '~/lib/programs'
 import { LOBES, filterGroups } from '~/lib/placement'
@@ -46,14 +47,20 @@ const fieldsOf = (p: Preset) => [
   [(p.session?.sites ?? []).filter(Boolean).join(' '), 2], [(p.doc.targets ?? []).join(' '), 2],
   [p.doc.origin ?? '', 1], [p.doc.summary ?? '', 1],
 ]
-const byEvidence = (p: Preset) => !library.evidence || p.doc.evidence === library.evidence
+const byEvidence = (p: Preset) => (!library.evidence || p.doc.evidence === library.evidence) && (!library.fidelity || p.doc.fidelity === library.fidelity)
 const inCategory = (p: Preset) => !library.category || catKey(p) === library.category
 const evidenceItems = [
   { label: 'Any evidence', value: 'any' },
   ...EVIDENCE_KEYS.map((k: string) => ({ label: `${evidenceLabel(k)} (${all.filter((p) => p.doc.evidence === k).length})`, value: k })),
 ]
 const evidence = computed({ get: () => library.evidence || 'any', set: (v: string) => (library.evidence = v === 'any' ? '' : v) })
-// Category chips count what the evidence filter leaves.
+// How closely this helmet reproduces the source (docs/PRESET_FORMAT.md).
+const fidelityItems = [
+  { label: 'Any fidelity', value: 'any' },
+  ...FIDELITY_KEYS.map((k: string) => ({ label: `${fidelityLabel(k)} (${all.filter((p) => p.doc.fidelity === k).length})`, value: k })),
+]
+const fidelity = computed({ get: () => library.fidelity || 'any', set: (v: string) => (library.fidelity = v === 'any' ? '' : v) })
+// Category chips count what the evidence and fidelity filters leave.
 const chips = computed(() => groupedPresets().map((g) => ({ key: g.key, label: g.label, n: g.items.filter(byEvidence).length })).filter((c) => c.n))
 const ranked = computed(() => {
   if (!words.value.length) return null
@@ -67,10 +74,11 @@ const sections = computed(() => groupedPresets()
   .filter((g) => g.items.length)
   .map((g) => ({ ...g, shown: library.more[g.key] || library.category ? g.items : g.items.slice(0, FIRST) })))
 const matchCount = computed(() => (ranked.value ? ranked.value.length : sections.value.reduce((a, g) => a + g.items.length, 0)))
-const anyFilter = computed(() => !!(library.query.trim() || library.evidence || library.category || library.lobe))
+const anyFilter = computed(() => !!(library.query.trim() || library.evidence || library.fidelity || library.category || library.lobe))
 function clearFilters() {
   library.query = ''
   library.evidence = ''
+  library.fidelity = ''
   library.category = ''
   library.lobe = null
 }
@@ -98,6 +106,7 @@ const shownGroups = computed(() => filterGroups(groups, library.lobe, library.qu
       <div v-if="library.mode !== 'site'" class="flex flex-wrap gap-2">
         <UInput v-model="library.query" type="search" icon="i-lucide-search" size="lg" class="min-w-56 flex-1" :placeholder="PLACEHOLDER[library.mode]" :aria-label="PLACEHOLDER[library.mode]" />
         <USelect v-if="library.mode === 'category'" v-model="evidence" :items="evidenceItems" size="lg" class="w-48" aria-label="Evidence level" />
+        <USelect v-if="library.mode === 'category'" v-model="fidelity" :items="fidelityItems" size="lg" class="w-48" aria-label="How closely the helmet reproduces the source" />
       </div>
 
       <div v-if="library.mode === 'category'" class="flex flex-wrap gap-1.5" role="group" aria-label="Category">
@@ -123,7 +132,7 @@ const shownGroups = computed(() => filterGroups(groups, library.lobe, library.qu
     <!-- by category: cards; a search shows one list, best match first -->
     <template v-if="library.mode === 'category'">
       <UEmpty v-if="!matchCount" icon="i-lucide-search-x" title="No program matches"
-        :description="`Nothing fits${library.query.trim() ? ' this search' : ''}${library.evidence ? ` with evidence “${evidenceLabel(library.evidence)}”` : ''}${library.category ? ' in this category' : ''}.`"
+        :description="`Nothing fits${library.query.trim() ? ' this search' : ''}${library.evidence ? ` with evidence “${evidenceLabel(library.evidence)}”` : ''}${library.fidelity ? ` marked “${fidelityLabel(library.fidelity)}”` : ''}${library.category ? ' in this category' : ''}.`"
         :actions="[{ label: 'Clear filters', onClick: clearFilters }]" />
       <div v-else-if="ranked" class="cards">
         <ProgramCard v-for="p in ranked" :key="p.doc.id" :p="p" :current="p.doc.id === program.id" show-category />

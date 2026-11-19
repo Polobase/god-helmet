@@ -21,12 +21,12 @@ How to write these signals into a program file is in [PRESET_FORMAT.md](PRESET_F
 - **anecdote**;
 - **unverified**: a construct or calculation that nobody has tested or measured.
 
-Nearly every signal on this page is single-lab or claim. Numbers about this helmet that come from the coil model are calculations, not measurements, until you calibrate.
+Nearly every signal on this page is single-lab or claim. Numbers about this helmet that come from the coil model are calculations, not measurements, until you calibrate. Page references such as "p.3 [165]" give the PDF page, with the printed page in brackets.
 
 **At a glance**
 - Where a source gives the timing, the helmet reproduces it to 0.5 ms. Many signals here have no published timing (the chirp, the Shiva rotation tables), so those are approximations. The helmet does not reproduce the field strength of the clinical devices.
-- Only one Persinger-lineage waveform has public point values: the 849-point Thomas/Cnp table in US 6,234,953. The project plays it exactly. Burst-firing, the lab's LTP file, the "chirp" and all of Murphy's signals are approximations of written descriptions.
-- The coil model gives about 1.8 µT/mA at 20 mm, so 1–8 µT at the cortex under a coil. That is the same decade as the Persinger lab's 1–10 µT. Most clinical low-field devices are about 40 to over 1000 times stronger. The Lawson Cnp headset is the exception: similar near the scalp at full current, about 30 times stronger deep in the head (section 4).
+- Only one Persinger-lineage waveform has public point values: the 849-point Thomas/Cnp table in US 6,234,953. The project plays it exactly. Burst-firing, the lab's LTP file, the "chirp" and all of Murphy's signals are approximations of written descriptions or small printed figures.
+- The coil model gives about 1.8 µT/mA at 20 mm, so 1–8 µT at the cortex under a coil. That is the same decade as the Persinger lab's 1–10 µT. The lab papers state their fields at the scalp, inside the helmet or at unstated places, so which program setting equals the lab's dose is not settled ([HARDWARE_AUDIT.md](HARDWARE_AUDIT.md)). Most clinical low-field devices are about 40 to over 1000 times stronger. The Lawson Cnp headset is the exception: similar near the scalp at full current, about 30 times stronger deep in the head (section 4).
 - Induced electric field: microvolts per metre for smooth signals, plus brief millivolt-per-metre spikes at the DAC steps. Every signal type stays at least about 400× below the ICNIRP 2010 brain limit at full current (calculated).
 
 ---
@@ -37,7 +37,7 @@ Nearly every signal on this page is single-lab or claim. Numbers about this helm
 
 Each coil is a commodity 19 × 12 mm magnetic-levitation coil: 495 turns, 4.2 Ω, 4.1 mH ±10 %. One seller lists a ferrite core, another a solid iron core; the ferrite listing's title also says "Full Copper Core". No manufacturer datasheet was found ([AliExpress listing 1005009753954000](https://www.aliexpress.com/item/1005009753954000.html); [AliExpress listing 1005012712588156](https://www.aliexpress.com/item/1005012712588156.html)). These are claims.
 
-The app's coil model is in `webapp/src/engine/field.js` and drives the Brain tab of each program. It works like this:
+The app's coil model is in `site/core/engine/field.js` and drives the Brain tab of each program. It works like this:
 - **Winding.** The winding is split into 16 current loops, each computed with the exact loop formulas ([Simpson et al. 2013](https://ntrs.nasa.gov/citations/20140002333)).
 - **Core.** The core is a uniformly magnetised cylinder. Its demagnetising factor ([Chen et al. 1991](https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=905398)) limits its apparent susceptibility to about 5 for any material with χ ≥ 100. So ferrite and iron give nearly the same low-frequency field.
 - **Check.** The inductance the model implies (4.1–4.6 mH) matches the seller's 4.1 mH. That supports the model, but it is still a calculation (unverified).
@@ -77,7 +77,7 @@ The induced E is proportional to how fast B changes (dB/dt). Two regimes matter 
 
 **Smooth signals.** For a sine, E grows in proportion to frequency and amplitude. A 7 Hz sine at 8 µT (full current, 20 mm) induces about 1.7 µV/m at 20 mm (calculated).
 
-**Steps.** A hardware timer updates all eight DAC channels together every 0.5 ms (2 kHz, latched with LDAC), and the engine holds each value for `pointMs`. Every change of value is a voltage step. How fast the current follows:
+**Steps.** A hardware timer fires every 0.5 ms (2 kHz) and wakes the output task, which sends the eight values to the DAC and latches them together with LDAC; the engine holds each value for `pointMs`. The latch therefore follows the timer by the task's reaction time, which has not been measured ([HARDWARE_AUDIT.md](HARDWARE_AUDIT.md)). Every change of value is a voltage step. How fast the current follows:
 - **DAC.** The AD5328 slews at 0.7 V/µs and settles in 8–10 µs ([AD5328 datasheet Rev. F, project copy](ad5308_5318_5328.pdf)).
 - **Module.** With the module's gain of 4, the output can slew at about 2.8 V/µs, unless its unidentified op-amps are slower.
 - **Circuit.** The coil and its 2.2 kΩ resistor have a time constant L/R of about 2 µs, so the current follows the voltage almost at once. The coil's own L/R of about 1 ms does not matter.
@@ -147,7 +147,7 @@ The built-in safeguards (series resistors, arming switch, STOP button, field cei
 
 The Laurentian University group (Michael Persinger, Stanley Koren and students) built every signal as a list of numbers played through a DAC into small solenoids.
 
-**Evidence.** Almost the whole corpus is single-lab. The one large independent double-blind test, [Granqvist et al. 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/) (N = 89), found "no evidence for any effects of the magnetic fields". Persinger and Koren disputed it ([Persinger & Koren 2005](https://pubmed.ncbi.nlm.nih.gov/15862915/)). What this build can honestly match is the timing and the dose: 1–8 µT at 20 mm is the same decade as the lab's 1–10 µT.
+**Evidence.** Almost the whole corpus is single-lab. The one large independent double-blind test, [Granqvist et al. 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/) (N = 89), found "no evidence for any effects of the magnetic fields". Persinger and Koren disputed it ([Persinger & Koren 2005](https://pubmed.ncbi.nlm.nih.gov/15862915/)). What this build can match is the timing, as far as the sources give it. Its 1–8 µT at 20 mm is the same decade as the lab's 1–10 µT, but the papers state their fields at the scalp, inside the helmet or at unstated places. A program's µT is the field 20 mm in front of the coil, about 24 times less than at the scalp, so which setting equals the lab's dose is not settled ([HARDWARE_AUDIT.md](HARDWARE_AUDIT.md)).
 
 ### 2.1 How the lab made a signal: the Koren DAC file
 
@@ -180,14 +180,14 @@ The Koren & Persinger hardware patent, [US 6,312,376](https://patents.google.com
 
 This project stores 0–255 with 128 = zero and scales to the program's µT. The 20 % difference between ±5 V and ±6 V therefore does not carry over.
 
-**Timing.** The lab ran DOS programs ("Complex 1.15", "complex2"). Persinger wrote that "Complex 1.15 MUST be calibrated for pixel duration in computers above 286s" ([Persinger to Larhammar, 22 Nov 2004, archived Laurentian correspondence](https://web.archive.org/web/2011/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+2.htm)). The lab also reported that Windows-generated fields disrupted a remote-viewing result that DOS-generated ones did not ([Koren & Persinger 2002](https://pubmed.ncbi.nlm.nih.gov/12509207/); single-lab claim). This helmet's timing comes from a hardware timer on the ESP32, so point durations are exact multiples of 0.5 ms and do not depend on a PC.
+**Timing.** The lab ran DOS programs ("Complex 1.15", "complex2"). Persinger wrote that "Complex 1.15 MUST be calibrated for pixel duration in computers above 286s" ([Persinger to Larhammar, 22 Nov 2004, archived Laurentian correspondence](https://web.archive.org/web/2011/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+2.htm)). The Uppsala group, which ran the lab's software for its replication, gives the version as 1.5: "Complex v.1.5 (inadvertently called 1.15 in our article)" (Larsson et al. 2005, p.1 [348]). The lab also reported that Windows-generated fields disrupted a remote-viewing result that DOS-generated ones did not ([Koren & Persinger 2002](https://pubmed.ncbi.nlm.nih.gov/12509207/); single-lab claim). This helmet's timing comes from a hardware timer on the ESP32, so point durations are multiples of 0.5 ms and do not depend on a PC. How far a single update can be late is not yet measured; the helmet counts updates that came late or were lost (`overruns` in the live status).
 
 ### 2.2 Burst-firing ("Burst-X", "amygdaloid")
 
 **Origin.** The lab described the signal as "a computer-generated wave form, designed to simulate neuronal burst firing", applied at 1 µT through the temporal planes ([Richards, Persinger & Koren 1993](https://pubmed.ncbi.nlm.nih.gov/8407157/)). Two papers used it earlier: [Richards, Koren & Persinger 1992](https://pubmed.ncbi.nlm.nih.gov/1408634/) and [Gillis & Persinger 1993](https://pubmed.ncbi.nlm.nih.gov/8451123/).
 - **Source of the shape.** A thesis says the pattern was extracted from averaged potentials of a human amygdala during complex partial seizures ([Murugan 2013](https://laurentian.scholaris.ca/items/39c9c1ad-70ba-458d-a819-d24c20da217a)).
 - **Frequency.** A later lab paper calls the 230-point file an increasing-frequency pattern ([Dotta & Persinger 2012](https://file.scirp.org/Html/17181.html)).
-- **Point values.** These have never been published anywhere.
+- **Shape and point values.** The shape is printed as a graph ([Persinger, Tiller & Koren 2000](https://pubmed.ncbi.nlm.nih.gov/10833767/), Fig. 2, p.5 [663]; Richards, Persinger & Koren 1993, Fig. 1C, p.8 [78]). The point values were never published as numbers.
 
 **Published parameters.** Three theses from the same lab disagree on the point count. They agree on the point duration:
 
@@ -195,18 +195,21 @@ This project stores 0–255 with 128 = zero and scales to the program's µT. The
 |---|---|---|---|---|---|
 | [Carniello 2020](https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55) | 230 | 3 ms | 690 ms | ISI 3 ms in cell work | cultured cells |
 | [Murugan 2013](https://laurentian.scholaris.ca/items/39c9c1ad-70ba-458d-a819-d24c20da217a) | 248 | 3 ms | 744 ms | ISI 3000 ms | planaria |
-| [Collins 2013](https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc) | 289 | 3 ms | 867 ms | 4000 ms between cycles | humans, Shiva "amygdaloid signal, normal speed" |
+| [Collins 2013](https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc) (p.40 [31]) | 289 | 3 ms | 867 ms | 4000 ms between cycles | humans, Shiva "amygdaloid signal, normal speed" |
 | [Ryczko & Persinger 2002](https://pubmed.ncbi.nlm.nih.gov/12434855/) | 230 | 4 ms | 920 ms | once every 3 s | rats |
 | [Persinger, Hoang & Baker-Price 2009](https://pubmed.ncbi.nlm.nih.gov/20017628/) | – | – | "about 0.7 s" | once every 3 s | one human case |
 | [Martin & Persinger 2004](https://pubmed.ncbi.nlm.nih.gov/15276252/); [Martin, Koren & Persinger 2004](https://pubmed.ncbi.nlm.nih.gov/15219761/) | – | – | – | "once every 4s for 30 min" | rat analgesia |
-| [Persinger 1999](https://pubmed.ncbi.nlm.nih.gov/10576400/) | – | – | 1 s | every 4 s, 5 µT | humans |
+| [Persinger 1999](https://pubmed.ncbi.nlm.nih.gov/10576400/) (p.2–3 [164–165]) | 230 | 3 ms | about 700 ms | 4000 ms between bursts; 380 bursts in 30 min | humans, 1–5 µT at the scalp |
 
-**Which version.** 230 points × 3 ms = 690 ms, which matches the "about 0.7 s" of a separate paper from the same lab (Persinger, Hoang & Baker-Price 2009). That makes 230 points the best-supported length (single-lab). In practice "burst-firing" is a family of point-duration and ISI settings over one unpublished table.
+**Which version.** 230 points × 3 ms = 690 ms, which matches the "about 0.7 s" of a separate paper from the same lab (Persinger, Hoang & Baker-Price 2009). That makes 230 points the best-supported length for the lab helmet (single-lab). The Shiva software's amygdala signal is longer: 289 points × 3 ms = 867 ms (Collins 2013, p.40 [31]; Saroka 2010, p.5 [470]). In practice "burst-firing" is a family of point-duration and ISI settings over one table whose values were never published as numbers.
+
+**The stated interval is the pause.** Where a paper gives enough to check, "once every 3 s" or "every 4 s" is the silence after a burst, not the period. Persinger 1999 gives a burst of about 700 ms, "4000 ms (4 s)" between presentations and 380 presentations in 30 min (p.3 [165]). That is one burst every 4.7 s.
 
 **In this project** the `burst` pattern type is a sine whose frequency rises from `f0` to `f1` over `sweepMs`, held in `pointMs` steps, then `gapMs` of silence. The defaults are 6 → 30 Hz over 1500 ms, a 4000 ms gap and 3 ms points.
-- **Matching the sources.** `{"type": "burst", "sweepMs": 690, "gapMs": 3310, "pointMs": 3}` plays 0.69 s once every 4 s.
-- **Exact:** point duration, burst length and repeat interval.
+- **Matching the sources.** `{"type": "burst", "sweepMs": 690, "gapMs": 4000, "pointMs": 3}` plays 0.69 s, then 4 s of silence. The programs that copy the lab helmet set `gapMs` to the pause their paper states, 4000 or 3000 ms. The Shiva and God Helmet programs use `sweepMs: 867`.
+- **Exact:** point duration, burst length and the pause between bursts.
 - **Approximated:** the waveform inside the burst. The 6 → 30 Hz range is a project choice.
+- **Without pauses.** `gapMs: 0` repeats the burst without a pause, as in the continuous arm of Gillis & Persinger 1993 (p.2 [169]; `persinger-gillis-1993-continuous-bilateral`).
 
 ### 2.3 The Thomas pulse
 
@@ -244,10 +247,13 @@ All single-lab.
 - **`thomas` generator.** Plays the exact 849 table points at 3 ms, with optional silence between bursts (none in Buckner). Exact.
 - **`cnp` generator.** Plays the exact points at 1 ms in Camera's 4-burst cycle. With the full 849-ms burst the cycle is 5256 ms; Camera's 838 ms burst gives 5212 ms and truncates the last pulse. The 4-burst cycle comes from Camera 2015, not from the patent's FIG. 1, which shows one burst and one refractory period. Thomas 2007 does not say which Cnp waveform its headset played.
 - **`thomas` pattern type.** An older synthetic stand-in: a falling sweep from 25 to 6 Hz over 2.5 s with a 1 s gap. Use the generator instead.
+- **Repeat intervals.** `persinger-cook-1997-thomas-intervals` plays the table at 1 ms points in four 5-min blocks, with 3, 33, 330 and 3000 ms between patterns (Cook & Persinger 1997, p.4–5 [686–687]).
 
 ### 2.4 LTP and the primed burst
 
-**The thesis description.** The lab's "LTP" (hippocampal) file is described in one thesis figure caption ([Corradini 2014](https://laurentian.scholaris.ca/items/1455e1f3-2f1d-47b5-93cd-23713d69e651), MA thesis). It says the x-axis is "time in 1 ms intervals", the values lie "between 127 and 256" (positive polarity only), and "The time between the primer pulse and subsequent 4 pulses was 150 ms." The thesis cites Rose, Diamond, Pang & Dunwiddie (1988) on *primed-burst* potentiation, and Collins says the hippocampal field "is based on the algorithm for induction of LTP (Rose et al, 1988)" ([Collins 2013](https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc)).
+**The thesis description.** The lab's "LTP" (hippocampal) file is drawn in a thesis figure ([Corradini 2014](https://laurentian.scholaris.ca/items/1455e1f3-2f1d-47b5-93cd-23713d69e651), MA thesis, Fig. 2, p.103 [92]). Its caption says the x-axis is "time in 1 ms intervals", the values lie "between 127 and 256" (positive polarity only), and "The time between the primer pulse and subsequent 4 pulses was 150 ms." The thesis cites Rose, Diamond, Pang & Dunwiddie (1988) on *primed-burst* potentiation, and Collins says the hippocampal field "is based on the algorithm for induction of LTP (Rose et al, 1988)" ([Collins 2013](https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc)).
+
+**The papers.** The 1994 paper gives the pattern in words: "a 2 msec pulse (a primer) followed 150 msec later by four successive 2 msec pulses with each pulse separated by 10 msec" (Persinger, Richards & Koren 1994, p.2 [192]). For the LTP signal of the Shakti helmet the lab wrote: "one pulse followed 170 ms later by four high frequency pulses about 3.8 times per sec", delivered "once every 4.76 s" (Tsang, Koren & Persinger 2004, p.5 [1017]).
 
 **"Theta-burst" in other papers.** The lab also called its LTP fields "theta-burst": [Delparte & Persinger 2007](https://pubmed.ncbi.nlm.nih.gov/17365115/) used a "1 s pulse of 5 trains of an LTP-evoking pattern" at 1 µT for 15 min, continuously or with a 5 s or 10 s ISI.
 
@@ -261,9 +267,10 @@ The file's point values are unpublished.
 **In this project:**
 - **`primed` generator.** One positive 1 ms pulse, then four positive 1 ms pulses 10 ms apart, starting 150 ms later. Five such 200 ms trains make Delparte's "1 s pulse of 5 trains", and `isiMs` adds 0, 5 or 10 s of silence.
   - Exact: the 150 ms primer-to-burst gap, positive polarity, 1 ms points, 5 trains per second.
-  - Approximated: the 100 Hz spacing inside the burst, which the caption does not give, and the pulse shape.
+  - Approximated: the 100 Hz spacing inside the burst, which the caption does not give (the 1994 paper separates the pulses by 10 ms), and the pulse shape.
   - Assumed: that Corradini's file and Delparte's "5 trains" describe the same signal. Each comes from a different source.
 - **`ltp` generator.** A different, slice-physiology timing after Larson & Lynch (1986): four biphasic pulses at 100 Hz, bursts at 5 Hz. It is not the Persinger file.
+- **The hippocampal signal in the programs.** The Shakti and Shiva programs play a primed burst as a point table: one pulse, then four pulses 170 ms later, three times in 0.74 s, on 3 ms points in the standard versions (after Tsang 2004, p.5 [1017]). The Shiva God Helmet sessions (`murphy-gh-*`, `persinger-collins-gh-*`) and `persinger-corradini-2014-ltp-*` play the primed burst drawn in Corradini's figure: 5 ms pulses at 0, 150, 164, 178 and 192 ms, five times a second. Both are rebuilt from descriptions. The vendor's file is not published.
 
 ### 2.5 7 Hz sine with 1 or 10 ms points
 
@@ -328,17 +335,17 @@ The idea that phase modulation explained earlier rises in suggestibility "was no
 
 | Study | Field | What the source says | Dwell per coil, as the project's presets read it | Project `dwell` |
 |---|---|---|---|---|
-| [Cook, Koren & Persinger 1999](https://pubmed.ncbi.nlm.nih.gov/10400078/) | about 10 µT | "Successive additions of 20 ms … at each solenoid"; rotations "between about 200 and 2000 ms"; counterclockwise distended subjective time more than clockwise | base not published. The presets fill Cook's six patterns from the Swann table below, so the 20 ms additions run 100, 120, …, 240 ms (one turn 1360 ms). A 20 ms base would give 20, 40, …, 160 ms (one turn 720 ms) | `[100, 20, 240]` (`persinger-cook-1999-*`, with the other Swann rows); `[20, 20, 160]` is the other reading |
-| [Richards, Koren & Persinger 2002](https://pubmed.ncbi.nlm.nih.gov/12434867/) | 5–10 µT | "20-msec. rates of change in the duration of delivery … to each successive solenoid"; about 30 % more theta power | as Cook 1999 | `[100, 20, 240]` (`circumcerebral-theta`) |
+| [Cook, Koren & Persinger 1999](https://pubmed.ncbi.nlm.nih.gov/10400078/) | about 10 µT | "Successive additions of 20 ms … at each solenoid"; rotations "between about 200 and 2000 ms"; counterclockwise distended subjective time more than clockwise | Table 1 (p.2 [62]) prints the same six patterns as the Swann table below. The paper's example: "100 ms at the first solenoid, 120 ms at the second solenoid", and for −2 a change "from 200 to 186 ms" (p.3 [63]). So the 20 ms additions run 100, 120, …, 240 ms (one turn 1360 ms) | `[100, 20, 240]` (`persinger-cook-1999-*`, with the other rows of the table) |
+| [Richards, Koren & Persinger 2002](https://pubmed.ncbi.nlm.nih.gov/12434867/) | 5–10 µT | "20-msec. rates of change in the duration of delivery … to each successive solenoid"; about 30 % more theta power | as Cook 1999 | `[100, 20, 240]` (`persinger-octopus-plus20-ccw` / `-cw`) |
 | [Persinger et al. 2002](https://pubmed.ncbi.nlm.nih.gov/12081299/) (Ingo Swann), Table 1 | 2–5 µT | three burst-firing then three Thomas configurations, 5 min each, counterclockwise; point / ISI / commutator rate / change, the same three settings for each pattern: 1 / 1 / 20 / +2, 1 / 1 / 100 / +20 and 3 / 3000 / 200 / −2 ms | signs read literally (+ longer): 20 → 34; 100 → 240; 200 → 186 ms. Under the papers' "+ = shorter" convention (2.9), the first and third would be 20 → 6 and 200 → 214 ms | `[20, 2, 34]`, `[100, 20, 240]`, `[200, -2, 186]` (`persinger-swann-2002-table1`) |
 | [Persinger, Koren & Tsang 2003](https://pubmed.ncbi.nlm.nih.gov/14738355/) | about 1 µT | "presented for 100 msec. with changes in rate of 20 msec. to each of the eight solenoids" | 100, 120, …, 240 ms | `[100, 20, 240]` |
-| [Tsang, Koren & Persinger 2004](https://pubmed.ncbi.nlm.nih.gov/15370182/) | not stated | "the first pulse for 25 ms followed by an acceleration of +2 ms to each of the other 7 solenoids (the last duration = 11 ms)"; more 35–45 Hz power frontally and occipitally | 25, 23, …, 11 ms (one turn 144 ms) | `[25, -2, 11]` |
+| [Tsang, Koren & Persinger 2004](https://pubmed.ncbi.nlm.nih.gov/15370182/) | not stated | "the first pulse for 25 ms followed by an acceleration of +2 ms to each of the other 7 solenoids (the last duration = 11 ms)"; more 35–45 Hz power frontally and occipitally | 25, 23, …, 11 ms (one turn 144 ms) | `[25, -2, 11]` (`persinger-tsang-2004-gamma-thomas`; `persinger-tsang-2004-six-configurations` plays all six rotations of the paper's table) |
 | [Collins 2013](https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc) (Shiva, 64 coils) | about 1 µT | left frontal column 100 ms, each successive column counterclockwise 20 ms longer; 289-point burst at 3 ms, 4000 ms between cycles, 20 min | 100, 120, …, 240 ms (one turn 1360 ms) | `[100, 20, 240]` |
 | [Lehman 2016](https://laurentian.scholaris.ca/items/e809389f-805c-4414-8177-d0bf8d7127bb) | 1–5 µT inside each solenoid | "20 − 2": 20, 22, …, 34 ms, "sum = 216 ms or 4.6 cycles/s" | 20 → 34 ms | `[20, 2, 34]` |
 
 **Notes on the table:**
 - **Change, not dwell.** Cook 1999 and Richards 2002 describe a 20 ms *change* per solenoid, not a fixed 20 ms dwell. A fixed 20 ms dwell gives a 160 ms turn, below Cook's stated minimum of about 200 ms, so reading these papers as "20 ms per solenoid" is a misreading.
-- **Direction.** Clockwise rotation raised power over the left hemisphere and counterclockwise over the right ([Booth, Koren & Persinger 2008](https://pubmed.ncbi.nlm.nih.gov/19037792/)). The lab chose counterclockwise "because we presumed the direction of the field would be moving against the rostral-caudal" waves of the cerebrum's own fields ([Persinger & Lavallee 2010](https://jcer.com/index.php/jcj/article/view/99)).
+- **Direction.** Clockwise rotation raised power over the left hemisphere and counterclockwise over the right ([Booth, Koren & Persinger 2008](https://pubmed.ncbi.nlm.nih.gov/19037792/)). The paper used one direction per group, so there is one program per direction: `persinger-booth-2008-cw` and `persinger-booth-2008-ccw`. The lab chose counterclockwise "because we presumed the direction of the field would be moving against the rostral-caudal" waves of the cerebrum's own fields ([Persinger & Lavallee 2010](https://jcer.com/index.php/jcj/article/view/99)).
 - **Coils per position.** In the Koren patent each channel drove a pair of solenoids, and Murphy says each Octopus position held two coils (claim). This helmet has one coil per channel.
 - **Ring position.** The lab's solenoid 1 sat over the left frontal region and solenoid 8 over the right prefrontal region, so the lab ring straddled the midline. Ring A (Layout A) starts at Fpz on the midline instead; the "lab 45° ring" placement (Fp1 … Fp2) follows the lab ([PLACEMENT.md](PLACEMENT.md)).
 - **Replication.** All of these results are single-lab, and the project's research found no independent replication of any circumcerebral result.
@@ -349,13 +356,13 @@ The idea that phase modulation explained earlier rises in suggestibility "was no
 
 ### 2.9 The "20+2" sign trap
 
-**Lab notation.** The papers write a schedule as base ± change: "a 20+2 configuration (the first number is the base duration and the second number is change in duration)" runs 20, 18, …, 6 ms. In "20−2", "with each successive solenoid the duration was 2 ms longer" ([Persinger & Lavallee 2010](https://jcer.com/index.php/jcj/article/view/99)), which [Lehman 2016](https://laurentian.scholaris.ca/items/e809389f-805c-4414-8177-d0bf8d7127bb) spells out as 20, 22, …, 34 ms. So in the papers, "+" means the rotation speeds up and "−" means it slows down.
+**Lab notation.** The papers write a schedule as base ± change: "a 20+2 configuration (the first number is the base duration and the second number is change in duration)" runs 20, 18, …, 6 ms. In "20−2", "with each successive solenoid the duration was 2 ms longer" ([Persinger & Lavallee 2010](https://jcer.com/index.php/jcj/article/view/99)), which [Lehman 2016](https://laurentian.scholaris.ca/items/e809389f-805c-4414-8177-d0bf8d7127bb) spells out as 20, 22, …, 34 ms. So in these papers, from Tsang 2004 on, "+" means the rotation speeds up and "−" means it slows down. Cook 1999 reads the same signs the other way: "100 ms at the first solenoid, 120 ms at the second" (p.3 [63]).
 
 **Patent notation.** The hardware patent uses the opposite sign. Its worked example sets the "sequence acceleration" to −2 ms with a 10 ms interval and gets 10, 8, 6, 4 ms ([US 6,312,376](https://patents.google.com/patent/US6312376B1/en)). A re-implementation that takes the patent's sign while reading the papers' labels rotates the wrong way in time.
 
 **Inside the lab.** Tsang 2004's "acceleration of +2 ms" ends at 11 ms, so it follows the papers. The Swann table's "100 … +20" cannot mean shorter: 100 − 7 × 20 is below zero, so it must mean longer, as in Collins 2013 and Persinger, Koren & Tsang 2003. The sign is not used consistently even inside the lab.
 
-**In the presets.** Presets built from the Swann table and the lab's six-configuration table read those tables' signs literally (+ longer, − shorter), because the "+20" rows can only mean longer. Presets built from Persinger & Lavallee's prose (for example `telepathy-sender`, `persinger-lehman-2016-gamer-pairs`) use the papers' convention. Each preset's phase name spells out its dwell values, so check those rather than the labels.
+**In the presets.** Presets built from the Swann table and the lab's six-configuration table read those tables' signs literally (+ longer, − shorter), because the "+20" rows can only mean longer. Presets built from Persinger & Lavallee's prose (for example `persinger-lehman-2016-gamer-pairs`) use the papers' convention. So do `persinger-booth-2008-cw` and `-ccw`, after that paper's own examples: 20 → 6 ms and 200 → 214 ms. `persinger-yoked-2010-six-rotations` plays the six rotations of the yoked-ring paper the same way: its "100+10" runs 100, 90, … ms (Persinger 2010, p.2 [232]). Each preset's phase name spells out its dwell values, so check those rather than the labels.
 
 **The project's notation.** `dwell: [start, step, end]` avoids labels: `step` is the plain change in ms.
 
@@ -371,15 +378,16 @@ The four labels 20+2, 20−2, 100+10 and 100−10 appear together in [Persinger 
 
 ### 2.10 What was never published
 
-- The burst-firing point values, at any length.
+- The burst-firing point values as numbers, at any length. The shape is printed as a graph (2.2).
 - The lab's LTP/hippocampal file.
 - Any numeric definition of a "chirp".
 - The caudate, septal, ERP and "consciousness" signals. They exist only as Shiva product names, "based on templates licensed by Stan Koren and Dr. Michael A. Persinger". The ERP page says the signal "should be considered as untested" ([Murphy, Shiva demo: Event-Related Potential](https://www.god-helmet.com/wp/shiva/shiva_demo/erp_page.htm)).
 - The "Linda Genetic Pulse", which is known only by name from a magazine article (anecdote; [Hitt 1999](https://www.wired.com/wired/archive/7.11/persinger.html)).
-- The full list of configurations in most 6 × 5 min rotation studies. The Swann Table 1 set above is the exception. A 2008 paper (Persinger, Tsang, Booth & Koren) is reported to print a second six-configuration table, which some presets use; the project's research could not open that paper, so its table is unverified.
 - The geomagnetic-storm file "geomagn5071.dac". It is described in [Murugan 2013](https://laurentian.scholaris.ca/items/39c9c1ad-70ba-458d-a819-d24c20da217a), but the description contradicts itself: its segment durations imply 3 ms points while the text says 1 ms, and the segments do not add up to 5071 points. It cannot be rebuilt exactly.
 
 The one exception is Table 1 of [US 6,234,953](https://patents.google.com/patent/US6234953B1/en), which the project plays point for point. Every other Persinger-lineage pattern here is an approximation of a description, not a copy of a file.
+
+The configurations of the rotation studies are not on this list. Each paper prints its table: Cook 1999 (Table 1, p.2 [62]), Richards 2002 (p.4 [674]), the Swann paper (p.4 [930]), the sibling study of 2003 (p.5 [881]), Tsang 2004 (p.4 [1186]), Booth 2008 (p.3 [428]) and the 2008 paper by Persinger, Tsang, Booth & Koren (p.5 [11]). What the papers leave open is the sign of the change (2.9).
 
 ---
 
@@ -398,18 +406,18 @@ Todd Murphy's consumer devices descend from the Persinger/Koren lab helmets: the
 - Published: signal names, the timing scheme, session structures and coil layouts.
 - This project neither copies nor reconstructs the vendor's files. Every Murphy-derived program uses the built-in approximations and says so in its notes.
 
-**The lab's own comparison.** The lab compared the Shakti sound-card route with its own 4-solenoid "Koren boxes". The two differed only in high alpha (10.5–13 Hz) EEG power ([Tsang, Koren & Persinger 2004](https://pubmed.ncbi.nlm.nih.gov/15527205/); single-lab).
+**The lab's own comparison.** The lab compared the Shakti sound-card route with its own "Koren boxes": two boxes of four solenoids each, driven as four left-right pairs, 0.5 s per pair (Tsang, Koren & Persinger 2004, p.5–6 [1017–1018]). The two differed only in high alpha (10.5–13 Hz) EEG power ([Tsang, Koren & Persinger 2004](https://pubmed.ncbi.nlm.nih.gov/15527205/); single-lab).
 
 ### 3.2 Signal families
 
 | Murphy's name | What the vendor says | Project stand-in |
 |---|---|---|
-| Amygdala ("bx", burst-firing) | standard version with 3 ms points and about 4 s latency | `burst`, 690 ms bursts with a 4 s gap |
-| Hippocampal ("ltp"/"tp"): normal, slow, rapid, high-speed | LTP-derived; FFT peak 5.4 Hz | point tables (`primed`, `ltp`) |
+| Amygdala ("bx", burst-firing) | standard version with 3 ms points and about 4 s latency | `burst` with a 4 s gap: 690 ms bursts in the Shakti programs, 867 ms (289 points × 3 ms) in the Shiva and God Helmet programs |
+| Hippocampal ("ltp"/"tp"): normal, slow, rapid, high-speed | LTP-derived; FFT peak 5.4 Hz | a primed-burst point table: one pulse, then four pulses 170 ms later, three times in 0.74 s; in the God Helmet sessions the burst drawn in Corradini 2014 (2.4) |
 | Amygdala and hippocampus "in sequence" | the two signals one after the other with a four-second latency ([Murphy, mood enhancement](https://www.god-helmet.com/wp/winshakti/rotating/shakti_happiness.htm)) | two phases or tables |
 | Modulated 40 Hz ("Consciousness", "binding factor") | see 2.6 | `pm` |
 | Modulated 40 Hz chirp | see 2.7 | `chirp`, or a 40 Hz carrier with a dwell ramp |
-| Caudate, septum ("pleasure center"), thalamus burst-firing | names only ([Murphy, Shiva demo: simple signals](https://www.god-helmet.com/wp/shiva/shiva_demo/simple_signals.htm); [Murphy, Shakti demo: thalamus burst-firing](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/thalamus_burst_firing_consent.htm)) | `burst` stand-ins |
+| Caudate, septum ("pleasure center"), thalamus burst-firing | names only ([Murphy, Shiva demo: simple signals](https://www.god-helmet.com/wp/shiva/shiva_demo/simple_signals.htm); [Murphy, Shakti demo: thalamus burst-firing](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/thalamus_burst_firing_consent.htm)) | `burst` stand-ins for the caudate and septal signals; no program plays the thalamus signal, whose page gives no waveform, site or duration |
 | Event-related potential (ERP) | "should be considered as untested" | `erp` generator (project construct) |
 | Fibonacci, Fibonacci-amplitude hippocampal | no waveform published | `fibonacci` generator (project construct) |
 | Theta-band noise ("5jut4ran") | began as an accident with mis-configured DAC hardware; spectral peak 5.4 Hz ([Murphy, Shakti demo: random theta band](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/5jut4ranconsent.htm)) | `noise`, 4–6.8 Hz |
@@ -431,9 +439,9 @@ Todd Murphy's consumer devices descend from the Persinger/Koren lab helmets: the
 
 | Variant | Project setting (burst example) |
 |---|---|
-| Standard | `pointMs: 3`, `sweepMs: 690`, `gapMs: 4000` |
+| Standard | `pointMs: 3`, `sweepMs: 690` (Shiva: `867`), `gapMs: 4000` |
 | Rapid | `pointMs: 3`, `gapMs` near 0 |
-| High-speed / Shiva "fast" | `pointMs: 1`, `sweepMs: 230`; the Shiva "fast" presets also cut the gap to a third (project choice) |
+| High-speed / Shiva "fast" | `pointMs: 1`, `sweepMs: 230` (Shiva: `289`); the Shiva "fast" presets also cut the gap to a third (project choice) |
 
 ### 3.4 Intensity statements
 
@@ -444,7 +452,12 @@ The vendor's figures do not agree:
 - 90 mG, or 90 %, on the old 2/4-coil page ([volume](https://www.god-helmet.com/wp/winshakti/volume.htm));
 - a 92 mG capacity ([FAQ](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/faq.htm)).
 
-10 mG is 1 µT. The volume percentage is a sound-card setting, not a calibrated field, and the project's research found no independent gaussmeter measurement of any Shakti or Shiva unit. For comparison, the lab protocols used about 1 µT for the temporal helmet, 2–5 µT for Swann and 5–10 µT in the rotation studies (section 2.8).
+10 mG is 1 µT. The volume percentage is a sound-card setting, not a calibrated field. Field figures from outside the vendor exist:
+- The Persinger lab gave about 1 µT on the burst-firing side and 0.5 µT on the LTP side of the stereo Shakti helmet, "approximately near the level of the scalp" (Tsang, Koren & Persinger 2004, p.5–6 [1017–1018]). It names no instrument.
+- An independent group measured 0.1–1.0 µT RMS with a hand-held gaussmeter in the centre of the 8 Coil Shakti headpiece, about 9 cm from the solenoids (Gendle & McGrath 2012, p.11 [227]).
+- For the Shiva God Helmet a lab thesis gives 1–2 µT at the centre of the cap (Collins 2013, p.69 [60]).
+
+These figures do not fit each other: for a small coil, 1 µT at the scalp would be about a thousand times less 9 cm away. For comparison, the lab protocols used about 1 µT for the temporal helmet, 2–5 µT for Swann and 5–10 µT in the rotation studies (section 2.8).
 
 ### 3.5 8 Coil Shakti stereo polarity wiring
 
@@ -463,7 +476,7 @@ The vendor's figures do not agree:
 
 For Shiva coil pairs, Murphy says like polarities give deeper fields and opposite polarities stronger, shallower ones ([Murphy, Shiva demo: putting on the coils](https://www.god-helmet.com/wp/shiva/shiva_demo/shiva_coil_setup.htm); claim).
 
-**In this project** (e.g. `shakti-alternate` in the Programs tab):
+**In this project** (e.g. `replication-gendle-mcgrath-2012` in the Programs tab):
 - **Sites.** Custom sites FT7, C5, TP7 and T9 on the left and FT8, C6, TP8 and T10 on the right. The site names are an inference from "top, bottom, front, back".
 - **Polarity.** `weights` of −1 on C5, FT7, T10 and TP8 give the reversed coils.
 - **Alternation.** Two `tracks` gated in point tables switch the coil pairs every 0.5 s.
@@ -487,11 +500,11 @@ By arithmetic these are about 5, about 7.4 and 9 turns per second. The 7.4 assum
 **The God Helmet configuration.** In the Shiva God Helmet, four coils per temporal lobe run on 8 channels. The text says "Over the left side, the direction is clockwise, and over the right, it's counter clockwise" ([Murphy, God Helmet session list](https://www.god-helmet.com/wp/god-helmet/koren_session_list.htm)).
 - **Direction.** The vendor's coil-numbered animations show each side as seen from that side. So both sides actually run top → back → bottom → front, a mirror-symmetric pattern. One 2021 illustration contradicts this.
 - **Speed.** The vendor gives no ms value per coil, only "several times per second".
-- **In this project.** The God Helmet presets use `cycle` on both sides (`dirLeft: "cw"`, `dirRight: "ccw"`) with a 125 ms dwell. The 125 ms is a project choice.
+- **In this project.** The God Helmet presets use `cycle` on both sides (`dirLeft: "cw"`, `dirRight: "ccw"`) with a 125 ms dwell. The 125 ms is a project choice. The coils sit at FFT7, C5, TP7, T9h and their mirrors ([PLACEMENT.md](PLACEMENT.md)). In phases on both sides one left-right pair is on at a time, as in the lab's test of this helmet (Collins 2013, p.69 [60]), and the right side is reversed so that the pair's field points through the head.
 
 ### 3.7 Independent tests
 
-- **Gendle & McGrath 2012.** A randomized, sham-controlled study of the 8 Coil Shakti amygdala signal over both temporal lobes (30 min, N = 37) found no effect on emotional responses to pictures ([Gendle & McGrath 2012](https://pubmed.ncbi.nlm.nih.gov/22582690/)). Murphy disputes their choice of session.
+- **Gendle & McGrath 2012.** A randomized, sham-controlled study of the 8 Coil Shakti amygdala signal over both temporal lobes (30 min, N = 37) found no effect on emotional responses to pictures ([Gendle & McGrath 2012](https://pubmed.ncbi.nlm.nih.gov/22582690/)). It was not double-blind: "the experimenter knew when the device was to be disconnected" (p.7 [223]). Murphy disputes their choice of session.
 - **Tinoco & Ortiz 2014.** A cross-layout helmet with simple 100 Hz pulses and 250 ms coil steps found differences only in post-session verbal reports ([Tinoco & Ortiz 2014](https://jcer.com/index.php/jcj/article/view/361)). It did not use a Persinger waveform.
 - **Granqvist et al. 2005.** The temporal-helmet null ([Granqvist et al. 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/)) applies to the whole family.
 
@@ -499,7 +512,7 @@ By arithmetic these are about 5, about 7.4 and 9 turns per second. The 7.4 assum
 
 ## 4. Clinical and laboratory low-field timings the generators copy
 
-The `lowfield-*` programs copy the timing of mainstream weak-field protocols. Timing is exact to 0.5 ms; field strength is not.
+The `lowfield-*` programs copy the timing of mainstream weak-field protocols. Timing follows the source to within one update period of 0.5 ms; how exactly each update is placed has not been measured ([HARDWARE_AUDIT.md](HARDWARE_AUDIT.md) C3). Field strength does not follow the source.
 
 The "this helmet" column uses the coil model at the 4.54 mA cap:
 - about 8 µT at 20 mm;
@@ -527,7 +540,7 @@ None of these programs is a replica of a tested treatment. They are pattern repl
 
 ## 5. Engine patterns and generators: origin, exact, approximated
 
-The syntax for all of these is in [PRESET_FORMAT.md](PRESET_FORMAT.md). The engine code is `webapp/src/engine/patterns.js` and `generators.js`, mirrored in the firmware. "Evidence" rates the original protocol, never this helmet.
+The syntax for all of these is in [PRESET_FORMAT.md](PRESET_FORMAT.md). The engine code is `site/core/engine/patterns.js` and `generators.js`, mirrored in the firmware. "Evidence" rates the original protocol, never this helmet.
 
 ### 5.1 Pattern types (`pattern.type`)
 
@@ -537,7 +550,7 @@ The syntax for all of these is in [PRESET_FORMAT.md](PRESET_FORMAT.md). The engi
 | `dc` | constant current | bench tests and calibration; `lowfield-tsms-dc` as a negative control | – | not tSMS: tSMS magnets give 110–190 mT at 2–3 cm ([Kirimoto et al. 2016](https://pmc.ncbi.nlm.nih.gov/articles/PMC5048290/)), while a coil's DC field is below the Earth's (about 35 µT in [Wang et al. 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC6494972/)) |
 | `sine` | `f0` 7 Hz, 1 ms points | Booth 2003 (7 Hz, point durations), Sculthorpe 2003 (5 and 40 Hz), alpha, Schumann, other low-field probes | frequency, point duration | field strength; some originals used uniform whole-head fields |
 | `chirp` | linear sweep `f0` → `f1` (4 → 40 Hz) over `sweepMs` (2000), then `gapMs` | Murphy's "chirp"; phase 1 of the God Helmet sessions | phase lengths of the sessions | the waveform: no source defines it (2.7) |
-| `burst` | rising sweep 6 → 30 Hz over 1500 ms, 4000 ms gap, 3 ms points | Persinger/Koren burst-firing (Burst-X) | point duration, burst length, ISI when set from the sources (690 / 3310 / 3) | the point values (unpublished); 6 → 30 Hz is a project choice |
+| `burst` | rising sweep 6 → 30 Hz over 1500 ms, 4000 ms gap, 3 ms points | Persinger/Koren burst-firing (Burst-X) | point duration, burst length, pause when set from the sources (690 / 4000 / 3) | the point values (never published as numbers; the shape is printed as a graph); 6 → 30 Hz is a project choice |
 | `thomas` | falling sweep 25 → 6 Hz over 2500 ms, 1000 ms gap, 3 ms points | the Thomas pulse | point duration | burst length (2.5 s vs 2.55 s) and everything inside the burst; use the `thomas` *generator* for the real table |
 | `pulse` | rectangular pulses, 100 ms on, 100 ms off, alternating polarity | the lab's "pulsed (1 sec. every 4 sec.)" comparison field ([Gillis & Persinger 1993](https://pubmed.ncbi.nlm.nih.gov/8451123/)); Tinoco & Ortiz's 100 Hz pulses; GENUS-timed on/off square | timing | the content of the lab's pulsed field (unpublished) |
 | `semirandom` | a random value per 3 ms point (seeded) | the random-sequenced control arm of [Tsang, Koren & Persinger 2009](https://pubmed.ncbi.nlm.nih.gov/20017627/) | point duration | the lab's own random sequence |
@@ -545,7 +558,7 @@ The syntax for all of these is in [PRESET_FORMAT.md](PRESET_FORMAT.md). The engi
 | `noise` | 12 sines spread over `f0`–`f1` (4–8 Hz) with random phases | Murphy's theta-band noise (5.4 Hz peak) | band | the vendor's spectrum |
 | `table` | point values 0–255 (128 = zero) with `pointMs` and `gapMs` | published point tables; the generators below | the values as given | – |
 
-### 5.2 Generators (`node scripts/table.mjs <name>`, run in `webapp/`)
+### 5.2 Generators (`npm run table -- <name>`, run in `site/`)
 
 | Generator | Builds | Origin | Exact | Approximated or note | Evidence (original) |
 |---|---|---|---|---|---|

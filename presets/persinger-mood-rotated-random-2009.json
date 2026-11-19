@@ -3,34 +3,32 @@
   "name": "Rotating random-sequenced field, 20 min (control arm, Tsang 2009 mood study)",
   "category": "control",
   "evidence": "single-lab",
+  "fidelity": "approximation",
+  "dose": {"value": 1, "unit": "uT", "plane": "unstated", "cite": "Tsang 2009 p.1 [365]"},
   "origin": "Tsang, Koren & Persinger, Laurentian University",
   "uT": 1,
-  "summary": "The random-sequenced control arm of Tsang, Koren & Persinger 2009: a 1 uT field of random point values rotated around the head at the level of the temporoparietal lobes, 20 min once a week for 3 weeks. It tests whether any field, rather than a specific pattern, changes mood; in the lab's report burst-firing, complex-sequenced and LTP fields reduced fatigue more than this one or sham.",
-  "notes": "Tsang, Koren & Persinger 2009 exposed normal volunteers for 20 min once a week, 3 sessions in all, to 1 of 7 configurations of weak (1 microTesla) fields or to a sham field; \"the fields were spatially rotated and applied through the brain at the level of the temporoparietal lobes\". Mood (Profile of Mood States) was rated before and after each session, and heart rate, plethysmography and skin conductance were measured before, during and after; the abstract states no autonomic effect. Persinger's lab reported that the burst-firing pattern \"previously demonstrated to be effective for clinical depression\" improved mood and vigour compared with sham and the other configurations, and that burst-firing, a complex-sequenced pattern and an LTP pattern reduced fatigue compared with sham and random-sequenced fields. The arms rebuilt here are persinger-mood-rotated-burst-2009, persinger-mood-rotated-ltp-2009 and persinger-mood-rotated-random-2009 (run sham, or the app's Blind option, for the sham arm); the complex-sequenced arm and the other three configurations are not described well enough to rebuild. Approximations: the abstract gives no rotation schedule, so one of the lab's documented schedules, '20+2' (20, 18 ... 6 ms per solenoid, one turn 104 ms; Persinger & Lavallee 2010), turning counter-clockwise (the lab standard; Lehman 2016), stands in; the ring of 8 coils about 45 degrees apart on the 10% line, coil 1 over the left frontal region and coil 8 over the right prefrontal region (Fp1, FFT7, TP7, POO7, POO8, TP8, FFT8, Fp2), is an inference from the lab's circumcerebral device. The paper puts the rotation \"through the brain at the level of the temporoparietal lobes\", that is around T7, TP7, P7 and T8, TP8, P8, while this ring follows the lab's own solenoid order, whose first and last coils sit over the left frontal and right prefrontal regions: the side and back coils are near the paper's plane and the two forehead coils sit above and in front of it. The abstract does not say whether the randomness was in the point values or in the order of the solenoids; here each 3-ms point (the lab's usual point duration) takes a new pseudo-random value, played without pauses, with the same rotation as the other arms, so only the waveform differs. Source cautions: one lab, mood questionnaires, a modest sample spread over 8 groups, never independently replicated. A randomized, sham-controlled test of the 8 Coil Shakti amygdala signal found no effect on emotional responses (Gendle & McGrath 2012), and a double-blind God Helmet test found no field effect (Granqvist 2005). Not a treatment for low mood or depression. Not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress.",
-  "setting": "Seated, eyes closed, in a quiet, dim room. Fill in the same mood questionnaire (the study used the Profile of Mood States) before and after each session.",
+  "summary": "The continuous random-sequence arm of Tsang, Koren & Persinger 2009: a 1 uT field of random point values (3 ms each), passed through four left-right pairs of coils in boxes over the temporal lobes, 0.5 s per pair, 20 min once a week for 3 weeks. The paper reports mood scores like those of a sham field for it, while the same sequence given once every 3 s lowered depression scores as burst-firing did.",
+  "notes": "Tsang 2009: 32 people in 8 groups of four got one of 7 field configurations or a sham field, 20 min once a week for 3 weeks, with 5 min of baseline before and after (p.1-3 [365-367]). Two boxes on a headphone frame sat over the temporal regions, four solenoids each; one left and one right solenoid were connected, and each pair got the signal for 0.5 s, 2 s per cycle (p.3 [367]). 'A single random sequence', 'extracted from a random number generator', 'was repeated continuously or once every 3,000 ms': arms 6 and 7 of Table 1, both with 3-ms points (p.4 [368]). Its length is not given. This program is arm 6, the continuous one. One left-right pair is on at a time, and the right side is reversed so that the pair's field points through the head. The four sites per side stand for the lab helmet's four solenoids per side on a 7.5 by 5 cm ellipse; the site names are this project's reading. The generator here draws a fresh value for every 3-ms point and never repeats, where the paper repeated one fixed sequence. The paper gives 1 uT and does not say where it was measured (p.1 [365]). This program's setting is the peak field 20 mm in front of each coil. At 1 uT the scalp gets about 24 uT. Scores after/before for this arm: depression 0.97 and fatigue 1.02, like sham (1.00 and 1.08). The same sequence given once every 3 s lowered depression scores (0.92), as burst-firing did (Table 3 p.6 [370]), so only the continuous version behaved like a control. Four people per group, post hoc tests at p < .10 (p.6 [370]), single lab, never independently replicated. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005, double-blind; Gendle & McGrath 2012, where the experimenter knew the condition). Not a treatment for low mood or depression. Not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "setting": "Seated, eyes closed, in a quiet, dim room. The study had 5 min of baseline before and 5 min after the 20-min field. Fill in the same mood questionnaire (the study used the Profile of Mood States) before and after each session.",
   "schedule": "20 min once a week for 3 weeks. This is the control arm: run it blinded against the burst-firing and LTP arms and against the sham program.",
   "targets": ["left-tpj", "right-tpj", "left-superior-temporal-gyrus-posterior", "right-superior-temporal-gyrus-posterior"],
   "source": "Tsang, Koren & Persinger 2009, Electromagn Biol Med 28:365 https://pubmed.ncbi.nlm.nih.gov/20017627/ ; Persinger & Lavallee 2010, J Conscious Explor Res 1(7):785 (ring order and the '20+2' notation) https://jcer.com/index.php/jcj/article/view/99 ; Lehman 2016, PhD thesis, Laurentian University, pp. 56-57 (CCW standard, 1-5 uT inside each solenoid) https://laurentian.scholaris.ca/items/e809389f-805c-4414-8177-d0bf8d7127bb ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
   "layout": "custom",
   "placement": {
-    "sites": ["Fp1", "FFT7", "TP7", "POO7", "POO8", "TP8", "FFT8", "Fp2"]
+    "sites": ["FFT7", "C5", "TP7", "T9h", "FFT8", "C6", "TP8", "T10h"]
   },
   "fadeInS": 10,
   "fadeOutS": 10,
   "phases": [
     {
-      "name": "Random points (3 ms), CCW ring, 20+2 (20 -> 6 ms)",
+      "name": "Random sequence, continuous, four coil pairs, 0.5 s per pair",
       "minutes": 20,
       "pattern": {
         "type": "semirandom",
         "pointMs": 3,
         "seed": 1
       },
-      "spatial": {
-        "mode": "rotate",
-        "dir": "ccw",
-        "dwell": [20, -2, 6]
-      }
+      "spatial": {"mode": "cycle", "side": "both", "dwellMs": 500, "weights": [1, 1, 1, 1, -1, -1, -1, -1]}
     }
   ]
 }

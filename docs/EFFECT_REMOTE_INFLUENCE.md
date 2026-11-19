@@ -102,7 +102,7 @@ A small coil driven at a few hertz to a few kilohertz does not send out a beam. 
 
 Eight coils together can add up to eight times these values at most. Programs run at 1 µT by default, eight times lower again.
 
-Neurons respond to the electric field that a changing magnetic field induces. Even directly under a coil, smooth signals from this helmet induce about five orders of magnitude less than the level at which neural networks start to respond ([RESEARCH.md](RESEARCH.md)). A person across the room receives a field far below the background of their own home. A helmet of this kind cannot reach beyond the head it sits on, and independent double-blind tests found no effect of such fields even on the head that wears them ([RESEARCH.md](RESEARCH.md)).
+Neurons respond to the electric field that a changing magnetic field induces. Even directly under a coil, smooth signals from this helmet induce about five orders of magnitude less than the level at which neural networks start to respond ([RESEARCH.md](RESEARCH.md)). A person across the room receives a field far below the background of their own home. A helmet of this kind cannot reach beyond the head it sits on, and independent sham-controlled tests, one of them double-blind, found no effect of such fields even on the head that wears them ([RESEARCH.md](RESEARCH.md)).
 
 ## Accounts of being targeted
 
@@ -138,10 +138,10 @@ What can be tested fairly, and only with consent:
 
 | Test | What it is | Evidence |
 |---|---|---|
-| A telepathy trial in [Trials](#trials), with [Telepathy - sender (Persinger 2003 style, 6 x 5 min)](#programs/telepathy-sender) | Two people who both agree. The helmet commits to a hidden target before the receiver answers ([Telepathy](EFFECT_TELEPATHY.md)) | **single-lab** |
+| A telepathy trial in [Trials](#trials), with [Paired siblings 2003: stimulus person](#programs/persinger-siblings-2003-stimulus) | Two people who both agree. The helmet commits to a hidden target before the receiver answers ([Telepathy](EFFECT_TELEPATHY.md)) | **single-lab** |
 | [Shapes and colours telepathy test (two people)](#guides/shapes-colors) | A simpler committed trial | **unverified** |
 | [Blinded helmet session with questionnaires](#guides/helmet-session-flow) | Real or sham on yourself, chosen by the helmet and hidden until you have rated the session | **claim** |
-| [Granqvist 2005 replication: right Thomas, then bilateral burst-firing](#programs/persinger-granqvist-2005-replication) with **Blind** ticked | The independent test that found no field effect | **established** (the null result) |
+| [Granqvist 2005 replication: Thomas right, then burst-firing both sides](#programs/replication-granqvist-2005) with **Blind** ticked | The independent test that found no field effect | **single-lab** (one double-blind test, with a null result) |
 | The field itself | Measure it with a phone magnetometer ([CALIBRATION.md](CALIBRATION.md)). The model predicts that the reading is lost in the background about 10 cm from a coil | computed; check it yourself |
 
 A fair series is planned in advance and long: about 279 telepathy trials at the autoganzfeld hit rate of 32 %, and 17 to 64 real and as many sham sessions to detect a very large to medium difference ([EXPERIMENTS.md](EXPERIMENTS.md)). What these tests cannot show: a hit rate above chance is not influence, and it says nothing about the helmet unless real beats sham.

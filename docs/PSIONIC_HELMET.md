@@ -137,8 +137,8 @@ None of these has been shown to change psychic performance. They let you test th
 
 | Program | What it is | Evidence |
 |---|---|---|
-| [God Helmet classic (Persinger 2-phase)](#programs/god-helmet-classic) ([brain view](#programs/god-helmet-classic/brain)) | The laboratory session the comparison starts from | **single-lab** |
-| [Remote viewing (Octopus ring, CCW chirp 10→20 ms)](#programs/remote-viewing) ([brain view](#programs/remote-viewing/brain)) | Murphy's psi configuration; the helmet arm of the psi guides | **claim** |
+| [God Helmet classic](#programs/god-helmet-classic) ([brain view](#programs/god-helmet-classic/brain)) | The session the comparison starts from: Murphy's Shiva God Helmet session, modelled on the laboratory's two-phase procedure | **claim** |
+| [Shiva psi session: chirp, counter-clockwise, 10→20 ms per coil (Murphy)](#programs/remote-viewing) ([brain view](#programs/remote-viewing/brain)) | Murphy's psi configuration; the helmet arm of the psi guides | **claim** |
 | [Maij, van Elk & Schjoedt 2019: placebo God Helmet at a festival, 15 min (no field)](#programs/replication-maij-2019-festival-sham) | The inert helmet: what a helmet does by itself | **single-lab** |
 | [Sham (no field)](#programs/sham) | The control for everything else | **established** |
 

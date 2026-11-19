@@ -919,7 +919,7 @@ static std::string readFile(const std::string& path) {
   return ss.str();
 }
 
-// The compact form written to the SD card (webapp/src/engine/compact.js):
+// The compact form written to the SD card (site/core/engine/compact.js):
 // numeric "data"/"tableData" arrays become base64 strings of their bytes.
 static std::string toBase64(const std::vector<uint8_t>& bytes) {
   static const char* kAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -1010,7 +1010,7 @@ static void testPresets(const char* dir) {
     }
     CHECK(s.totalMs() <= kMaxSessionMs);
     CHECK(!info.source.empty() && !info.summary.empty());
-    CHECK(info.uT > 0 && info.uT <= 10);
+    CHECK(info.uT > 0 && info.uT <= 5);  // the same limit as site/core/lib/presetSchema.js UT_MAX
 
     // Render the whole session at 2 kHz: outputs stay within [-1, 1].
     SessionRunner r;
@@ -1512,9 +1512,9 @@ static void testTableData() {
   CHECK(!sessionFromJson(doc, s, nullptr, &err) && err.find("base64") != std::string::npos);
 }
 
-// Tape-measure directions: the C++ port must match webapp/src/lib/tape.js
+// Tape-measure directions: the C++ port must match site/core/lib/tape.js
 // for every 10-5 site at a typical and a measured head
-// (fixture from `npm run sd-pack -- --fixture` in webapp/).
+// (fixture from `npm run sd-pack -- --fixture` in site/).
 static void testTape(const char* fixturePath) {
   std::printf("tape directions (%s)\n", fixturePath);
   using namespace engine::tape;
@@ -1550,7 +1550,7 @@ static void testTape(const char* fixturePath) {
   CHECK(typical.typical && typical.nasionInion == 36 && typical.earEar == 35 && typical.circumference == 56);
 }
 
-// Reference values for the web app's JavaScript engine port (webapp/test):
+// Reference values for the web app's JavaScript engine port (site/test):
 // a coarse pass over each whole preset (every 4985 ms) and a fine window of
 // 300 samples 3.5 ms apart starting at 60 s.
 static void dumpRow(std::FILE* out, const Session& s, const SessionRunner::Frame& f, bool first) {

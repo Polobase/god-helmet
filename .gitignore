@@ -8,8 +8,6 @@ __pycache__/
 .env
 .env.*
 !.env.example
-webapp/node_modules/
-webapp/dist/
 
 # Third-party datasheets (link to the vendor instead of redistributing)
 docs/*.pdf
@@ -19,9 +17,6 @@ research/data/
 
 # SD-card program pack output (npm run sd-pack -- <dir>)
 godhelmet/
-
-# Firmware images for the web installer (firmware/scripts/web_bundle.sh; CI builds them)
-webapp/public/firmware/
 
 # Downloaded copies of cited papers and documents (tools/fetch_sources.py): mostly copyrighted, never committed
 library/

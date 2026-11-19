@@ -13,11 +13,11 @@ name: Site
 on:
   push:
     branches: [main]
-    paths: ["site/**", "webapp/src/**", "webapp/test/**", "presets/**", "guides/**", "docs/**", "README.md", "hardware/BOM.md",
-            ".github/workflows/site.yml"]
+    paths: ["site/**", "presets/**", "guides/**", "docs/**", "README.md", "hardware/BOM.md",
+            "firmware/lib/engine/**", "firmware/test/fixtures/**", ".github/workflows/site.yml"]
   pull_request:
-    paths: ["site/**", "webapp/src/**", "webapp/test/**", "presets/**", "guides/**", "docs/**", "README.md", "hardware/BOM.md",
-            ".github/workflows/site.yml"]
+    paths: ["site/**", "presets/**", "guides/**", "docs/**", "README.md", "hardware/BOM.md",
+            "firmware/lib/engine/**", "firmware/test/fixtures/**", ".github/workflows/site.yml"]
   workflow_dispatch:
 
 permissions:
@@ -36,20 +36,18 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: |
-            site/package-lock.json
-            webapp/package-lock.json
-      # The engine, audio, protocol and lib modules are shared from webapp/src
-      # until cut-over; their tests gate this site too.
-      - name: Core tests (engine parity with the firmware, protocol, connection, guides)
-        working-directory: webapp
-        run: npm ci && npm test
+          cache-dependency-path: site/package-lock.json
       - name: Install
         working-directory: site
         run: npm ci
+      # The unit tests include the shared core in site/core: engine parity with
+      # the firmware, protocol, connection, guides and every program file.
       - name: Lint, types and unit tests
         working-directory: site
         run: npm run lint && npm run typecheck && npm test
+      - name: Program files and the command-line tools under plain Node
+        working-directory: site
+        run: npm run check-presets && node scripts/table.mjs list > /dev/null
       - name: Build the static site
         working-directory: site
         run: npm run build

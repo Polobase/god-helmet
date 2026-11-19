@@ -1,12 +1,14 @@
 {
   "id": "persinger-sculthorpe-2003-40hz-pm",
-  "name": "40 Hz phase-modulated 5 times/s, right parietotemporal (Sculthorpe 2003)",
+  "name": "40 Hz phase-modulated (stretched troughs), right parietotemporal (Sculthorpe 2003)",
   "category": "persinger",
   "evidence": "single-lab",
+  "fidelity": "approximation",
+  "dose": {"value": 1, "unit": "uT", "plane": "unstated", "cite": "Sculthorpe 2003 p.1 [1031]"},
   "origin": "Sculthorpe & Persinger (Laurentian University), 2003 phase-modulation and hypnotic-induction study, phase-modulated arm",
   "uT": 1,
-  "summary": "The test arm of Sculthorpe & Persinger (2003): a 40 Hz sine phase-modulated five times per second, at 1 uT over the right parietotemporal region for 30 min, between two hypnotic-induction tests. The lab's hypothesis that this modulation explains its earlier suggestibility gains was not supported.",
-  "notes": "Sculthorpe & Persinger (2003) exposed 12 men and 12 women to a sham field, a 5 Hz sine, a 40 Hz sine, or the 40 Hz sine phase-modulated five times per second, for 30 min between two administrations of the Spiegel Hypnotic Induction Profile, with EEG over frontal, temporal and occipital regions. The 1 uT fields were applied over the right parietotemporal region through a 'modified helmet', to copy the geometry of the lab's earlier suggestibility studies. The hypothesis that phase modulation explained those suggestibility gains was not supported. The lab also reported that the 40 Hz group rated the session more pleasant than the 5 Hz group (41% of variance), that the 5 Hz group reported more visual experiences in the left peripheral field, that pleasantness correlated negatively with global geomagnetic activity (r = -0.36), and that temporal-lobe alpha lasted longer in the 5 Hz and 40/5 Hz groups. The modulation depth and shape are unpublished: here the carrier's phase swings sinusoidally up to 3 rad either way at 5 Hz (instantaneous frequency about 25-55 Hz), the project's usual depth for its modulated-40 Hz signals. Values are held for 1 ms (an assumption; the abstract gives no point duration). Three right-side coils at T8, TP8 and P8 approximate the right parietotemporal region; the left side stays silent. Six people per arm and several post-hoc correlations; no independent replication, and independent double-blind tests found no field effect (Granqvist 2005; Gendle & McGrath 2012). Use the app's Blind option for the sham arm. Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop on distress.",
+  "summary": "The test arm of Sculthorpe & Persinger (2003): a 40 Hz wave whose troughs are stretched and then shortened again in a repeating cycle (the paper's 'phase modulation'), at 1 uT over the right parietotemporal region for 30 min, between two hypnotic-induction tests. The paper reports that its hypothesis, that this modulation explains the lab's earlier suggestibility gains, was not supported.",
+  "notes": "24 people, three men and three women per arm, got a sham, a 5 Hz sine, a 40 Hz sine or a phase-modulated 40 Hz field for 30 min between two Spiegel Hypnotic Induction Profiles. 'In the experiment all point durations were 3 msec' (Sculthorpe 2003 p.3 [1033]). 'The phase-modulated field was created by increasing the trough time for each successive wave by 3 msec. for four successive point durations and then reducing these values to the original value for five complete cycles per sec.' (p.3 [1033]). This program plays a table rebuilt from that sentence: 80 points of 3 ms with no pause. One modulation cycle lasts 240 ms, so it repeats about 4.2 times a second, not 5. The sentence allows more than one table. Coils: the paper says only 'applied over the right parietotemporal region through a modified helmet', to copy the geometry of the lab's earlier suggestibility studies (p.1 [1031]). There the helmet drove one left-right pair at a time and the other side got about a tenth (Healey 1996 p.3 [203]); this paper says neither. Three right-side coils at T8, TP8 and P8 playing together, with the left side silent, are this project's choice. Field: 1 uT; where it was measured is not stated. This program's setting is the peak field 20 mm in front of each coil. Result: the hypothesis that phase modulation explains the earlier suggestibility gains was not supported. Pleasantness means were sham 1.2, 5 Hz 0.5, 40 Hz 1.8 and phase-modulated 40 Hz 0.8 (Table 1, p.5 [1035]). Six people per arm, one lab, not repeated elsewhere. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005, double-blind; Gendle & McGrath 2012, where the experimenter knew the condition). Use the app's Blind option for the sham arm. Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop on distress.",
   "setting": "Seated in a quiet room with the eyes closed or covered; in the original, the Spiegel Hypnotic Induction Profile was given before and after the 30 min.",
   "schedule": "One session per person in the original (between-subjects, six per arm). For a self-test, compare the arms and sham in blinded, counterbalanced order on separate days.",
   "targets": ["right-tpj", "right-angular-gyrus", "right-superior-temporal-gyrus-posterior"],
@@ -19,15 +21,9 @@
   "fadeOutS": 10,
   "phases": [
     {
-      "name": "40 Hz sine, phase-modulated at 5 Hz, right parietotemporal",
+      "name": "40 Hz sine with stretched troughs, right parietotemporal",
       "minutes": 30,
-      "pattern": {
-        "type": "pm",
-        "f0": 40,
-        "f1": 5,
-        "depth": 3,
-        "pointMs": 1
-      },
+      "pattern": {"type": "table", "pointMs": 3, "gapMs": 0, "data": [128, 218, 255, 218, 128, 38, 1, 38, 128, 218, 255, 218, 128, 38, 1, 1, 38, 128, 218, 255, 218, 128, 38, 1, 1, 1, 38, 128, 218, 255, 218, 128, 38, 1, 1, 1, 1, 38, 128, 218, 255, 218, 128, 38, 1, 1, 1, 1, 1, 38, 128, 218, 255, 218, 128, 38, 1, 1, 1, 1, 38, 128, 218, 255, 218, 128, 38, 1, 1, 1, 38, 128, 218, 255, 218, 128, 38, 1, 1, 38]},
       "spatial": {
         "mode": "right"
       }

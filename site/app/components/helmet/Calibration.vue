@@ -35,7 +35,7 @@ const setCoil = (i: number, e: Event) => (s.value.uTperMA[i] = fromInput((e.targ
   <section class="panel grid grid-cols-1 gap-5 p-5 sm:p-7" aria-labelledby="helmet-calibration">
     <div class="grid grid-cols-1 gap-2">
       <h2 id="helmet-calibration" class="text-2xl">Calibration</h2>
-      <p class="measure text-sm text-muted">Drive one coil with DC and measure the field 20 mm in front of its face, on its axis: phone magnetometer (phyphox) or an I2C sensor. Subtract the reading with the coil off. Reverse polarity to check the sign.</p>
+      <p class="measure text-sm text-muted">Drive one coil with DC and measure the field 20 mm in front of its face, on its axis: phone magnetometer (phyphox) or an I2C sensor. Subtract the reading with the coil off. Reverse polarity to check the sign. Run the site on your computer (<code>npm run dev</code>) and the app reads the phone itself: “Coil check with your phone” then appears below.</p>
     </div>
 
     <div class="grid grid-cols-1 gap-3">

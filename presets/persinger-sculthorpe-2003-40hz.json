@@ -3,10 +3,12 @@
   "name": "40 Hz sine, right parietotemporal, 30 min (Sculthorpe 2003)",
   "category": "persinger",
   "evidence": "single-lab",
+  "fidelity": "exact",
+  "dose": {"value": 1, "unit": "uT", "plane": "unstated", "cite": "Sculthorpe 2003 p.1 [1031]"},
   "origin": "Sculthorpe & Persinger (Laurentian University), 2003 phase-modulation and hypnotic-induction study, 40 Hz arm",
   "uT": 1,
-  "summary": "One of four arms of Sculthorpe & Persinger (2003): a plain 40 Hz sine at 1 uT over the right parietotemporal region for 30 min. The lab reported that this group rated the session more pleasant than the 5 Hz group.",
-  "notes": "Sculthorpe & Persinger (2003) exposed 12 men and 12 women to a sham field, a 5 Hz sine, a 40 Hz sine, or the 40 Hz sine phase-modulated five times per second, for 30 min between two administrations of the Spiegel Hypnotic Induction Profile, with EEG over frontal, temporal and occipital regions. The 1 uT fields were applied over the right parietotemporal region through a 'modified helmet', to copy the geometry of the lab's earlier suggestibility studies. The hypothesis that phase modulation explained those suggestibility gains was not supported. The lab also reported that the 40 Hz group rated the session more pleasant than the 5 Hz group (41% of variance), that the 5 Hz group reported more visual experiences in the left peripheral field, that pleasantness correlated negatively with global geomagnetic activity (r = -0.36), and that temporal-lobe alpha lasted longer in the 5 Hz and 40/5 Hz groups. Values are held for 1 ms (an assumption; the abstract gives no point duration). Three right-side coils at T8, TP8 and P8 approximate the right parietotemporal region; the left side stays silent. Six people per arm and several post-hoc correlations; no independent replication, and independent double-blind tests found no field effect (Granqvist 2005; Gendle & McGrath 2012). Use the app's Blind option for the sham arm. Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop on distress.",
+  "summary": "One of four arms of Sculthorpe & Persinger (2003): a plain 40 Hz sine at 1 uT over the right parietotemporal region for 30 min. The paper reports that this group rated the session more pleasant than the 5 Hz group (1.8 against 0.5), but not more than sham (1.2).",
+  "notes": "24 people, three men and three women per arm, got a sham, a 5 Hz sine, a 40 Hz sine or a phase-modulated 40 Hz field for 30 min between two Spiegel Hypnotic Induction Profiles. 'In the experiment all point durations were 3 msec' (Sculthorpe 2003 p.3 [1033]). This program plays a 40 Hz sine in 3-ms steps for 30 min. The paper does not say how a 40 Hz sine was built from 3-ms points (8 points give 41.7 Hz). Coils: the paper says only 'applied over the right parietotemporal region through a modified helmet', to copy the geometry of the lab's earlier suggestibility studies (p.1 [1031]). There the helmet drove one left-right pair at a time and the other side got about a tenth (Healey 1996 p.3 [203]); this paper says neither. Three right-side coils at T8, TP8 and P8 playing together, with the left side silent, are this project's choice. Field: 1 uT; where it was measured is not stated. This program's setting is the peak field 20 mm in front of each coil. Result: pleasantness means were sham 1.2, 5 Hz 0.5, 40 Hz 1.8 and phase-modulated 40 Hz 0.8 (Table 1, p.5 [1035]). The 40 Hz group differed from the 5 Hz group, not from sham. The study's hypothesis, that phase modulation explains the lab's earlier suggestibility gains, was not supported. Six people per arm, one lab, not repeated elsewhere. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005, double-blind; Gendle & McGrath 2012, where the experimenter knew the condition). Use the app's Blind option for the sham arm. Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop on distress.",
   "setting": "Seated in a quiet room with the eyes closed or covered; in the original, the Spiegel Hypnotic Induction Profile was given before and after the 30 min.",
   "schedule": "One session per person in the original (between-subjects, six per arm). For a self-test, compare the arms and sham in blinded, counterbalanced order on separate days.",
   "targets": ["right-tpj", "right-angular-gyrus", "right-superior-temporal-gyrus-posterior"],
@@ -24,7 +26,7 @@
       "pattern": {
         "type": "sine",
         "f0": 40,
-        "pointMs": 1
+        "pointMs": 3
       },
       "spatial": {
         "mode": "right"

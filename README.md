@@ -4,10 +4,10 @@ A DIY recreation of the Persinger/Koren "God Helmet", the 8-coil Shakti and the 
 - 8 small coils on a Velcro headband;
 - an AD5328 8-channel ±10 V DAC;
 - an ESP32 that runs the signals in real time: ESP32-S3, classic ESP32, ESP32-C3 or ESP32-C6, without a display;
-- a **Vue web app on GitHub Pages** that connects over **Bluetooth LE** or a **USB cable**, and installs the firmware;
+- a **web app** (the Nuxt site in [site/](site)) that connects over **Bluetooth LE** or a **USB cable**, and installs the firmware;
 - or, without phone or computer, a **2.8" touchscreen board** that runs the programs from its microSD card ([docs/STANDALONE.md](docs/STANDALONE.md)).
 
-It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva and Shakti sessions on their exact 10-10 sites (with reversed-polarity coils where the Shakti wiring needs them), 38 Persinger-lab protocols (sensed presence, Thomas pulse, circumcerebral rotations, Swann remote viewing, telepathy), the timing of clinical low-field methods (LFMS, T-PEMF, Cnp, theta-burst, BHFS), and replications of the independent tests. Each program states the evidence for the original protocol and what it approximates. Each program's page also has a **Brain** tab that shows where each program's field goes on a 3D brain, **30 guided sessions** with beat audio and questionnaires, and the means to **test it all honestly**:
+It ships **176 programs**, each checked against its source ([docs/PRESET_AUDIT.md](docs/PRESET_AUDIT.md)): Todd Murphy's Shiva and Shakti sessions rebuilt from the vendor's descriptions (with reversed-polarity coils where the Shakti wiring needs them), the Persinger lab's protocols (sensed presence, Thomas pulse, circumcerebral rotations, Swann remote viewing, paired sessions), the timing of clinical low-field methods (LFMS, T-PEMF, Cnp, theta-burst, BHFS), and the independent sham-controlled tests. Each program states the evidence for the original protocol and how closely this helmet can follow it: 14 play published values as published, 133 are rebuilt from descriptions, 16 copy only the timing of a method whose field is out of reach, and 13 are this project's own designs. Whether the first build can host the experiments at all is the subject of [docs/HARDWARE_AUDIT.md](docs/HARDWARE_AUDIT.md). Each program's page also has a **Brain** tab that shows where each program's field goes on a 3D brain, **30 guided sessions** with beat audio and questionnaires, and the means to **test it all honestly**:
 - blinded real/sham sessions;
 - hash-committed, blind-judged remote-viewing and telepathy trials with exact statistics.
 
@@ -22,14 +22,14 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
 ```
  phone / laptop browser                     control box                                  headband
  ┌──────────────────────┐ Bluetooth / USB┌──────────────┐  SPI + LDAC  ┌──────────┐ 2.2 kΩ ×8  ┌─────────┐
- │ web app (GitHub      │◄──────────────►│  ESP32       │─────────────►│ AD5328   │──────────► │ 8 coils │
- │ Pages): programs,    │  JSON-RPC +    │  2 kHz engine│              │ ±10 V ×8 │◄─ returns ─│         │
+ │ web app (site/):     │◄──────────────►│  ESP32       │─────────────►│ AD5328   │──────────► │ 8 coils │
+ │ programs,            │  JSON-RPC +    │  2 kHz engine│              │ ±10 V ×8 │◄─ returns ─│         │
  │ placement, trials    │  live status   │  log, trials │  PhotoMOS ◄──┤          │  PhotoMOS  └─────────┘
  └──────────────────────┘                └──────────────┘  STOP button └──────────┘
 ```
 
 - **The app** (tabs: Programs, Guides, Trials, Log, Helmet, Docs) holds:
-  - the program library, searchable, browsed by category, by placement (all 54 placements in use), by scalp site (a site explorer for every 10-10 site) or by the experience a program aims at;
+  - the program library, searchable, browsed by category, by placement (all 47 placements in use), by scalp site (a site explorer for every 10-10 site) or by the experience a program aims at;
   - a page for each program with tabs:
     - **Overview:** phases, waveforms and an in-browser preview of the coil activity;
     - **Placement:** the coils on a head map from above and from both sides, and a coil-by-coil checklist with tape-measure directions in centimetres for your head;
@@ -58,6 +58,10 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
 | [docs/EFFECT_SENSED_PRESENCE.md](docs/EFFECT_SENSED_PRESENCE.md), [docs/EFFECT_OUT_OF_BODY.md](docs/EFFECT_OUT_OF_BODY.md), [docs/EFFECT_REMOTE_VIEWING.md](docs/EFFECT_REMOTE_VIEWING.md) | Articles on the three most reported effects: what people report, the lab record and independent tests, the science without a helmet, checked YouTube videos, reading lists and how to test each with this helmet |
 | [docs/SIGNALS.md](docs/SIGNALS.md) | What the coils play: coil physics and ICNIRP compliance, the Persinger-lab signals rebuilt from primary sources, Murphy's signal families, clinical timings |
 | [docs/PRESET_FORMAT.md](docs/PRESET_FORMAT.md) | The program file format, every signal and coil mode, the pulse-table generators, the preset checker |
+| [docs/PRESET_AUDIT.md](docs/PRESET_AUDIT.md) | Every program against its source: flaw, decision, deciding page |
+| [docs/HARDWARE_AUDIT.md](docs/HARDWARE_AUDIT.md) | Can the first build host the experiments? Verdict per family, ledger, bench protocol |
+| [docs/HARDWARE_REQUIREMENTS.md](docs/HARDWARE_REQUIREMENTS.md) | The changes the audit forces, with numbers and cost |
+| [docs/AUDIT_SUMMARY.md](docs/AUDIT_SUMMARY.md) | The audit on one page |
 | [docs/BRAIN_VIEW.md](docs/BRAIN_VIEW.md) | How the brain view's field map is computed, its accuracy, data and licences |
 | [docs/GUIDES.md](docs/GUIDES.md), [docs/QUESTIONNAIRES.md](docs/QUESTIONNAIRES.md) | Guided-session format, audio engine, questionnaires and scoring |
 | [docs/WIRING.md](docs/WIRING.md) | Schematic, coil leads (inner = signal, outer = return), pin tables (S3, classic ESP32, C3, C6, 2.8" display board), arming switch, Cat6A pair mapping |
@@ -67,10 +71,10 @@ It ships **198 programs** built from fact-checked research: Todd Murphy's Shiva 
 | [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md) | Blinded sessions, remote-viewing and telepathy protocols, statistics |
 | [docs/BLE_PROTOCOL.md](docs/BLE_PROTOCOL.md) | GATT service, framing, the USB line protocol, operations, session JSON, trial commitment |
 | [docs/SAFETY.md](docs/SAFETY.md) | Contraindications, rules, built-in safeguards |
-| [presets/](presets) | The 198 programs (JSON), shared by the app and the firmware tests |
+| [presets/](presets) | The 176 programs (JSON), shared by the app and the firmware tests. `presets/archive/` holds the 28 that were taken out |
 | [guides/](guides) | The 30 guided sessions (JSON) |
 | [firmware/](firmware) | PlatformIO project: engine, Bluetooth and USB transports, experiments, log |
-| [webapp/](webapp) | Vue 3 + Vite app, deployed to GitHub Pages by `.github/workflows/pages.yml` |
+| [site/](site) | The Nuxt site: landing page, articles, docs and the control app. `site/core/` holds the engine, protocol and library code that is tested against the firmware. Cloudflare Pages builds it; `.github/workflows/pages.yml` publishes the firmware images for its installer |
 | [hardware/](hardware) | Bill of materials, coil clip (OpenSCAD), schematic generator |
 | [tools/](tools) | Python: coil field estimate, point tables, WAV → table, calibration fit, trial statistics; Node: brain-view asset builder |
 
@@ -97,23 +101,23 @@ cd firmware
 ./test/run_host_tests.sh      # engine, JSON, BLE framing, every preset rendered at 2 kHz
 pio run -e esp32s3 -t upload  # ESP32-S3-DevKitC-1 (-e esp32dev, -e esp32c3, -e esp32c6; -e esp32e_lcd28: 2.8" display board)
 pio device monitor            # prints the Bluetooth name, e.g. GodHelmet-3F2A
-scripts/web_bundle.sh ../webapp/public/firmware   # images + manifests for the app's installer (CI does this)
+scripts/web_bundle.sh ../site/public/firmware     # images + manifests for the app's installer (CI does this)
 ```
 
-Standalone touchscreen board: `pio run -e esp32e_lcd28 -t upload`, then `npm run sd-pack -- <dir>` in `webapp/` for the SD card ([docs/STANDALONE.md](docs/STANDALONE.md)).
+Standalone touchscreen board: `pio run -e esp32e_lcd28 -t upload`, then `npm run sd-pack -- <dir>` in `site/` for the SD card ([docs/STANDALONE.md](docs/STANDALONE.md)).
 
 **App:**
 
 ```sh
-cd webapp
+cd site
 npm install
-npm test                      # JS engine matches the C++ engine; field model; guides; protocol and trial logic
-node scripts/check-preset.mjs --all   # validate every program file
-node scripts/table.mjs list            # exact pulse tables (theta-burst, Thomas, LFMS, ...)
-npm run dev                   # http://localhost:5173 (Web Bluetooth and Web Serial work on localhost)
+npm test                      # JS engine matches the C++ engine; field model; guides; protocol and trial logic; every program file
+npm run check-presets         # validate every program file (also one file: node scripts/check-preset.mjs ../presets/<id>.json)
+npm run table -- list         # exact pulse tables (theta-burst, Thomas, LFMS, ...)
+npm run dev                   # http://localhost:3000 (Web Bluetooth and Web Serial work on localhost)
 ```
 
-**Deploy:** push to GitHub, then Settings → Pages → Source: **GitHub Actions**. The app appears at `https://<user>.github.io/<repo>/`.
+**Deploy:** Cloudflare Pages builds `site/` on every push ([site/README.md](site/README.md)). The firmware images for the installer are built by `.github/workflows/pages.yml` and served from GitHub Pages (Settings → Pages → Source: **GitHub Actions**).
 
 **First use:**
 1. Open the app in Chrome/Edge (iPhone: Bluefy) and press **Bluetooth**, or plug the helmet into the computer and press **USB**.

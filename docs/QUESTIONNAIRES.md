@@ -1,6 +1,6 @@
 # Questionnaires
 
-Guides can show a questionnaire step (`"input": { "type": "questionnaire", "instrument": "<id>" }`, see [GUIDES.md](GUIDES.md)). The instruments live in `webapp/src/lib/instruments.js`. Answers and scores are stored with the guide run, only on this device unless you export the runs (Guides tab, JSON).
+Guides can show a questionnaire step (`"input": { "type": "questionnaire", "instrument": "<id>" }`, see [GUIDES.md](GUIDES.md)). The instruments live in `site/core/lib/instruments.js`. Answers and scores are stored with the guide run, only on this device unless you export the runs (Guides tab, JSON).
 
 **None of this is diagnostic.** These are research covariates and session self-reports. Scores are never a verdict on you, your health or your abilities. Several scales here overlap with measures of unusual experiences in general (e.g. SenPQ correlates r = .64 with O-LIFE Unusual Experiences; Barnby & Bell 2017). A high score means nothing clinical. If a session leaves you frightened or low, stop and see [SAFETY.md](SAFETY.md).
 
@@ -115,7 +115,7 @@ Guides can show a questionnaire step (`"input": { "type": "questionnaire", "inst
 - **Licence:** "MISS. Copyright © 2004 by R. I. Kotov, S. B. Bellman & D. B. Watson". The manual says: "The MISS is a property of Kotov, Bellman, and Watson. It is available for use without charge. No author permission is required. However, please include copyright information on all reproductions of the scale. […] Do not modify the instrument without authors' permission." Manual: https://renaissance.stonybrookmedicine.edu/sites/default/files/MISSBriefManual.pdf. Form: https://renaissance.stonybrookmedicine.edu/sites/default/files/SSS_BLANK.pdf. **Do not edit the item texts or the instruction.** A unit test pins a SHA-256 of the instruction, labels and items; it fails on any change.
 - **Citation:** Kotov, R. I., Bellman, S. B., & Watson, D. B. (2004). *Multidimensional Iowa Suggestibility Scale (MISS) brief manual*. Stony Brook University.
 - **Why it is here:**
-  - The best-known blinded God-helmet study, Granqvist et al. (2005; N = 89, double-blind, sham control), found that "suggestibility" predicted sensed-presence, mystical and somatosensory reports, while the field did not.
+  - The best-known blinded God-helmet study, Granqvist et al. (2005; N = 89, double-blind, sham control), found that "suggestibility" predicted the scores for mystical and somatosensory experiences and for the exit questionnaire, while the field did not. For the single sensed-presence item no predictor was significant (p.5).
   - Their suggestibility measures were absorption (TAS), a temporal-lobe-signs inventory and a New Age orientation scale. They did **not** use the SSS.
   - The SSS is a free, open self-report of a related trait. It lets you check whether people who accept suggestions easily report more in both arms.
 - **Caveats:**

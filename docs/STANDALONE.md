@@ -1,7 +1,7 @@
 # Standalone display board
 
 The 2.8" ESP32-32E display board runs the helmet **without the web app**:
-- the 198 programs live on the board's microSD card;
+- the 176 programs of the library live on the board's microSD card (the pack leaves out the archived files in `presets/archive/`);
 - you pick, start, stop and rate them on the touchscreen;
 - the board shows where each coil goes, with tape-measure directions computed for your head.
 
@@ -31,7 +31,7 @@ The first build downloads the display library (LovyanGFX 1.1.16).
 ## 2. Put the programs on the SD card
 
 ```sh
-cd webapp
+cd site
 npm install
 npm run sd-pack -- ~/Desktop/sdpack
 ```

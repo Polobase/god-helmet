@@ -1,8 +1,8 @@
 import { fileURLToPath } from 'node:url'
 
-// The engine, audio, protocol and lib modules are shared with the old app in
-// webapp/ until cut-over: one source of truth, guarded by webapp's tests.
-const core = fileURLToPath(new URL('../webapp/src', import.meta.url))
+// The engine, audio, protocol and lib modules (plain JavaScript, core/): the
+// same code the firmware's C++ engine is tested against (test/engine.test.js).
+const core = fileURLToPath(new URL('./core', import.meta.url))
 const repo = fileURLToPath(new URL('..', import.meta.url))
 
 export default defineNuxtConfig({
@@ -73,9 +73,6 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    // Shared modules import "vue" from webapp/src; without this they would get
-    // webapp/node_modules/vue, a second copy whose reactivity the app cannot see.
-    resolve: { dedupe: ['vue', 'three', 'marked'] },
     server: { fs: { allow: [repo] } },
   },
 

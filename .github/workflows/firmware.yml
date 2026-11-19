@@ -2,7 +2,7 @@ name: Firmware
 
 on:
   push:
-    paths: ["firmware/**", "presets/**", "webapp/src/lib/**", "webapp/src/engine/**", "webapp/scripts/sd-pack.mjs",
+    paths: ["firmware/**", "presets/**", "site/core/lib/**", "site/core/engine/**", "site/core/assets/brain/sites.json", "site/scripts/sd-pack.mjs",
             ".github/workflows/firmware.yml"]
   pull_request:
   workflow_dispatch:
@@ -29,7 +29,6 @@ jobs:
       - name: Touchscreen UI on the host (every screen, SD pack from the presets)
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q libsdl2-dev
-          (cd webapp && npm ci)
           ./firmware/test/uisim/run.sh
       - uses: actions/upload-artifact@v4
         with:

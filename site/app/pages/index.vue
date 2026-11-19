@@ -133,7 +133,7 @@ const unverified = ['Bluetooth with a real phone', 'The DAC module’s transfer 
         <article v-spotlight data-reveal-item class="tile panel lg:col-span-7">
           <div>
             <h3>{{ lib?.programs }} programs</h3>
-            <p>Todd Murphy’s Shiva and Shakti sessions on their exact 10-10 sites, 38 Persinger-lab protocols, the timing of clinical low-field methods, and replications of the independent tests. Each one states the evidence for the original and what it approximates.</p>
+            <p>Todd Murphy’s Shiva and Shakti sessions rebuilt from the vendor’s descriptions, the Persinger lab’s protocols, the timing of clinical low-field methods, and the independent sham-controlled tests. Each one states the evidence for the original and how closely this helmet can follow it.</p>
           </div>
           <HomeDemoScope />
           <NuxtLink to="/app/programs" class="more">Browse the programs</NuxtLink>

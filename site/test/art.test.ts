@@ -51,16 +51,16 @@ describe('illustrations', () => {
     expect(guideScene('enrollment-battery', 'questionnaire')).toBeNull()
     // A program's own mark wins over its category's.
     const ids = new Set(programs.map((p) => p.id))
-    for (const id of ['remote-viewing', 'telepathy-sender', 'frontal', 'love-agape']) expect(ids, id).toContain(id)
+    for (const id of ['remote-viewing', 'persinger-siblings-2003-stimulus', 'murphy-shakti8-feelgood-1phase-frontal', 'love-agape']) expect(ids, id).toContain(id)
     for (const [id, scene] of Object.entries(PROGRAM_SCENES)) {
       expect(ids, id).toContain(id)
       expect(SCENES).toContain(scene)
     }
-    expect(programScene('psi', 'telepathy-sender', true)).toBe('telepathy')
+    expect(programScene('psi', 'persinger-shared-memory-2002', true)).toBe('telepathy')
     expect(programScene('presence', 'presence-right')).toBe('presence')
-    expect(programScene('research', 'circumcerebral-gamma', true)).toBe('ring')
+    expect(programScene('research', 'persinger-tsang-2004-gamma-thomas', true)).toBe('ring')
     expect(programScene('mood', 'some-mood-program')).toBeNull()
-    expect(programMark('psi', 'telepathy-sender')).toBe('telepathy')
+    expect(programMark('psi', 'persinger-siblings-2003-stimulus')).toBe('telepathy')
     expect(programMark('psi', 'some-other-program')).toBe('psi')
     expect(programMark(undefined)).toBeNull()
   })

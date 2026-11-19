@@ -4,7 +4,7 @@
 // split into packets:  [seq:u8][flags:u8][payload ...]
 //   flags bit0 = FIRST packet of a message, bit1 = LAST packet.
 // All packets of one message share `seq`. A FIRST packet discards any
-// unfinished message. The web app (webapp/src/ble/frame.js) mirrors this.
+// unfinished message. The web app (site/core/ble/frame.js) mirrors this.
 #pragma once
 #include <cstddef>
 #include <cstdint>

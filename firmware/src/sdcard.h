@@ -2,7 +2,7 @@
 // AD5328's SPI bus, so it is only touched while no session or test runs: a
 // card transfer would hold the bus lock and stall the 2 kHz coil updates.
 //
-// Card layout (written by `npm run sd-pack` in webapp/, docs/STANDALONE.md):
+// Card layout (written by `npm run sd-pack` in site/, docs/STANDALONE.md):
 //   /godhelmet/index.tsv        one line per program (header line first)
 //   /godhelmet/p/<id>.json      the program in compact preset JSON (base64 tables)
 //   /godhelmet/t/<id>.txt       readable text for the Details screen

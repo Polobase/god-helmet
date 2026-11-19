@@ -1,9 +1,19 @@
-name: Web app → GitHub Pages
+name: Firmware images → GitHub Pages
+
+# The control app and the docs are the Nuxt site in site/, published by
+# Cloudflare Pages. Cloudflare's builder cannot build firmware, so this
+# workflow builds the images for the site's installer (Helmet tab) and
+# publishes them at <pages address>/firmware/, where the site's
+# NUXT_PUBLIC_FIRMWARE_BASE points.
+#
+# The address used to serve the previous app. Its start page now forwards to
+# the site when the repository variable SITE_URL is set (Settings → Secrets
+# and variables → Actions → Variables), and shows a short notice otherwise.
 
 on:
   push:
     branches: [main]
-    paths: ["webapp/**", "presets/**", "docs/**", "README.md", "firmware/**", ".github/workflows/pages.yml"]
+    paths: ["firmware/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
@@ -16,7 +26,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Firmware images and manifests for the web app's installer (Helmet tab).
   firmware:
     runs-on: ubuntu-latest
     steps:
@@ -30,38 +39,34 @@ jobs:
           key: platformio-${{ hashFiles('firmware/platformio.ini') }}
       - run: pip install platformio
       - name: Build every board and merge the images
-        run: ./firmware/scripts/web_bundle.sh webapp/public/firmware
-      - uses: actions/upload-artifact@v4
-        with:
-          name: web-firmware
-          path: webapp/public/firmware
-
-  build:
-    needs: firmware
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: webapp
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: webapp/package-lock.json
-      - uses: actions/download-artifact@v4
-        with:
-          name: web-firmware
-          path: webapp/public/firmware
-      - run: npm ci
-      - run: npm test
-      - run: npm run build
+        run: ./firmware/scripts/web_bundle.sh pages/firmware
+      - name: Start page (forwards to the site, keeping an old #link)
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          cat > pages/index.html <<EOF
+          <!doctype html>
+          <html lang="en">
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>God Helmet</title>
+          <script>
+            var site = "${SITE_URL%/}";
+            if (site) location.replace(site + "/" + location.hash);
+          </script>
+          <body style="font: 16px/1.5 system-ui, sans-serif; max-width: 34rem; margin: 15vh auto; padding: 0 1rem">
+          <h1>The app has moved</h1>
+          <p>This address now only holds the firmware images for the installer. The control app and the documentation are in the
+          <a href="https://github.com/${{ github.repository }}">repository</a> (folder <code>site/</code>).</p>
+          </body>
+          </html>
+          EOF
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: webapp/dist
+          path: pages
 
   deploy:
-    needs: build
+    needs: firmware
     runs-on: ubuntu-latest
     environment:
       name: github-pages

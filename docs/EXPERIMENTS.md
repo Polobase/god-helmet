@@ -1,6 +1,6 @@
 # Testing it honestly: blinded sessions and psi trials
 
-The reported God-Helmet effects come from Persinger's laboratory. The only claimed partial positive from an unconnected group is weak ([Tinoco & Ortiz 2014](https://www.jcer.com/index.php/jcj/article/viewFile/361/386)). The best independent double-blind test found no effect of the field. Personality traits, not the field, predicted who reported a presence ([Granqvist et al. 2005](https://doi.org/10.1016/j.neulet.2004.10.057)). A helmet with no field at all produces "extraordinary experiences" in people who expect them ([Maij & van Elk 2018](https://pubmed.ncbi.nlm.nih.gov/30355534/)). So you learn nothing from this device unless you remove your own knowledge of what it is doing, and decide in advance how you will judge the result.
+The reported God-Helmet effects come from Persinger's laboratory. The only claimed partial positive from an unconnected group is weak ([Tinoco & Ortiz 2014](https://www.jcer.com/index.php/jcj/article/viewFile/361/386)). The best independent double-blind test found no effect of the field. Personality traits, not the field, predicted who reported unusual experiences ([Granqvist et al. 2005](https://doi.org/10.1016/j.neulet.2004.10.057)). A helmet with no field at all produces "extraordinary experiences" in people who expect them ([Maij & van Elk 2018](https://pubmed.ncbi.nlm.nih.gov/30355534/)). So you learn nothing from this device unless you remove your own knowledge of what it is doing, and decide in advance how you will judge the result.
 
 This page shows how to do that with the app. It covers:
 - blinded real/sham sessions, and how to check that the blind held;
@@ -116,27 +116,27 @@ The app's code has a function, `bangIndex()`, that computes the Bang Blinding In
 
 Three kinds of independent test exist:
 - **Granqvist et al. 2005:** equipment lent by Persinger's lab, field vs sham, double-blind.
-- **Gendle & McGrath 2012:** a commercial 8-coil Shakti, field vs sham.
+- **Gendle & McGrath 2012:** a commercial 8-coil Shakti, field vs sham. The participants were blind; the experimenter knew the condition (p.7 [223]).
 - **Sham-helmet studies:** no field at all; they measure expectancy.
 
 This project's research found no independent, pre-registered, double-blind test of the field itself published between 2015 and 2026 (a search-limited finding). The pre-registered studies of that period applied no field ([Maij, van Elk & Schjoedt 2019](https://pure.uva.nl/ws/files/34902680/The_role_of_alcohol_in_expectancy_driven_mystical_experiences.pdf)). A careful replication with this app would fill that gap.
 
 ### Granqvist et al. 2005 (Uppsala)
 
-The Uppsala group borrowed a driver box from Persinger's lab. The paper itself is closed access, so most details below come from the published correspondence.
+The Uppsala group borrowed a driver box from Persinger's lab. The paper itself is closed access. The details below come from the paper, cited by page, and from the published correspondence.
 
 | | Uppsala 2005 | In this app |
 |---|---|---|
 | Design | Double-blind, between groups: 43 field, 46 sham ([Khamsi 2004](https://web.archive.org/web/20061205053735/http://www.nature.com/news/2004/041206/pf/041206-10_pf.html)) | Blind option; one session per person, or a blinded self-series |
-| Exposure | 15 min of the "Thomas" pattern over the right hemisphere, then 15 min of burst-firing over both ([Persinger 2004, letter of 22 Dec](https://web.archive.org/web/20101112203814/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+G.htm)) | Preset `persinger-granqvist-2005-replication`, 15 + 15 min |
-| Software | Koren's Complex v1.15, cycles set to 9000, stopped by hand at 15 min ([Granqvist 2005, letter of 5 Jan](https://web.archive.org/web/20101112203814/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+A.htm)) | Every point timed on the firmware's fixed 0.5 ms clock |
-| Field and sites | 3–7 µT, coils "just above and in front of the ears" ([Khamsi 2004](https://web.archive.org/web/20061205053735/http://www.nature.com/news/2004/041206/pf/041206-10_pf.html)) | 5 µT (the default field ceiling) at FT7, T7, FT8 and T8 of layout B ([PLACEMENT.md](PLACEMENT.md)); the sites are an inference |
-| Setting | About 2 m² isolation chamber, blindfold ([Granqvist 2005, letter of 5 Jan](https://web.archive.org/web/20101112203814/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+A.htm)); earplugs, according to the Laurentian side only ([Persinger & Koren 2004](https://web.archive.org/web/20050223022113/http://laurentian.ca/neurosci/News/Dec_news.htm)) | Small, quiet, dim room, blindfold |
+| Exposure | 15 min of the "Thomas" pattern over the right hemisphere, then 15 min of burst-firing over both ([Persinger 2004, letter of 22 Dec](https://web.archive.org/web/20101112203814/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+G.htm)). The paper gives 3 ms points for both, with a "cycle interval" of 3 ms for the first and 3000 ms for the second (Granqvist 2005 p.3) | Preset `replication-granqvist-2005`, 15 + 15 min: the Thomas table at 3 ms points with 3 ms between passes, then a 0.69 s burst at 3 ms points with a 3000 ms pause |
+| Software | Koren's Complex v1.5 (printed as "1.15" in the paper; the authors' reply corrects it and says the program ran stably in a DOS shell: Larsson et al. 2005 p.1 [348]), cycles set to 9000, stopped by hand at 15 min ([Granqvist 2005, letter of 5 Jan](https://web.archive.org/web/20101112203814/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+A.htm)) | Every point timed from the firmware's fixed 0.5 ms clock. How late a single update can be has not been measured ([HARDWARE_AUDIT.md](HARDWARE_AUDIT.md)) |
+| Field and sites | 3–10 µT at a distance from the solenoids taken to match the inside of the head, measured with a BMM3 meter. Two head boxes with four solenoids each, "just above and in front of the ears"; the signal moved to the next solenoid every 0.5 s (Granqvist 2005 p.3). Nature's report gives 3–7 µT ([Khamsi 2004](https://web.archive.org/web/20061205053735/http://www.nature.com/news/2004/041206/pf/041206-10_pf.html)) | 5 µT (the default field ceiling), set 20 mm in front of each coil, at T7, FT7, FT9, T9 and their right mirrors, 0.5 s per coil (right side only in the first phase); the sites and the stepping order are an inference ([PLACEMENT.md](PLACEMENT.md)) |
+| Setting | Isolation chamber of 2 m × 2 m (the paper printed 2 m²; Larsson et al. 2005 p.1 [348]), light off, ear plugs (Granqvist 2005 p.3), blindfold ([Granqvist 2005, letter of 5 Jan](https://web.archive.org/web/20101112203814/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+A.htm)) | Small, quiet, dim room, blindfold |
 | Instructions | Told that the study concerned the effect of complex weak magnetic fields on experiences and feelings ([Granqvist 2005, letter of 5 Jan](https://web.archive.org/web/20101112203814/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+A.htm)) | Use the same neutral wording; don't drop it to "improve" the effect |
 | Outcome | Persinger's EXIT checklist in Swedish, scored 0/1/2 ([Granqvist 2005, letter of 5 Jan](https://web.archive.org/web/20101112203814/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+A.htm)), plus a mysticism scale | Not in the app. The `state-post` presence item (0–10) is the nearest; its scores are not comparable |
 | Predictors | Absorption, temporal-lobe signs, New Age orientation ([Granqvist et al. 2005](https://doi.org/10.1016/j.neulet.2004.10.057)) | Enrollment battery: IPIP Imagination stands in for absorption. It has no temporal-lobe-signs or New Age scale; SSS and SenPQ measure other traits |
 
-**What they found.** The field had no effect, overall or in highly suggestible people. The traits predicted sensed-presence and mystical reports ([Granqvist et al. 2005](https://doi.org/10.1016/j.neulet.2004.10.057); single-lab, independent of Persinger). In the same data, religiousness predicted mystical experiences with a religious quality. The authors read the pre-session religiousness questionnaires and the sensory deprivation as a prime ([Granqvist & Larsson 2006](https://pubmed.ncbi.nlm.nih.gov/16967739/)).
+**What they found.** The field had no effect, overall or in highly suggestible people. The traits predicted the scores on the exit checklist and on the mysticism scale, though not the single sensed-presence item (p.5) ([Granqvist et al. 2005](https://doi.org/10.1016/j.neulet.2004.10.057); single-lab, independent of Persinger). In the same data, religiousness predicted mystical experiences with a religious quality. The authors read the pre-session religiousness questionnaires and the sensory deprivation as a prime ([Granqvist & Larsson 2006](https://pubmed.ncbi.nlm.nih.gov/16967739/)).
 
 **The dispute.** Persinger and Koren made these objections (claims):
 - the software's point timing was distorted on a fast Windows computer;
@@ -147,24 +147,25 @@ The Uppsala group borrowed a driver box from Persinger's lab. The paper itself i
 Granqvist replied that Persinger had recommended both the 15-min exposure and the cycle setting, that blindfolds were used, and that the equipment was checked before and after the study ([Granqvist 2005, letter of 5 Jan](https://web.archive.org/web/20101112203814/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+A.htm)). Persinger's lab later re-analysed 19 of its own experiments (407 people) and concluded that the field pattern, not suggestibility, predicted presence ([St-Pierre & Persinger 2006](https://pubmed.ncbi.nlm.nih.gov/16861170/); single-lab claim). Neither side's account of the timing or the duration has been checked independently.
 
 **What the app can test.**
-1. **Copy arm.** `persinger-granqvist-2005-replication` vs sham. The firmware's fixed timing removes the "distorted timing" objection for the signal this preset plays. If this copy is also null, that objection loses force, although the preset's point tables are not Koren's (see below).
+1. **Copy arm.** `replication-granqvist-2005` vs sham. The firmware times every point from a fixed 0.5 ms clock, but how late a single update can be has not been measured ([HARDWARE_AUDIT.md](HARDWARE_AUDIT.md)). Once that is measured, a null result with this copy would weaken the "distorted timing" objection, although the preset's point tables are not Koren's (see below).
 2. **Duration arm.** A longer two-phase program, for example `persinger-saroka-2015-sensed-presence` or `god-helmet-classic` (30 + 30 min each), vs the same sham. This tests Persinger's duration objection.
 3. **Primary outcome:** sensed presence, real vs sham. Persinger and Koren's sham-level prediction is the sharpest testable claim in the dispute.
 
 **What it cannot copy.**
-- The Complex v1.15 point tables were never published. The preset plays the Thomas table from Persinger's patent and a stand-in burst (see the preset notes in the **Programs** tab).
-- Koren's 2003 instructions describe a sequencer cycling between the solenoids ([Koren 2003](https://web.archive.org/web/20101112203802/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+5.htm)). The preset drives fixed coil pairs, and the coil count per side is not published.
+- The point tables of Complex v1.5 were never published as numbers. The burst-firing shape is printed only as a graph (Persinger 2000 Fig. 2 p.5 [663]; Richards 1993 Fig. 1C p.8 [78]). The preset plays the Thomas table from Persinger's patent and a stand-in burst (see the preset notes in the **Programs** tab).
+- The paper describes four solenoids in each head box, with the signal moving to the next one every 0.5 s (Granqvist 2005 p.3), and Koren's 2003 instructions describe the sequencer ([Koren 2003](https://web.archive.org/web/20101112203802/http://www.laurentian.ca/Laurentian/Home/Departments/Behavioural+Neuroscience/Correspondence/Email+5.htm)). The preset steps round four coils per side in the same way. Its coil sites and stepping order are this project's inference.
+- The dose. Uppsala measured 3–10 µT at a distance taken to match the inside of the head (p.3). The preset's 5 µT is the field 20 mm in front of each coil. How the two compare is undetermined ([HARDWARE_AUDIT.md](HARDWARE_AUDIT.md)).
 
 ### Gendle & McGrath 2012
 
-**What they did.** 37 people received 30 min of field or sham from the 8-Coil Shakti "amygdala signal" over both temporal lobes and rated 54 colour photographs. The field had no effect on the ratings and did not interact with the pictures' emotional valence ([Gendle & McGrath 2012](https://pubmed.ncbi.nlm.nih.gov/22582690/); single-lab null). The vendor's reply supplies the details: bilateral temporal placement, a default of up to about 1 µT, an onboard sound card, daytime sessions, one session each ([Murphy 2012](http://www.innerworlds.50megs.com/Gendle_Shakti/8-Coil-Shakti-Gendle-&-McGrath.htm)).
+**What they did.** 37 people received 30 min of field or sham from the 8-Coil Shakti "amygdala signal" over both temporal lobes and rated 54 colour photographs. The field had no effect on the ratings and did not interact with the pictures' emotional valence ([Gendle & McGrath 2012](https://pubmed.ncbi.nlm.nih.gov/22582690/); single-lab null). The study was sham-controlled but not double-blind: the experimenter unplugged the device for the sham group and so knew the condition (p.7 [223]). The authors measured 0.1–1.0 µT (RMS) in the centre of the headpiece, about 9 cm from the coils (p.11 [227]). The vendor's reply supplies further details: bilateral temporal placement, a default of up to about 1 µT, an onboard sound card, daytime sessions, one session each ([Murphy 2012](http://www.innerworlds.50megs.com/Gendle_Shakti/8-Coil-Shakti-Gendle-&-McGrath.htm)).
 
 This was a test of emotional responses to pictures, not of sensed presence. A review in the same year summarised it as "no significant difference in emotional state" ([Aaen-Stockdale 2012](https://www.bps.org.uk/psychologist/neuroscience-soul)), which is not what was measured. Word your own results as precisely as the measure.
 
 **The vendor's objection (claim).** Murphy says the study used the weakest configuration. For mood he recommends the "feelgood" session: two signals with 4-s pauses over the frontal lobes, once a week for six weeks ([Murphy 2012](http://www.innerworlds.50megs.com/Gendle_Shakti/8-Coil-Shakti-Gendle-&-McGrath.htm)).
 
 **In the app.**
-- **Published arm:** `shakti-alternate` (amygdala signal on both temporal crosses, 30 min, 1 µT) with Blind. The sources do not say which channel-alternation mode the study used.
+- **Published arm:** `replication-gendle-mcgrath-2012` (amygdala signal on both temporal crosses, coil pairs alternating every 0.5 s, 30 min, 1 µT) with Blind. The paper names the mode: the "hemispherically symmetrical, fast alternating amygdala signal" (p.4 [220]).
 - **Vendor arm:** `murphy-shakti8-feelgood-1phase-frontal` (its 30-min version) with Blind, weekly for six weeks. Use a mood measure such as the `state-post` valence item as the primary outcome.
 - The app has no picture-rating task. To copy the published outcome, prepare your own fixed photo set and rating sheet before the first session.
 
@@ -294,7 +295,7 @@ Analytic overlay, aesthetic impact and confusion are declared as "breaks" and wr
 - Whether a sender matters at all is unclear. SAIC found no difference with or without a sender ([Lantz, Luke & May 1994](https://documents.theblackvault.com/documents/remoteviewing/stargate/STARGATE%20%231%20173/Part0003/CIA-RDP96-00791R000200100002-4.TXT)). Edinburgh scored 34 % both with a known sender and with no sender ([Utts 1995](https://www.ics.uci.edu/~jutts/air)).
 
 **In the app:**
-- Mode **Telepathy**. The `telepathy-sender` program plays the rotating-field configurations of the paired-person studies for the partner who wears the helmet. Putting the helmet on the sender is this project's trial design; putting it on the receiver is another choice. Neither is a published sender/receiver protocol.
+- Mode **Telepathy**. The `persinger-siblings-2003-stimulus` program plays the six rotating-field configurations of the 2003 sibling study, as printed in its Table 1 (p.5 [881]), for the partner who wears the helmet. Putting the helmet on the sender is this project's trial design; putting it on the receiver is another choice. Neither is a published sender/receiver protocol.
 - The sender uses a second phone in another room, with the same pool imported (Trials → Picture pool → Import pool file). That phone connects to the helmet as a second app (the helmet accepts two), then **Trials → Sender** → trial number. It shows the target only while the trial is open, that is, until the receiver locks the response.
 - The receiver writes and sketches in the main UI, then locks, judges and reveals as above.
 - **Guides → Shapes and colours telepathy test (two people)** runs a simpler blinded version.
@@ -323,11 +324,11 @@ The setting alone changes experience. In 19 people, 25 min of eye shields and wh
 - Belief and state ratings first, then 10 min of progressive relaxation.
 - 30 min of mentation with the eyes covered (halved ping-pong balls under a red light, or a red-tinted mask) in steady pink noise.
 - Then a written report, lock, blind ranking, a confidence rating, the real/sham guess and the reveal.
-- An optional blinded helmet arm (`remote-viewing`, ring layout) runs during the mentation.
+- An optional blinded helmet arm (`remote-viewing`, on the Shiva ring) runs during the mentation.
 
 **Fit:**
-- Layout B is a 2 × 2 grid centred about 2 cm above each ear top, so its lower coils sit where over-ear headphone cups press. Use in-ear phones, or the ring layout.
-- The ring layout has a coil on the forehead (Fpz). Keep it clear of the eye covers ([PLACEMENT.md](PLACEMENT.md)).
+- Layout B is a 2 × 2 grid centred about 2 cm above each ear top, so its lower coils sit where over-ear headphone cups press. Use in-ear phones, or a ring.
+- The Shiva ring that `remote-viewing` uses has two coils on the forehead (Fp1 and Fp2). Keep them clear of the eye covers ([PLACEMENT.md](PLACEMENT.md)).
 - Keep the noise at a comfortable level, at or below the WHO-based limits in [GUIDES.md](GUIDES.md).
 
 ## Judging

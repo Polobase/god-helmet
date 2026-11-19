@@ -1,4 +1,4 @@
-// Blinded trials and the picture pool they draw from (webapp/src/lib, plain
+// Blinded trials and the picture pool they draw from (core/lib, plain
 // JavaScript) with types on them, plus the new-trial form, which has to
 // outlive a page change. The protocol is in docs/BLE_PROTOCOL.md ("Trial
 // commitment"), the method in docs/EXPERIMENTS.md.

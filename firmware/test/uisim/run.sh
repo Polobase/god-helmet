@@ -46,6 +46,6 @@ ${CXX:-c++} -std=c++17 -O1 -Wall -Wno-unused-parameter -Wno-unused-function -Wno
   lib/engine/src/*.cpp lib/minijson/src/*.cpp "$BUILD"/obj/*.o $SDL_LIBS -o "$BUILD/uisim"
 
 # Program pack (same command the user runs for the SD card).
-(cd ../webapp && npm run -s sd-pack -- "$BUILD/pack" >/dev/null)
+node ../site/scripts/sd-pack.mjs "$BUILD/pack" >/dev/null
 rm -f "$OUT"/*.png
 "$BUILD/uisim" "$BUILD/pack" "$OUT"

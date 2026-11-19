@@ -111,7 +111,7 @@ Murphy's Shakti design for psychic skills carries his note that "none of the pro
 - **Consistency.** Two papers report opposite geomagnetic correlations ([Geomagnetic activity](EFFECT_GEOMAGNETIC.md)).
 - **Replication and pre-registration.** None.
 
-Independent double-blind tests of God-Helmet-type fields on experience found no field effect ([RESEARCH.md](RESEARCH.md)). We found no test outside Persinger's lab of whether such fields change telepathy scores.
+Independent sham-controlled tests of God-Helmet-type fields on experience found no field effect: Granqvist 2005, double-blind, and Gendle & McGrath 2012, where the experimenter knew the condition (p.7 [223]) ([RESEARCH.md](RESEARCH.md)). We found no test outside Persinger's lab of whether such fields change telepathy scores.
 
 ## The debate
 
@@ -151,9 +151,8 @@ None of these has been shown to change telepathy scores. They let two consenting
 
 | Program | What it is | Evidence |
 |---|---|---|
-| [Telepathy - sender (Persinger 2003 style, 6 x 5 min)](#programs/telepathy-sender) ([brain view](#programs/telepathy-sender/brain)) | The rotating-field patterns of the paired studies, for the partner who wears the helmet | **single-lab** |
-| [Paired siblings 2003: stimulus person, six counter-clockwise patterns](#programs/persinger-siblings-2003-stimulus) ([brain view](#programs/persinger-siblings-2003-stimulus/brain)) | The six patterns given to the stimulated sibling | **single-lab** |
-| [Shared memories 2002: six CCW circumcerebral patterns for the exposed partner (30 min)](#programs/persinger-shared-memory-2002) ([brain view](#programs/persinger-shared-memory-2002/brain)) | A reconstruction of the exposure in the two 2002 studies | **single-lab** |
+| [Paired siblings 2003: stimulus person, six counter-clockwise patterns](#programs/persinger-siblings-2003-stimulus) ([brain view](#programs/persinger-siblings-2003-stimulus/brain)) | The six rotating-field patterns given to the stimulated sibling, as printed in Table 1 of the paper (p.5 [881]), for the partner who wears the helmet | **single-lab** |
+| [Shared memories 2002: six CCW circumcerebral patterns for the narrating partner (37.5 min)](#programs/persinger-shared-memory-2002) ([brain view](#programs/persinger-shared-memory-2002/brain)) | The exposure in the two 2002 studies: six 5-min configurations with 1.5 min without field between them (Persinger, Cook & Tiller 2002 p.3 [533]) | **single-lab** |
 | [Shakti psychic design (untested): modulated 40 Hz frontal, then occipital](#programs/murphy-shakti-psi-rv-untested) ([brain view](#programs/murphy-shakti-psi-rv-untested/brain)) | Murphy's proposal, which he says is untested | **unverified** |
 
 Read [SAFETY.md](SAFETY.md) first. These programs are not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress.

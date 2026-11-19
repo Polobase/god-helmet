@@ -1,5 +1,5 @@
 // 8-coil weak-field helmet controller (ESP32, ESP32-S3, -C3 or -C6 + AD5328
-// ±10 V module), controlled by the web app (webapp/, GitHub Pages) over
+// ±10 V module), controlled by the web app (site/) over
 // Bluetooth or USB, or on the 2.8" display board standalone from its
 // touchscreen (docs/STANDALONE.md).
 //

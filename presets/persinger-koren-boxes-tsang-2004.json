@@ -1,19 +1,20 @@
 {
   "id": "persinger-koren-boxes-tsang-2004",
-  "name": "Koren boxes: 4-solenoid temporal burst-firing, 30 min (Tsang 2004 Shakti comparison)",
+  "name": "Koren boxes: four solenoid pairs, temporal burst-firing, 30 min (Tsang 2004 Shakti comparison)",
   "category": "persinger",
   "evidence": "single-lab",
+  "fidelity": "approximation",
   "origin": "Persinger & Koren lab, Laurentian University ('Koren boxes'); compared with Shakti by Tsang, Koren & Persinger 2004",
   "uT": 1,
-  "summary": "The lab's own arm of Tsang, Koren & Persinger 2004: four solenoids ('Koren boxes') with a burst-firing field through the temporal lobes, 30 min once a week for 4 weeks, compared with Murphy's sound-card Shakti and sham. The lab reported no QEEG difference between treatments except a high-alpha interaction due mainly to Shakti.",
-  "notes": "Tsang, Koren & Persinger 2004 recorded QEEG over the left and right frontal, temporal, parietal and occipital lobes on 4 successive weeks in 12 subjects before each 30-min exposure to Shakti (Todd Murphy's device, driven from compact disc through a computer sound card), to \"the set of 4 solenoids (Koren boxes) generating a burst-firing magnetic field through the temporal lobes\", or to a sham field. Compared with baseline there were no treatment differences in delta, theta, low alpha, beta or gamma; a session-by-treatment interaction in high alpha (10.5-13 Hz) was \"due primarily to the Shakti treatment\", which the authors called \"congruent with the subjective experiences reported by some users of the technology\". Run the other arms as persinger-shakti-arm-tsang-2004 (or murphy-shakti-helmet-stereo) and sham. Approximations: the abstract gives no sites or field strength; two solenoids per side at T7, TP7 and T8, TP8, driven together, and 1 uT (the lab's usual human level) are inferences. The burst-firing point values were never published, so the built-in accelerating burst (6 to 30 Hz) stands in: 230 points of 3 ms (0.69 s, the best-supported of the lab's 230, 248 and 289-point lengths) once every 4 s. The same year the lab reported that rat analgesia appeared with a .wav file played through a telephone pick-up coil but not with a compact-disc source (Martin, Koren & Persinger 2004), its argument that playback timing, not the nominal waveform, matters; this helmet plays the points from its own 2-kHz sequencer. The exposure is the same as the bilateral-temporal arm of the lab's depression studies (persinger-tbi-depression-temporal). Source cautions: n = 12, one interaction among many comparisons, a single lab testing a commercial device associated with its own work; Gendle & McGrath 2012 later found no effect of the 8 Coil Shakti on emotional responses under sham control, and Granqvist 2005 found no field effect double-blind. Not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "summary": "The lab's own arm of Tsang, Koren & Persinger 2004: burst-firing through the temporal lobes from four left-right solenoid pairs ('Koren boxes'), 30 min in three weekly sessions, compared with the vendor's Shakti and with sham, 4 people per arm. The paper reports no treatment differences except one high-alpha interaction, which it ascribes mainly to Shakti.",
+  "notes": "Tsang 2004 compared Shakti, the lab's Koren boxes and sham, four people each (p.3 [1015]). Each box held four sets of solenoids; the burst-firing pattern was 'presented for about .7 s once every 3 s across the temporoparietal lobes' for 30 min, with 3-ms points (p.5 [1017]). The fields were generated between each of the four pairs of solenoids every 0.5 s (2 s per cycle) through the brain (p.6 [1018]). It is the method of Baker-Price and Persinger 1996 (p.3 [1015]): see persinger-tbi-depression-temporal. This program plays a 690-ms burst (230 points of 3 ms), then 3 s of silence, reading 'once every 3 s' as the pause, and moves to the next pair every 0.5 s: one left-right pair is on at a time, and the right side is reversed so that the pair's field points through the head. The four sites per side stand for the lab helmet's four solenoids per side on a 7.5 by 5 cm ellipse; the site names are this project's reading. The burst is the project's rising sweep with the published point duration and length; the point values were never published as numbers (the lab prints the shape only as a small figure). The paper states no field strength for these boxes, only for the Shakti arm (p.5-6 [1017-1018]); 1 uT is this project's choice. This program's setting is the peak field 20 mm in front of each coil. Support: the sham group wore the boxes or the Shakti helmet with the computers off; who knew the allocation is not stated (p.5 [1017]). The paper's one significant term, in high alpha, is one among eight treatment terms in six bands (Table 1, p.7 [1019]). One lab. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005, double-blind; Gendle & McGrath 2012, where the experimenter knew the condition). Other arms: persinger-shakti-arm-tsang-2004 and sham. Not for anyone with epilepsy or a seizure history; stop on headache, nausea or distress.",
   "setting": "Seated or reclined, eyes closed, in a quiet, dark room (the lab's standard was a blindfold in an acoustic chamber). Record EEG before each session to compare with the paper.",
-  "schedule": "30 min once a week on 4 successive weeks.",
+  "schedule": "30 min once a week for three weeks. The lab recorded EEG on 4 successive weeks, each time before the exposure, and reports changes after 3 treatments.",
   "targets": ["left-amygdala", "right-amygdala", "left-hippocampus-head", "right-hippocampus-head"],
   "source": "Tsang, Koren & Persinger 2004, Int J Neurosci 114:1013 (Shakti vs Koren boxes) https://pubmed.ncbi.nlm.nih.gov/15527205/ ; Martin, Koren & Persinger 2004, Int J Neurosci 114:1259 (.wav through a coil worked, compact disc did not) https://pubmed.ncbi.nlm.nih.gov/15370185/ ; Murphy, Shakti Spiritual Technology & Koren Helmet - A Comparison https://www.god-helmet.com/wp/winshakti/koren_shakti.htm ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Martin & Persinger 2004, Neurosci Lett 366:226 (burst-firing once every 4 s) https://pubmed.ncbi.nlm.nih.gov/15276252/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
   "layout": "custom",
   "placement": {
-    "sites": ["T7", "TP7", "", "", "T8", "TP8", "", ""]
+    "sites": ["FFT7", "C5", "TP7", "T9h", "FFT8", "C6", "TP8", "T10h"]
   },
   "fadeInS": 10,
   "fadeOutS": 10,
@@ -26,12 +27,10 @@
         "f0": 6,
         "f1": 30,
         "sweepMs": 690,
-        "gapMs": 3310,
+        "gapMs": 3000,
         "pointMs": 3
       },
-      "spatial": {
-        "mode": "bilateral"
-      }
+      "spatial": {"mode": "cycle", "side": "both", "dwellMs": 500, "weights": [1, 1, 1, 1, -1, -1, -1, -1]}
     }
   ]
 }

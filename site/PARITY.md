@@ -1,11 +1,11 @@
 # Parity list: old app → new site
 
-Every element of the app in `webapp/` and where it lives in `site/`. Nothing is dropped; things may be folded or moved.
-The old app stays in the repository until this list has been checked on a real helmet (see "Not checked").
+Every element of the old app (`webapp/`, removed from the repository in November 2026; its files are in the git history) and where it lives in `site/`. Nothing is dropped; things may be folded or moved.
+Its engine, protocol and library code moved unchanged to `site/core/`, its tests to `site/test/` and its command-line tools to `site/scripts/`. The list was not checked on a real helmet before the old app was removed (see "Not checked").
 
 Status: **done** = built and exercised in a browser in Demo mode · **built** = written, but the situation it handles could not be produced in the demo.
 
-Last updated: 2026-11-10.
+Last updated: 2026-11-19.
 
 ## Routes
 
@@ -104,6 +104,8 @@ Last updated: 2026-11-10.
 |---|---|
 | Status rows: connection, safety acceptance | done |
 | Calibration: DC test, reversed polarity, running indicator, measured field, "Use for CHn", eight µT/mA values, "measured" flag, Save | done |
+| Coil check with your phone (phyphox): each coil measured in turn, µT/mA stored in the helmet, CSV, signal check | `HelmetCoilCheck`, shown in the local app only (`npm run dev`); its phone proxy is the dev-only route `server/routes/phyphox/` | done (Demo helmet and a stand-in phone; not with a real phone and coil) |
+| Driver-board panel and tES panel (board revision B) | not carried over: they exist only in the git history of `webapp/src/components/{BoardPanel,TesPanel}.vue` | open |
 | Wiring check: rotation test; full load, all eight positive or negative | done |
 | Settings: every field, "Use my location", DAC gain, buffered reference, Save, computed maximum current | done |
 | Environment: board, firmware, clock, sidereal time, Kp / ap; Update from NOAA; set by hand | done (NOAA with a stand-in answer) |
@@ -141,7 +143,7 @@ Stored data does not move from `polobase.github.io` to a new address by itself (
 
 ## When the connection fails
 
-New in the site and in the shared core (`webapp/src/ble`); the old app only got what it needs to keep working (a line saying so, Reconnect, Stop switched off). The helmet runs a session by itself, so a lost connection never stops one: the app keeps what it knew, reconnects, and says what happened meanwhile. Checked in Demo mode with the demo helmet's hooks (`window.__helmetDemo`, described at the top of `webapp/src/ble/demo.js`) and against stand-in Bluetooth and USB objects in the core's tests. On a real board (classic ESP32, firmware 0.4.0) the core's own USB code was run through a stand-in for the browser's serial port: connect, requests with an entry's `id`, a pulled cable with a session running, a start whose answer got lost, the reset button and a crash in mid-session all behaved as described here. The firmware's Bluetooth side was checked with a test client (`firmware/test/hw`), **not** with a browser.
+New in the site and in the shared core (`core/ble`); the old app only got what it needs to keep working (a line saying so, Reconnect, Stop switched off). The helmet runs a session by itself, so a lost connection never stops one: the app keeps what it knew, reconnects, and says what happened meanwhile. Checked in Demo mode with the demo helmet's hooks (`window.__helmetDemo`, described at the top of `webapp/src/ble/demo.js`) and against stand-in Bluetooth and USB objects in the core's tests. On a real board (classic ESP32, firmware 0.4.0) the core's own USB code was run through a stand-in for the browser's serial port: connect, requests with an entry's `id`, a pulled cable with a session running, a start whose answer got lost, the reset button and a crash in mid-session all behaved as described here. The firmware's Bluetooth side was checked with a test client (`firmware/test/hw`), **not** with a browser.
 
 | What | Where | Status |
 |---|---|---|

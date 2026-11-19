@@ -4,14 +4,16 @@
   "layout": "temporal",
   "category": "research",
   "evidence": "unverified",
+  "fidelity": "construct",
   "origin": "This app's Gateway-style guides (our design; no published protocol)",
   "uT": 2.0,
-  "summary": "Experimental arm of the Gateway-style Focus-15 guide (our design, untested): 4 Hz in-phase sine on all temporal coils for 11 min (Focus-10 and Focus-12-style steps), then 7 Hz (count 13 to 15 and open awareness, 12 min), at 2 uT or less. The 7 Hz phase runs 10 min longer than its steps so that a paused guide (the helmet keeps running while the guide is paused) does not cut it short; the guide stops it after its last arm step. A pause still moves the switch to 7 Hz earlier than the steps it belongs to. Run it blinded (real vs sham) from the guide. The Shakti safety page advises against real-time combination with binaural-beat devices.",
+  "summary": "The coil arm of this project's Gateway-style Focus 15 guide: a 4 Hz in-phase sine on all temporal coils for 11 min, then 7 Hz for up to 22 min, at 2 uT. It is this project's own design and untested. The Gateway documents describe sound only and give no frequency for Focus 15; the 7 Hz is the binaural beat of an audio study (Wahbeh 2007).",
   "source": "Our design after the Gateway research notes; Wahbeh et al. 2007, J Altern Complement Med 13:199 (7 Hz layer); Shakti safety page https://www.god-helmet.com/wp/winshakti/safety.htm",
   "fadeInS": 10,
   "fadeOutS": 10,
   "phases": [
     {"name": "4 Hz in-phase sine", "minutes": 11, "pattern": {"type": "sine", "f0": 4, "f1": 4}, "spatial": {"mode": "bilateral"}},
     {"name": "7 Hz in-phase sine", "minutes": 22, "pattern": {"type": "sine", "f0": 7, "f1": 7}, "spatial": {"mode": "bilateral"}}
-  ]
+  ],
+  "notes": "The Gateway method is sound through stereo headphones (McDonnell 1983 p.8). Focus 15 is described only as reached 'through the inclusion of additional levels of sound on the Hemi-Sync tapes' (McDonnell 1983 p.25). No Gateway document gives a frequency for Focus 15, and none of those this project holds describes magnetic or electrical stimulation. The 7 Hz is the binaural beat of Wahbeh 2007, an audio study ('at 7 Hz (carrier frequencies: 133 Hz L; 140Hz R)', p.1). This program plays a sine on all temporal coils in phase: 4 Hz for 11 min (the steps in the style of Focus 10 and Focus 12), then 7 Hz (count 13 to 15 and open awareness, 12 min of steps). The 7 Hz phase lasts 22 min, 10 min longer than its steps, so that a paused guide does not cut it short: the helmet keeps running while the guide is paused, and the guide stops the program after its last arm step. A pause still moves the switch to 7 Hz ahead of the steps it belongs to. The coil arm has no source: carrying audio beat rates over to a magnetic field is this project's choice. No source states a field strength, because none used a field; the 2 uT is this project's choice. This program's setting is the peak field 20 mm in front of each coil. Nobody has tested this arm. The only cited statement on the combination is a vendor's advice against it (Shakti safety page, rule 2: do not combine Shakti with other mind machines in real time). Run it blinded, real against sham, from the guide."
 }

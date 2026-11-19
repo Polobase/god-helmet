@@ -9,20 +9,20 @@ Placement decides where the field goes. It does not show that the field does any
 
 [RESEARCH.md](RESEARCH.md) covers the evidence, [HISTORY.md](HISTORY.md) the devices, [SIGNALS.md](SIGNALS.md) the waveforms, and [EXPERIMENTS.md](EXPERIMENTS.md) how to run a blinded test yourself. Read [SAFETY.md](SAFETY.md) before you wear the helmet.
 
-Evidence words used below: **established** (independent replication), **single-lab**, **claim** (author or vendor statement), **anecdote**, **unverified**. "Inference" marks a translation of vendor or paper wording into 10-5 site names; no source gives those names.
+Evidence words used below: **established** (independent replication), **single-lab**, **claim** (author or vendor statement), **anecdote**, **unverified**. "Inference" marks a translation of vendor or paper wording into 10-5 site names; no source gives those names. Page references such as "p.2 [202]" give the PDF page, with the printed page in brackets.
 
 ## At a glance
 
-| Placement | Sites, CH1 → CH8 | Programs (approx.) | Basis |
+| Placement | Sites, CH1 → CH8 | Programs | Basis |
 |---|---|---|---|
-| Layout A, circumcerebral ring | Fpz, F7, T7, P7, Oz, P8, T8, F8 | 4 use the layout; about 12 more list the same sites | Persinger-lab ring "above the ears" (single-lab); site names are the project's |
-| Layout B, temporal 4 + 4 | FT7, T7, CP5, TP7, FT8, T8, CP6, TP8 | 6 use the layout; 2 more list the same sites | Persinger-lab "temporoparietal" fields (single-lab); site names are the project's |
-| Shiva God Helmet / 8 Coil Shakti cross | FT7, C5, TP7, T9, FT8, C6, TP8, T10 | about 33 | Vendor cross chart (claim); sites are an inference |
-| Shiva ring | Fp1, FT7, TP7, O1, O2, TP8, FT8, Fp2 | about 32 | Vendor placement rules (claim); sites are an inference |
-| Koren-box pairs | T7, TP7, –, –, T8, TP8, –, – | about 20 | "4 solenoids" through the temporal lobes (single-lab); sites are an inference |
-| Other program-specific sets | see "Program-specific placements" below | about 85 | Papers, vendor pages, clinical devices |
+| Layout A sites, circumcerebral ring | Fpz, F7, T7, P7, Oz, P8, T8, F8 | 11 | Persinger-lab ring "above the ears" (single-lab); site names are the project's |
+| Layout B sites, temporal 4 + 4 | FT7, T7, CP5, TP7, FT8, T8, CP6, TP8 | 13 | Persinger-lab "temporoparietal" fields (single-lab); site names are the project's |
+| Lab helmet ellipse, four pairs | FFT7, C5, TP7, T9h, FFT8, C6, TP8, T10h | 31 | The lab helmet: four solenoids per side on an ellipse of 7.5 × 5 cm, driven as four left-right pairs (single-lab). Eight of the 31 are Shiva God Helmet sessions on the same sites (claim). Sites are an inference |
+| God Helmet / 8 Coil Shakti cross | FT7, C5, TP7, T9, FT8, C6, TP8, T10 | 13 | Vendor cross chart (claim); sites are an inference |
+| Shiva ring | Fp1, FT7, TP7, O1, O2, TP8, FT8, Fp2 | 34 | Vendor placement rules (claim); sites are an inference |
+| Other program-specific sets | see "Program-specific placements" below | 74 | Papers, vendor pages, clinical devices |
 
-Most programs (186 of 198) list their own sites with `"layout": "custom"` ([PRESET_FORMAT.md](PRESET_FORMAT.md)). The program library (browse by placement) groups all programs by their eight sites (54 placements), and the program page shows the same map. The app takes each coil's side from its site name: odd number = left, even number = right, `z` = midline. Midline coils take part in the `bilateral`, `rotate` and `single` modes, not in `left`, `right`, `cycle` or `alternate`.
+Most programs (168 of 176) list their own sites with `"layout": "custom"` ([PRESET_FORMAT.md](PRESET_FORMAT.md)). The program library (browse by placement) groups all programs by their eight sites (47 placements), and the program page shows the same map. The app takes each coil's side from its site name: odd number = left, even number = right, `z` = midline. Midline coils take part in the `bilateral`, `rotate` and `single` modes, not in `left`, `right`, `cycle` or `alternate`.
 
 ## Preparing and mounting the coils
 
@@ -32,7 +32,7 @@ All eight coils mount on one 6–8 cm neoprene or elastic headband with Velcro, 
 - **Winding.** Wrap the winding with one layer of Kapton tape so it cannot chafe.
 - **Mount.** Use a **nylon M3 screw** into the core, through the 3D-printed clip (`hardware/coil_clip.scad`) with Velcro on the back. Steel screws change the core's magnetic behaviour.
 - **Orientation.** The coil axis points to the centre of the head. The clean face (no leads) goes toward the scalp; the leads exit away from the head.
-- **Distance.** The app's field model puts the coil face 3 mm off the scalp. Hair, a cap or a thick band add to that. At cortical range the field falls about 12 % per mm ([CALIBRATION.md](CALIBRATION.md)), so 2 mm of extra padding costs about 20 % (derived from the coil model in `webapp/src/engine/field.js`).
+- **Distance.** The app's field model puts the coil face 3 mm off the scalp. Hair, a cap or a thick band add to that. At cortical range the field falls about 12 % per mm ([CALIBRATION.md](CALIBRATION.md)), so 2 mm of extra padding costs about 20 % (derived from the coil model in `site/core/engine/field.js`).
 - **Polarity.** Mount all coils the same way round. In **Helmet → Calibration**, run the DC test on one channel and hold a compass in front of the coil face. Mark the face the compass's south end points to as N; that is the coil's north pole. Mount every coil N-face inward ([CALIBRATION.md](CALIBRATION.md)). Programs that need an opposite coil (the Shakti +/− pairs) reverse its current in software with a negative weight. Never flip a coil by hand.
 - **Low sites.** T9/T10, the inion row (Iz, I1, I2) and the mastoid sites sit below the band line. Use a second strap or a cap, and check that the coil face lies flat.
 
@@ -43,6 +43,12 @@ All eight coils mount on one 6–8 cm neoprene or elastic headband with Velcro, 
 - The **10-20** system spaces sites at 10 % and 20 % of head measurements. **10-10** adds the sites in between, and the **10-5** "five percent" system halves the steps again ([Oostenveld & Praamstra 2001](https://doi.org/10.1016/s1388-2457(00)00527-7)).
 - Of 329 10-5 positions, 241 can be set on a head without overlapping ([Jurcak 2007](https://pubmed.ncbi.nlm.nih.gov/17207640/)). The app knows 340 named positions.
 - Letters give the region: Fp frontopolar, AF, F frontal, FC, C central, CP, P parietal, PO, O occipital, I inion row; FT, T temporal and TP along the side. Odd numbers are left, even numbers right, `z` the midline. Numbers grow away from the midline ([ACNS 2016](https://acns.org/UserFiles/file/EEGGuideline2Electrodenomenclature_final_v1.pdf)). Double-letter rows (FFT, TTP, PPO) and names with `h` (FTT7h, CPP6h) are 10-5 positions between the 10-10 ones ([Oostenveld & Praamstra 2001](https://doi.org/10.1016/s1388-2457(00)00527-7)).
+- **Reading any name.** A name is a row and a column. The app's table (`site/core/assets/brain/sites.json`) holds 336 sites built this way, and a program may use any of them ([PRESET_FORMAT.md](PRESET_FORMAT.md)); the programs use 63 so far.
+  - *Rows over the top of the head, front to back:* Nz (nasion), Fp, AFp, AF, AFF, F, FFC, FC, FCC, C, CCP, CP, CPP, P, PPO, PO, POO, O, OI, I. A three-letter row lies halfway between the two rows it is named after: FFC between F and FC, CCP between C and CP.
+  - *Rows along the side, front to back,* for the columns 7 to 10: AFp, AF, AFF, F, FFT, FT, FTT, T, TTP, TP, TPP, P, PPO, PO, POO. FTT7 is halfway between FT7 and T7.
+  - *Columns, from the midline outwards:* z, 1, 3, 5, 7 on the left and z, 2, 4, 6, 8 on the right. Columns 7 and 8 are the line of the head circumference; 9 and 10 lie 10 % of the ear-to-ear arc below it.
+  - *`h` is a half step towards the midline or upwards:* C1h lies between Cz and C1, C3h between C1 and C3, C5h between C3 and C5, T7h between C5 and T7, T9h between T7 and T9 (on the left; 2h, 4h, 6h, 8h, 10h on the right).
+  - The table also holds four landmarks used for measuring, which are not coil sites: NAS (nasion), INI (inion), LPA and RPA (the points in front of the ears).
 - The American Clinical Neurophysiology Society renamed T3/T4 to T7/T8 and T5/T6 to P7/P8. The old names remain acceptable. ACNS and IFCN did not adopt the 10-5 system ([ACNS 2016](https://acns.org/UserFiles/file/EEGGuideline2Electrodenomenclature_final_v1.pdf)).
 - Standard recordings "do not cover the anterior and basal temporal lobes". The IFCN array therefore adds a low chain F9/T9/P9 and F10/T10/P10 ([Seeck 2017](https://doi.org/10.1016/j.clinph.2017.06.254)). T9 and T10 sit on the pre-auricular points ([Jurcak 2007](http://web.archive.org/web/20200924145911/http://www.jichi.ac.jp/brainlab/download/TenFive.pdf)).
 
@@ -169,7 +175,7 @@ How to read the columns:
 
 **Not evenly spaced.** Layout A uses the named 10-10 sites, which sit at 0, 15, 25, 35 and 50 % of the head circumference, counted from Fpz. The gaps between neighbouring coils are 60–87 mm. The lab's 45° steps (12.5 % each) would fall on AFF7 and PPO7, about 15 mm from F7 and P7 (project research, fact-checked). Programs that need an even ring use the offset rings described under "Shiva ring and the lab ring at 45 degrees" below.
 
-**Programs.** `circumcerebral-gamma`, `circumcerebral-theta`, `remote-viewing` and `telepathy-sender` use the layout. About a dozen more list the same eight sites, for example `persinger-scott-2015-transatlantic`, `military-p06-persinger-swann-1998` and several `lowfield-*` programs. The program library lists them all (browse by placement).
+**Programs.** Eleven programs use these eight sites: `persinger-scott-2015-transatlantic` and ten `lowfield-*` programs. Each lists the sites itself. The programs that copy the lab's ring studies do not use them, because the lab ring had no coil on the midline: `persinger-swann-2002-table1`, `persinger-tsang-2004-gamma-thomas` and others use the Shiva ring, and `persinger-octopus-plus20-ccw` / `-cw` the lab ring at 45°. `remote-viewing`, a Shiva session, uses the Shiva ring too. The program library lists them all (browse by placement).
 
 ## Layout B: temporal 4 + 4
 
@@ -202,26 +208,25 @@ Corrections to older descriptions of this layout:
 - **T7/T8 are not "over the hippocampus".** They sit over the posterior superior temporal gyrus. The hippocampal body lies 56 mm from T7.
 - **It is not a 2 × 2 grid.** It is three coils on the band line plus one above the back coil. CP5/CP6 lie 50 mm from T7/T8, wider than the vendor's cross arms of about 3–4 cm (project research).
 
-**Basis.** The lab's own descriptions are general: fields "applied across the temporoparietal region of the two hemispheres" ([St-Pierre & Persinger 2006](https://pubmed.ncbi.nlm.nih.gov/16861170/)), "primarily over the right temporoparietal region, primarily over the left temporoparietal region, or equally across both hemispheres" ([Persinger & Healey 2002](https://pubmed.ncbi.nlm.nih.gov/12193838/)). No coordinates for the original Koren helmet were ever published. A journalist who wore it described "solenoids on the sides, aimed directly at my temples" ([Hitt 1999](https://www.wired.com/1999/11/persinger/); anecdote). The site names are the project's choice.
+**Basis.** The lab's own descriptions are general: fields "applied across the temporoparietal region of the two hemispheres" ([St-Pierre & Persinger 2006](https://pubmed.ncbi.nlm.nih.gov/16861170/)), "primarily over the right temporoparietal region, primarily over the left temporoparietal region, or equally across both hemispheres" ([Persinger & Healey 2002](https://pubmed.ncbi.nlm.nih.gov/12193838/)). No paper gives a 10-20 site for a coil of the Koren helmet. The papers do give its geometry: four solenoids per side on an ellipse of 7.5 × 5 cm ([Healey 1996](https://pubmed.ncbi.nlm.nih.gov/9003980/), p.2 [202]). The programs that copy the lab helmet use the ellipse placement described under "Lab helmet ellipse and other temporal sets" below. Layout B is a different set of four sites per side over the same region. A journalist who wore the helmet described "solenoids on the sides, aimed directly at my temples" ([Hitt 1999](https://www.wired.com/1999/11/persinger/); anecdote). The site names are the project's choice.
 
-**Programs.** `presence-left`, `presence-right`, `sham` and the three `guide-gateway-*` sessions use the layout ([GUIDES.md](GUIDES.md)). `thomas-pulse` and `lowfield-cnp-thomas-pulse` list the same sites.
+**Programs.** Thirteen programs use these sites. `presence-left`, `presence-right`, `sham`, the three `guide-gateway-*` sessions ([GUIDES.md](GUIDES.md)) and the two sham-helmet replications (`replication-maij-2019-festival-sham`, `replication-simmonds-moore-sham-helmet`) use the layout. `thomas-pulse`, `lowfield-cnp-thomas-pulse` and the three `persinger-ltp-pleasantness-*` programs list the same sites.
 
 ## Program-specific placements
 
 Each program in this section lists its own sites. Move the coils to those sites before starting; the program's Placement tab shows the map. Unless a row says otherwise, the site names are an inference from the vendor's or paper's wording.
 
-### Shiva God Helmet cross
+### God Helmet / 8 Coil Shakti cross
 
 | | Front | Top | Back | Bottom |
 |---|---|---|---|---|
 | Left cross | CH1 FT7 | CH2 C5 | CH3 TP7 | CH4 T9 |
 | Right cross | CH5 FT8 | CH6 C6 | CH7 TP8 | CH8 T10 |
 
-- **Source.** The vendor's 8 Coil Shakti chart puts a cross of four coils on each temporal lobe ([Getting started](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/getting_started_basic.htm)). The vendor calls it "the arrangement that is closest to the original laboratory setup for the God Helmet" ([8 Coil Shakti placement](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/8_coil_placement.htm)). That is a claim. The God Helmet sessions use the same cross.
+- **Source.** The vendor's 8 Coil Shakti chart puts a cross of four coils on each temporal lobe ([Getting started](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/getting_started_basic.htm)). The vendor calls it "the arrangement that is closest to the original laboratory setup for the God Helmet" ([8 Coil Shakti placement](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/8_coil_placement.htm)). That is a claim. The 8 Coil Shakti programs use this cross. The God Helmet sessions use the smaller set FFT7, C5, TP7, T9h and its mirror, described under "Lab helmet ellipse and other temporal sets" below.
 - **Geometry.** The cross is centred on T7/T8. In the app's frame the front and back arms reach 31 mm from T7 and the top and bottom arms 39 mm. The vendor photos show arms of roughly 3–4 cm (interpretation of photos; no distance is stated).
-- **Stepping.** The field steps from coil to coil, clockwise on the left and counter-clockwise on the right, as the vendor's text says. The programs step both crosses top, back, bottom, front, viewed from each side (the order is an inference). One image caption on the same page says the opposite ([God Helmet session list](https://www.god-helmet.com/wp/god-helmet/koren_session_list.htm)). Each program stores its order.
 - **The bottom arm is weak.** T9/T10 sit over the temporalis muscle and the skull base. In the app's brain meshes the cortex lies about 24 mm below T9, against 13–14 mm below T7 (derived). The cortex under T9 gets about a third of the field the cortex under T7 gets.
-- **Programs.** About 33, including `god-helmet-classic`, the `murphy-gh-*` sessions, the `murphy-shakti-60min-*` sessions, `shakti-alternate` and the `murphy-shakti-back-and-forth-*` sessions. Partial and extended sets:
+- **Programs.** Thirteen: the five `murphy-shakti-60min-*` sessions, `replication-gendle-mcgrath-2012`, `murphy-shakti-back-and-forth-amygdala` and `-hippocampus`, the two `murphy-paranormal-shakti-onsite-*` sessions, `murphy-shakti-fibonacci-hippocampus`, `murphy-shakti-lucid-dream-series-temporal` and `murphy-shakti8-limbic-workout-temporal`. Partial and extended sets:
   - `love-agape` uses only the left cross, `murphy-shakti-meditation-hippocampus-right` only the right;
   - `murphy-shakti-lucid-dream-series-chirp-hipp` uses six cross coils (FT7, TP7 and the right cross);
   - the two-phase sessions (`murphy-shakti8-twophase-family-*` and `murphy-shakti8-tv-chirpbi-amyl`) use all eight coils: one cross plus two diagonal pairs (FTT7h/TTP9h on the left, FTT8h/TTP10h on the right). One pair sits inside the cross and the other on the opposite side, so there are six coils on one side and two on the other.
@@ -249,17 +254,16 @@ The programs read the vendor's coil chart like this (an inference for the right 
 
 The − coils get a negative weight, which reverses their current as if the coil were turned over. All coils stay mounted N-face inward.
 
-An independent build of a cross helmet used eight 500-turn solenoids with ferrite rods, "four over the temporal lobes on each side of the head". In the authors' words: "The position of the coils was cross-shaped, with their arms, one vertical and the other horizontal". The active coil changed every 250 ms, in a figure-eight of 1000 ms, at about 1 µT for 20 min, against a sham group ([Tinoco & Ortiz 2014](https://jcer.com/index.php/jcj/article/view/361/386)). The paper found no significant difference during the session but reported significant differences after it (single-lab). Its abstract states 0.0001 T, which conflicts with the 10 mG (1 µT) in its methods. Their Figure 2 shows the four coils per side as a 2 × 2 grid. `persinger-tinoco-ortiz-2014-replication` uses TP7h, T7h, TP9h, T9h and their mirrors, a grid of about 2.8 × 3.5 cm per side (inference); the Placement tab calls it a 2 × 2 temporal grid.
+An independent build of a cross helmet used eight 500-turn solenoids with ferrite rods, "four over the temporal lobes on each side of the head". In the authors' words: "The position of the coils was cross-shaped, with their arms, one vertical and the other horizontal". The active coil changed every 250 ms, in a figure-eight of 1000 ms, at about 1 µT for 20 min, against a sham group ([Tinoco & Ortiz 2014](https://jcer.com/index.php/jcj/article/view/361/386)). The paper found no significant difference during the session but reported significant differences after it (single-lab). Its abstract states 0.0001 T, which conflicts with the 10 mG (1 µT) in its methods. Their Figure 2 shows the four coils per side as a 2 × 2 grid. `persinger-tinoco-ortiz-2014-replication` uses TP7h, T7h, TP9h, T9h and their mirrors (TP8h, T8h, TP10h, T10h), a grid of about 2.8 × 3.5 cm per side (inference); the Placement tab calls it a 2 × 2 temporal grid.
 
 ### Other temporal crosses and squares
 
 | Program family | Sites (left; right mirrors) | Source of the geometry |
 |---|---|---|
 | `persinger-collins-gh-c1` … `c8` | C5, TP7, T9h, FFT7 | Shiva's 4 + 4 helmet as tested in the Persinger lab: coils 5 cm apart vertically and 8 cm horizontally, one left-right pair on at a time ([Collins 2014](https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc)). The sites form a diamond of about 5.8 × 7.7 cm (inference). |
-| `persinger-corradini-2014-ltp-*` | FT7, FC5h, CPP5h, TPP7 | The same square hardware ([Corradini 2014](https://laurentian.scholaris.ca/items/1455e1f3-2f1d-47b5-93cd-23713d69e651)); the sites are a fitted inference with the lower edge just above the ear |
+| `persinger-corradini-2014-ltp-*` | C5, TP7, T9h, FFT7 | The same hardware ([Corradini 2014](https://laurentian.scholaris.ca/items/1455e1f3-2f1d-47b5-93cd-23713d69e651)), on the sites of the Collins sessions; one side per program, 200 ms per coil (a project choice) |
 | `persinger-harribance-*` | T7, C5, CP5, TP7 | Koren helmet with four left-right solenoid pairs ([Persinger & Murphy 2016](https://www.god-helmet.com/wp/god-helmet/god_helmet_debate_publication.htm)); the sites, a small ellipse over the temporoparietal region, are an inference |
-| `murphy-shakti-helmet-stereo` | F7, T7, CP5 | Murphy's first stereo Shakti helmet: "one positive and two negative coils" per side ([Shakti Helmet emulation](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/shakti_helmet.htm)); sites follow the vendor's comparison page (inference) |
-| `persinger-shakti-arm-tsang-2004` | F3, T7, P3 | The Shakti arm of [Tsang 2004](https://pubmed.ncbi.nlm.nih.gov/15527205/); frontal, temporal and parietal coils as on the vendor's comparison page ([Shakti & Koren Helmet](https://www.god-helmet.com/wp/winshakti/koren_shakti.htm)) (inference) |
+| `persinger-shakti-arm-tsang-2004` | F3, T7, P3 | Murphy's stereo Shakti helmet as the lab tested it: "three sets of solenoids at the level of the prefrontal, parietal, and temporal lobes" ([Tsang 2004](https://pubmed.ncbi.nlm.nih.gov/15527205/), p.5 [1017]); frontal, temporal and parietal coils as on the vendor's comparison page ([Shakti & Koren Helmet](https://www.god-helmet.com/wp/winshakti/koren_shakti.htm)) (inference) |
 
 ### Shiva ring and the lab ring at 45 degrees
 
@@ -275,32 +279,48 @@ Practical details:
 - The Shiva uses "8 pairs of coils, equally spaced around the head", and the vendor calls pair polarity "a matter of personal preference and experimentation" ([Shiva coil setup](https://www.god-helmet.com/wp/shiva/shiva_demo/shiva_coil_setup.htm)). With 8 channels the app uses one coil per position.
 - Keep the Fp1/Fp2 coils off the eyebrows and the eyelids.
 
-About 32 programs use this ring, including the `murphy-shiva-*` sessions, `persinger-cook-1999-time-ccw` / `-cw`, `persinger-booth-2008-cw-ccw` and `persinger-swann-2002-table1`.
+Thirty-four programs use this ring, including the `murphy-shiva-*` sessions, `remote-viewing`, `persinger-cook-1999-time-ccw` / `-cw`, `persinger-booth-2008-cw` / `-ccw`, `persinger-tsang-2004-gamma-thomas`, `persinger-tsang-2004-six-configurations` and `persinger-swann-2002-table1`.
 
-**The lab's 45° ring: Fp1, FFT7, TP7, POO7, POO8, TP8, FFT8, Fp2.** The lab put solenoid 1 over the left frontal region and solenoid 8 over the right prefrontal region, counter-clockwise ([Persinger & Lavallee 2010](https://jcer.com/index.php/jcj/article/view/99)). On the 10-5 line these sites are 12.5 % (45°) apart along each side; the front gap (Fp1–Fp2) is 10 % and the back gap (POO7–POO8) 15 % (inference). Used by `persinger-octopus-plus20-ccw` / `-cw` and the `persinger-mood-rotated-*` programs.
+**The lab's 45° ring: Fp1, FFT7, TP7, POO7, POO8, TP8, FFT8, Fp2.** The lab put solenoid 1 over the left frontal region and solenoid 8 over the right prefrontal region, counter-clockwise ([Persinger & Lavallee 2010](https://jcer.com/index.php/jcj/article/view/99)). On the 10-5 line these sites are 12.5 % (45°) apart along each side; the front gap (Fp1–Fp2) is 10 % and the back gap (POO7–POO8) 15 % (inference). Used by `persinger-octopus-plus20-ccw` / `-cw`.
 
 **Direction.** The app always means clockwise or counter-clockwise seen from above. Sources mix viewpoints. The Shiva index page moves the signals "from back to front over the right side, and in the opposite direction over the left" ([Shiva](https://www.god-helmet.com/wp/shiva/index.htm)). The God Helmet session list describes each side on its own ([God Helmet session list](https://www.god-helmet.com/wp/god-helmet/koren_session_list.htm)). The lab claimed more left-hemisphere power with clockwise and more right-hemisphere power with counter-clockwise rotation ([Booth 2008](https://pubmed.ncbi.nlm.nih.gov/19037792/)); single-lab.
 
-### Temporal pairs (Koren boxes)
+### Lab helmet ellipse and other temporal sets
 
-- **T7, TP7 + T8, TP8** (about 20 programs, for example `persinger-koren-boxes-tsang-2004`, `persinger-healey-burst-right`, `persinger-saroka-2015-sensed-presence`). Source: "the set of 4 solenoids (Koren boxes) generating a burst-firing magnetic field through the temporal lobes" ([Tsang 2004](https://pubmed.ncbi.nlm.nih.gov/15527205/)). Two coils per side is an inference.
-- **FT7, T7 + FT8, T8** (`persinger-granqvist-2005-replication`). Contemporary reporting of the Granqvist study described fields of 3–7 µT "aimed just above and in front of the ears" ([Nature news 2004](https://www.nature.com/news/2004/041206/full/news041206-10.html)).
-- **T7, FT7, FT9, T9 + mirrors** (`replication-granqvist-2005`): a square per side from the band down to the ear-point line (inference).
+**Lab helmet ellipse, four pairs: FFT7, C5, TP7, T9h + FFT8, C6, TP8, T10h.** Thirty-one programs use it, for example `persinger-koren-boxes-tsang-2004`, `persinger-healey-burst-right` and `persinger-saroka-2015-sensed-presence`.
+
+| | Front | Top | Back | Bottom |
+|---|---|---|---|---|
+| Left | CH1 FFT7 | CH2 C5 | CH3 TP7 | CH4 T9h |
+| Right | CH5 FFT8 | CH6 C6 | CH7 TP8 | CH8 T10h |
+
+- **Source.** The lab's helmet held four solenoids on each side "in an elliptical pattern (major axis: 7.5 cm; minor axis: 5 cm)" ([Healey 1996](https://pubmed.ncbi.nlm.nih.gov/9003980/), p.2 [202]). The long axis lay "at the level of the mid-temporal lobes" ([Richards 1993](https://pubmed.ncbi.nlm.nih.gov/8407157/), p.3 [73]). The lab's "Koren boxes" were two containers with four solenoids each, worn "over the temporal lobes (just above the ears)" ([Tsang 2004](https://pubmed.ncbi.nlm.nih.gov/15527205/), p.5 [1017]). Single-lab.
+- **Sites.** No paper gives a 10-20 site for a solenoid, so the four names are an inference. On the template head they span 76 × 58 mm per side.
+- **One pair at a time.** "For any given 0.5-sec. interval only one pair (one left, one right) of solenoids was activated so that the flux lines could penetrate through the horizontal axis of the cerebrum" ([Persinger, Tiller & Koren 2000](https://pubmed.ncbi.nlm.nih.gov/10833767/), p.3 [661]). The field went round the ellipse once every 2 s (Richards 1993, p.3 [73]). The programs do the same: one left-right pair is on for 0.5 s, then the next, in the order front, top, back, bottom. The two `persinger-tiller-2002-*` programs use 5 s per pair, as their paper prints (Tiller & Persinger 2002, p.2 [27]).
+- **Through the head.** With all coils mounted N-face inward, a left-right pair driven with the same sign cancels at the midline. The programs therefore reverse the right side with negative weights, so that a pair's field points through the head.
+- **The weaker side.** For a field on one side the lab weakened the other side with switches on the helmet and did not turn it off. The ratio was about 10 to 1 in Healey 1996 (p.3 [203]), and other papers give other ratios. The programs give the weaker side a smaller weight.
+- **God Helmet sessions on the same sites.** `god-helmet-classic` and the seven `murphy-gh-*-60min` sessions use these eight sites for the Shiva God Helmet, whose four coils per side sat 5 cm apart vertically and 8 cm horizontally ([Collins 2014](https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc), p.69 [60]). There the field steps from coil to coil, clockwise on the left and counter-clockwise on the right, as the vendor's text says. These sessions step both sides top, back, bottom, front, viewed from each side (the order is an inference). One image caption on the same page says the opposite ([God Helmet session list](https://www.god-helmet.com/wp/god-helmet/koren_session_list.htm)). Each program stores its order. The step time of 125 ms is a project choice. The eight `persinger-collins-gh-*` sessions and the two `persinger-corradini-2014-ltp-*` programs use the same sites in another channel order (table above).
+
+Other temporal sets:
+
+- **T7, TP7 + T8, TP8** (`persinger-makarec-1987-4hz-cue`; the app lists this set as "Posterior temporal pairs (Makarec 1987)"). The paper played its 4 Hz cue "simultaneously at two pairs of solenoids" along the back part of its solenoid matrix (Persinger & Makarec 1987, p.2 [445]); the two sites per side are an inference. No other program uses this set.
+- **T7, FT7, FT9, T9 + mirrors** (`replication-granqvist-2005`): a square per side from the band down to the ear-point line (inference). The paper describes two blocks of four solenoids "placed bilaterally, horizontally to their temporal lobes, just above and in front of the ears" ([Granqvist 2005](https://pubmed.ncbi.nlm.nih.gov/15849873/), p.3), with fields of 3 to 10 µT measured at a distance from the solenoids "estimated to correspond to the intracranial distance" (same page). The square reaches lower than that description.
 - **T8, TP8, P8** (`persinger-sculthorpe-2003-*` and `persinger-7hz-point-duration-2003`): the lab's right parietotemporal region ([Sculthorpe & Persinger 2003](https://pubmed.ncbi.nlm.nih.gov/15002842/)); three coils is an inference.
-- **T7 / T8 alone** (Shakti test sessions and `persinger-makarec-1987-4hz-cue`).
+- **T7 / T8 alone** (the Shakti test sessions and `murphy-shakti-theta-noise`); **T7 alone** (`persinger-michaud-1985-narrative-5hz`).
+- **FT9h + FT10h** (`persinger-desano-1987-imagery-4hz`): one electromagnet per side, just in front of the upper half of the ear ("Just rostral to the upper half of the ear", De Sano & Persinger 1987, p.1 [968]); the site name is an inference.
 
 ### Frontal
 
 - **Vendor wording.** For the "stop unwanted effects" signal: "Set up the coils so that they have opposite polarities, and apply them with one or two coils over each eye" ([Shiva mono SDU](https://www.god-helmet.com/wp/shiva/shiva_demo/mono_sdu.htm)). The temporo-frontal page gives only a photo caption ([Shakti temporo-frontal](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rot_temporo_frontal.htm)). Every frontal site name is therefore an inference.
-- **Fp1, AF3 + Fp2, AF4.** `murphy-frontal-reset`, `murphy-paranormal-shakti-frontal` and the frontal lucid-dream step use these on CH1–2 and CH5–6. `frontal` and the one-phase frontal Feelgood put the same four coils on CH5–8, so the band can carry the temporal coils of `meditation-prep` (FT7, TP7, FT8, TP8 on CH1–4) at the same time.
+- **Fp1, AF3 + Fp2, AF4.** `murphy-frontal-reset`, `murphy-paranormal-shakti-frontal` and the frontal lucid-dream step use these on CH1–2 and CH5–6. The one-phase frontal Feelgood (`murphy-shakti8-feelgood-1phase-frontal`) puts the same four coils on CH5–8, so the band can carry the temporal coils of `meditation-prep` (FT7, TP7, FT8, TP8 on CH1–4) at the same time.
 - **Fp1, AF3, AF7, F3 + mirrors** (`murphy-shakti8-limbic-workout-frontal`); **F7, FT7, F8, FT8** (`murphy-shakti8-feelgood-1phase-temporofrontal`, one user's variant, not a vendor design).
 - **Caution.** Fp sites lie over the frontalis muscle and the rims of the orbits. Keep the coil face off the eyelid and the brow. Real caps put AF3/AF4 21–23 mm higher than the template ([Scrivener & Reader 2022](https://pmc.ncbi.nlm.nih.gov/articles/PMC8865144/)).
-- **DLPFC sites.** `lowfield-itbs-pattern` uses F3, its cluster variant AF3, F3 and F5, and `lowfield-ctbs-pattern` F4. A common TMS target, MNI (−38, 44, 26), lies about 18 mm below the scalp. In the app's frame its nearest 10-5 sites are AFF5h, F5h and F3, 20–23 mm away (derived; target from [Fox 2012](https://pmc.ncbi.nlm.nih.gov/articles/PMC4120275/)).
+- **DLPFC site.** `lowfield-itbs-pattern` uses F3. A common TMS target, MNI (−38, 44, 26), lies about 18 mm below the scalp. In the app's frame its nearest 10-5 sites are AFF5h, F5h and F3, 20–23 mm away (derived; target from [Fox 2012](https://pmc.ncbi.nlm.nih.gov/articles/PMC4120275/)).
 
 ### Parietal and septal
 
-- **Parietal strip: CP1, CP3, CP5, P3 + mirrors** (`murphy-shakti-caudate-parietal-*`). The vendor describes a strip from about an inch behind the top of the head down to the top of the ears ([Shakti: both parietal lobes](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/bi_parietal.htm)); the site names are an inference.
-- **Septal.** Vendor: the signal goes "over the tops of both parietal lobes", "where the somatosensory (sensation) representation for the genitals is located", "from an inch behind the very top of the head to two inches" ([Shakti septal page](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/septum_consent.htm)). The vendor also says the signal "has been tested with only a few human and no animal subjects", so any effect rests on anecdote. The programs use CP1/CP2 side by side (`murphy-shakti-septal-horizontal`, `-fast`) or Cz/CPz front to back (`murphy-shakti-septal-vertical`).
+- **Parietal strip: CP1, CP3, CP5, P3 + mirrors (CP2, CP4, CP6, P4)** (`murphy-shakti-caudate-parietal-bilateral-fast` and `-slow`). The vendor describes a strip from about an inch behind the top of the head down to the top of the ears ([Shakti: both parietal lobes](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/bi_parietal.htm)); the site names are an inference. `murphy-shakti-caudate-parietal-left` uses two coils of the left strip, CP1 and CP5, one of them reversed. For one side the vendor says to "begin by using only two coils with non-alternating signals" ([8 Coil Shakti over the parietal lobes](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rot_parietal.htm)).
+- **Septal.** Vendor: the signal goes "over the tops of both parietal lobes", "where the somatosensory (sensation) representation for the genitals is located", "from an inch behind the very top of the head to two inches" ([Shakti septal page](https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/septum_consent.htm)). The vendor also says the signal "has been tested with only a few human and no animal subjects", so any effect rests on anecdote. The programs use CP1/CP2 side by side (`murphy-shakti-septal-horizontal`, `-fast`) or CPz/Pz front to back (`murphy-shakti-septal-vertical`).
 - **What the anatomy says.** One fMRI study (20 women, 3 T) mapped the genital field of the somatosensory cortex at MNI (−19.5, −38, 72) and (18.5, −38, 71.5) ([Knop 2022](https://pmc.ncbi.nlm.nih.gov/articles/PMC8824509/)); single-lab. In the app's frame the nearest sites are CCP1h/CCP2h, about 24–25 mm away. CP1/CP2 are 29–30 mm away and about 21 mm behind the target. CPz (34–36 mm) is no closer than Cz (37 mm). In the Colin27 frame CP1/CP2 come out nearest. This is the frame problem in practice.
 
 ### Right temporoparietal (out-of-body programs)
@@ -334,20 +354,20 @@ About 32 programs use this ring, including the `murphy-shiva-*` sessions, `persi
 | NeoSync sTMS | Magnet 1 "just above the nasium, overlying the frontopolar region"; magnet 2 over the frontocentral region; magnet 3 over the central head region ([NCT03288714 protocol](https://cdn.clinicaltrials.gov/large-docs/14/NCT03288714/Prot_000.pdf)) | `lowfield-alpha-iaf-midline`: Fpz, Fz, Cz | Sites and frequency yes. A coil pulses along its axis; it cannot rotate the field like a spinning magnet |
 | Cnp headset | Coils "beneath plastic ear coverings", worn "just above their ears"; 400 µT at contact, ±200 µT at the head surface, ±35 µT in the deep brain ([Thomas 2007](https://pmc.ncbi.nlm.nih.gov/articles/PMC2670735/)) | `lowfield-cnp-thomas-pulse`: the eight Layout B sites (a broader approximation of T7/T8) | Waveform yes; deep-brain strength no |
 | LFMS | "Only the top of the patient's head (up to the eyebrows) was positioned inside the coil"; a near-uniform field ([Fava 2018](https://pmc.ncbi.nlm.nih.gov/articles/PMC5729080/)) | `lowfield-lfms-pattern` on the ring sites | Waveform only; 8 local coils cannot make a uniform whole-head field |
-| TMS-style single sites | F3 (left DLPFC), F4 (right DLPFC), C3 (left hand motor area), Oz | `lowfield-itbs-pattern`, `lowfield-ctbs-pattern`, `lowfield-ctbs-pattern-m1`, `lowfield-tsms-dc`, `lowfield-bhfs-pattern` | Timing only; TMS fields are about a million times stronger |
+| TMS-style single sites | F3 (left DLPFC), C3 (left hand motor area), Oz | `lowfield-itbs-pattern` (F3), `lowfield-ctbs-pattern-m1` and `lowfield-tsms-dc` (C3), `lowfield-bhfs-pattern` (Oz) | Timing only; TMS fields are about a million times stronger |
 
 ## What 8 coils can and cannot reproduce
 
 - **One coil per position.** The 16-coil God Helmet uses two coils per channel with like polarities ([16-coil God Helmet](https://www.god-helmet.com/wp/god-helmet/16_coil_gh.htm)), and the Shiva uses eight pairs ([Shiva coil setup](https://www.god-helmet.com/wp/shiva/shiva_demo/shiva_coil_setup.htm)). The 8-channel helmet uses one coil per position.
-- **64 coils.** A 64-coil Shiva headset appears in one out-of-body case, described in a press release ([PRLog 2012](https://www.prlog.org/11844110-god-helmet-inventor-induces-out-of-body-experience-in-under-six-minutes-using-quiet-magnetic-fields.html)). No coil map was published. `murphy-shiva64-obe-lab` approximates it with two interleaved rings: F7, P7, P8, F8 low and Fz, C3, Pz, C4 around the vertex.
+- **64 coils.** A 64-coil Shiva headset appears in one out-of-body case, described in a press release ([PRLog 2012](https://www.prlog.org/11844110-god-helmet-inventor-induces-out-of-body-experience-in-under-six-minutes-using-quiet-magnetic-fields.html)). The lab's paper says the solenoids were "distributed equally around the cerebrum in columns of 8 separated by 45 deg." (Saroka 2010, p.4 [469]), and each column, from the top of the head down to its side, was driven as one channel (p.5 [470]). `murphy-shiva64-obe-lab` plays it on the Shiva ring, with one coil standing for each column. The field over the upper head is lost.
 - **Whole-head and rotating fields.** LFMS and rotating-magnet devices cannot be copied; see the table above.
 - **Deep targets cannot be selected.** Across five temporal cross variants, the nearest coil stays 60–62 mm from the amygdala and 59–63 mm from the hippocampal head (project research, fact-checked). The cross variants differ in which cortex they reach, not in deep exposure. No arrangement of external sources can put a maximum of the induced electric field inside the brain ([Heller & van Hulsteyn 1992](https://pubmed.ncbi.nlm.nih.gov/1420862/)), and each coil's magnetic field only falls with distance.
 - **Coils add as vectors.** Coils that are on together add their fields as vectors. Two opposite coils on a ring driven with the same polarity cancel at the centre.
-- **Two areas at once.** Programs that combine temporal and frontal coils split the eight channels (for example `meditation-prep` on CH1–4 and `frontal` on CH5–8). Each area then gets fewer coils.
+- **Two areas at once.** Programs that combine temporal and frontal coils split the eight channels (for example `meditation-prep` on CH1–4 and `murphy-shakti8-feelgood-1phase-frontal` on CH5–8). Each area then gets fewer coils.
 
 ## Depth and field fall-off
 
-All numbers here come from the project's coil model (`webapp/src/engine/field.js`, method in [BRAIN_VIEW.md](BRAIN_VIEW.md)). The model treats each 19 × 12 mm, 495-turn coil and its core as rings of current. The model gives 1.86 µT/mA on the axis at 20 mm; the firmware's default calibration factor is 1.8 ([CALIBRATION.md](CALIBRATION.md)). A program's µT value is the peak on the axis 20 mm in front of the coil face, which is about 17 mm below the scalp. These are physics estimates of exposure, not evidence of any effect.
+All numbers here come from the project's coil model (`site/core/engine/field.js`, method in [BRAIN_VIEW.md](BRAIN_VIEW.md)). The model treats each 19 × 12 mm, 495-turn coil and its core as rings of current. The model gives 1.86 µT/mA on the axis at 20 mm; the firmware's default calibration factor is 1.8 ([CALIBRATION.md](CALIBRATION.md)). A program's µT value is the peak on the axis 20 mm in front of the coil face, which is about 17 mm below the scalp. These are physics estimates of exposure, not evidence of any effect.
 
 ### Along the coil axis
 
@@ -457,7 +477,7 @@ Keep two lines of evidence apart:
   - **Programs with this placement:** the others with the same sites, to switch without moving a coil.
   - **Preparing and mounting the coils.**
 - **The program library** (Programs), browsed:
-  - **by placement:** the 54 site sets in use, with the programs that share each one, filterable by region;
+  - **by placement:** the 47 site sets in use, with the programs that share each one, filterable by region;
   - **by site:** the site explorer. Tap any 10-10 site to see:
     - its tape directions and depth;
     - the anatomy under it;

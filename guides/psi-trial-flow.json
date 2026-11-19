@@ -2,11 +2,11 @@
   "id": "psi-trial-flow",
   "name": "Psi trial with covariates (ganzfeld-style)",
   "category": "questionnaire",
-  "summary": "A blinded remote-viewing trial wrapped in the covariates most often reported in the psi literature, under conditions close to the ganzfeld noise-reduction method: belief and state first, a progressive relaxation, 30 minutes of eyes-covered mentation in steady pink noise, then a blind ranking of the pictures in the drawn set (chance 1 in the set size; 25 % with the 4-picture sets this series assumes). An optional blinded helmet arm during the mentation (the Remote viewing program, ring layout) turns it into a helmet x psi design. With 4-picture sets, about 315 trials (two-tailed; 250 one-tailed) are needed to tell a 32 % hit rate from 25 % with 80 % power, so this is a long-series protocol.",
+  "summary": "A blinded remote-viewing trial wrapped in the covariates most often reported in the psi literature, under conditions close to the ganzfeld noise-reduction method: belief and state first, a progressive relaxation, 30 minutes of eyes-covered mentation in steady pink noise, then a blind ranking of the pictures in the drawn set (chance 1 in the set size; 25 % with the 4-picture sets this series assumes). An optional blinded helmet arm during the mentation (the Remote viewing program, on its custom layout) turns it into a helmet x psi design. With 4-picture sets, about 315 trials (two-tailed; 250 one-tailed) are needed to tell a 32 % hit rate from 25 % with 80 % power, so this is a long-series protocol.",
   "evidence": "claim",
   "minutes": 62,
   "requires": { "headphones": true, "helmet": "optional", "pool": true },
-  "setting": "At home, reclined. Eyes covered with halved ping-pong balls under a red light, or a red-tinted eye mask. Headphones. Keep only sets of 4 pictures in the pool for the whole series: a trial draws from every usable set, and the numbers here assume 1 in 4. If you use the helmet, fit it in the ring layout (see Placement); the program lasts exactly as long as the mentation and keeps running when you pause the guide, so don't pause during the mentation. There is no sender in this version; SAIC reported in 1994 that free-response trials do not need one.",
+  "setting": "At home, reclined. Eyes covered with halved ping-pong balls under a red light, or a red-tinted eye mask. Headphones. Keep only sets of 4 pictures in the pool for the whole series: a trial draws from every usable set, and the numbers here assume 1 in 4. If you use the helmet, fit it in the program's custom layout, a ring of eight sites (see Placement); the program lasts exactly as long as the mentation and keeps running when you pause the guide, so don't pause during the mentation. There is no sender in this version; SAIC reported in 1994 that free-response trials do not need one.",
   "cautions": "Psi effects and their moderators are disputed (Hyman 2010; Rouder et al. 2013). Plan two-tailed tests, fix the number of trials in advance and keep every trial. Belief is recorded before feedback and kept apart from scoring.",
   "sources": [
     {
@@ -93,7 +93,7 @@
       "id": "fit",
       "title": "Helmet (optional)",
       "minutes": 1,
-      "instructions": "If you use the helmet, put it on now in the **ring layout** (see the program's Placement tab), not the temporal fit. It runs blinded during the mentation only, real or sham. Without the helmet, press Next.",
+      "instructions": "If you use the helmet, put it on now in the program's **custom layout**, a ring of eight sites (see the program's Placement tab), not the temporal fit. It runs blinded during the mentation only, real or sham. Without the helmet, press Next.",
       "audio": null,
       "advance": "manual"
     },

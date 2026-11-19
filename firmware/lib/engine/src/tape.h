@@ -1,5 +1,5 @@
 // Tape-measure directions for 10-5 sites, for one head (C++ port of
-// webapp/src/lib/tape.js; keep in sync, test/host checks every site against
+// site/core/lib/tape.js; keep in sync, test/host checks every site against
 // the JS output in test/tape/tape-reference.json).
 //
 // Grid rules: UI 10/10 (Jurcak, Tsuzuki & Dan 2007); 10-5 names (Oostenveld &

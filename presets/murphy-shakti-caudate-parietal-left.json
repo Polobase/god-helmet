@@ -1,14 +1,16 @@
 {
   "id": "murphy-shakti-caudate-parietal-left",
-  "name": "Shakti caudate signal, left parietal lobe ('arousal', 30 min)",
+  "name": "Shakti parietal session, left side: burst stand-in for the caudate signal (untested, 30 min)",
   "category": "body",
-  "evidence": "anecdote",
+  "evidence": "unverified",
+  "fidelity": "approximation",
+  "dose": {"value": 50, "unit": "mG", "plane": "coil", "cite": "Murphy, Shakti demo faq.htm"},
   "origin": "Todd Murphy (Shakti software)",
   "uT": 1,
-  "summary": "Murphy's caudate nucleus ('body') signal over the left parietal lobe only, which he describes as arousing: energy and excitement, possibly anger or sexual desire.",
+  "summary": "Murphy expects his caudate nucleus ('body') signal over the left parietal lobe to be arousing (energy and excitement, possibly anger or sexual desire), from a few reports with other placements; he says it has not been tested there. The signal is published only by name; the project's amygdala-type burst stands in for it.",
   "setting": "Darkness and quiet (the vendor says effects during a session need darkness and silence); eyes closed, relaxed, without meditating or falling asleep; no meditation, mind machines or drugs at the same time.",
-  "schedule": "Vendor's Shakti rules: at most every 72 h or once a week, never on consecutive days; a series of 3 or 6 sessions, then a 21-day break; try a session 2-3 times before changing it. Keep to it even though parietal thresholds are higher, and stay with parietal placement for the whole series.",
-  "notes": "Coils over the parietal strip, which the vendor locates 'about an inch behind the topmost point on the head, and then in a strip down to the top of the ears': CP1, CP3, CP5 and P3 on the left (an inference); the right channels stay unused. All four coils of the side run together; the 8-coil channel alternation is not used, as with the 2- and 4-coil Shakti. The caudate signal is unpublished, and Murphy calls it 'not a well tested signal'; the built-in accelerating burst (6 to 30 Hz, 230 points of 3 ms = 0.69 s, then Shakti's standard 4 s of silence) stands in for it, as in the project's Shiva caudate session, so the waveform here does not differ from the amygdala stand-in. Murphy describes 'intense tingly sensations ... sensations of movement' with parietal sessions, left-side caudate sessions as arousing (energy, excitement, possibly anger or sexual desire) and right-side ones as relaxing (calm, possibly lethargy), and bilateral ones as balancing body awareness; these are vendor reports. Murphy names anger among the possible effects of the left side; stop if irritable or angry. Other forms: murphy-shakti-caudate-parietal-right (relaxation) and the bilateral -bilateral-fast and -bilateral-slow. The vendor says thresholds over the parietal lobes 'are a bit higher' and asks users to keep to the normal schedules and not to switch back and forth between the parietal lobes and other locations. A report of anger in two users after a left caudate session followed by a left amygdala session is credited to Murphy but could not be verified on his pages (including both caudate pages); as a precaution, do not follow a left caudate session with a left amygdala session. The vendor does not suggest the caudate signal over the frontal lobes in the 2- and 4-coil Shakti. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012, the latter with the 8 Coil Shakti amygdala signal). Not for people with epilepsy; stop at once if distressed.",
+  "schedule": "Vendor's Shakti rules: at most every 72 h or once a week, never on consecutive days; a series of 3 or 6 sessions, then a 21-day break. Keep to it even though parietal thresholds are higher, and stay with parietal placement for the whole series.",
+  "notes": "The vendor: 'The Caudate Nuclear Signal has not been tested over the left parietal lobe ... There are no reports from sessions with this design so far, however' (l_parietal.htm). The expected arousal comes from 'these few preliminary reports' with other placements. For one parietal lobe it says to 'begin by using only two coils with non-alternating signals' ('Using the 8-Coil Shakti Over the Parietal Lobes'). Played here: two coils, CP1 near the top (-) and CP5 low on the side (+), after the vendor's two-coil photo; the site names are the project's reading. The waveform is the project's amygdala stand-in: a rising sweep, 6 to 30 Hz, 230 points of 3 ms (0.69 s), then 4 s of silence. The vendor gives no shape or timing for the caudate signal, so nothing played is specific to it. The 30 min is the vendor's general session length. Field strength: the vendor's 10 to 50 mG are gaussmeter readings at a coil (FAQ). This program's setting is the peak field 20 mm in front of each coil. At 1 uT that is about 24 uT at the scalp and 56 uT at the coil face, 11 to 56 times the vendor's level. No report of this session exists. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005, double-blind; Gendle & McGrath 2012, where the experimenter knew the condition). Murphy names anger among the possible effects of the left side: stop if irritable or angry. The project's own precaution: do not follow this session with a left amygdala session. Other forms: murphy-shakti-caudate-parietal-bilateral-fast and murphy-shakti-caudate-parietal-bilateral-slow. The vendor says parietal thresholds are 'a bit higher' but asks users to keep to the normal schedules and not to switch between parietal and other placements. Not for people with epilepsy; stop at once if distressed.",
   "targets": [
     "caudate-nucleus",
     "left-supramarginal-gyrus"
@@ -16,16 +18,7 @@
   "source": "Murphy, Shakti demo: Caudate nucleus signal https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/caudate_consent.htm ; Murphy, Shakti demo: 8-coil caudate signal https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/8_coil_caudate_consent.htm ; Murphy, Shakti demo: 8 Coil Shakti over the parietal lobes https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rot_parietal.htm ; Murphy, Shakti demo: Understanding the 8 Coil Shakti (fast and slow alternation) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rot_principles.htm ; Lynne McTaggart interviews Todd Murphy (2006) https://www.youtube.com/watch?v=K-0PHkfvEhg ; Murphy, Shakti demo: What are 'Rapid' and 'High-Speed' signals? (3-ms points, 4-s latency) https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/rapid_&_high_speed_signals.htm ; Ryczko & Persinger 2002, Percept Mot Skills 95:592 (230-point burst-firing pattern) https://pubmed.ncbi.nlm.nih.gov/12434855/ ; Murphy, Shakti demo: Safety - how often https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/how_often_is_safe.htm ; Murphy, Shakti demo: How long should sessions be https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/safe_durations.htm ; Murphy, Shakti demo: Taking breaks https://www.god-helmet.com/wp/winshakti/demo/shakti_demo/break.htm ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 (8 Coil Shakti amygdala signal, sham-controlled) https://pubmed.ncbi.nlm.nih.gov/22582690/",
   "layout": "custom",
   "placement": {
-    "sites": [
-      "CP1",
-      "CP3",
-      "CP5",
-      "P3",
-      "",
-      "",
-      "",
-      ""
-    ]
+    "sites": ["CP1", "", "CP5", "", "", "", "", ""]
   },
   "fadeInS": 10,
   "fadeOutS": 10,
@@ -42,7 +35,7 @@
         "pointMs": 3
       },
       "spatial": {
-        "mode": "left"
+        "mode": "left", "weights": [-1, 0, 1, 0, 0, 0, 0, 0]
       }
     }
   ]

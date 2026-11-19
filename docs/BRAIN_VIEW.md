@@ -44,9 +44,9 @@ The **Brain** tab of each program's page (Programs → a program → Brain) show
 ```sh
 # download the two inputs into an empty folder, then:
 node tools/brain_assets.mjs --bna BNA-maxprob-thr25-1mm.nii.gz --sites fsaverage_1005.tsv \
-  --cerebra CerebrA.nii --regions regions-with-depths.json --out webapp/src/assets/brain
+  --cerebra CerebrA.nii --regions regions-with-depths.json --out site/core/assets/brain
 ```
 
 `--regions` is optional; it only enables the site-alignment fit. `--grid 3` gives a coarser mesh at 40 % of the size.
 
-The code: `webapp/src/engine/field.js` (coil model and exposure), `webapp/src/lib/brain.js` (assets, caching, colours), `webapp/src/components/BrainScene.vue` (three.js scene), `webapp/src/views/BrainView.vue`.
+The code: `site/core/engine/field.js` (coil model and exposure), `site/core/lib/brain.js` (assets, caching, colours), `site/app/components/brain/Scene.vue` (three.js scene), `site/app/pages/app/programs/[id]/brain.vue` (the page).

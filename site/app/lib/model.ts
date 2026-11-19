@@ -1,11 +1,15 @@
-// The shapes of the shared core's data (webapp/src, plain JavaScript) and the
-// small lookups that go with them: evidence levels, layouts, categories.
+// The shapes of the shared core's data (core/, plain JavaScript) and the
+// small lookups that go with them: evidence levels, fidelity, layouts, categories.
 // Light on purpose: public pages import this, and it must not pull in the
 // program library (lib/programs.ts) or the helmet connection (lib/device.ts).
 import * as layoutsJs from '#core/lib/layouts.js'
 import { sessionSites as coreSessionSites } from '#core/lib/brain.js'
 import { EVIDENCE as CORE_EVIDENCE } from '#core/lib/evidence.js'
 import { CATEGORY_LABELS as CORE_CATEGORY_LABELS } from '#core/lib/categories.js'
+import { FIDELITY as CORE_FIDELITY, doseText as coreDoseText } from '#core/lib/presetSchema.js'
+import type { Dose, ProgramDoc } from '#shared/program'
+
+export type { Category, Dose, Evidence, Fidelity, PatternDoc, PhaseDoc, PlacementDoc, ProgramDoc, SpatialDoc, TrackDoc } from '#shared/program'
 
 // ---------------------------------------------------------------- programs
 export interface Pattern { type: string, [key: string]: unknown }
@@ -25,22 +29,6 @@ export interface Session {
   phases: Phase[]
   totalMs: number
 }
-/** A program file (presets/*.json) as written. */
-export interface ProgramDoc {
-  id: string
-  name: string
-  category?: string
-  evidence?: string
-  origin?: string
-  uT?: number
-  summary?: string
-  source?: string
-  setting?: string
-  schedule?: string
-  notes?: string
-  targets?: string[]
-  [key: string]: unknown
-}
 /** A program file with its parsed session, or the reason it does not parse. */
 export interface Preset { doc: ProgramDoc, session: Session | null, error: string | null }
 export interface SourceEntry { text: string, url: string | null, extra: string[] }
@@ -52,6 +40,10 @@ export const sessionSites = coreSessionSites as (session: Session) => (string | 
 
 export interface EvidenceLevel { label: string, info: string, tone: string }
 export const EVIDENCE = CORE_EVIDENCE as Record<string, EvidenceLevel>
+/** How well this helmet reproduces the cited exposure (docs/PRESET_FORMAT.md). */
+export const FIDELITY = CORE_FIDELITY as Record<string, EvidenceLevel>
+/** "1–5 µT at the scalp (Healey 1996 p.2)", or '' without a dose. */
+export const doseText = coreDoseText as (dose?: Dose) => string
 
 // ---------------------------------------------------------------- layouts
 export interface LayoutChannel { site: string, where: string, region: string }

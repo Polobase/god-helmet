@@ -138,7 +138,7 @@ Parts:
 
 **Why the resistor is not optional.**
 - The coil is 4.2 Ω. Without the resistor, ±10 V would try to push 2.4 A through it, a dead short for the module's output op-amps and about 100× the intended field.
-- With 2.2 kΩ, current is at most 10 V / 2204 Ω = **4.54 mA**: about 3–6 µT at the cortex and about 100 µT at the coil face.
+- With 2.2 kΩ, current is at most 10 V / 2204 Ω = **4.54 mA**: about 8 µT 20 mm in front of the coil and about 0.48 mT at the coil face (cored-coil model, calculated; see [CALIBRATION.md](CALIBRATION.md)). The earlier air-core estimate gave 3.3 µT and 0.1 mT.
 - Resistor dissipation is at most 45 mW.
 
 **Maximum current per pin.**
@@ -147,11 +147,11 @@ Parts:
 |---|---|---|
 | AO1–AO8 → 2.2 kΩ → coil | Full scale: ±9.995 V over 2204 Ω (resistor + coil + 2 m of cable) | **4.53 mA** (45 mW in the resistor, 0.09 mW in the coil) |
 | AO1–AO8 | Tolerances: resistor 1 % low, module gain or reference high (its resistors are 3-digit-code parts, probably 5 %), output ±10.5 V | about 4.8 mA |
-| AO1–AO8 | Fault: amplifier stuck at its rail, about ±11 V on the ±12 V supply | about **5.0 mA, the hard ceiling** (≈ 9.4 µT at 20 mm, 55 mW in the resistor) |
+| AO1–AO8 | Fault: amplifier stuck at its rail, about ±11 V on the ±12 V supply | about **5.0 mA** (≈ 9.4 µT at 20 mm, 55 mW in the resistor); 5.4 mA if the output reaches the full 12 V |
+| AO1–AO8 | Two faults: a regulator shorted through (the 16 V boost rail on the amplifier) and that amplifier at its rail | 16 V / 2204 Ω = **7.3 mA, the ceiling the resistor itself sets** (≈ 13 µT at 20 mm, 0.12 W in the resistor) |
 | AO1–AO8 without the resistor | Never: ±10 V into 4.2 Ω | limited only by the op-amp's current limit (SGM8272: about 60 mA typical, at least 30 mA at 25 °C) and the module's supply, about 100× the intended field |
 | All 8 outputs together | Same sign, full scale | 36 mA from one ±12 V rail, plus about 10 mA the module draws itself. The limit is not the 78L12/79L12 (100 mA each) but the TPS61040 boost that feeds both rails: about 40–55 mA in all (TI SLVS413L eq. 4, I = η · I_peak · V_in / (2 · V_out), with η 0.7–0.85, I_peak 350–450 mA, 5 V in, 16 V out). Full scale on all eight at once is at that limit: the rails can sag and the outputs clip below ±10 V |
 | GPIO4 → 330 Ω → PhotoMOS LED | (3.3 V − 1.2 V) / 330 Ω | about 6 mA: enough to switch the AQY212EH reliably, well under the ESP32's 20 mA default drive |
-| IO19 on the 2.8" display board | the same LED plus the 1 kΩ pull-down (3.3 mA) | about 9.5 mA, still under the 20 mA default drive |
 | CLK, DIN, SYNC, LDAC, STOP | Logic inputs | microamps (STOP: about 0.07 mA through the internal pull-up when pressed) |
 
 - Inductance: τ = L/R = 1.9 µs, so the coil behaves as a resistor at these frequencies and no flyback diode is needed.
@@ -159,6 +159,7 @@ Parts:
 **Why the arming switch** (DevKit boards; the ESP32-32E display board has none and relies on its power-on rule, see [above](#esp32-32e-28-display-board)).
 - The AD5328 resets to code 0. On this ±10 V module that is almost certainly **−10 V on every output** until the firmware writes mid-scale (verify this in the bench test, docs/CALIBRATION.md §1).
 - The PhotoMOS keeps the coil return open until then. It also opens instantly on the STOP button and on any reset.
+- **What it does not do.** The eight returns share one bus, and the switch sits between that bus and ground. With the switch open the bus floats to the mean of the eight output voltages, so current still flows from an output that is higher to one that is lower: one coil driven alone keeps 87.5 % of its current, and a left-right pair driven in opposite directions keeps all of it (calculated, [HARDWARE_AUDIT.md](HARDWARE_AUDIT.md) H3). The switch stops the current at power-on, when all eight outputs are equal. After STOP the current stops because the firmware writes 0 V to all outputs within one tick. If the firmware hangs in mid-session, the switch does not stop the field. [HARDWARE_REQUIREMENTS.md](HARDWARE_REQUIREMENTS.md) M2 replaces it by a switch in every coil's own return.
 - AQY212EH: 60 V / 500 mA, bidirectional, silent. It is a 4-pin DIP: pin 1 LED +, pin 2 LED −, pins 3/4 the switch (pin 4 to the return bus, pin 3 to module GND).
 - A 5 V relay module also works if it has an input pull-down and is active-high. A click is fine, because the switch closes for real and for sham sessions alike.
 - Don't use the AD5328's own power-down mode as an "off" switch: it floats the DAC outputs into the module's op-amp stage, so the module output is undefined.

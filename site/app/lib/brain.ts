@@ -1,4 +1,4 @@
-// The brain view's data (webapp/src/lib/brain.js, plain JavaScript) with types
+// The brain view's data (core/lib/brain.js, plain JavaScript) with types
 // on it. Nothing here adds behaviour. Light on purpose: the meshes and the
 // region list load inside loadBrain(), and three.js is imported only by
 // components/brain/Scene.vue, so a page can import this without either.

@@ -1,7 +1,7 @@
 // Links written for GitHub and for the old hash-routed app, mapped to this site.
 // Pure functions: used while the Markdown is parsed (build) and by the plugin
 // that forwards old #hash links (browser).
-import { resolveRoute, isAppHash } from '../../webapp/src/lib/routes.js'
+import { resolveRoute, isAppHash } from '../core/lib/routes.js'
 import { docByFile, pathFor, pathForOldSlug } from './content-meta'
 
 export const REPO = 'https://github.com/Polobase/god-helmet'

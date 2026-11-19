@@ -1,13 +1,15 @@
 {
   "id": "persinger-meli-2009-red-light",
-  "name": "Meli 2009: right-hemisphere burst-firing in dim red light",
+  "name": "Meli 2009: burst-firing, stronger on the right, in dim red light",
   "category": "presence",
   "evidence": "single-lab",
+  "fidelity": "approximation",
+  "dose": {"value": 2, "unit": "uT", "plane": "unstated", "cite": "Meli 2009 p.3 [70]"},
   "origin": "Meli & Persinger 2009 (Behavioral Neuroscience Laboratory, Laurentian University)",
   "uT": 1,
-  "summary": "Thirty minutes of the lab's burst-firing pattern over the right temporal lobe while you sit with your eyes open in dim red light. Persinger's lab reported that the field combined with red light, rather than green or white light, markedly increased dizziness, a sensed presence, \"ego-alien\" thoughts and feelings of detachment from the body (Meli & Persinger 2009).",
-  "notes": "The abstract says the right hemisphere was stimulated (the title says \"over the temporal lobes\") but gives no coil positions or intensity: T8 and TP8 (the other six channels stay silent) and 1 uT, the lab's usual human intensity, are inferences. The burst-firing point values were never published; the built-in accelerating burst with the published timing (230 points of 3 ms = 0.69 s, once every 4 s) stands in for them (the lab's theses give 230, 248 or 289 points and 3 or 4 s between bursts). Light colour and open eyes are part of this protocol, not comfort settings: field subjects reported more visual sensations on the left in red light and on the right in green light. The lab also logged geomagnetic activity: Booth, Koren & Persinger 2005 linked presences to rising activity, while other studies linked it to lower pleasantness, so if you track it, fix the analysis in advance. Karbowski et al. 2015 reported similar sensations from blue LEDs on the right back of the head flashed in one of the lab's field patterns, which if anything points away from the magnetic field as the cause; this helmet has no light channel. presence-right runs the same burst for 20 + 10 min on four right coils (FT8, T8, CP6, TP8). Single-lab finding, never independently replicated. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on fear, headache or distress.",
-  "setting": "Seated with the eyes open in a quiet room lit only by dim red light (the study's comparison conditions were dim green and dim white light).",
+  "summary": "Thirty minutes of the lab's burst-firing pattern, stronger over the right temporal lobe, while you sit with your eyes open in dim red light. Meli & Persinger 2009 reported that the field raised a five-item 'presence' score (dizziness, sensed presence, detachment, ego-alien thoughts, being somewhere else) in red light and lowered it in white light, with no effect of the field on its own; 5 people per cell.",
+  "notes": "30 people in 6 cells (field or sham, in red, green or white light) wore the Koren helmet with four sets of solenoids. 'A burst-firing magnetic field, composed of 239 points, with point durations equal to 3 msec, was delivered once every 4 sec for 30 min (about 380 presentations)' (Meli 2009 p.3 [70]). 380 bursts in 30 min means a 4-s pause after each. The procedure 'was similar to' Persinger & Healey 2002, where each solenoid pair was on for 0.5 s (p.3 [535]). This program plays a 717-ms burst (239 points of 3 ms), then a 4-s pause. The burst is rebuilt as this project's rising sweep with the published point duration and length; the point values were never published as numbers, only as a small graph (Persinger 2000 Fig. 2, p.5 [663]). One left-right pair is on at a time (0.5 s each), and the right side is reversed so that the pair's field points through the head. The four sites per side stand for the lab helmet's four solenoids per side on a 7.5 by 5 cm ellipse; the site names are this project's reading. Field: the paper says only that it was '2 uT higher over the right hemisphere compared to the left', with no absolute value or place (p.3 [70]). Here the left side plays at 0.4 of the right, this project's choice: at 1 uT the right is 0.6 uT higher, not 2 uT. This program's setting is the peak field 20 mm in front of each coil. Result: the presence score was 6.6 with field against 1.4 with sham in red light, and 1.8 against 5.0 in white light; the field alone had no effect (p.3-4 [70-71]). 5 people per cell, one lab, not repeated elsewhere. This helmet has no light channel. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005, double-blind; Gendle & McGrath 2012, where the experimenter knew the condition). Not for people with epilepsy or a seizure history; stop on fear, headache or distress.",
+  "setting": "Seated with the eyes open in a quiet room lit only by dim red light. The study used two 40-watt bulbs covered with red gels, on stands about 1 m to the side; its comparison conditions were green and white light.",
   "schedule": "One 30-min session per condition. For a self-test, compare red with green or white light and field with sham (the app's Blind option) in blinded, counterbalanced sessions on different days, with the rating scale chosen in advance.",
   "targets": [
     "right-superior-temporal-gyrus-posterior",
@@ -16,32 +18,21 @@
   "source": "Meli & Persinger 2009, Red light facilitates the sensed presence elicited by application of weak, burst-firing magnetic fields over the temporal lobes, Int J Neurosci 119:68-75 https://pubmed.ncbi.nlm.nih.gov/19116832/ ; Booth, Koren & Persinger 2005, Int J Neurosci 115:1053-1079 (sensed presence and geomagnetic activity) https://pubmed.ncbi.nlm.nih.gov/16051550/ ; Karbowski, Saroka, Murugan & Persinger 2015, Epilepsy Behav 51:127-132 (blue-light version) https://pubmed.ncbi.nlm.nih.gov/26276250/ ; Persinger, Hoang & Baker-Price 2009, Electromagn Biol Med 28:374-382 (burst-firing once every 3 s for about 0.7 s) https://pubmed.ncbi.nlm.nih.gov/20017628/ ; Carniello 2020, PhD thesis, Laurentian University (230-point burst-firing file, 3 ms points) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Collins 2014, MA thesis, Laurentian University (3 ms points, 4 s between bursts) https://laurentian.scholaris.ca/items/16d96136-680c-4afe-8044-f9137bd01afc ; Granqvist et al. 2005, Neurosci Lett 379:1-6 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
   "layout": "custom",
   "placement": {
-    "sites": [
-      "",
-      "",
-      "",
-      "",
-      "T8",
-      "TP8",
-      "",
-      ""
-    ]
+    "sites": ["FFT7", "C5", "TP7", "T9h", "FFT8", "C6", "TP8", "T10h"]
   },
   "fadeInS": 10,
   "fadeOutS": 10,
   "phases": [
     {
-      "name": "Right temporal burst-firing, eyes open, red light",
+      "name": "Burst-firing, stronger on the right, eyes open, red light",
       "minutes": 30,
       "pattern": {
         "type": "burst",
-        "sweepMs": 690,
-        "gapMs": 3310,
+        "sweepMs": 717,
+        "gapMs": 4000,
         "pointMs": 3
       },
-      "spatial": {
-        "mode": "right"
-      }
+      "spatial": {"mode": "cycle", "side": "both", "dwellMs": 500, "weights": [0.4, 0.4, 0.4, 0.4, -1, -1, -1, -1]}
     }
   ]
 }

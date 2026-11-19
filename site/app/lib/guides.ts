@@ -1,5 +1,5 @@
 // Guided sessions: the guide files, their steps and inputs, the records of
-// their runs, the questionnaires and the picture pool (webapp/src/lib, plain
+// their runs, the questionnaires and the picture pool (core/lib, plain
 // JavaScript) with types on them. Nothing here adds behaviour, except the
 // library's filters, which outlive the page. The run itself is in
 // lib/guideRun.ts.

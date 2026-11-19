@@ -6,9 +6,8 @@
 
 struct Settings {
   // Calibration: peak field per mA at the reference depth (20 mm from the coil
-  // face, on axis). Default = air-core estimate for the 19x12 mm 495-turn coils;
-  // replace with measured values (docs/CALIBRATION.md).
-  // µT at 20 mm per mA; 1.8 = cored-coil model (docs/CALIBRATION.md), measure per coil.
+  // face, on axis). Default 1.8 = the cored-coil model of the 19x12 mm 495-turn
+  // coils (0.73 without a core); replace with measured values (docs/CALIBRATION.md).
   float uTperMA[8] = {1.8f, 1.8f, 1.8f, 1.8f, 1.8f, 1.8f, 1.8f, 1.8f};
   bool calibrated = false;
   engine::DriveConfig drive;

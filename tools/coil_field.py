@@ -4,7 +4,7 @@
 Default geometry: the 19 x 12 mm levitation coil (495 turns, winding from
 r = 3.0 mm to 9.5 mm, 12 mm long) WITHOUT its core. The core raises the field
 about 2.4x at 20 mm (model: about 1.8 uT/mA at 20 mm, 105 uT/mA at the face;
-see webapp/src/engine/field.js), so measure the real value (docs/CALIBRATION.md).
+see site/core/engine/field.js), so measure the real value (docs/CALIBRATION.md).
 
     python3 tools/coil_field.py                      # table for 1 mA and 4.54 mA
     python3 tools/coil_field.py --ma 2 --depth 20    # one value

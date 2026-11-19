@@ -1,4 +1,4 @@
-// The helmet connection (webapp/src/ble, plain JavaScript) with types on it.
+// The helmet connection (core/ble, plain JavaScript) with types on it.
 // Kept apart from lib/programs.ts: the site header shows a running session on
 // every page and must not load the program library to do so.
 import * as deviceJs from '#core/ble/device.js'

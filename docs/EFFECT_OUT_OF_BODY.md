@@ -274,7 +274,7 @@ God Helmet record:
 
 ### What to expect
 
-Be clear about the odds before you start. The programs below copy Murphy's OBE recipes and one lab case. Their evidence ranges from **anecdote** to **single-lab**. No controlled study shows that a weak field over the right hemisphere raises the chance of an OBE. If anything happens, the setting (darkness, silence, lying still, the edge of sleep, expectation) is the first explanation to rule out, and the only way to rule it out is a blinded comparison with sham.
+Be clear about the odds before you start. The programs below copy Murphy's OBE recipes and one lab case. Their evidence ranges from **unverified** to **single-lab**. No controlled study shows that a weak field over the right hemisphere raises the chance of an OBE. If anything happens, the setting (darkness, silence, lying still, the edge of sleep, expectation) is the first explanation to rule out, and the only way to rule it out is a blinded comparison with sham.
 
 ### Programs
 
@@ -282,9 +282,9 @@ Be clear about the odds before you start. The programs below copy Murphy's OBE r
 |---|---|---|
 | [obe](#programs/obe) ([brain view](#programs/obe/brain)) | Murphy's two-coil form: the modulated 40 Hz (obe45) approximation for 30 min through one coil in front of and below the right ear and one over the right angular gyrus; the other six channels silent | **anecdote** |
 | [murphy-shakti-obe-mod40](#programs/murphy-shakti-obe-mod40) ([brain view](#programs/murphy-shakti-obe-mod40/brain)) | The same signal through six coils around those two right-sided spots, 30 min | **anecdote** |
-| [murphy-shakti-obe-chirp](#programs/murphy-shakti-obe-chirp) ([brain view](#programs/murphy-shakti-obe-chirp/brain)) | The chirp approximation (a falling sweep) on the same six coils, 30 min | **anecdote** |
-| [murphy-shakti-obe-hippocampus](#programs/murphy-shakti-obe-hippocampus) ([brain view](#programs/murphy-shakti-obe-hippocampus/brain)) | The hippocampal-signal approximation on the same six coils, 30 min | **anecdote** |
-| [murphy-shiva64-obe-lab](#programs/murphy-shiva64-obe-lab) ([brain view](#programs/murphy-shiva64-obe-lab/brain)) | An 8-coil stand-in for the 64-coil Saroka case: 5 min of amygdala-style burst-firing rotating over two interleaved rings | **single-lab** (one case) |
+| [murphy-shakti-obe-chirp](#programs/murphy-shakti-obe-chirp) ([brain view](#programs/murphy-shakti-obe-chirp/brain)) | The chirp approximation (a falling sweep) on the same six coils, 30 min. Murphy lists the chirp among his OBE signals; no report ties it to an OBE | **unverified** |
+| [murphy-shakti-obe-hippocampus](#programs/murphy-shakti-obe-hippocampus) ([brain view](#programs/murphy-shakti-obe-hippocampus/brain)) | The hippocampal-signal approximation (one pulse, then four pulses 170 ms later, three times in 0.74 s; after Tsang 2004 p.5 [1017]) on the same six coils, 30 min | **anecdote** |
+| [murphy-shiva64-obe-lab](#programs/murphy-shiva64-obe-lab) ([brain view](#programs/murphy-shiva64-obe-lab/brain)) | An 8-coil stand-in for the 64-coil Saroka case: 5 min of amygdala-style burst-firing stepped counter-clockwise round the ring (20 down to 6 ms per position), 1.5 min without field, then 5 min at 100 down to 30 ms per position. One coil stands for each strip of eight solenoids (Saroka 2010 p.5 [470]) | **anecdote** (one case) |
 | [persinger-collins-2013-shiva-amygdaloid](#programs/persinger-collins-2013-shiva-amygdaloid) ([brain view](#programs/persinger-collins-2013-shiva-amygdaloid/brain)) | The 20-min field condition of Collins 2013: counter-clockwise steps of 100 to 240 ms | **single-lab** (thesis) |
 | [sham](#programs/sham) | No field; or tick **Blind** on any of the above | – |
 

@@ -1,9 +1,9 @@
 #!/bin/sh
-# Files for the web app's firmware installer (webapp/src/components/FirmwareInstall.vue,
+# Files for the web app's firmware installer (site/app/components/helmet/FirmwareInstall.vue,
 # ESP Web Tools): one merged flash image per board (bootloader, partition
 # table, boot_app0 and the app at their offsets) and two manifests.
 #   firmware/scripts/web_bundle.sh <out dir> [--no-build]
-# e.g. firmware/scripts/web_bundle.sh webapp/public/firmware
+# e.g. firmware/scripts/web_bundle.sh site/public/firmware
 set -e
 OUT=${1:?usage: web_bundle.sh <out dir> [--no-build]}
 mkdir -p "$OUT"

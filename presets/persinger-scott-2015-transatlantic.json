@@ -1,12 +1,14 @@
 {
   "id": "persinger-scott-2015-transatlantic",
-  "name": "Scott 2015 trans-Atlantic pairs: toroid primer/effector (42 min)",
+  "name": "Scott 2015 trans-Atlantic pairs: toroid primer/effector pulse trains (42 min)",
   "category": "psi",
-  "evidence": "claim",
+  "evidence": "unverified",
+  "fidelity": "timing",
+  "dose": {"value": 0.03, "unit": "uT", "plane": "unstated", "cite": "Scott 2015 p.16 [673]"},
   "origin": "Persinger lab, Laurentian University (Scott, Rouleau, Lehman, Tessaro, Juden-Kelly, Saroka & Persinger 2015), Arduino-driven toroid",
   "uT": 0.1,
-  "summary": "The 42-min send/receive paradigm of Scott et al. 2015: from minute 11, a 6-min primer of seven 3-ms pulses whose gaps lengthen from 20 to 32 ms, then a 14-min effector whose gaps shorten from 20 to 6 ms, stepped counter-clockwise around the head. Persinger's lab reported excess correlation of right-hemisphere theta-gamma power between five pairs of people more than 6000 km apart during the effector.",
-  "notes": "Timeline (22 segments): 3 min eyes open, 3 min eyes closed, six trials of 1 min rest, 2 min send/receive and 2 min receive/send, then 3 min eyes closed and 3 min eyes open. The field runs from minute 11 to 31 (trial 2 under the primer, trials 3-5 under the effector) and starts and stops abruptly. The original was one toroid per head (a 25.4-cm ring wound with 225 turns of 16-gauge wire, held by an elastic cap) pulsed by an Arduino Uno, so every pulse reached the whole ring at once, and a toroid's field runs around the ring while these coils point into the head: the field geometry is not reproduced. Here each 3-ms pulse steps to the next of eight coils on the 10 % ring (Fpz, F7, T7, P7, Oz, P8, T8, F8), counter-clockwise seen from above, an inference from the lab's \"rotating field\" wording; a toroid has no first coil, and to pulse all coils at once change \"rotate\" to \"bilateral\". Primer: the paper's 7 pulses with gaps of 20, 22 ... 32 ms (203 ms), so the gap ramp restarts every 7 coils. Effector: the paper says only that the same pulses follow gaps starting at 20 ms and falling by 2 ms per pulse; the 128-ms cycle Rouleau & Persinger 2015 measured on the same toroid system fits 8 pulses down to 6 ms (one per coil, used here), while 7 pulses down to 8 ms (119 ms) is the other reading. Pulses are unipolar 5-V steps, as from the Arduino. The field averaged 30 nT (0.3 mG), the intensity the lab found most effective in its pH studies; 0.1 uT at 20 mm is the app's lowest setting. Five pairs, a very large set of EEG comparisons (19 x 19 channels, 8 bands, 22 segments), no pre-registration, published in JCER; no independent replication of any excess-correlation result exists. Independent double-blind tests of God-Helmet-type fields found no field effect (Granqvist 2005; Gendle & McGrath 2012). Not for people with epilepsy or a seizure history; stop on headache, nausea or distress.",
+  "summary": "The 42-min send/receive paradigm of Scott et al. 2015: from minute 11, a 6-min primer of seven 3-ms pulses whose gaps lengthen from 20 to 32 ms, then a 14-min effector of seven 3-ms pulses whose gaps shorten from 20 to 8 ms, here on all coils at once, not on one ring winding. The paper reports excess correlation of right-hemisphere theta-gamma power between five pairs over 6000 km apart during the effector.",
+  "notes": "Scott 2015: one toroid per head, pulsed from one Arduino Uno output (p.15 [672]; code in Fig. 3 p.16 [673]), so every pulse reached the whole ring at once. Fig. 4 plots primer and effector 'as specified by the code': seven 3-ms pulses each, the effector ending at about 119 ms (p.17 [674]). The two sites were synchronised 'to the second' by stopwatches set over Skype (p.12 [669]) and the effector was 'initiated manually' (p.17 [674]). Timeline: 3 min eyes open, 3 min eyes closed, six 5-min trials (1 min rest, 2 min send/receive, 2 min receive/send), 3 min eyes closed, 3 min eyes open; the field runs from minute 11 to 31. This program plays the pulses on all eight coils together. Primer: gaps of 20, 22 ... 32 ms (203 ms per cycle). Effector: gaps of 20, 18 ... 8 ms (119 ms). The lab's papers disagree on the effector: Rouleau & Persinger 2015 state 128 ms (p.4 [22]) and Karbowski 2017 lists eight pulses down to 6 ms (p.291 [275]), while Scott's Fig. 4, Rouleau 2014 (p.3-4 [46-47]) and Burke 2013 (p.3 [37]) give seven. The pulse timing is the paper's; the field is not: a toroid's field follows the ring, while these coils point into the head. The field 'averaged 30 nT (0.3 mG)' on a meter, place not stated (p.16 [673]). This program's setting is the peak field 20 mm in front of each coil. At 0.1 uT the scalp gets about 2.4 uT, some 80 times the source value. One helmet delivers one of the two exposures; two helmets started by hand within 1 s match the original. Five pairs, published in JCER, no sham or field-off pairs, no correction for the number of comparisons, no independent replication. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005, double-blind; Gendle & McGrath 2012, where the experimenter knew the condition). Not for people with epilepsy or a seizure history; stop on headache, nausea or distress.",
   "setting": "Both partners wear a helmet running this program, started within 1 s of each other (the original pairs began at agreed UTC times, 16:00-19:00 UTC in June 2015). Each sits still in a comfortable chair, eyes closed except for the eyes-open baselines. Cues come from a separate player, not the helmet: at each 1-min rest one partner hears a 220 Hz tone pulsed at 6.5 Hz and the other a single tone then silence (swapped every trial); then 2 min \"send\" and 2 min \"receive\" (imagine sending or receiving white light), Group A sending first while Group B receives. Both filled in the Profile of Mood States before and after.",
   "schedule": "One session per pair in the original. For a self-test, decide the EEG comparison in advance and also run a blinded sham session (the app's Blind option) on another day.",
   "targets": [
@@ -61,7 +63,7 @@
       }
     },
     {
-      "name": "Primer, min 11-17 (trial 2): 7 pulses, gaps 20->32 ms, CCW",
+      "name": "Primer, min 11-17 (trial 2): 7 pulses, gaps 20->32 ms",
       "minutes": 6,
       "pattern": {
         "type": "table",
@@ -69,26 +71,18 @@
         "gapMs": 0,
         "data": [255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128]
       },
-      "spatial": {
-        "mode": "rotate",
-        "dir": "ccw",
-        "dwell": [23, 2, 35]
-      }
+      "spatial": {"mode": "bilateral"}
     },
     {
-      "name": "Effector, min 17-31 (trials 3-5): 8 pulses, gaps 20->6 ms",
+      "name": "Effector, min 17-31 (trials 3-5): 7 pulses, gaps 20->8 ms",
       "minutes": 14,
       "pattern": {
         "type": "table",
         "pointMs": 1,
         "gapMs": 0,
-        "data": [255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128]
+        "data": [255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255, 255, 128, 128, 128, 128, 128, 128, 128, 128]
       },
-      "spatial": {
-        "mode": "rotate",
-        "dir": "ccw",
-        "dwell": [23, -2, 9]
-      }
+      "spatial": {"mode": "bilateral"}
     },
     {
       "name": "Trial 6, no field: rest 1, S-R 2, R-S 2 min",

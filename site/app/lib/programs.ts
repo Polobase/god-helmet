@@ -1,4 +1,4 @@
-// The program library and the open program (webapp/src/lib, plain JavaScript)
+// The program library and the open program (core/lib, plain JavaScript)
 // with types on them. Nothing here adds behaviour. Heavy: it holds every
 // program file, so only the app imports it. Types and small lookups are in
 // lib/model.ts, the helmet connection in lib/device.ts.
@@ -36,6 +36,7 @@ export interface LibraryState {
   mode: 'category' | 'placement' | 'site' | 'experience'
   query: string
   evidence: string
+  fidelity: string
   category: string
   more: Record<string, boolean>
   lobe: string | null

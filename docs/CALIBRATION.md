@@ -4,7 +4,7 @@
 
 The module's output stage is undocumented. The firmware assumes:
 - 2.5 V onboard reference (jumper 1-2);
-- AD5328 GAIN = 1, giving 0–5 V from the DAC;
+- the AD5328's gain bit set (output range 0 to 2 × the reference), giving 0–5 V from the DAC;
 - module output = 4·V_DAC − 10 V, so code 0x000 → −10 V, 0x800 → 0 V, 0xFFF → +10 V.
 
 Verify this before connecting coils:
@@ -55,7 +55,7 @@ Type the printed values into Helmet → Calibration and save.
 
 The app can read the phone itself and measure the coils one by one. It needs the local app, because a page from the web cannot read a phone over plain http:
 
-1. On the computer: `cd webapp && npm install && npm run dev`, then open the address it prints (http://localhost:5173), go to **Helmet** and connect the helmet (Bluetooth or USB).
+1. On the computer: `cd site && npm install && npm run dev`, then open the address it prints (http://localhost:3000), go to **Helmet** and connect the helmet (Bluetooth or USB). The section **Coil check with your phone** is shown only in this local app, below **Calibration**.
 2. On the phone (same Wi-Fi): phyphox → **Magnetometer** → menu → **Allow remote access**. Raw data ("Rohdaten") is fine: only the change counts.
 3. In **Coil check with your phone**, type the address phyphox shows (for example `192.168.1.20:8080`) and press **Connect phone**. The live reading appears; about 45–48 µT is Earth's field.
 4. **Does each coil work?** Choose "On the phone's sensor spot", lay coil 1 flat on the spot where a coil gives the largest reading, and press **Measure CH1**. The helmet drives that coil +, pause, −, pause at the test current for 22 s; the app fits that pattern to the readings, which removes Earth's field and drift. A working coil gives tens of µT (the magnetometer chip sits about 1 cm inside the phone: 17–41 µT at 4.5 mA on a Galaxy Z Flip6); "No field" means the coil, its resistor or its wiring is open. Lay every coil the same way up: the direction column then shows a coil wired the other way round ("reversed").

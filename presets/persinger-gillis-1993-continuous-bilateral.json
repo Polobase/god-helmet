@@ -1,0 +1,23 @@
+{
+  "id": "persinger-gillis-1993-continuous-bilateral",
+  "name": "Gillis & Persinger 1993: continuous burst-firing, both sides (20 min)",
+  "category": "persinger",
+  "evidence": "single-lab",
+  "fidelity": "approximation",
+  "dose": {"value": 50, "unit": "mG", "plane": "unstated", "cite": "Gillis 1993 p.2 [169]"},
+  "origin": "Gillis & Persinger 1993 (Laurentian University), comparison arm",
+  "uT": 1,
+  "summary": "The continuous arm of Gillis & Persinger 1993: the burst-firing pattern repeated without a pause for 20 min along both temporal planes, on the same night in three successive weeks. This is the arm in which the paper reports a rise in aggression scores; a fall in trust only approached significance. The pulsed arm (1 s every 4 s) is the comparison.",
+  "notes": "Caution: this is the exposure the paper links to a rise in aggression scores. Four people received 20 min of continuous 50 mG fields that simulate the burst-firing of amygdaloid neurons, four received the same pattern for 1 s every 4 s and four were controls, on the same night in each of three weeks, seated in semidarkness in an acoustic chamber (Gillis 1993 pp.1-2 [168-169]). This program repeats the burst without pauses. The burst is the project's rising sweep with the published point duration and length; the point values were never published as numbers (the lab prints the shape only as a small figure). Its 3-ms points and 690-ms length are the lab's later form (Healey 1996 p.3 [203]). Gillis gives no point duration, and the lab's burst file of that period ran at 1-ms points, 275 ms per pass (Richards 1993 p.7 [77]). The procedure Gillis cites switched one left-right pair every 0.5 s (Richards 1993 p.3 [73]). Here one left-right pair is on at a time, and the right side is reversed so that the pair's field points through the head. The four sites per side stand for the lab helmet's four solenoids per side on a 7.5 by 5 cm ellipse; the site names are this project's reading. Field: the paper gives 50 mG (5 uT) without saying where it was measured (p.2 [169]). This program's setting is the peak field 20 mm in front of each coil. Support: aggression changed by +7.4 (3.5) in this group, +3.3 (2.3) in controls and -0.1 (1.9) in the pulsed group (F = 7.88); trust only approached significance (p.2 [169]). Four people per group, one lab, never repeated. Independent sham-controlled tests of God-Helmet-type fields found no field effect (Granqvist 2005, double-blind; Gendle & McGrath 2012, where the experimenter knew the condition). Not for people with epilepsy or a seizure history, implanted devices or pregnancy; stop at once on irritability, fear, headache or distress.",
+  "setting": "Seated in a comfortable chair in semidarkness in a quiet room, wearing the helmet; the original used an acoustic chamber.",
+  "schedule": "Once a week for three weeks in the original.",
+  "targets": ["left-amygdala", "right-amygdala", "left-superior-temporal-gyrus-posterior", "right-superior-temporal-gyrus-posterior"],
+  "source": "Gillis & Persinger 1993, Percept Mot Skills 76:168 https://pubmed.ncbi.nlm.nih.gov/8451123/ ; Persinger 1999, Int J Psychophysiol 34:163 (burst-firing 1 s every 4 s, 5 uT) https://pubmed.ncbi.nlm.nih.gov/10576400/ ; Carniello 2020, PhD thesis, Laurentian University, p. 89 (230-point burst-firing file, 3-ms points) https://laurentian.scholaris.ca/items/8c92763c-cd19-4a21-b242-3b572a28ce55 ; Tsang, Koren & Persinger 2009, Electromagn Biol Med 28:365 https://pubmed.ncbi.nlm.nih.gov/20017627/ ; Granqvist et al. 2005, Neurosci Lett 379:1 https://pubmed.ncbi.nlm.nih.gov/15849873/ ; Gendle & McGrath 2012, Percept Mot Skills 114:217 https://pubmed.ncbi.nlm.nih.gov/22582690/",
+  "layout": "custom",
+  "placement": {"sites": ["FFT7", "C5", "TP7", "T9h", "FFT8", "C6", "TP8", "T10h"]},
+  "fadeInS": 10,
+  "fadeOutS": 10,
+  "phases": [
+    {"name": "Burst-firing without pauses, four coil pairs, 0.5 s per pair", "minutes": 20, "pattern": {"type": "burst", "f0": 6, "f1": 30, "sweepMs": 690, "gapMs": 0, "pointMs": 3}, "spatial": {"mode": "cycle", "side": "both", "dwellMs": 500, "weights": [1, 1, 1, 1, -1, -1, -1, -1]}}
+  ]
+}

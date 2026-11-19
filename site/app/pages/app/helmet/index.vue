@@ -14,6 +14,8 @@ loadDraft()
 watch(() => device.settings, settingsArrived)
 // Another helmet: its own settings, whatever was being edited for the one before.
 watch(() => helmetKey(), loadDraft)
+// The coil check reads a phone through the local dev server: only in `npm run dev`.
+const local = import.meta.dev
 </script>
 
 <template>
@@ -32,6 +34,7 @@ watch(() => helmetKey(), loadDraft)
 
     <template v-if="draft">
       <HelmetCalibration />
+      <HelmetCoilCheck v-if="local" />
       <HelmetWiringCheck />
       <HelmetSettings />
       <HelmetEnvironment />

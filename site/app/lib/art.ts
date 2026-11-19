@@ -58,8 +58,8 @@ export const TRIAL_MARKS: Record<string, MarkId> = { rv: 'remote-viewing', telep
 /** Programs whose mark says more than their category's does (the Experience list). */
 const PROGRAM_OWN_MARKS: Record<string, MarkId> = {
   'remote-viewing': 'remote-viewing',
-  'telepathy-sender': 'telepathy',
-  frontal: 'mood',
+  'persinger-siblings-2003-stimulus': 'telepathy',
+  'murphy-shakti8-feelgood-1phase-frontal': 'mood',
   'love-agape': 'body',
 }
 
@@ -114,9 +114,7 @@ export const guideScene = (id?: string, category?: string): SceneId | null =>
 export const PROGRAM_SCENES: Record<string, SceneId> = {
   'remote-viewing': 'remote-viewing',
   'persinger-swann-2002-table1': 'remote-viewing',
-  'military-p06-persinger-swann-1998': 'remote-viewing',
   'murphy-shakti-psi-rv-untested-occipital': 'remote-viewing',
-  'telepathy-sender': 'telepathy',
   'persinger-shared-memory-2002': 'telepathy',
   'persinger-siblings-2003-stimulus': 'linked',
   'persinger-strangers-2008': 'linked',
